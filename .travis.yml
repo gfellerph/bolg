@@ -7,6 +7,7 @@ script:
  - firebase deploy --only hosting
 cache: yarn
 install:
+ - yarn
  - npm i -g firebase-tools
 before_script:
  - export DISPLAY=:99.0
