@@ -1,0 +1,13 @@
+language: node_js
+env: TRAVIS_CI=true
+node_js:
+ - "7"
+script:
+ deploy
+ firebase deploy --only hosting
+cache: yarn
+install:
+ - yarn global firebase-tools
+before_script:
+ - export DISPLAY=:99.0
+ - sh -e /etc/init.d/xvfb start
