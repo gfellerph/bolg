@@ -1,3 +1,6 @@
+@import 'node_modules/mathsass/dist/_math';
+@import 'node_modules/modularscale-sass/stylesheets/_modular-scale';
+
 // Media queries
 $xxs: 480px;
 $xs: 768px;
@@ -6,3 +9,10 @@ $sm: 1025px;
 $m: 1200px;
 $l: 1920px;
 $xl: 2560px;
+
+$golden: 1.608;
+$golden-em: $golden * 1em;
+$golden-rem: $golden * 1rem;
+$ms-base: 10px;
+// $ms-ratio: $golden;
+$ms-range: 1.6 $xxs, 2.4 $xl;

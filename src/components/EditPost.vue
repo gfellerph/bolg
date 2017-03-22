@@ -19,7 +19,9 @@
         </p>
       </form>
     </div>
-    <div class="post-preview" v-html="compiledContent"></div>
+    <div class="post-preview">
+      <article v-html="compiledContent"></article>
+    </div>
   </div>
 </template>
 
@@ -48,20 +50,32 @@
       },
       debouncedSave: debounce(function () {
         this.post.set();
-      }, 1000),
+      }, 2000),
       savePostImmediately() {
         this.post.set();
-      }
-    },
-
-    created() {
-      console.log('route id', this.$route.params.id);
-      if (this.$route.params.id) {
+      },
+      getPost() {
         database
           .ref(`/posts/${this.$route.params.id}`)
           .on('value', snapshot => {
             this.post = new Post(snapshot.val());
           });
+      }
+    },
+
+    created() {
+      if (this.$route.params.id) {
+        this.getPost();
+      }
+    },
+
+    watch: {
+      $route (to, from) {
+        if (to.params.id) {
+          this.getPost();
+        } else {
+          this.post = new Post();
+        }
       }
     }
   };

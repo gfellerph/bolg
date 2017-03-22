@@ -1,0 +1,24 @@
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    background: none;
+    border: none;
+    box-shadow: none;
+
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+
+    border-bottom: 1px solid black;
+    padding: $golden-em / 2 0;
+}
+
+textarea {
+    display: block;
+    background: none;
+    border: 1px solid black;
+    width: 100%;
+    resize: vertical;
+}

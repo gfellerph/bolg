@@ -2,7 +2,6 @@ import cuid from 'cuid';
 import {database, auth} from '@/config/firebase';
 
 export default function (post = {}) {
-  console.log('new post created');
 
   // Properties
   this.id = post.id || cuid();
