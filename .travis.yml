@@ -4,11 +4,10 @@ node_js:
  - "7"
 script:
  - npm run deploy
- - firebase deploy --only hosting
 cache: yarn
 install:
+ - npm i -g yarn
  - yarn
- - npm i -g firebase-tools
 before_script:
  - export DISPLAY=:99.0
  - sh -e /etc/init.d/xvfb start
