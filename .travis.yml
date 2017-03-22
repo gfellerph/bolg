@@ -8,11 +8,7 @@ before_deploy:
 - npm run build
 cache: yarn
 install:
-- npm i -g yarn
-- yarn
-- cd functions
-- yarn
-- cd ..
+- npm i
 before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
