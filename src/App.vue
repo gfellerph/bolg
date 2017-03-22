@@ -1,12 +1,9 @@
 <template>
   <div id="app" class="app box">
-    <h1>some title <br> with two lines</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus explicabo officia, unde laborum blanditiis maxime hic earum dignissimos, ipsam repellat excepturi, neque, quas reiciendis soluta officiis atque dolorem. Iste, ducimus!</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus explicabo officia, unde laborum blanditiis maxime hic earum dignissimos, ipsam repellat excepturi, neque, quas reiciendis soluta officiis atque dolorem. Iste, ducimus!</p>
     <header class="header">
       <nav>
-        <router-link to="/">Overview</router-link>
-        <router-link to="/edit">Create post</router-link>
+        <router-link class="button" to="/">Overview</router-link>
+        <router-link class="button" to="/edit">Create post</router-link>
       </nav>
       <profile></profile>
     </header>
@@ -53,5 +50,11 @@
 
   main {
     display: flex;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 </style>
