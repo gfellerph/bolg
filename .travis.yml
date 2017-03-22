@@ -1,17 +1,19 @@
 language: node_js
-env: TRAVIS_CI=true
+env:
+  matrix:
+  - TRAVIS_CI=true
 node_js:
- - "7"
+- '7'
 before_deploy:
- - npm run build
+- npm run build
 cache: yarn
 install:
- - npm i -g yarn
- - yarn
+- npm i -g yarn
+- yarn
 before_script:
- - export DISPLAY=:99.0
- - sh -e /etc/init.d/xvfb start
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 deploy:
- provider: firebase
- token:
-  secure: "1/rig9-VW1J4qeLNoYvMs-SopNq8w70wqZZLCzZ-h7wdoP0DV2da8ZeEO3diEBh9ZA"
+  provider: firebase
+  token: 
+    secure: n6foaF9VaHI7ZDSxg12ARygP5dDnGI2B2o0t0pF3WUHA4Mrgp8/NLYNiqVTIrtAxYi5REowh2/841a9/Gd7cTMVSu9QiBiJnNmKXH78euHaGr8xAPUIgh0Ph/LYxlcbYqRnBl9Pn253Cf3wDRcKkJzVY1Gu1JxuxTjqSVYUwqPqEjv01xkrCvP35MMyedtc/ER/shNaeSv0hh7xcpcU7O4ykfXuTDHMm0+9/fwO195HKifDR0zMaijXlBHto0xngZx5yP3cKSQ4le6Ah4A8ZibIE4hu6/qUy0zBfGlysc7elaha1AKUzETFbSXxk0lsArbAVncVvh4ZCEOKkoue19ae+Gq53hPchlJGfk7l4U3YSCNUKqfS2tQpCavRMy/3FO/OVEKwVA3qloyJAtqFHL1WVi/erZNyXTSZNwkscNV7mPfQtWcKWuIP70k29VIJ7xjZvSIRac+lmBSR1ITusL7GE9Zhg624cc2jiCX3zxhNB1hMYDBHRUugtVvq9Ofc6M/4Y6xzKf6HnLvaC2nHZv0yZLZn/0RIQcFIU6KmxKuS5jCbUtTxB/GdeRQxkelMc5a4lXQWplpy6ys0MufS2Ul3wmJHyp+xaC+u25/q6Cr3nUNoGOqX5UGT9HPSvTcfqeFoNJvrhGTVog1w0JuvfoB7WF+Pefi2OEev7BhWp7N4=
