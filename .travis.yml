@@ -2,8 +2,8 @@ language: node_js
 env: TRAVIS_CI=true
 node_js:
  - "7"
-script:
- - npm run deploy
+before_deploy:
+ - npm run build
 cache: yarn
 install:
  - npm i -g yarn
@@ -11,3 +11,7 @@ install:
 before_script:
  - export DISPLAY=:99.0
  - sh -e /etc/init.d/xvfb start
+deploy:
+ provider: firebase
+ token:
+  secure: "1/rig9-VW1J4qeLNoYvMs-SopNq8w70wqZZLCzZ-h7wdoP0DV2da8ZeEO3diEBh9ZA"

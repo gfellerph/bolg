@@ -10,6 +10,6 @@
     "marked": "^0.3.6"
   },
   "scripts": {
-    "deploy": "node index.js"
+    "build": "node index.js"
   }
 }
