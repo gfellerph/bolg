@@ -3,8 +3,8 @@ env: TRAVIS_CI=true
 node_js:
  - "7"
 script:
- deploy
- firebase deploy --only hosting
+ - deploy
+ - firebase deploy --only hosting
 cache: yarn
 install:
  - npm i -g firebase-tools
