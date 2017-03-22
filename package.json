@@ -1,0 +1,15 @@
+{
+  "name": "bolg",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Philipp Gfeller <tuelsch@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-tools": "^3.5.0",
+    "global": "^4.3.1",
+    "marked": "^0.3.6"
+  },
+  "scripts": {
+    "deploy": "node index.js"
+  }
+}
