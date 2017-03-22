@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body,
+.app {
+    margin: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+.container {
+    margin: 0 auto;
+    @include min($xs) {
+        width: 100%*(9.5/13);
+    }
+    @include max($xs) {
+        width: 100%;
+    }
+}
+
+img {
+    max-width: 100%;
+}

@@ -1,0 +1,44 @@
+/**
+ * Media query includes for max-width
+ * Usage: @include max($xs) { ... }
+ *
+ * @param  {Pixel} $media A breakpoint (see variables.scss)
+ * @return {void}
+ */
+
+@mixin max($max) {
+    @media only screen and (max-width: $max - 1) {
+        @content;
+    }
+}
+
+
+/**
+ * Media query for min-width and max-width
+ * Usage: @include between($s, $m) { ... }
+ *
+ * @param  {Pixel} $min Min screen size
+ * @param  {Pixel} $max Max screen size
+ * @return {void}
+ */
+
+@mixin between($min, $max) {
+    @media only screen and (min-width: $min) and (max-width: $max - 1) {
+        @content;
+    }
+}
+
+
+/**
+ * Media query for min-width
+ * Usage: @include min($xs) { ... }
+ *
+ * @param  {Pixel} $media A breakpoint (see variables.scss)
+ * @return {void}
+ */
+
+@mixin min($min) {
+    @media only screen and (min-width: $min) {
+        @content;
+    }
+}

@@ -1,23 +1,54 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+  <div id="app" class="app">
+    <header class="header">
+      <nav>
+        <router-link to="/">Overview</router-link>
+        <router-link to="/edit">Create post</router-link>
+      </nav>
+      <profile></profile>
+    </header>
+    <main>
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+  import Profile from '@/components/Profile';
+  import store from '@/config/store';
+  import {auth} from '@/config/firebase';
+
+  export default {
+    name: 'app',
+
+    created() {
+      // Listen to auth changes at firebase
+      auth
+        .onAuthStateChanged((user) => {
+
+          // Dispatch according to auth state
+          if (user) {
+            store.commit('LOGIN', { user });
+          } else {
+            store.commit('LOGOUT');
+          }
+        });
+    },
+
+    components: {
+      Profile,
+    }
+  }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  @import 'src/styles/_index';
+
+  .app {
+    flex-grow: 1;
+  }
+
+  main {
+    display: flex;
+  }
 </style>
