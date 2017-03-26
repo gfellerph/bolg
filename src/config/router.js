@@ -19,7 +19,7 @@ const router = new Router({
       },
     },
     {
-      path: '/edit',
+      path: '/create',
       name: 'NewPost',
       component: EditPost,
       meta: {

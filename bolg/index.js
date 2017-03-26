@@ -1,41 +1,49 @@
 const marked = require('marked');
 const fs = require('fs');
 const request = require('request');
-const firebase = require('firebase');
-const handlebars = require('handlebars');
-const layouts = require('handlebars-layouts');
+const hbsTemplates = require('./config/handlebars');
+const webpackManifest = require('../webpack.manifest.json');
+const firebase = require('./config/firebase');
+const mkdirp = require('mkdirp');
+const dirname = require('path').dirname;
 
-// Initialize Firebase
-var admin = require("firebase-admin");
+// Create "this-is-a-post" from "This is a Post"
+function slugger(str) {
+  return str.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+}
 
-var serviceAccount = require("./key.json");
-var config = {
-  apiKey: "AIzaSyBi6qxewP2GsezDpNuYqkOJPyfR2GuHTYw",
-  authDomain: "bolg-d1098.firebaseapp.com",
-  databaseURL: "https://bolg-d1098.firebaseio.com",
-  storageBucket: "bolg-d1098.appspot.com",
-  messagingSenderId: "206693873851"
-};
-firebase.initializeApp(config);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://bolg-d1098.firebaseio.com"
-});
 
-handlebars.registerHelper(layouts(handlebars));
-const hbs = fs.readFileSync('bolg/post.hbs', 'utf-8');
-const layout = fs.readFileSync('bolg/_layout.hbs', 'utf-8');
-handlebars.registerPartial('layout', layout);
-const template = handlebars.compile(hbs);
+function rebuildAll() {
 
-var postsRef = admin.database().ref('/posts').once('value', function (snapshot) {
-  const posts = Object.keys(snapshot.val()).map(key => snapshot.val()[key]);
-  
-  posts.map(function (post) {
-    const urlSlug = post.title.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
-    const html = template({markdown: marked(post.markdown, {sanitize: true})});
-    
-    fs.writeFileSync(`public/${urlSlug}.html`, html, {encoding: 'utf-8'});
+}
+
+// Fetch post data from firebase and rebuild a single post
+function rebuild(id) {
+  return new Promise(function (resolve, reject) {
+    firebase
+      .database()
+      .ref(`/posts/${id}`)
+      .once('value', function (snapshot) {
+        const post = snapshot.val();
+        if (!post) return reject(new Error(`Post with id ${id} not found, can\'t touch this.`));
+
+        const filePath = `public/posts/${slugger(post.title)}.html`;
+        const html = hbsTemplates.post({
+          markdown: marked(post.markdown, {sanitize: true}),
+          css: webpackManifest['/app.css']
+        });
+
+        mkdirp(dirname(filePath), function (err) {
+          if (err) reject(err);
+
+          fs.writeFile(filePath, html, {encoding: 'utf-8'}, resolve);
+        });
+      })
+      .catch(reject);
   });
-  process.exit();
-}).catch(err => {throw err;});
+}
+
+module.exports = {
+  rebuildAll() {},
+  rebuild,
+}

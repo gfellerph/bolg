@@ -3,7 +3,7 @@
     <header class="header">
       <nav>
         <router-link class="button" to="/">Overview</router-link>
-        <router-link class="button" to="/edit">Create post</router-link>
+        <router-link class="button" to="/create">Create post</router-link>
       </nav>
       <profile></profile>
     </header>

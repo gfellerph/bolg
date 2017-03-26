@@ -8,6 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var ManifestPlugin = require('webpack-manifest-plugin');
 
 var env = config.build.env
 
@@ -86,7 +87,12 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    // Export build manifest to get hashed asset names
+    new ManifestPlugin({
+      fileName: '../webpack.manifest.json',
+      basePath: '/'
+    })
   ]
 })
 

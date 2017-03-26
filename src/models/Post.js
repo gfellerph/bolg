@@ -6,9 +6,10 @@ export default function (post = {}) {
   // Properties
   this.id = post.id || cuid();
   this.title = post.title || '';
-  this.created = new Date(post.created) || new Date();
-  this.lastEdited = new Date(post.lastEdited) || new Date();
-  this.lastSaved = new Date(post.lastSaved) || null;
+  this.created = post.created || Date.now();
+  this.lastEdited = post.lastEdited || null;
+  this.lastSaved = post.lastSaved || null;
+  this.lastPublished = post.lastPublished || null;
   this.author = post.author || auth.currentUser.uid;
   this.published = post.published || false;
   this.markdown = post.markdown || '';
@@ -17,7 +18,7 @@ export default function (post = {}) {
 
   // Methods
   this.set = () => {
-    this.lastSaved = new Date();
-    ref.set(JSON.parse(JSON.stringify(this)))
+    this.lastSaved = Date.now();
+    return ref.set(JSON.parse(JSON.stringify(this)));
   };
 }
