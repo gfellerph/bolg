@@ -20,7 +20,8 @@ textarea {
     background: none;
     border: 1px solid black;
     width: 100%;
-    resize: vertical;
+    padding: $golden-em / 2;
+    resize: none;
 }
 
 button,
@@ -31,9 +32,9 @@ button,
     text-shadow: none;
     color: inherit;
     text-decoration: none;
-    font-size: inherit;
+    font-size: 0.8em;
     line-height: inherit;
-    font-family: inherit;
+    font-family: 'Roboto', sans-serif;
 
     border: 1px solid black;
     padding: $golden-em / 2 $golden-em;

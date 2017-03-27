@@ -1,22 +1,20 @@
 <template>
   <div class="post-edit">
     <div class="post-form">
-      <p>
-        <input v-model="post.title" @keyup="savePost" type="text">
-      </p>
-      <p>
-        <input @change="savePost" type="file">
-      </p>
-      <p>
-        <textarea v-model="post.markdown" @keyup="savePost" name="" id="" cols="30" rows="10"></textarea>
-      </p>
-      <p>
-        <button @click="savePostImmediately" :disabled="saved">
-          <span v-if="saved">Saved</span>
-          <span v-if="!saved">Save</span>
-        </button>
-        <button @click="publishPost" :disabled="canPublish">Publish</button>
-      </p>
+      <div class="post-text">
+        <p>
+          <input v-model="post.title" @keyup="savePost" type="text">
+        </p>
+        <p class="post-markdown">
+          <textarea v-model="post.markdown" @keyup="savePost" name="" id="" cols="30" rows="10"></textarea>
+        </p>
+        <p>
+          <button @click="publishPost" :disabled="canPublish">Publish</button>
+        </p>
+      </div>
+      <div class="post-images">
+        <image-selector></image-selector>
+      </div>
       <div class="post-stats">
         <span v-if="status==0" class="post-status-loading">loading</span>
         <span v-if="status==1" class="post-status-editing">editing</span>
@@ -38,6 +36,7 @@
   import {database} from '@/config/firebase';
   import superagent from 'superagent';
   import router from '@/config/router';
+  import ImageSelector from '@/components/ImageSelector';
 
   export default {
     data() {
@@ -112,6 +111,10 @@
           this.post = new Post();
         }
       }
+    },
+
+    components: {
+      ImageSelector,
     }
   };
 </script>
@@ -123,41 +126,69 @@
   .post-edit {
     flex-grow: 1;
     display: flex;
-    align-items: stretch;
-    flex-wrap: wrap;
   }
-
-  .post-markdown-editor {
-    height: 300px;
-    width: 100%;
-  }
-
-  .post-form {
-    position: relative;
-
-    &:after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      right: -1px;
-      width: 3px;
-      height: 100%;
-      background: black;
-      transform: translateY(-50%);
-    }
-  }
-
   .post-form,
   .post-preview {
     flex: 0 0 50%;
   }
 
+  .post-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-text {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 $golden-em;
+
+    > p {
+      flex: 0 0 auto;
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+    .post-markdown {
+      flex: 1 0 auto;
+      display: flex;
+    }
+  }
+
+  .post-images {
+    flex: 0 0 16vh;
+    overflow: auto;
+  }
+
+  .post-preview {
+    position: relative;
+    border-left: 1px solid black;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 0;
+      box-shadow: 0 0 20px white;
+    }
+
+    > article {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: auto;
+      transform: translate3d(0,0,0);
+    }
+  }
+
   .post-stats {
-    position: absolute;
-    right: 0;
-    bottom: 0;
     color: white;
     font-size: 0.85em;
+    font-family: $sans-serif;
 
     span {
       display: block;
@@ -179,6 +210,5 @@
         background: crimson;
       }
     }
-
   }
 </style>
