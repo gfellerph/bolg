@@ -73,7 +73,7 @@
         if (!this.connected) test = false;
 
         // lastEdited later than lastSaved
-        if (this.post.lastSaved && this.post.lastEdited > this.post.lastSaved) test = false;
+        if (!this.post.lastSaved || this.post.lastEdited > this.post.lastSaved) test = false;
 
         return test;
       },
@@ -91,6 +91,7 @@
       published() {
         let test = true;
         if (!this.connected && this.post.lastEdited > this.post.lastPublished) test = false;
+        if (this.post.lastEdited > this.post.lastSaved) test = false;
         if (this.canPublish) test = false;
         return test;
       },
