@@ -1,16 +1,14 @@
 <template>
-  <div class="image-selector">
-    <div class="images">
+  <div class="image-selector" ref="imageSelector">
+    <div class="images" :class="{dragover: 'dragover'}">
       <image-uploader
         v-for="(image, index) in images"
         :image="image"
-        :index="index"
-        :key="index"
+        :key="image.id"
         v-on:remove-image="removeImage"
-        ref="images"
       ></image-uploader>
       <div class="image-upload-wrapper">
-        <p class="text-align-center">Drop images here or <br>click to upload</p>
+        <p class="text-align-center">Drop or click for pics</p>
         <input type="file" multiple @change="onFileChange" />
       </div>
     </div>
@@ -19,29 +17,44 @@
 
 <script>
   import ImageUploader from '@/components/ImageUploader';
+  import Image from '@/models/Image';
 
   export default {
     data() {
       return {
         images: [],
-        uploads: [],
+        dragover: false,
       };
     },
 
+    mounted() {
+      window.addEventListener('dragover', function (e) { e.preventDefault(); });
+      window.addEventListener('dragenter', this.onDragEnter);
+      window.addEventListener('dragleave', this.onDragLeave);
+      window.addEventListener('drop', this.onFileChange);
+
+      this.$refs.imageSelector.addEventListener('mousewheel', (event) => {
+        this.$refs.imageSelector.scrollLeft += event.deltaY;
+      });
+    },
+
     methods: {
-      uploadAll() {
-        const uploads = this.$refs.images.map(image => image.upload());
-        return Promise.all(uploads);
+      onDragEnter(event) {
+        if (event.target === document.body) console.log(event);
+        if (event.target === event.currentTarget) this.dragover = true;
+      },
+      onDragLeave(event) {
+        if (event.target === event.currentTarget) this.dragover = false;
       },
       onFileChange(event) {
+        event.preventDefault();
         var images = event.target.files || event.dataTransfer.files;
         for (var i = 0; i < images.length; i++) {
-          images[i].dataURL = window.URL.createObjectURL(images[i]);
-          this.images.push(images[i]);
+          this.images.push(new Image({file: images[i]}));
         }
       },
-      removeImage(index) {
-        this.images.splice(index, 1);
+      removeImage(id) {
+        this.images = this.images.filter(image => image.id !== id);
       },
     },
 
@@ -69,6 +82,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 $golden-em / 2;
 
     input[type="file"] {
       opacity: 0;
@@ -90,7 +104,7 @@
     flex: 0 0 auto;
 
     & + & {
-      padding-left: $golden-em / 2;
+      margin-left: $golden-em / 2;
     }
   }
 
@@ -98,5 +112,11 @@
     display: flex;
     min-width: 100%;
     padding: $golden-em / 2;
+    outline: 4px dashed transparent;
+    transition: outline 0.3s;
+
+    &.dragover {
+      outline-color: slategrey;
+    }
   }
 </style>

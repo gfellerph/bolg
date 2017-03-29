@@ -1,8 +1,8 @@
 <template>
   <div class="posts">
-    <div class="post-list">
-      <ul>
-        <li v-for="post in posts">
+    <div class="post-list-container">
+      <ul class="post-list">
+        <li v-for="post in posts" @click="changeCurrentPost(post)" @mouseenter="changeCurrentPost(post)">
           <post-details :post="post" />
         </li>
       </ul>
@@ -31,8 +31,14 @@
     },
 
     computed: {
-      editURL() { return `#edit-post/${this.currentPost.id}`; },
+      editURL() { return this.currencPost ? `#edit-post/${this.currentPost.id}` : ''; },
       posts() { return this.firebasePosts.map(post => new Post(post)); }
+    },
+
+    methods: {
+      changeCurrentPost(post) {
+        this.currenPost = post;
+      },
     },
 
     components: {
@@ -41,6 +47,32 @@
   };
 </script>
 
-<style>
+<style lang="scss" scoped>
+  @import 'src/styles/_variables';
 
+  .posts {
+    display: flex;
+    width: 100%;
+  }
+
+  .post-list-container {
+    flex: 0 0 50%;
+    border-right: 1px solid black;
+  }
+
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: $golden-em / 2;
+      
+      & + li {
+        border-top: 1px solid black;
+      }
+
+
+    }
+  }
 </style>

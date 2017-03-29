@@ -18,7 +18,9 @@ export default function (post = {}) {
 
   // Methods
   this.set = () => {
-    this.lastSaved = Date.now();
-    return ref.set(JSON.parse(JSON.stringify(this)));
+    return ref.set(JSON.parse(JSON.stringify(this))).then(snapshot => {
+      this.lastSaved = Date.now();
+      return snapshot;
+    });
   };
 }

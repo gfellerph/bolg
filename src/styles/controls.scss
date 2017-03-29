@@ -1,53 +1,101 @@
 input[type="text"],
 input[type="password"],
 input[type="email"] {
-    width: 100%;
-    background: none;
-    border: none;
-    box-shadow: none;
+  width: 100%;
+  background: none;
+  border: none;
+  box-shadow: none;
 
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
 
-    border-bottom: 1px solid black;
-    padding: $golden-em / 2 0;
+  border-bottom: 1px solid black;
+  padding: $golden-em / 2;
 }
 
 textarea {
-    display: block;
-    background: none;
-    border: 1px solid black;
-    width: 100%;
-    padding: $golden-em / 2;
-    resize: none;
+  display: block;
+  background: none;
+  border: none;
+  width: 100%;
+  padding: 0 $golden-rem / 2;
+  resize: none;
+  outline: none;
 }
 
 button,
 .button {
-    display: inline-block;
-    box-shadow: none;
-    background: none;
-    text-shadow: none;
-    color: inherit;
-    text-decoration: none;
-    font-size: 0.8em;
-    line-height: inherit;
-    font-family: 'Roboto', sans-serif;
+  display: inline-block;
+  box-shadow: none;
+  background: none;
+  text-shadow: none;
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.8em;
+  line-height: inherit;
+  font-family: 'Roboto', sans-serif;
 
-    border: 1px solid black;
-    padding: $golden-em / 2 $golden-em;
+  border: 1px solid black;
+  padding: $golden-em / 2 $golden-em;
 
-    &[disabled] {
-        opacity: 0.4;
+  &:hover {
+    animation: glitch 0.35s infinite;
+  }
+
+  &[disabled] {
+    opacity: 0.4;
+
+    &:hover {
+      animation: none;
     }
+  }
 
-    &.small {
-        padding: $golden-em / 4 $golden-em / 2;
-    }
+  &.small {
+    padding: $golden-em / 4 $golden-em / 2;
+  }
 
-    & + & {
-        margin-left: $golden-em;
-    }
+  & + & {
+    margin-left: $golden-em / 2;
+  }
+}
+
+label {
+  font-size: 0.8em;
+  display: block;
+  margin: $golden-em / 2 0;
+}
+
+@keyframes glitch {
+  0% {
+    box-shadow:
+      1px -1px 0 1px rgba(cyan, 0.5),
+      1px 1px 0 1px rgba(yellow, 0.5),
+      inset -1px -1px 0 1px rgba(magenta, 0.5);
+  }
+  25% {
+    box-shadow:
+      inset -1px -1px 0 1px rgba(cyan, 0.5),
+      -1px -1px 0 1px rgba(yellow, 0.5),
+      1px -1px 0 1px rgba(magenta, 0.5);
+  }
+  50% {
+    box-shadow:
+      1px 1px 0 1px rgba(cyan, 0.5),
+      1px -1px 0 1px rgba(yellow, 0.5),
+      -1px 0px 0 1px rgba(magenta, 0.5);
+  }
+  75% {
+    box-shadow:
+      1px -1px 0 1px rgba(cyan, 0.5),
+      1px 1px 0 1px rgba(yellow, 0.5),
+      inset -1px -1px 0 1px rgba(magenta, 0.5);
+  }
+  100% {
+    box-shadow:
+      -1px -1px 0 1px rgba(cyan, 0.5),
+      inset -1px 1px 0 1px rgba(yellow, 0.5),
+      -1px -1px 0 1px rgba(magenta, 0.5);
+  }
 }

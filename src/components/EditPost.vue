@@ -2,29 +2,43 @@
   <div class="post-edit">
     <div class="post-form">
       <div class="post-text">
-        <p>
-          <input v-model="post.title" @keyup="savePost" type="text">
-        </p>
-        <p class="post-markdown">
-          <textarea v-model="post.markdown" @keyup="savePost" name="" id="" cols="30" rows="10"></textarea>
-        </p>
-        <p>
-          <button @click="publishPost" :disabled="canPublish">Publish</button>
-        </p>
+        <div class="post-title" :class="{hasInput: hasInput}">
+          <input
+            v-model="post.title"
+            @keyup="savePost"
+            type="text"
+            id="post-title"
+            name="post-title"
+          >
+          <label for="">Post title and URL</label>
+        </div>
+        <div class="post-markdown">
+          <textarea
+            id="markdown-editor"
+            name="markdown-editor"
+            v-model="post.markdown"
+            ref="markdownEditor"
+            @keyup="savePost"
+            @scroll="trackScrollposition"
+          ></textarea>
+        </div>
+        <!--<p>
+        </p>-->
       </div>
       <div class="post-images">
         <image-selector></image-selector>
       </div>
       <div class="post-stats">
-        <span v-if="status==0" class="post-status-loading">loading</span>
-        <span v-if="status==1" class="post-status-editing">editing</span>
-        <span v-if="status==2" class="post-status-saved">saved</span>
-        <span v-if="status==3" class="post-status-published">published</span>
-        <span v-if="status==4" class="post-status-error">{{error}}</span>
+        <span v-if="!postLoaded" class="post-status-loading">loading...<span v-if="!connected"> (offline)</span></span>
+        <span v-if="!saved && !published" class="post-status-editing">write that shit<span v-if="!connected"> (offline)</span></span>
+        <span v-if="saved && !published" class="post-status-saved">save<span v-if="!connected"> (offline)</span></span>
+        <span v-if="published" class="post-status-published">published<span v-if="!connected"> (offline)</span></span>
+        <span v-if="error" class="post-status-error">{{error}}<span v-if="!connected"> (offline)</span></span>
+        <button class="publish-button" @click="publishPost" :disabled="!canPublish">Publish</button>
       </div>
     </div>
     <div class="post-preview">
-      <article v-html="compiledContent"></article>
+      <article id="post-preview" ref="previewArticle" v-html="compiledContent"></article>
     </div>
   </div>
 </template>
@@ -37,33 +51,72 @@
   import superagent from 'superagent';
   import router from '@/config/router';
   import ImageSelector from '@/components/ImageSelector';
+  import bus from '@/config/bus';
 
   export default {
     data() {
       return {
         post: new Post(),
-        status: 0,
-        error: '',
+        error: null,
+        cursorPosition: 0,
+        postLoaded: false,
       };
     },
 
     computed: {
+      connected() { return this.$store.state.connection.connected; },
       compiledContent() { return marked(this.post.markdown, {sanitize: true}); },
       saved() {
-        return this.post.lastEdited
-          ? this.post.lastEdited < this.post.lastSaved
-          : !this.post.lastEdited;
+        let test = true;
+
+        // Online
+        if (!this.connected) test = false;
+
+        // lastEdited later than lastSaved
+        if (this.post.lastSaved && this.post.lastEdited > this.post.lastSaved) test = false;
+
+        return test;
       },
       canPublish() {
-        return this.post.lastPublished
-          ? this.post.lastSaved < this.post.lastPublished
-          : !this.post.lastSaved;
+        let test = true;
+        // Online
+        if (!this.connected) test = false;
+        // Save earlier than last publish
+        if (this.post.lastPublished && this.post.lastSaved >= this.post.lastPublished) test = false;
+        // lastEdit later than lastSave
+        if (this.post.lastEdited > this.post.lastSaved) test = false;
+
+        return test;
+      },
+      published() {
+        let test = true;
+        if (!this.connected && this.post.lastEdited > this.post.lastPublished) test = false;
+        if (this.canPublish) test = false;
+        return test;
+      },
+      hasInput() {
+        return this.post.title.length > 0;
       }
     },
 
     methods: {
-      savePost() {
-        this.status = 1;
+      trackScrollposition(event) {
+        const target = event.target;
+        const article = this.$refs.previewArticle;
+        const percent = target.scrollTop / (target.scrollHeight - target.clientHeight);
+        this.$refs.previewArticle.scrollTop = (article.scrollHeight - article.clientHeight) * percent;
+      },
+      insertImage(url) {
+        const image = `\n![alt text](${url} "some alt")\n`;
+        const position = document.getElementById('markdown-editor').selectionStart || 0;
+        this.post.markdown = [
+          this.post.markdown.slice(0, position),
+          image,
+          this.post.markdown.slice(position),
+        ].join('');
+      },
+      savePost(event) {
+        this.trackScrollposition(event);
         this.post.lastEdited = Date.now();
         this.debouncedSave();
       },
@@ -72,14 +125,14 @@
       }, 1000),
       savePostImmediately() {
         this.post.set().then(() => {
-          this.status = 2;
+          if (this.$route.fullPath == '/create') router.replace(`/edit/${this.post.id}`);
         });
       },
       getPost(id) {
         database
           .ref(`/posts/${id}`)
           .once('value', snapshot => {
-            this.status = 2;
+            this.postLoaded = true;
             const post = snapshot.val();
             if (post) this.post = new Post(post);
           });
@@ -88,8 +141,7 @@
         superagent
           .get(`/rebuild/${this.post.id}`)
           .end((err, res) => {
-            if (err) throw err;
-            this.status = 3;
+            if (err) this.error = err;
             this.post.lastPublished = Date.now();
             this.post.published = true;
           });
@@ -102,9 +154,12 @@
       }
     },
 
+    mounted() {
+      bus.$on('insert-image', this.insertImage);
+    },
+
     watch: {
       $route (to, from) {
-        console.log('route change');
         if (to.params.id) {
           this.getPost(to.params.id);
         } else {
@@ -118,7 +173,6 @@
     }
   };
 </script>
-
 
 <style lang="scss" scoped>
   @import 'src/styles/_variables';
@@ -141,7 +195,6 @@
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 0 $golden-em;
 
     > p {
       flex: 0 0 auto;
@@ -186,13 +239,15 @@
   }
 
   .post-stats {
+    position: relative;
     color: white;
-    font-size: 0.85em;
     font-family: $sans-serif;
 
-    span {
+    > span {
+      font-size: 0.85em;
+      line-height: $golden-rem;
       display: block;
-      padding: $golden-em / 4 $golden-em / 2;
+      padding: $golden-rem / 4 $golden-rem / 2;
       
       &.post-status-loading {
         background: grey;
@@ -210,5 +265,42 @@
         background: crimson;
       }
     }
+  }
+
+  .post-title {
+    position: relative;
+
+    input {
+      font-family: $sans-serif;
+      font-weight: bold;
+    }
+
+    label {
+      position: absolute;
+      top: 50%;
+      left: $golden-rem / 2;
+      margin: 0;
+      transform: translate3d(0, -50%, 0);
+      transition: transform 0.2s;
+      opacity: 0.5;
+      font-family: $sans-serif;
+    }
+
+    input:focus ~ label,
+    &.hasInput label {
+      font-size: 11px;
+      transform: translate3d(0, -28px, 0);
+    }
+  }
+
+  .publish-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: $golden-rem / 4 $golden-rem / 2;
+    background: white;
+    color: black;
+    border: none;
+    line-height: $golden-rem;
   }
 </style>

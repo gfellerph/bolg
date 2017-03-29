@@ -9,6 +9,7 @@ app.use(express.static('public', { extensions: ['html']}));
 app.get('/rebuild', (req, res) => {
   bolg
     .rebuildAll()
+    .then(bolg.rebuildIndex)
     .then(() => res.send({message: 'Rebuild complete.'}))
     .catch(err => res.status(500).send(err.stack));
 });
@@ -17,10 +18,15 @@ app.get('/rebuild/:id', (req, res) => {
     ? bolg.rebuildIndex()
     : bolg.rebuild(req.params.id);
   operation
+    .then(bolg.rebuildIndex)
     .then(() => res.send({message: 'Rebuild complete.'}))
     .catch(err => res.status(500).send(err.stack));
 });
 
 app.listen(2222, function () {
-  console.log('express server listening at http://localhost:2222');
+  bolg.rebuildAll()
+    .then(bolg.rebuildIndex)
+    .then(() => {
+      console.log('express server listening at http://localhost:2222');
+    });
 });

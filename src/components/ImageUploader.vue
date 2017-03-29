@@ -1,36 +1,45 @@
 <template>
   <div class="image-upload">
-    <img class="image-upload--preview" :src="image.dataURL">
-    <div class="image-upload--progress" :style="progressStyle" v-if="uid">
-      <img :src="image.dataURL">
+    <img class="image-upload--preview" :src="URL">
+    <div class="image-upload--progress" :style="progressStyle" v-if="progress">
+      <img :src="URL">
     </div>
-    <div @click="removeImage" class="image-upload--remove" v-if="uid"></div>
-    <div @click="insertImage" class="image-upload--insert" v-if="uid"></div>
+    <div class="image-controls" v-if="image.downloadURL">
+      <div @click="removeImage" class="image-upload--remove"></div>
+      <div @click="insertImage" class="image-upload--insert"></div>
+    </div>
   </div>
 </template>
 
 
 <script>
   import cuid from 'cuid';
-  import { storage } from '@/config/firebase';
+  import Image from '@/models/Image';
+  import bus from '@/config/bus';
 
   export default {
     data() {
       return {
         progress: 0,
-        blob: null,
-        uid: cuid(),
-        downloadURL: '',
+        URL: null,
       }
     },
 
     mounted() {
-      this.upload();
+      if (this.image.file) {
+        this.URL = this.image.dataURL();
+        const upload = this.image.put()
+        upload.on('state_changed', this.onUploadProgress);
+        upload.then(snapshot => {
+          this.image.file = null;
+          this.image.downloadURL = snapshot.downloadURL;
+          this.URL = this.image.downloadURL;
+        });
+      }
     },
 
     props: {
-      image: File,
-      index: Number,
+      image: Object,
     },
 
     computed: {
@@ -40,27 +49,14 @@
     },
 
     methods: {
-      upload() {
-        var uploader = storage
-          .ref(`/gallery/${this.uid}`)
-          .put(this.image);
-
-        uploader.on('state_changed', this.onUploadProgress);
-
-        return uploader
-          .then(snapshot => {
-            this.$emit('image-uploaded', snapshot.downloadURL);
-            this.downloadURL = snapshot.downloadURL;
-          });
-      },
       onUploadProgress(snapshot) {
         this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       },
       removeImage() {
-        this.$emit('remove-image', this.index);
+        this.$emit('remove-image', this.image.id);
       },
       insertImage() {
-        this.$emit('insert-image', this.downloadURL);
+        bus.$emit('insert-image', this.image.downloadURL);
       }
     }
   };
@@ -70,15 +66,10 @@
 <style lang="scss" scoped>
   .image-upload {
     position: relative;
-    width: 200px;
-    min-height: 100px;
     background-color: rgba(255, 255, 255, 0.1);
   }
   
   .image-upload--preview {
-    width: 100%;
-    height: 100%;
-    max-width: none;
     filter: grayscale(1);
     object-fit: cover;
   }
@@ -95,39 +86,35 @@
     overflow: hidden;
     img {
       object-fit: cover;
-      width: 200px;
       height: 100%;
       max-width: none;
+    }
+  }
+
+  .image-controls {
+    opacity: 0;
+    transition: opacity 200ms;
+
+    &:hover {
+      opacity: 0.8;
     }
   }
   
   .image-upload--insert {
     position: absolute;
     background: royalblue;
-    mix-blend-mode: multiply;
     top: 0;
     left: 0;
     width: 50%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 200ms;
-    &:hover {
-      opacity: 1;
-    }
   }
 
   .image-upload--remove {
     position: absolute;
     background: crimson;
-    mix-blend-mode: multiply;
     top: 0;
     left: 50%;
     width: 50%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 200ms;
-    &:hover {
-      opacity: 1;
-    }
   }
 </style>

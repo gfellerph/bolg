@@ -1,9 +1,16 @@
-<ul>
-    {{#each posts}}
-    <li>
-        <h2>{{this.title}}</h2>
+{{#extend "layout"}}
+  {{#content "main"}}
+    <ul>
+      {{#each posts}}
+      <li>
+        <h1 class="h4">{{this.title}}</h1>
         <p class="small">{{this.lastPublished}}</p>
         {{{this.description}}}
-    </li>
-    {{/each}}
-</ul>
+        <p>
+          <a href="{{this.url}}" class="button">mehr</a>
+        </p>
+      </li>
+      {{/each}}
+    </ul>
+  {{/content}}
+{{/extend}}
