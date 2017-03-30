@@ -26,15 +26,17 @@
         </p>-->
       </div>
       <div class="post-images">
-        <image-selector></image-selector>
+        <image-selector :post="post"></image-selector>
       </div>
       <div class="post-stats">
-        <span v-if="!postLoaded" class="post-status-loading">loading...<span v-if="!connected"> (offline)</span></span>
-        <span v-if="!saved && !published" class="post-status-editing">write that shit<span v-if="!connected"> (offline)</span></span>
-        <span v-if="saved && !published" class="post-status-saved">save<span v-if="!connected"> (offline)</span></span>
-        <span v-if="published" class="post-status-published">published<span v-if="!connected"> (offline)</span></span>
+        <span v-if="state === states.LOADING" class="post-status-loading">loading...<span v-if="!connected"> (offline)</span></span>
+        <span v-if="state === states.EDITING" class="post-status-editing">write that shit</span>
+        <span v-if="state === states.SAVED" class="post-status-saved">save</span>
+        <span v-if="state === states.PUBLISHED" class="post-status-published">published</span>
+        <span v-if="state === states.EDITING_OFFLINE" class="post-status-editing-offline">editing (offline)</span>
+        <span v-if="state === states.SAVED_OFFLINE" class="post-status-saved-offline">save (offline)</span>
         <span v-if="error" class="post-status-error">{{error}}<span v-if="!connected"> (offline)</span></span>
-        <button class="publish-button" @click="publishPost" :disabled="!canPublish">Publish</button>
+        <button class="publish-button" @click="publishPost" :disabled="state !== states.SAVED">Publish</button>
       </div>
     </div>
     <div class="post-preview">
@@ -52,52 +54,31 @@
   import router from '@/config/router';
   import ImageSelector from '@/components/ImageSelector';
   import bus from '@/config/bus';
+  import PostMixin from '@/mixins/post-mixin';
+  import {states} from '@/config/constants';
 
   export default {
+    mixins: [PostMixin],
+
     data() {
       return {
         post: new Post(),
         error: null,
         cursorPosition: 0,
         postLoaded: false,
+        states,
       };
     },
 
     computed: {
       connected() { return this.$store.state.connection.connected; },
-      compiledContent() { return marked(this.post.markdown, {sanitize: true}); },
-      saved() {
-        let test = true;
-
-        // Online
-        if (!this.connected) test = false;
-
-        // lastEdited later than lastSaved
-        if (!this.post.lastSaved || this.post.lastEdited > this.post.lastSaved) test = false;
-
-        return test;
-      },
+      compiledContent() { return marked(this.post.markdown, {sanitize: true, gfm: true}); },
       canPublish() {
-        let test = true;
-        // Online
-        if (!this.connected) test = false;
-        // Save earlier than last publish
-        if (this.post.lastPublished && this.post.lastSaved >= this.post.lastPublished) test = false;
-        // lastEdit later than lastSave
-        if (this.post.lastEdited > this.post.lastSaved) test = false;
-
-        return test;
-      },
-      published() {
-        let test = true;
-        if (!this.connected && this.post.lastEdited > this.post.lastPublished) test = false;
-        if (this.post.lastEdited > this.post.lastSaved) test = false;
-        if (this.canPublish) test = false;
-        return test;
+        return this.state == 2;
       },
       hasInput() {
         return this.post.title.length > 0;
-      }
+      },
     },
 
     methods: {
@@ -140,13 +121,14 @@
       },
       publishPost() {
         superagent
-          .get(`/rebuild/${this.post.id}`)
+          .get(`http://localhost:2222/rebuild/${this.post.id}`)
           .end((err, res) => {
             if (err) this.error = err;
             this.post.lastPublished = Date.now();
             this.post.published = true;
+            this.post.set();
           });
-      }
+      },
     },
 
     created() {
@@ -210,7 +192,6 @@
   }
 
   .post-images {
-    flex: 0 0 16vh;
     overflow: auto;
   }
 
@@ -264,6 +245,14 @@
       }
       &.post-status-error {
         background: crimson;
+      }
+      &.post-status-editing-offline {
+        background: gold;
+        opacity: 0.8;
+      }
+      &.post-status-saved-offline {
+        background: seagreen;
+        opacity: 0.8;
       }
     }
   }

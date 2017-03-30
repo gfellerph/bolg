@@ -1,11 +1,15 @@
 <template>
   <div class="image-selector" ref="imageSelector">
     <div class="images" :class="{dragover: 'dragover'}">
-      <image-uploader
-        v-for="(image, index) in images"
+      <post-image
+        v-for="image in post.images"
         :image="image"
         :key="image.id"
-        v-on:remove-image="removeImage"
+      ></post-image>
+      <image-uploader
+        v-for="image in imagesForUpload"
+        :image="image"
+        :key="image.id"
       ></image-uploader>
       <div class="image-upload-wrapper">
         <p class="text-align-center">Drop or click for pics</p>
@@ -17,14 +21,20 @@
 
 <script>
   import ImageUploader from '@/components/ImageUploader';
+  import PostImage from '@/components/PostImage';
   import Image from '@/models/Image';
+  import bus from '@/config/bus';
 
   export default {
     data() {
       return {
-        images: [],
+        imagesForUpload: [],
         dragover: false,
       };
+    },
+
+    props: {
+      post: Object,
     },
 
     mounted() {
@@ -38,9 +48,16 @@
       });
     },
 
+    created() {
+      bus.$on('add-image', this.addImage);
+    },
+
+    computed: {
+      mappedImages() { return this.post.images.map(image => new Image(typeof image === 'srting' ? {downloadURL: image} : {file: image})); },
+    },
+
     methods: {
       onDragEnter(event) {
-        if (event.target === document.body) console.log(event);
         if (event.target === event.currentTarget) this.dragover = true;
       },
       onDragLeave(event) {
@@ -50,16 +67,23 @@
         event.preventDefault();
         var images = event.target.files || event.dataTransfer.files;
         for (var i = 0; i < images.length; i++) {
-          this.images.push(new Image({file: images[i]}));
+          this.imagesForUpload.push(new Image({file: images[i]}));
         }
       },
+      addImage(image) {
+        this.imagesForUpload = this.imagesForUpload.filter(img => image.id !== img.id);
+        this.post.images.push(image);
+        this.post.set();
+      },
       removeImage(id) {
-        this.images = this.images.filter(image => image.id !== id);
+        this.post.images = this.images.filter(image => image.id !== id);
+        this.post.set();
       },
     },
 
     components: {
       ImageUploader,
+      PostImage,
     }
   };
 </script>
@@ -116,6 +140,7 @@
     transition: outline 0.3s;
 
     &.dragover {
+      outline-offset: -4px;
       outline-color: slategrey;
     }
   }

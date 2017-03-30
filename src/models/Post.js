@@ -13,6 +13,7 @@ export default function (post = {}) {
   this.author = post.author || auth.currentUser.uid;
   this.published = post.published || false;
   this.markdown = post.markdown || '';
+  this.images = post.images || [];
 
   const ref = database.ref(`/posts/${this.id}`);
 

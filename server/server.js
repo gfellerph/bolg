@@ -7,6 +7,7 @@ app.use(express.static('public', { extensions: ['html']}));
 
 // Listen for rebuild requests
 app.get('/rebuild', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
   bolg
     .rebuildAll()
     .then(bolg.rebuildIndex)
@@ -14,6 +15,7 @@ app.get('/rebuild', (req, res) => {
     .catch(err => res.status(500).send(err.stack));
 });
 app.get('/rebuild/:id', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
   var operation = req.params.id === 'index'
     ? bolg.rebuildIndex()
     : bolg.rebuild(req.params.id);

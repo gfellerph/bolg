@@ -4,16 +4,11 @@
     <div class="image-upload--progress" :style="progressStyle" v-if="progress">
       <img :src="URL">
     </div>
-    <div class="image-controls" v-if="image.downloadURL">
-      <div @click="removeImage" class="image-upload--remove"></div>
-      <div @click="insertImage" class="image-upload--insert"></div>
-    </div>
   </div>
 </template>
 
 
 <script>
-  import cuid from 'cuid';
   import Image from '@/models/Image';
   import bus from '@/config/bus';
 
@@ -25,21 +20,20 @@
       }
     },
 
-    mounted() {
-      if (this.image.file) {
-        this.URL = this.image.dataURL();
-        const upload = this.image.put()
-        upload.on('state_changed', this.onUploadProgress);
-        upload.then(snapshot => {
-          this.image.file = null;
-          this.image.downloadURL = snapshot.downloadURL;
-          this.URL = this.image.downloadURL;
-        });
-      }
-    },
-
     props: {
       image: Object,
+    },
+
+    mounted() {
+      // Upload image if it is a file
+      this.URL = this.image.url();
+      const upload = this.image.put();
+      upload.on('state_changed', this.onUploadProgress);
+      upload.then(snapshot => {
+        this.image.file = null;
+        this.image.downloadURL = snapshot.downloadURL;
+        bus.$emit('add-image', this.image);
+      });
     },
 
     computed: {
@@ -71,7 +65,10 @@
   
   .image-upload--preview {
     filter: grayscale(1);
-    object-fit: cover;
+    // object-fit: cover;
+    display: block;
+    height: 14vh;
+    flex: 1 0 auto;
   }
   
   .image-upload--progress {
@@ -89,32 +86,5 @@
       height: 100%;
       max-width: none;
     }
-  }
-
-  .image-controls {
-    opacity: 0;
-    transition: opacity 200ms;
-
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-  
-  .image-upload--insert {
-    position: absolute;
-    background: royalblue;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-  }
-
-  .image-upload--remove {
-    position: absolute;
-    background: crimson;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
   }
 </style>

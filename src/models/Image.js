@@ -7,13 +7,15 @@ export default function Image(img = {}) {
   this.id = img.id || cuid();
 
   // Methods
-  this.dataURL = function () {
-    if (!this.file) throw new Error('Can\'t create dataURL, no file specified');
-    return window.URL.createObjectURL(this.file);
+  this.url = function () {
+    return this.file 
+      ? window.URL.createObjectURL(this.file)
+      : this.downloadURL || null;
   };
   this.put = function () {
     if (!this.file) throw new Error('Can\'t upload image, no file specified');
-
+    if (this.downloadURL) return new Promise((resolve, reject) => resolve({downloadURL: this.downloadURL}));
+    
     return storage
       .ref(`/gallery/${this.id}`)
       .put(this.file);

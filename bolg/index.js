@@ -3,23 +3,18 @@ const marked = require('marked');
 const hbsTemplates = require('./config/handlebars');
 const webpackManifest = require('../webpack.manifest.json');
 const firebase = require('./config/firebase');
-const mkdirp = require('mkdirp');
 const dirname = require('path').dirname;
 const moment = require('moment');
+const writefile = require('./writefile');
+const renderSass = require('./sass');
 
 // Create "this-is-a-post" from "This is a Post"
 function slugger(str) {
   return str.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
 }
 
-function writefile(filePath, content) {
-  return new Promise(function (resolve, reject) {
-    mkdirp(dirname(filePath), function (err) {
-      if (err) reject(err);
-
-      fs.writeFile(filePath, content, {encoding: 'utf-8'}, resolve);
-    });
-  });
+function logoURL() {
+  return `/img/logo${parseInt(Math.random() * 13)}.png`;
 }
 
 function rebuildIndex() {
@@ -44,6 +39,7 @@ function rebuildIndex() {
           return post;
         });
 
+        
         const filePath = 'public/posts/index.html';
         const html = hbsTemplates.index({
           posts,
@@ -86,6 +82,7 @@ function rebuild(id) {
         const filePath = `public/posts/${slugger(post.title)}.html`;
         const html = hbsTemplates.post({
           markdown: marked(post.markdown, {sanitize: true}),
+          logoURL: logoURL(),
           css: webpackManifest['/app.css']
         });
 
