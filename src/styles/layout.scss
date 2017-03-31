@@ -15,14 +15,6 @@ body,
     flex-direction: column;
 }
 
-.header {
-    padding: $golden-em / 2;
-
-    .logo {
-        height: 2.5rem;
-    }
-}
-
 main {
     flex-grow: 1;
 }

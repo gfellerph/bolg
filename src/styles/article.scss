@@ -1,6 +1,20 @@
 article,
 form {
-    max-width: 34em;
+    max-width: 55vw;
     margin: 0 auto;
     padding: 0 2em;
+}
+
+.posts {
+    padding-left: 0;
+    margin: $golden-em auto;
+    max-width: 45em;
+    column-count: 2;
+    list-style: none;
+
+    li {
+        padding: $golden-rem / 2 0;
+        border-bottom: 1px solid black;
+        page-break-inside: avoid;
+    }
 }

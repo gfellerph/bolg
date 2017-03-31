@@ -3,7 +3,6 @@ const marked = require('marked');
 const hbsTemplates = require('./config/handlebars');
 const webpackManifest = require('../webpack.manifest.json');
 const firebase = require('./config/firebase');
-const dirname = require('path').dirname;
 const moment = require('moment');
 const writefile = require('./writefile');
 const renderSass = require('./sass');
@@ -38,15 +37,22 @@ function rebuildIndex() {
           post.description = marked(post.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ') + '...');
           return post;
         });
+        const filePath = 'public/index.html';
 
+        renderSass()
+          .then(result => {
+            return hbsTemplates.index({
+              posts,
+              logoURL: logoURL(),
+              css: result.webpath
+            });
+          })
+          .then(html => {
+            return writefile(filePath, html);
+          })
+          .then(resolve);
         
-        const filePath = 'public/posts/index.html';
-        const html = hbsTemplates.index({
-          posts,
-          css: webpackManifest['/app.css']
-        });
 
-        writefile(filePath, html).then(resolve);
       });
   });
 }
@@ -78,15 +84,20 @@ function rebuild(id) {
       .once('value', function (snapshot) {
         const post = snapshot.val();
         if (!post) return reject(new Error(`Post with id ${id} not found, can\'t touch this.`));
-
         const filePath = `public/posts/${slugger(post.title)}.html`;
-        const html = hbsTemplates.post({
-          markdown: marked(post.markdown, {sanitize: true}),
-          logoURL: logoURL(),
-          css: webpackManifest['/app.css']
-        });
 
-        writefile(filePath, html).then(resolve);
+        renderSass()
+          .then(result => {
+            return hbsTemplates.post({
+              markdown: marked(post.markdown, {sanitize: true}),
+              logoURL: logoURL(),
+              css: result.webpath,
+            })
+          })
+          .then(html => {
+            return writefile(filePath, html);
+          })
+          .then(resolve);
       })
       .catch(reject);
   });

@@ -76,9 +76,11 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid black;
+    padding: $golden-em / 2;
+    
   }
-
+  
   .logo {
-
+      height: 2.5rem;
   }
 </style>

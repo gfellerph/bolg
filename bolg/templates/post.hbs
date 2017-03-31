@@ -1,3 +1,12 @@
 {{#extend "layout"}}
-  {{#content "main"}}<article>{{{markdown}}}</article>{{/content}}
+  {{#content "navigation"}}
+    <nav>
+        <a href="/"><span>Alle Posts</span></a>
+        <a href="/"><img class="logo" src="{{logoURL}}" alt=""></a>
+        <a href="/info"><span>Info</span></a>
+    </nav>
+  {{/content}}
+  {{#content "main"}}
+    <article>{{{markdown}}}</article>
+  {{/content}}
 {{/extend}}

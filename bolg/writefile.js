@@ -1,7 +1,8 @@
 const mkdirp = require('mkdirp');
 const fs = require('fs');
+const dirname = require('path').dirname;
 
-function writefile(filePath, content) {
+module.exports = function (filePath, content) {
   return new Promise(function (resolve, reject) {
     mkdirp(dirname(filePath), function (err) {
       if (err) reject(err);
