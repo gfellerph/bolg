@@ -6,8 +6,9 @@ node_js:
 - '7'
 before_deploy:
 - npm run build
-- npm run static-pages
 cache: yarn
+before_install:
+  - npm install -g yarn --cache-min 999999999
 install:
 - yarn
 before_script:
