@@ -90,7 +90,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     ]),
     // Export build manifest to get hashed asset names
     new ManifestPlugin({
-      fileName: '../webpack.manifest.json',
+      fileName: '../bolg/config/webpack.manifest.json',
       basePath: '/'
     })
   ]
