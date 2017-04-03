@@ -3,7 +3,7 @@ env:
   matrix:
   - TRAVIS_CI=true
 node_js:
-- '7'
+- '6'
 before_deploy:
 - npm run build
 cache: yarn
