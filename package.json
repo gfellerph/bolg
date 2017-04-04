@@ -6,7 +6,7 @@
   "private": true,
   "main": "server/server.js",
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "npm run build & node ./bin/www",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "static-pages": "node bolg/index.js",
