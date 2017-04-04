@@ -22,8 +22,6 @@
             @scroll="trackScrollposition"
           ></textarea>
         </div>
-        <!--<p>
-        </p>-->
       </div>
       <div class="post-images">
         <image-selector :post="post"></image-selector>
@@ -40,7 +38,9 @@
       </div>
     </div>
     <div class="post-preview">
-      <article id="post-preview" ref="previewArticle" v-html="compiledContent"></article>
+      <article id="post-preview" ref="previewArticle">
+        <div class="container" v-html="compiledContent"></div>
+      </article>
     </div>
   </div>
 </template>
@@ -121,7 +121,7 @@
       },
       publishPost() {
         superagent
-          .get(`http://localhost:2222/rebuild/${this.post.id}`)
+          .get(`/rebuild/${this.post.id}`)
           .end((err, res) => {
             if (err) this.error = err;
             this.post.lastPublished = Date.now();
@@ -188,6 +188,8 @@
     .post-markdown {
       flex: 1 0 auto;
       display: flex;
+      padding-top: $golden-rem / 2;
+      padding-bottom: $golden-rem / 2;
     }
   }
 

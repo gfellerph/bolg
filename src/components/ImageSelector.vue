@@ -1,6 +1,6 @@
 <template>
   <div class="image-selector" ref="imageSelector">
-    <div class="images" :class="{dragover: 'dragover'}">
+    <div class="images" :class="{dragover: dragover}">
       <post-image
         v-for="image in post.images"
         :image="image"
@@ -50,6 +50,7 @@
 
     created() {
       bus.$on('add-image', this.addImage);
+      bus.$on('remove-image', this.removeImage);
     },
 
     computed: {
@@ -76,7 +77,7 @@
         this.post.set();
       },
       removeImage(id) {
-        this.post.images = this.images.filter(image => image.id !== id);
+        this.post.images = this.post.images.filter(image => image.id !== id);
         this.post.set();
       },
     },

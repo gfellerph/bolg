@@ -3,7 +3,7 @@
     <div class="post-list-container">
       <ul class="post-list">
         <li v-for="post in posts" @click="changeCurrentPost(post)" @mouseenter="changeCurrentPost(post)">
-          <post-details :post="post" />
+          <post-details :post="new Post(post)" />
         </li>
       </ul>
     </div>
@@ -23,21 +23,27 @@
     data() {
       return {
         currentPost: null,
+        posts: [],
+        Post,
       };
     },
 
-    firebase: {
-      firebasePosts: database.ref('/posts'),
+    /*firebase: {
+      posts: database.ref('/posts'),
+    },*/
+
+    created() {
+      this.$bindAsArray('posts', database.ref('/posts'));
     },
 
     computed: {
       editURL() { return this.currencPost ? `#edit-post/${this.currentPost.id}` : ''; },
-      posts() { return this.firebasePosts.map(post => new Post(post)); }
+      // posts() { return this.firebasePosts ? this.firebasePosts.map(post => new Post(post)) : []; }
     },
 
     methods: {
       changeCurrentPost(post) {
-        this.currenPost = post;
+        this.currenPost = new Post(post);
       },
     },
 

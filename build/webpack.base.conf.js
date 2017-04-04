@@ -26,10 +26,10 @@ module.exports = {
       'styles': resolve('src/styles'),
     }
   },
-  externals: {
+  /*externals: {
     'firebase': 'firebase',
     'moment': 'moment',
-  },
+  },*/
   module: {
     rules: [
       {

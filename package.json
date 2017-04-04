@@ -38,7 +38,7 @@
     "superagent": "^3.5.2",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0",
-    "vuefire": "^1.4.0",
+    "vuefire": "^1.4.1",
     "vuex": "^2.2.1"
   },
   "devDependencies": {

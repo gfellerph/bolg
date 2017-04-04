@@ -1,3 +1,5 @@
+$heading-margin: $golden-rem 0 $golden-rem / 2 0;
+
 html {
   @include ms-respond(font-size, 1);
 
@@ -15,7 +17,8 @@ body {
   line-height: $golden;
 }
 
-p {
+p,
+dl {
   margin: $golden-rem / 2 auto;
 }
 
@@ -23,40 +26,40 @@ h1,
 .h1 {
   @include ms-respond(font-size, 3);
   @include ms-respond(line-height, 3.2);
-  margin: $golden-rem / 2 0;
+  margin: $heading-margin;
 }
 
 h2,
 .h2 {
   @include ms-respond(font-size, 2.5);
   @include ms-respond(line-height, 2.7);
-  margin: $golden-rem / 2 0;
+  margin: $heading-margin;
 }
 
 h3,
 .h3 {
   @include ms-respond(font-size, 2);
   @include ms-respond(line-height, 2.2);
-  margin: $golden-rem / 2 0;
+  margin: $heading-margin;
 }
 
 h4,
 .h4 {
   @include ms-respond(font-size, 1.5);
   @include ms-respond(line-height, 1.8);
-  margin: $golden-rem / 2 0;
+  margin: $heading-margin;
 }
 
 h5,
 .h5 {
   font-size: inherit;
   line-height: inherit;
-  margin: $golden-rem / 2 0;
+  margin: $heading-margin;
 }
 
 h6,
 .h6 {
-  margin: $golden-rem / 2 0;
+  margin: $heading-margin;
 }
 
 small,

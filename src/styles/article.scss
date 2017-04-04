@@ -1,16 +1,18 @@
-article,
-form {
-    max-width: 55vw;
-    margin: 0 auto;
-    padding: 0 2em;
-}
-
 .posts {
     padding-left: 0;
-    margin: $golden-em auto;
-    max-width: 45em;
-    column-count: 2;
     list-style: none;
+
+    @include min($m) {
+        column-count: 3;
+    }
+
+    @include between($xxs, $m) {
+        column-count: 2;
+    }
+
+    @include max($xxs) {
+        column-count: 1;
+    }
 
     li {
         padding: $golden-rem / 2 0;

@@ -19,16 +19,28 @@ main {
     flex-grow: 1;
 }
 
-.container {
-    margin: 0 auto;
-    @include min($xs) {
-        width: 100%*(9.5/13);
-    }
-    @include max($xs) {
-        width: 100%;
-    }
-}
-
 img {
     max-width: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0 2em;
+    max-width: 28em;
+
+    @include min($l) {
+        width: 60vw;
+    }
+
+    @include between($s, $l) {
+        width: 70vw;
+    }
+
+    @include between($xxs, $s) {
+        width: 80vw;
+    }
+
+    @include max($xxs) {
+        width: none;
+    }
 }

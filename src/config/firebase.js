@@ -3,12 +3,12 @@ import Vue from 'vue';
 import vuefire from 'vuefire';
 
 // Initialize Firebase
-var config = {
-  apiKey: "AIzaSyBi6qxewP2GsezDpNuYqkOJPyfR2GuHTYw",
-  authDomain: "bolg-d1098.firebaseapp.com",
-  databaseURL: "https://bolg-d1098.firebaseio.com",
-  storageBucket: "bolg-d1098.appspot.com",
-  messagingSenderId: "206693873851"
+const config = {
+  apiKey: 'AIzaSyBi6qxewP2GsezDpNuYqkOJPyfR2GuHTYw',
+  authDomain: 'bolg-d1098.firebaseapp.com',
+  databaseURL: 'https://bolg-d1098.firebaseio.com',
+  storageBucket: 'bolg-d1098.appspot.com',
+  messagingSenderId: '206693873851',
 };
 firebase.initializeApp(config);
 
