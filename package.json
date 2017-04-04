@@ -10,7 +10,7 @@
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "static-pages": "node bolg/index.js",
-    "server": "nodemon server/server.js -e js,hbs,scss"
+    "server": "nodemon ./bin/www -e js,hbs,scss"
   },
   "dependencies": {
     "autoprefixer": "^6.7.2",
@@ -79,7 +79,7 @@
   },
   "engines": {
     "node": ">= 7.8.0",
-    "npm": ">= 4.5.0",
+    "npm": ">= 4.0.0",
     "yarn": ">=0.21.3"
   },
   "browserslist": [
