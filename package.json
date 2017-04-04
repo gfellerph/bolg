@@ -6,7 +6,7 @@
   "private": true,
   "main": "server/server.js",
   "scripts": {
-    "start": "npm run build && node ./bin/www",
+    "start": "node ./bin/www",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "static-pages": "node bolg/index.js",
@@ -78,8 +78,8 @@
     "webpack-merge": "^2.6.1"
   },
   "engines": {
-    "node": ">= 6.10.0",
-    "npm": ">= 3.5.3",
+    "node": ">= 7.8.0",
+    "npm": ">= 4.5.0",
     "yarn": ">=0.21.3"
   },
   "browserslist": [
