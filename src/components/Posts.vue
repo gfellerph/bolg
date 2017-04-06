@@ -38,12 +38,11 @@
 
     computed: {
       editURL() { return this.currencPost ? `#edit-post/${this.currentPost.id}` : ''; },
-      // posts() { return this.firebasePosts ? this.firebasePosts.map(post => new Post(post)) : []; }
     },
 
     methods: {
       changeCurrentPost(post) {
-        this.currenPost = new Post(post);
+        this.currentPost = new Post(post);
       },
     },
 
@@ -77,8 +76,6 @@
       & + li {
         border-top: 1px solid black;
       }
-
-
     }
   }
 </style>

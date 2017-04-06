@@ -58,6 +58,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import 'src/styles/variables.scss';
+
   .post-details {
     position: relative;
   }
@@ -68,20 +70,30 @@
 
   .post-infos {
     display: flex;
+    
   }
 
   .short-text,
   .meta-infos {
-    flex: 1 0 50%;
+    flex: 0 1 auto;
   }
 
   .meta-infos {
     text-align: right;
-    color: grey;
 
     dl {
+      color: grey;
       font-size: 0.8em;
       font-family: $sans-serif;
+
+      dt,
+      dd {
+        white-space: nowrap;
+      }
+
+      dt {
+        padding-right: 0.5em;
+      }
     }
   }
 </style>
