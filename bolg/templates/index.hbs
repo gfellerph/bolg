@@ -7,6 +7,7 @@
     </nav>
   {{/content}}
   {{#content "main"}}
+    <div id="map"></div>
     <ul class="posts">
       {{#each posts}}
       <li>
@@ -19,5 +20,11 @@
       </li>
       {{/each}}
     </ul>
+  {{/content}}
+
+  {{#content "scripts"}}
+    <script src="{{webpack.[/vendor.js]}}"></script>
+    <script src="{{webpack.[/map.js]}}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&callback=initMap"></script>
   {{/content}}
 {{/extend}}

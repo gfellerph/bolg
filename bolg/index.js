@@ -4,6 +4,7 @@ const firebase = require('./config/firebase');
 const moment = require('moment');
 const writefile = require('./writefile');
 const renderSass = require('./sass');
+const webpackManifest = require('./config/webpack.manifest.json');
 
 // Create "this-is-a-post" from "This is a Post"
 function slugger(str) {
@@ -43,6 +44,7 @@ function rebuildIndex() {
             posts,
             logoURL: logoURL(),
             css: result.webpath,
+            webpack: webpackManifest,
           }))
           .then(html => writefile(filePath, html))
           .then(resolve);
@@ -68,6 +70,7 @@ function rebuild(id) {
             }),
             logoURL: logoURL(),
             css: result.webpath,
+            webpack: webpackManifest,
           }))
           .then(html => writefile(filePath, html))
           .then(resolve);

@@ -9,7 +9,8 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: './src/main.js',
+    map: './src/map.js',
   },
   output: {
     path: config.build.assetsRoot,
@@ -26,10 +27,10 @@ module.exports = {
       'styles': resolve('src/styles'),
     }
   },
-  /*externals: {
+  externals: {
     'firebase': 'firebase',
     'moment': 'moment',
-  },*/
+  },
   module: {
     rules: [
       {
