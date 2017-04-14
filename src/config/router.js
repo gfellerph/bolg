@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import {auth} from '@/config/firebase';
+import { auth } from '@/config/firebase';
 
 import Posts from '@/components/Posts';
 import EditPost from '@/components/EditPost';
 import Login from '@/components/Login';
+import Map from '@/components/Map';
 
 Vue.use(Router);
 
@@ -41,7 +42,12 @@ const router = new Router({
       meta: {
         requiresAuth: false,
       },
-    }
+    },
+    {
+      path: '/map',
+      name: 'Map',
+      component: Map,
+    },
   ],
 });
 
@@ -53,10 +59,10 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/login',
         query: { redirect: to.fullPath }
-      })
+      });
     }
   }
-  
+
   next();
 });
 

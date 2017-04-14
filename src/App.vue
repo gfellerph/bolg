@@ -4,6 +4,7 @@
       <nav>
         <router-link class="button" to="/">Overview</router-link>
         <router-link class="button" to="/create">Create post</router-link>
+        <router-link class="button" to="/map">Map</router-link>
       </nav>
       <img class="logo" :src="logoURL" alt="">
       <profile></profile>
