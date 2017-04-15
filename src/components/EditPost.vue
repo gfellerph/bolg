@@ -2,25 +2,8 @@
   <div class="post-edit">
     <div class="post-form">
       <div class="post-text">
-        <div class="post-title" :class="{hasInput: hasInput}">
-          <input
-            v-model="post.title"
-            @keyup="savePost"
-            type="text"
-            id="post-title"
-            name="post-title"
-          >
-          <label for="">Post title and URL</label>
-        </div>
         <div class="post-markdown">
-          <textarea
-            id="markdown-editor"
-            name="markdown-editor"
-            v-model="post.markdown"
-            ref="markdownEditor"
-            @keyup="savePost"
-            @scroll="trackScrollposition"
-          ></textarea>
+          <editor :post="post" @scroll="trackScrollposition" @change="savePost"></editor>
         </div>
       </div>
       <div class="post-images">
@@ -33,7 +16,7 @@
         <span v-if="state === states.PUBLISHED" class="post-status-published">published</span>
         <span v-if="state === states.EDITING_OFFLINE" class="post-status-editing-offline">editing (offline)</span>
         <span v-if="state === states.SAVED_OFFLINE" class="post-status-saved-offline">save (offline)</span>
-        <span v-if="error" class="post-status-error">{{error}}<span v-if="!connected"> (offline)</span></span>
+        <span v-if="state === states.ERROR" class="post-status-error">{{error}}<span v-if="!connected"> (offline)</span></span>
         <button class="publish-button" @click="publishPost" :disabled="state !== states.SAVED">Publish</button>
       </div>
     </div>
@@ -56,6 +39,7 @@
   import bus from '@/config/bus';
   import PostMixin from '@/mixins/post-mixin';
   import {states} from '@/config/constants';
+  import Editor from '@/components/editor';
 
   export default {
     mixins: [PostMixin],
@@ -63,7 +47,6 @@
     data() {
       return {
         post: new Post(),
-        error: null,
         cursorPosition: 0,
         postLoaded: false,
         states,
@@ -76,16 +59,18 @@
       canPublish() {
         return this.state == 2;
       },
-      hasInput() {
-        return this.post.title.length > 0;
+      hasTitle() {
+        return !!this.post.title;
       },
+      error() {
+        if (!this.post.title) { return 'This post has no title'; }
+        return false;
+      }
     },
 
     methods: {
-      trackScrollposition(event) {
-        const target = event.target;
+      trackScrollposition(percent) {
         const article = this.$refs.previewArticle;
-        const percent = target.scrollTop / (target.scrollHeight - target.clientHeight);
         this.$refs.previewArticle.scrollTop = (article.scrollHeight - article.clientHeight) * percent;
       },
       insertImage(url) {
@@ -97,8 +82,8 @@
           this.post.markdown.slice(position),
         ].join('');
       },
-      savePost(event) {
-        this.trackScrollposition(event);
+      savePost(markdown) {
+        this.post.markdown = markdown;
         this.post.lastEdited = Date.now();
         this.debouncedSave();
       },
@@ -153,6 +138,7 @@
 
     components: {
       ImageSelector,
+      Editor,
     }
   };
 </script>
@@ -188,8 +174,6 @@
     .post-markdown {
       flex: 1 0 auto;
       display: flex;
-      padding-top: $golden-rem / 2;
-      padding-bottom: $golden-rem / 2;
     }
   }
 
@@ -219,6 +203,25 @@
       left: 0;
       overflow: auto;
       transform: translate3d(0,0,0);
+    }
+  }
+
+  .errors {
+    background: red;
+    color: white;
+    font-family: $sans-serif;
+    padding: $golden-rem / 4 $golden-rem / 2;
+    font-size: 0.65em;
+
+    p {
+      margin: 0.25em 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
