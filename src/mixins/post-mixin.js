@@ -11,6 +11,12 @@ export default {
         return status;
       }
 
+      // Catch post errors
+      if (this.post.title === '') {
+        status = states.ERROR;
+        return status;
+      }
+
       // Post is edited when lastEdited is bigger than lastSaved and lastPublished
       if (this.post.lastEdited && this.post.lastEdited > this.post.lastSaved && this.post.lastEdited > this.post.lastPublished) {
         status = states.EDITING;
