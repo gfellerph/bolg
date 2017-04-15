@@ -37,12 +37,12 @@
     },
 
     computed: {
-      editURL() { return this.currencPost ? `#edit-post/${this.currentPost.id}` : ''; },
+      editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
     },
 
     methods: {
       changeCurrentPost(post) {
-        this.currentPost = new Post(post);
+        // this.currentPost = new Post(post);
       },
     },
 
