@@ -12,7 +12,7 @@ export default function Tipp(tipp = {}) {
   this.location = tipp.location || null;
   this.approved = tipp.approved || false;
 
-  const ref = database.ref('/tipps');
+  const ref = database.ref(`/tipps/${this.id}`);
 
   /**
    * Save a tipp to firebase
@@ -20,4 +20,4 @@ export default function Tipp(tipp = {}) {
   this.set = () => {
     return ref.set(JSON.parse(JSON.stringify(this)));
   };
-};
+}
