@@ -1,11 +1,8 @@
 <template>
 	<div class="map">
 		<div id="map"></div>
-		<ul>
-			<li v-for="tipp in tipps">{{tipp.text}} - {{tipp.user.displayName}}</li>
-		</ul>
 		<div class="popup" v-if="showPopup">
-			<add-tipp :tipp="tipp"></add-tipp>
+			<add-tipp :tipp="newTipp" @tipp-added="resetTipp" @tipp-closed="closeTipp"></add-tipp>
 		</div>
 	</div>
 </template>
@@ -21,7 +18,8 @@
 		data() {
 			return {
 				showPopup: false,
-				tipp: new Tipp(),
+				newTipp: new Tipp(),
+				markers: [],
 			};
 		},
 
@@ -36,14 +34,30 @@
 			});
 
 			map.addListener('click', this.addTipp);
+
+			const tippsRef = database.ref('/tipps')
+			tippsRef.on('child_added', snapshot => {
+				const tipp = snapshot.val();
+				this.markers.push(new google.maps.Marker({
+					position: new google.maps.LatLng(tipp.lat, tipp.lng),
+					map: map,
+					title: `${tipp.user.displayName.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+				}));
+			});
 		},
 
 		methods: {
 			addTipp(event) {
-				this.tipp.lat = event.latLng.lat();
-				this.tipp.lng = event.latLng.lng();
+				this.newTipp.lat = event.latLng.lat();
+				this.newTipp.lng = event.latLng.lng();
 				this.showPopup = true;
-				console.log(event.latLng.lat(), event.latLng.lng());
+			},
+			resetTipp(tipp) {
+				this.newTipp = new Tipp();
+				this.showPopup = false;
+			},
+			closeTipp() {
+				this.showPopup = false;
 			},
 		},
 
@@ -55,6 +69,7 @@
 
 <style lang="scss">
 	.map {
+		position: relative;
 		width: 100%;
 	}
 
