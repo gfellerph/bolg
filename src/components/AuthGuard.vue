@@ -1,7 +1,7 @@
 <template>
   <div class="auth-guard">
     <slot name="auth" v-if="authenticated"></slot>
-    <slot name="no-auth" v-else></slot>
+    <slot name="no-auth" v-if="!authenticated"></slot>
   </div>
 </template>
 
