@@ -11,6 +11,7 @@
 	import Tipp from '@/Models/Tipp';
 	import AddTipp from '@/components/AddTipp';
 	import { database } from '@/config/firebase';
+	import mapStyles from '@/config/map-styles.json';
 
 	let map = null;
 
@@ -31,18 +32,29 @@
 			map = new google.maps.Map(document.getElementById('map'), {
 				zoom: 4,
 				center: new google.maps.LatLng(-34.397, 150.644),
+				styles: mapStyles
 			});
 
 			map.addListener('click', this.addTipp);
 
-			const tippsRef = database.ref('/tipps')
-			tippsRef.on('child_added', snapshot => {
+			database.ref('/tipps').on('child_added', snapshot => {
 				const tipp = snapshot.val();
-				this.markers.push(new google.maps.Marker({
+				const marker = new google.maps.Marker({
 					position: new google.maps.LatLng(tipp.lat, tipp.lng),
 					map: map,
 					title: `${tipp.user.displayName.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
-				}));
+				});
+				const infowindow = new google.maps.InfoWindow({
+					content: `
+						<img src="${tipp.user.photoURL}" alt="${tipp.user.displayName}" />
+						<h5>${tipp.user.displayName}</h5>
+						<p>${tipp.text}</p>
+					`,
+				});
+				marker.addListener('click', () => {
+					infowindow.open(map, marker);
+				});
+				this.markers.push(marker);
 			});
 		},
 
