@@ -98,8 +98,28 @@ function rebuildAll() {
   return Promise.all(blogTasks);
 }
 
+function unPublish(id) {
+  return new Promise((resolve, reject) => {
+    firebase
+      .database()
+      .ref(`/posts/${id}`)
+      .once('value', (snapshot) => {
+        const val = snapshot.val();
+        if (!val) return new Error('This post is deleted or something');
+        const post = new Post(val);
+        const filepath = `public/posts/${slugger(post.title)}.html`;
+        fs.unlink(filepath, (err) => {
+          if (err && err.code === 'ENOENT') return resolve();
+          if (err) reject(err);
+          return resolve();
+        });
+      });
+  });
+}
+
 module.exports = {
   rebuildIndex,
   rebuildAll,
   rebuild,
+  unPublish,
 };
