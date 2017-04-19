@@ -1,4 +1,7 @@
 {{#extend "layout"}}
+  {{#content "styles"}}
+    <link rel="stylesheet" href="{{webpack.[/map.css]}}">
+  {{/content}}
   {{#content "navigation"}}
     <nav>
         <a class="active" href="/"><span>Alle Posts</span></a>
@@ -23,8 +26,14 @@
   {{/content}}
 
   {{#content "scripts"}}
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-storage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/de-ch.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ"></script>
     <script src="{{webpack.[/vendor.js]}}"></script>
     <script src="{{webpack.[/map.js]}}"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&callback=initMap"></script>
   {{/content}}
 {{/extend}}
