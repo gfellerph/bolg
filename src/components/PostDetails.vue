@@ -1,28 +1,23 @@
 <template>
   <div class="post-details">
-    <h1 class="h4">{{post.title}}</h1>
     <div class="post-infos">
+      <h1 class="h4">{{post.title}}</h1>
       <div class="short-text" v-html="shortText"></div>
-      <div class="meta-infos">
-        <dl>
-          <dt>Date: </dt>
-          <dd>{{dateFormat(post.created, 'D. MMM YYYY')}}</dd>
-          <dt>Last update: </dt>
-          <dd>{{dateFormat(post.lastEdited, 'D. MMM YYYY')}}</dd>
-          <dt>State: </dt>
-          <dd>
-            <span v-if="state === states.LOADING">Loading...</span>
-            <span v-if="state === states.EDITING">Editing</span>
-            <span v-if="state === states.SAVED">Save</span>
-            <span v-if="state === states.PUBLISHED">Published</span>
-            <span v-if="state === states.EDITING_OFFLINE">Editing (offline)</span>
-            <span v-if="state === states.SAVED_OFFLINE">Save (offline)</span>
-          </dd>
-        </dl>
-        <p class="text-align-right">
-          <router-link class="button small" :to="editLink">Edit</router-link>
-        </p>
-      </div>
+      <table class="meta-infos">
+        <tr>
+          <th>Gmacht:</th>
+          <td>{{dateFormat(post.created, 'D. MMM YYYY')}}</td>
+        </tr>
+        <tr>
+          <th>Zletscht gschribe:</th>
+          <td>{{dateFormat(post.lastEdited, 'D. MMM YYYY')}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="post-controls">
+      <post-status :post="post"></post-status>
+      <button class="edit-button" @click="deletePost">Lösche</button>
+      <router-link class="button edit-button" :to="editLink">Ändere</router-link>
     </div>
   </div>
 </template>
@@ -30,6 +25,7 @@
 <script>
   import dateFormat from '@/filters/date-format';
   import PostMixin from '@/mixins/post-mixin';
+  import PostStatus from '@/components/PostStatus';
   import {states} from '@/config/constants';
   import marked from 'marked';
 

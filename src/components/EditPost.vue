@@ -10,13 +10,8 @@
         <image-selector :post="post"></image-selector>
       </div>
       <div class="post-stats">
-        <span v-if="state === states.LOADING" class="post-status-loading">loading...<span v-if="!connected"> (offline)</span></span>
-        <span v-if="state === states.EDITING" class="post-status-editing">write that shit</span>
-        <span v-if="state === states.SAVED" class="post-status-saved">save</span>
-        <span v-if="state === states.PUBLISHED" class="post-status-published">published</span>
-        <span v-if="state === states.EDITING_OFFLINE" class="post-status-editing-offline">editing (offline)</span>
-        <span v-if="state === states.SAVED_OFFLINE" class="post-status-saved-offline">save (offline)</span>
-        <span v-if="state === states.ERROR" class="post-status-error">{{error}}<span v-if="!connected"> (offline)</span></span>
+        <post-status :post="post"></post-status>
+        <button class="unpublish-button" @click="unpublishPost" :disabled="state === states.LOADING || !post.lastPublished">Unpublish</button>
         <button class="publish-button" @click="publishPost" :disabled="state !== states.SAVED">Publish</button>
       </div>
     </div>
@@ -33,13 +28,13 @@
   import debounce from 'debounce';
   import Post from '@/models/Post';
   import {database} from '@/config/firebase';
-  import superagent from 'superagent';
   import router from '@/config/router';
   import ImageSelector from '@/components/ImageSelector';
   import bus from '@/config/bus';
   import PostMixin from '@/mixins/post-mixin';
   import {states} from '@/config/constants';
   import Editor from '@/components/editor';
+  import PostStatus from '@/components/PostStatus';
 
   export default {
     mixins: [PostMixin],
@@ -56,12 +51,8 @@
     computed: {
       connected() { return this.$store.state.connection.connected; },
       compiledContent() { return marked(this.post.markdown, {sanitize: true, gfm: true}); },
-      canPublish() {
-        return this.state == 2;
-      },
-      hasTitle() {
-        return !!this.post.title;
-      },
+      canPublish() { return this.state === states.SAVED; },
+      hasTitle() { return !!this.post.title; },
       error() {
         if (!this.post.title) { return 'This post has no title'; }
         return false;
@@ -105,15 +96,23 @@
           });
       },
       publishPost() {
-        superagent
-          .get(`/rebuild/${this.post.id}`)
-          .end((err, res) => {
-            if (err) this.error = err;
-            this.post.lastPublished = Date.now();
-            this.post.published = true;
-            this.post.set();
+        this.post.publish()
+          .then(() => {
+            this.error = false;
+          })
+          .catch(err => {
+            this.error = err.message;
           });
       },
+      unpublishPost() {
+        this.post.unpublish()
+          .then(() => {
+            this.error = false;
+          })
+          .catch(err => {
+            this.error = err.message;
+          });
+      }
     },
 
     created() {
@@ -139,6 +138,7 @@
     components: {
       ImageSelector,
       Editor,
+      PostStatus,
     }
   };
 </script>
@@ -226,39 +226,11 @@
   }
 
   .post-stats {
+    display: flex;
     position: relative;
-    color: white;
-    font-family: $sans-serif;
 
-    > span {
-      font-size: 0.85em;
-      line-height: $golden-rem;
-      display: block;
-      padding: $golden-rem / 4 $golden-rem / 2;
-      
-      &.post-status-loading {
-        background: grey;
-      }
-      &.post-status-editing {
-        background: gold;
-      }
-      &.post-status-saved {
-        background: seagreen;
-      }
-      &.post-status-published {
-        background: royalblue;
-      }
-      &.post-status-error {
-        background: crimson;
-      }
-      &.post-status-editing-offline {
-        background: gold;
-        opacity: 0.8;
-      }
-      &.post-status-saved-offline {
-        background: seagreen;
-        opacity: 0.8;
-      }
+    .post-status {
+      flex: 1 0 auto;
     }
   }
 
@@ -288,14 +260,14 @@
     }
   }
 
-  .publish-button {
-    position: absolute;
-    right: 0;
-    bottom: 0;
+  .publish-button,
+  .unpublish-button {
     padding: $golden-rem / 4 $golden-rem / 2;
     background: white;
     color: black;
     border: none;
+    border-left: 1px solid black;
     line-height: $golden-rem;
+    margin: 0;
   }
 </style>
