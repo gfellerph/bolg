@@ -71,10 +71,11 @@
     padding: 0;
 
     li {
-      padding: $golden-em / 2;
-      
+      padding: 0;
+
       & + li {
-        border-top: 1px solid black;
+        border-top: none;
+        border-bottom: 1px solid black;
       }
     }
   }
