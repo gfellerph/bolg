@@ -30,6 +30,7 @@ module.exports = {
     proxyTable: {
       '/img': {target: 'http://localhost:3000', secure: false, },
       '/rebuild': {target: 'http://localhost:3000', secure: false},
+      '/unpublish': {target: 'http://localhost:3000', secure: false}
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
