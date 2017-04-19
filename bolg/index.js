@@ -5,6 +5,7 @@ const moment = require('moment');
 const writefile = require('./writefile');
 const renderSass = require('./sass');
 const Post = require('./models/Post');
+const fs = require('fs');
 const webpackManifest = require('./config/webpack.manifest.json');
 
 // Create "this-is-a-post" from "This is a Post"
@@ -13,20 +14,19 @@ function slugger(str) {
 }
 
 function logoURL() {
-  return `/img/logo${parseInt(Math.random() * 13, 10)}.png`;
+  return `/img/bisnaer${parseInt(Math.random() * 31, 10)}.png`;
 }
 
 function rebuildIndex() {
   return new Promise((resolve, reject) => {
     firebase
       .database()
-      .ref('/posts')
+      .ref('/published')
       .once('value', (snapshot) => {
         const val = snapshot.val();
         const filePath = 'public/index.html';
+        if (!val) return resolve(new Error('There are no posts to build an overview with.'));
         let posts = Object.keys(val).map(post => new Post(val[post]));
-
-        if (posts.length === 0) return reject(new Error('There are no posts to build an overview with.'));
 
         // Post transforms
         posts = posts.map((post) => {
@@ -58,7 +58,7 @@ function rebuild(id) {
   return new Promise((resolve, reject) => {
     firebase
       .database()
-      .ref(`/posts/${id}`)
+      .ref(`/published/${id}`)
       .once('value', (snapshot) => {
         const post = new Post(snapshot.val());
         if (!post) return reject(new Error(`Post with id ${id} not found, can't touch this.`));
@@ -85,9 +85,10 @@ function rebuildAll() {
 
   firebase
   .database()
-  .ref('/posts')
+  .ref('/published')
   .once('value', (snapshot) => {
     const val = snapshot.val();
+    if (!val) return new Error('There are no posts to build');
     const posts = Object.keys(val);
 
     for (let i = 0; i < posts.length; i += 1) {
