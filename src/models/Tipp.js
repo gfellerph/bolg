@@ -3,7 +3,6 @@ import User from '@/models/User';
 import { database } from '@/config/firebase';
 
 export default function Tipp(tipp = {}) {
-
   // Properties
   this.id = tipp.id || cuid();
   this.created = tipp.created || Date.now();
@@ -15,9 +14,14 @@ export default function Tipp(tipp = {}) {
   const ref = database.ref(`/tipps/${this.id}`);
 
   /**
-   * Save a tipp to firebase
+   * Normalize the post object, no functions, ready for setting to firebase
+   * @returns {Object} Clean post object without functions
    */
-  this.set = () => {
-    return ref.set(JSON.parse(JSON.stringify(this)));
-  };
+  this.normalize = () => JSON.parse(JSON.stringify(this));
+
+  /**
+   * Save a tipp to firebase
+   * @returns {Promise} Firebase promise
+   */
+  this.set = () => ref.set(this.normalize());
 }
