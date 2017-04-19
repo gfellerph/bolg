@@ -11,6 +11,7 @@
           <label for="password">Password</label>
           <input id="password" v-model="password" type="password">
         </p>
+        <p v-if="error">{{error}}</p>
         <p><button @click="login">Login</button></p>
       </form>
     </auth-guard>
@@ -29,6 +30,8 @@
       return {
         email: '',
         password: '',
+        error: false,
+        loading: false,
       };
     },
 
@@ -46,7 +49,16 @@
 
     methods: {
       login() {
-        new User().login(this.email, this.password);
+        this.loading = true;
+        new User().login(this.email, this.password)
+          .then(() => {
+            this.loading = false;
+            this.error = false;
+          })
+          .catch(err => {
+            this.loading = false;
+            this.error = err.message;
+          });
       },
     },
 
