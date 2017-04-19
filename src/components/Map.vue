@@ -1,8 +1,8 @@
 <template>
 	<div class="map">
-		<div id="map"></div>
+		<div id="google-map"></div>
 		<div class="popup" v-if="showPopup">
-			<add-tipp :tipp="newTipp" @tipp-added="resetTipp" @tipp-closed="closeTipp"></add-tipp>
+			<add-tipp :lat="lat" :lng="lng" @tipp-added="resetTipp" @tipp-closed="closeTipp"></add-tipp>
 		</div>
 	</div>
 </template>
@@ -19,20 +19,19 @@
 		data() {
 			return {
 				showPopup: false,
-				newTipp: new Tipp(),
+				lat: 0,
+				lng: 0,
 				markers: [],
 			};
 		},
 
-		firebase: {
-			tipps: database.ref('/tipps'),
-		},
-
 		mounted() {
-			map = new google.maps.Map(document.getElementById('map'), {
-				zoom: 4,
-				center: new google.maps.LatLng(-34.397, 150.644),
-				styles: mapStyles
+			map = new google.maps.Map(document.getElementById('google-map'), {
+				zoom: 2,
+				center: new google.maps.LatLng(27, 6),
+				styles: mapStyles,
+				streetViewControl: false,
+				scrollwheel: false,
 			});
 
 			map.addListener('click', this.addTipp);
@@ -60,12 +59,11 @@
 
 		methods: {
 			addTipp(event) {
-				this.newTipp.lat = event.latLng.lat();
-				this.newTipp.lng = event.latLng.lng();
+				this.lat = event.latLng.lat();
+				this.lng = event.latLng.lng();
 				this.showPopup = true;
 			},
 			resetTipp(tipp) {
-				this.newTipp = new Tipp();
 				this.showPopup = false;
 			},
 			closeTipp() {
@@ -85,7 +83,7 @@
 		width: 100%;
 	}
 
-	#map {
+	#google-map {
 		height: calc(80vh - 80px);
 		width: 100%;
 
