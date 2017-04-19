@@ -1,23 +1,20 @@
 <template>
   <div class="add-tipp" @click="closeOverlay">
-    <auth-guard>
-      <google-login slot="no-auth"></google-login>
-      <form class="tipp-form" slot="auth" @click.stop>
-        <img class="user-image" :src="user.photoURL" alt="">
-        <div>
-          <h2 class="h5">{{user.displayName}}'s tipp für {{country}}:</h2>
-          <textarea
-            name="add-tipp"
-            id="add-tipp"
-            v-model="tipp.text"
-          ></textarea>
-          <p class="error" v-if="error">{{error}}</p>
-          <p class="text-align-right">
-            <button @click="saveTipp" :disabled="loading">Senden</button>
-          </p>
-        </div>
-      </form>
-    </auth-guard>
+    <form class="tipp-form" @click.stop>
+      <img class="user-image" :src="user.photoURL" alt="">
+      <div>
+        <h2 class="h5">{{user.displayName}}'s Tipp für {{country}}:</h2>
+        <textarea
+          name="add-tipp"
+          id="add-tipp"
+          v-model="tipp.text"
+        ></textarea>
+        <p class="error" v-if="error">{{error}}</p>
+        <p class="text-align-right">
+          <button @click="saveTipp" :disabled="loading">Senden</button>
+        </p>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -33,11 +30,14 @@
         loading: false,
         error: false,
         country: '',
+        tipp: new Tipp(),
       };
     },
 
     props: {
-      tipp: Object,
+      // tipp: Object,
+      lat: Number,
+      lng: Number,
     },
 
     computed: {
@@ -51,10 +51,13 @@
         this.error = false;
         this.loading = true;
         this.tipp.user = this.user;
+        this.tipp.lat = this.lat;
+        this.tipp.lng = this.lng;
 
         this.tipp.set().then(() => {
           this.loading = false;
           this.$emit('tipp-added', this.tipp);
+          this.tipp = new Tipp();
         })
         .catch(err => {
           this.loading = false;
@@ -67,10 +70,10 @@
     },
 
     created() {
-      reverseGeocode(this.tipp.lat, this.tipp.lng)
+      reverseGeocode(this.lat, this.lng)
         .then(res => {
           if (res.data.results < 1) {
-            this.country = '... isch das überhoupt es Land?';
+            this.country = 'di witi See';
           } else {
             this.country = res.data.results[0].address_components.filter(component => {
               return component.types.indexOf('country') >= 0;
