@@ -49,7 +49,16 @@
 
     methods: {
       dateFormat,
-    }
+      deletePost() {
+        if (confirm('wosch würk dä Post lösche?')) {
+          this.post.remove();
+        }
+      },
+    },
+
+    components: {
+      PostStatus,
+    },
   };
 </script>
 
@@ -65,8 +74,7 @@
   }
 
   .post-infos {
-    display: flex;
-    
+    padding: $golden-rem;
   }
 
   .short-text,
@@ -75,21 +83,31 @@
   }
 
   .meta-infos {
-    text-align: right;
+    font-family: $sans-serif;
+    color: grey;
+    font-size: 0.75em;
 
-    dl {
-      color: grey;
-      font-size: 0.8em;
-      font-family: $sans-serif;
-
-      dt,
-      dd {
-        white-space: nowrap;
-      }
-
-      dt {
-        padding-right: 0.5em;
-      }
+    th {
+      font-weight: normal;
     }
+  }
+
+  .post-controls {
+    display: flex;
+    border-top: 1px solid black;
+
+    .post-status {
+      flex: 1 0 auto;
+    }
+  }
+
+  .edit-button {
+    padding: $golden-rem / 4 $golden-rem / 2;
+    background: white;
+    color: black;
+    border: none;
+    border-left: 1px solid black;
+    line-height: $golden-rem;
+    margin: 0;
   }
 </style>
