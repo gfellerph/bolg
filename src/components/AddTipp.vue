@@ -3,7 +3,10 @@
     <form class="tipp-form" @click.stop>
       <img class="user-image" :src="user.photoURL" alt="">
       <div>
-        <h2 class="h5">{{user.displayName}}'s Tipp für {{country}}:</h2>
+        <h2 class="h5">
+          <input type="text" v-model="username">
+          <span>'s Tipp für {{country}}:</span>
+        </h2>
         <textarea
           name="add-tipp"
           id="add-tipp"
@@ -30,12 +33,12 @@
         loading: false,
         error: false,
         country: '',
+        username: '',
         tipp: new Tipp(),
       };
     },
 
     props: {
-      // tipp: Object,
       lat: Number,
       lng: Number,
     },
@@ -50,7 +53,7 @@
 
         this.error = false;
         this.loading = true;
-        this.tipp.user = this.user;
+        this.tipp.username = this.username;
         this.tipp.lat = this.lat;
         this.tipp.lng = this.lng;
 
