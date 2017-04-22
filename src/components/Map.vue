@@ -12,6 +12,7 @@
 	import AddTipp from '@/components/AddTipp';
 	import { database } from '@/config/firebase';
 	import mapStyles from '@/config/map-styles.json';
+	import { reverseGeocode } from '@/config/constants';
 
 	let map = null;
 
@@ -45,7 +46,6 @@
 				});
 				const infowindow = new google.maps.InfoWindow({
 					content: `
-						<img src="${tipp.user.photoURL}" alt="${tipp.user.displayName}" />
 						<h5>${tipp.user.displayName}</h5>
 						<p>${tipp.text}</p>
 					`,
@@ -61,7 +61,20 @@
 			addTipp(event) {
 				this.lat = event.latLng.lat();
 				this.lng = event.latLng.lng();
-				this.showPopup = true;
+				reverseGeocode(this.lat, this.lng)
+					.then(res => {
+						this.showPopup = true;
+						if (res.data.results < 1) {
+							this.country = 'di witi See';
+						} else {
+							this.country = res.data.results[0].address_components.filter(component => {
+								return component.types.indexOf('country') >= 0;
+							})[0].long_name;
+						}
+					})
+					.catch(err => {
+						throw err;
+					});
 			},
 			resetTipp(tipp) {
 				this.showPopup = false;

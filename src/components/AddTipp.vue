@@ -4,7 +4,7 @@
       <img class="user-image" :src="user.photoURL" alt="">
       <div>
         <h2 class="h5">
-          <input type="text" v-model="username">
+          <input class="username" type="text" v-model="username">
           <span>'s Tipp für {{country}}:</span>
         </h2>
         <textarea
@@ -25,7 +25,6 @@
   import Tipp from '@/Models/Tipp';
   import AuthGuard from '@/components/AuthGuard';
   import GoogleLogin from '@/components/GoogleLogin';
-  import { reverseGeocode } from '@/config/constants';
 
   export default {
     data() {
@@ -70,22 +69,6 @@
       closeOverlay() {
         this.$emit('tipp-closed');
       },
-    },
-
-    created() {
-      reverseGeocode(this.lat, this.lng)
-        .then(res => {
-          if (res.data.results < 1) {
-            this.country = 'di witi See';
-          } else {
-            this.country = res.data.results[0].address_components.filter(component => {
-              return component.types.indexOf('country') >= 0;
-            })[0].long_name;
-          }
-        })
-        .catch(err => {
-          throw err;
-        });
     },
 
     components: {
