@@ -15,6 +15,7 @@ html {
 body {
   @include ms-respond(font-size, 1);
   line-height: $golden;
+  font-family: $serif;
 }
 
 p,

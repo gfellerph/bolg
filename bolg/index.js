@@ -5,13 +5,9 @@ const moment = require('moment');
 const writefile = require('./writefile');
 const Post = require('./models/Post');
 const fs = require('fs');
+const slugger = require('./helpers').slugger;
 const webpackManifest = require('./config/webpack.manifest.json');
 const renderSass = () => Promise.resolve();
-
-// Create "this-is-a-post" from "This is a Post"
-function slugger(str) {
-  return str.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
-}
 
 function logoURL() {
   return `/img/bisnaer${parseInt(Math.random() * 31, 10)}.png`;
@@ -29,16 +25,7 @@ function rebuildIndex() {
         let posts = Object.keys(val).map(post => new Post(val[post]));
 
         // Post transforms
-        posts = posts.map((post) => {
-          const p = post;
-          p.url = `/posts/${slugger(post.title)}`;
-          p.created = moment(post.created).format('DD.MM.YYYY');
-          p.lastEdited = moment(post.lastEdited).format('DD.MM.YYYY');
-          p.lastSaved = moment(post.lastSaved).format('DD.MM.YYYY');
-          p.lastPublished = moment(post.lastPublished).format('DD.MM.YYYY');
-          p.description = marked(`${post.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`);
-          return p;
-        });
+        posts = posts.map(post => post.beautify());
 
         return renderSass()
           .then(result => hbsTemplates.index({
@@ -66,7 +53,7 @@ function rebuild(id) {
         return renderSass()
           .then(result => hbsTemplates.post({
             markdown: marked(post.markdown, {
-              sanitize: true,
+              sanitize: false,
             }),
             logoURL: logoURL(),
             webpack: webpackManifest,

@@ -50,7 +50,7 @@
 
     computed: {
       connected() { return this.$store.state.connection.connected; },
-      compiledContent() { return marked(this.post.markdown, {sanitize: true, gfm: true}); },
+      compiledContent() { return marked(this.post.markdown, {sanitize: false, gfm: true}); },
       canPublish() { return this.state === states.SAVED; },
       hasTitle() { return !!this.post.title; },
       error() {
