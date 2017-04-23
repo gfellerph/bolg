@@ -3,10 +3,10 @@ const hbsTemplates = require('./config/handlebars');
 const firebase = require('./config/firebase');
 const moment = require('moment');
 const writefile = require('./writefile');
-const renderSass = require('./sass');
 const Post = require('./models/Post');
 const fs = require('fs');
 const webpackManifest = require('./config/webpack.manifest.json');
+const renderSass = () => Promise.resolve();
 
 // Create "this-is-a-post" from "This is a Post"
 function slugger(str) {
@@ -44,7 +44,6 @@ function rebuildIndex() {
           .then(result => hbsTemplates.index({
             posts,
             logoURL: logoURL(),
-            css: result.webpath,
             webpack: webpackManifest,
           }))
           .then(html => writefile(filePath, html))
@@ -70,7 +69,6 @@ function rebuild(id) {
               sanitize: true,
             }),
             logoURL: logoURL(),
-            css: result.webpath,
             webpack: webpackManifest,
           }))
           .then(html => writefile(filePath, html))
