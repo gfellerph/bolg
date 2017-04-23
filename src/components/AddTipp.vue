@@ -1,11 +1,11 @@
 <template>
-  <div class="add-tipp" @click="closeOverlay">
-    <form class="tipp-form" @click.stop>
-      <img class="user-image" :src="user.photoURL" alt="">
-      <div>
+  <div class="add-tipp" @click="closeOverlay" @keydown.esc="closeOverlay">
+    <div class="tipp-wrapper">
+      <div class="yellow"></div>
+      <form class="tipp-form box" @click.stop>
         <h2 class="h5">
-          <input class="username" type="text" v-model="username">
-          <span>'s Tipp für {{country}}:</span>
+          <input id="username" class="username" type="text" v-model="username" placeholder="Housi">
+          <span>Tipp für {{country}}:</span>
         </h2>
         <textarea
           name="add-tipp"
@@ -14,10 +14,11 @@
         ></textarea>
         <p class="error" v-if="error">{{error}}</p>
         <p class="text-align-right">
+          <button @click="closeOverlay">Abbrechen</button>
           <button @click="saveTipp" :disabled="loading">Senden</button>
         </p>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -31,7 +32,6 @@
       return {
         loading: false,
         error: false,
-        country: '',
         username: '',
         tipp: new Tipp(),
       };
@@ -40,6 +40,7 @@
     props: {
       lat: Number,
       lng: Number,
+      country: String,
     },
 
     computed: {
@@ -58,8 +59,8 @@
 
         this.tipp.set().then(() => {
           this.loading = false;
-          this.$emit('tipp-added', this.tipp);
           this.tipp = new Tipp();
+          this.closeOverlay();
         })
         .catch(err => {
           this.loading = false;
@@ -69,6 +70,10 @@
       closeOverlay() {
         this.$emit('tipp-closed');
       },
+    },
+
+    mounted() {
+      document.getElementById('username').focus();
     },
 
     components: {
@@ -94,9 +99,52 @@
     align-items: center;
   }
 
+  .tipp-wrapper {
+    position: relative;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+    }
+
+    &:before {
+      top: -5px;
+      right: -6px;
+      bottom: -2px;
+      left: -4px;
+      opacity: 0.4;
+      background-color: cyan;
+      transform: rotate(0.5deg);
+    }
+
+    &:after {
+      top: -2px;
+      right: -2px;
+      bottom: -4px;
+      left: -5px;
+      opacity: 0.4;
+      background-color: magenta;
+      transform: rotate(-0.75deg);
+    }
+
+    .yellow {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      bottom: -5px;
+      left: -2px;
+      background: yellow;
+    }
+  }
+
   .tipp-form {
-    display: flex;
+    position: relative;
     background: white;
+    background: white;
+    padding: $golden-rem;
+    z-index: 1;
+    font-family: $sans-serif;
     
     @include max($xs) {
       max-width: 90vw;
@@ -106,16 +154,19 @@
       max-width: 60vw;
     }
 
-    img {
-      width: 80px;
-      height: 80px;
-      margin-right: 2rem;
+    input {
+      display: inline;
+      width: 50%;
+      padding: $golden-rem / 4 0;
     }
 
     textarea {
       font-family: inherit;
+      font-size: inherit;
       width: 100%;
       height: 20vh;
+      border: 1px solid black;
+      padding: $golden-rem / 2;
     }
   }
 </style>
