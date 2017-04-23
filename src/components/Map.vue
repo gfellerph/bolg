@@ -2,7 +2,12 @@
 	<div class="map">
 		<div id="google-map"></div>
 		<div class="popup" v-if="showPopup">
-			<add-tipp :lat="lat" :lng="lng" @tipp-added="resetTipp" @tipp-closed="closeTipp"></add-tipp>
+			<add-tipp
+				:lat="lat"
+				:lng="lng"
+				:country="country"
+				@tipp-added="resetTipp"
+				@tipp-closed="closeTipp"></add-tipp>
 		</div>
 	</div>
 </template>
@@ -22,6 +27,7 @@
 				showPopup: false,
 				lat: 0,
 				lng: 0,
+				country: '',
 				markers: [],
 			};
 		},
@@ -32,7 +38,7 @@
 				center: new google.maps.LatLng(27, 6),
 				styles: mapStyles,
 				streetViewControl: false,
-				scrollwheel: false,
+				// scrollwheel: false,
 			});
 
 			map.addListener('click', this.addTipp);
@@ -42,11 +48,11 @@
 				const marker = new google.maps.Marker({
 					position: new google.maps.LatLng(tipp.lat, tipp.lng),
 					map: map,
-					title: `${tipp.user.displayName.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+					title: `${tipp.username.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
 				});
 				const infowindow = new google.maps.InfoWindow({
 					content: `
-						<h5>${tipp.user.displayName}</h5>
+						<h5>${tipp.username}</h5>
 						<p>${tipp.text}</p>
 					`,
 				});
