@@ -1,4 +1,5 @@
 const cuid = require('cuid');
+const moment = require('moment');
 const database = require('../config/firebase').database();
 
 function Post(post = {}) {
@@ -27,6 +28,17 @@ function Post(post = {}) {
     return ref.set(JSON.parse(JSON.stringify(this))).then(snapshot => {
       return snapshot;
     });
+  };
+
+  this.beautify = () => {
+    const p = this;
+    p.url = `/posts/${slugger(post.title)}`;
+    p.created = moment(post.created).format('DD.MM.YYYY');
+    p.lastEdited = moment(post.lastEdited).format('DD.MM.YYYY');
+    p.lastSaved = moment(post.lastSaved).format('DD.MM.YYYY');
+    p.lastPublished = moment(post.lastPublished).format('DD.MM.YYYY');
+    p.description = marked(`${post.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`);
+    return p;
   };
 
   // Getter / Setter properties

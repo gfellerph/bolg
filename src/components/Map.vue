@@ -2,7 +2,12 @@
 	<div class="map">
 		<div id="google-map"></div>
 		<div class="popup" v-if="showPopup">
-			<add-tipp :lat="lat" :lng="lng" @tipp-added="resetTipp" @tipp-closed="closeTipp"></add-tipp>
+			<add-tipp
+				:lat="lat"
+				:lng="lng"
+				:country="country"
+				@tipp-added="resetTipp"
+				@tipp-closed="closeTipp"></add-tipp>
 		</div>
 	</div>
 </template>
@@ -12,6 +17,7 @@
 	import AddTipp from '@/components/AddTipp';
 	import { database } from '@/config/firebase';
 	import mapStyles from '@/config/map-styles.json';
+	import { reverseGeocode } from '@/config/constants';
 
 	let map = null;
 
@@ -21,6 +27,7 @@
 				showPopup: false,
 				lat: 0,
 				lng: 0,
+				country: '',
 				markers: [],
 			};
 		},
@@ -42,12 +49,11 @@
 				const marker = new google.maps.Marker({
 					position: new google.maps.LatLng(tipp.lat, tipp.lng),
 					map: map,
-					title: `${tipp.user.displayName.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+					title: `${tipp.username.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
 				});
 				const infowindow = new google.maps.InfoWindow({
 					content: `
-						<img src="${tipp.user.photoURL}" alt="${tipp.user.displayName}" />
-						<h5>${tipp.user.displayName}</h5>
+						<h5>${tipp.username}</h5>
 						<p>${tipp.text}</p>
 					`,
 				});
@@ -62,7 +68,20 @@
 			addTipp(event) {
 				this.lat = event.latLng.lat();
 				this.lng = event.latLng.lng();
-				this.showPopup = true;
+				reverseGeocode(this.lat, this.lng)
+					.then(res => {
+						this.showPopup = true;
+						if (res.data.results < 1) {
+							this.country = 'di witi See';
+						} else {
+							this.country = res.data.results[0].address_components.filter(component => {
+								return component.types.indexOf('country') >= 0;
+							})[0].long_name;
+						}
+					})
+					.catch(err => {
+						throw err;
+					});
 			},
 			resetTipp(tipp) {
 				this.showPopup = false;
