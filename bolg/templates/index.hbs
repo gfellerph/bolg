@@ -4,25 +4,27 @@
   {{/content}}
   {{#content "navigation"}}
     <nav>
-        <a class="active" href="/"><span>Alle Posts</span></a>
+        <a class="active" href="/"><span>Aui</span></a>
         <a href="/"><img class="logo" src="{{logoURL}}" alt=""></a>
-        <a href="/info"><span>Info</span></a>
+        <a href="/info"><span>Mir</span></a>
     </nav>
   {{/content}}
   {{#content "main"}}
     <div id="map"></div>
-    <ul class="posts">
-      {{#each posts}}
-      <li>
-        <h1 class="h4">{{this.title}}</h1>
-        <p class="small">{{this.lastPublished}}</p>
-        {{{this.description}}}
-        <p>
-          <a href="{{this.url}}" class="button small">mehr</a>
-        </p>
-      </li>
-      {{/each}}
-    </ul>
+    <div class="container">
+      <ul class="posts timeline">
+        {{#each posts}}
+        <li>
+          <h1 class="h4">{{this.title}}</h1>
+          <p class="post-published">{{this.created}}</p>
+          {{{this.description}}}
+          <p>
+            <a href="{{this.url}}" class="button small">mehr</a>
+          </p>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
   {{/content}}
 
   {{#content "scripts"}}
