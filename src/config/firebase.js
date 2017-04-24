@@ -10,13 +10,14 @@ const config = {
   storageBucket: 'bolg-d1098.appspot.com',
   messagingSenderId: '206693873851',
 };
-firebase.initializeApp(config);
+
+if (firebase.apps.length === 0) firebase.initializeApp(config);
 
 Vue.use(vuefire);
 
 export default firebase;
-export const database = firebase.database();
-export const auth = firebase.auth();
-export const storage = firebase.storage();
-export const GoogleProvider = new firebase.auth.GoogleAuthProvider();
-export const FacebookProvider = new firebase.auth.FacebookAuthProvider();
+export const database = firebase.database ? firebase.database() : null;
+export const auth = firebase.auth ? firebase.auth() : null;
+export const storage = firebase.storage ? firebase.storage() : null;
+export const GoogleProvider = firebase.auth ? new firebase.auth.GoogleAuthProvider() : null;
+export const FacebookProvider = firebase.auth ? new firebase.auth.FacebookAuthProvider() : null;

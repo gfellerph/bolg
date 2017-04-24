@@ -18,7 +18,7 @@
 <script>
   import Profile from '@/components/Profile';
   import store from '@/config/store';
-  import {auth, database} from '@/config/firebase';
+  import { auth, database } from '@/config/firebase';
 
   export default {
     name: 'app',

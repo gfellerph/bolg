@@ -32,6 +32,7 @@
 				styles: mapStyles,
 				streetViewControl: false,
 				scrollwheel: false,
+				mapTypeId: 'terrain',
 			});
 
 			map.addListener('click', this.addTipp);

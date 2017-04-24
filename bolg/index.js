@@ -3,7 +3,6 @@ const hbsTemplates = require('./config/handlebars');
 const firebase = require('./config/firebase');
 const moment = require('moment');
 const writefile = require('./writefile');
-const renderSass = require('./sass');
 const Post = require('./models/Post');
 const fs = require('fs');
 const webpackManifest = require('./config/webpack.manifest.json');
@@ -40,15 +39,12 @@ function rebuildIndex() {
           return p;
         });
 
-        return renderSass()
-          .then(result => hbsTemplates.index({
-            posts,
-            logoURL: logoURL(),
-            css: result.webpath,
-            webpack: webpackManifest,
-          }))
-          .then(html => writefile(filePath, html))
-          .then(resolve);
+        const html = hbsTemplates.index({
+          posts,
+          logoURL: logoURL(),
+          webpack: webpackManifest,
+        });
+        writefile(filePath, html).then(resolve);
       });
   });
 }
@@ -64,17 +60,14 @@ function rebuild(id) {
         if (!post) return reject(new Error(`Post with id ${id} not found, can't touch this.`));
         const filePath = `public/posts/${slugger(post.title)}.html`;
 
-        return renderSass()
-          .then(result => hbsTemplates.post({
-            markdown: marked(post.markdown, {
-              sanitize: true,
-            }),
-            logoURL: logoURL(),
-            css: result.webpath,
-            webpack: webpackManifest,
-          }))
-          .then(html => writefile(filePath, html))
-          .then(resolve);
+        const html = hbsTemplates.post({
+          markdown: marked(post.markdown, {
+            sanitize: true,
+          }),
+          logoURL: logoURL(),
+          webpack: webpackManifest,
+        });
+        writefile(filePath, html).then(resolve);
       })
       .catch(reject);
   });
@@ -83,20 +76,24 @@ function rebuild(id) {
 function rebuildAll() {
   const blogTasks = [];
 
-  firebase
-  .database()
-  .ref('/published')
-  .once('value', (snapshot) => {
-    const val = snapshot.val();
-    if (!val) return new Error('There are no posts to build');
-    const posts = Object.keys(val);
+  return new Promise((resolve, reject) => {
+    firebase
+    .database()
+    .ref('/published')
+    .once('value', (snapshot) => {
+      const val = snapshot.val();
+      if (!val) return new Error('There are no posts to build');
+      const posts = Object.keys(val);
 
-    for (let i = 0; i < posts.length; i += 1) {
-      blogTasks.push(rebuild(posts[i]));
-    }
+      for (let i = 0; i < posts.length; i += 1) {
+        blogTasks.push(rebuild(posts[i]));
+      }
+
+      Promise.all(blogTasks)
+        .then(resolve)
+        .catch(reject);
+    });
   });
-
-  return Promise.all(blogTasks);
 }
 
 function unPublish(id) {

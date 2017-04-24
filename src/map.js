@@ -9,11 +9,15 @@ import dateFormat from './filters/date-format';
 Vue.filter('dateFormat', dateFormat);
 Vue.config.productionTip = false;
 
+const mapElement = document.getElementById('map');
+
 /* eslint-disable no-new */
-new Vue({
-  el: '#map',
-  store,
-  router,
-  template: '<Map/>',
-  components: { Map },
-});
+if (mapElement) {
+  new Vue({
+    el: '#map',
+    store,
+    router,
+    template: '<Map/>',
+    components: { Map },
+  });
+}

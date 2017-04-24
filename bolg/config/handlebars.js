@@ -1,6 +1,6 @@
-const fs         = require('fs');
+const fs = require('fs');
 const handlebars = require('handlebars');
-const layouts    = require('handlebars-layouts');
+const layouts = require('handlebars-layouts');
 
 const layout = fs.readFileSync('./bolg/templates/_layout.hbs', 'utf-8');
 const index = fs.readFileSync('./bolg/templates/index.hbs', 'utf-8');
@@ -11,5 +11,5 @@ handlebars.registerPartial('layout', layout);
 
 module.exports = {
   index: handlebars.compile(index),
-  post: handlebars.compile(post)
+  post: handlebars.compile(post),
 };
