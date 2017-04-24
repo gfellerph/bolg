@@ -1,44 +1,39 @@
 const marked = require('marked');
 const hbsTemplates = require('./config/handlebars');
 const firebase = require('./config/firebase');
-const moment = require('moment');
 const writefile = require('./writefile');
 const Post = require('./models/Post');
 const fs = require('fs');
-const slugger = require('./helpers').slugger;
+const helpers = require('./helpers');
 const webpackManifest = require('./config/webpack.manifest.json');
-const renderSass = () => Promise.resolve();
 
-function logoURL() {
-  return `/img/bisnaer${parseInt(Math.random() * 31, 10)}.png`;
-}
+const slugger = helpers.slugger;
+const logoURL = helpers.publishedRef;
+const publishedRef = firebase.database().ref('/published').orderBy('created');
 
-function rebuildIndex() {
-  return new Promise((resolve, reject) => {
-    firebase
-      .database()
-      .ref('/published')
-      .once('value', (snapshot) => {
-        const val = snapshot.val();
-        const filePath = 'public/index.html';
-        if (!val) return resolve(new Error('There are no posts to build an overview with.'));
-        let posts = Object.keys(val).map(post => new Post(val[post]));
+function buildIndex() {
+  return new Promise((resolve) => {
+    publishedRef.once('value', (snapshot) => {
+      const val = snapshot.val();
+      const filePath = 'public/index.html';
+      if (!val) return resolve(new Error('There are no posts to build an overview with.'));
+      let posts = Object.keys(val).map(post => new Post(val[post]));
 
-        // Post transforms
-        posts = posts.map(post => post.beautify());
+      // Post transforms
+      posts = posts.map(post => post.beautify());
 
-        const html = hbsTemplates.index({
-          posts,
-          logoURL: logoURL(),
-          webpack: webpackManifest,
-        });
-        writefile(filePath, html).then(resolve);
+      const html = hbsTemplates.index({
+        posts,
+        logoURL: logoURL(),
+        webpack: webpackManifest,
       });
+      writefile(filePath, html).then(resolve);
+    });
   });
 }
 
 // Fetch post data from firebase and rebuild a single post
-function rebuild(id) {
+function publish(id) {
   return new Promise((resolve, reject) => {
     firebase
       .database()
@@ -61,30 +56,27 @@ function rebuild(id) {
   });
 }
 
-function rebuildAll() {
+function publishAll() {
   const blogTasks = [];
 
   return new Promise((resolve, reject) => {
-    firebase
-    .database()
-    .ref('/published')
-    .once('value', (snapshot) => {
+    publishedRef.once('value', (snapshot) => {
       const val = snapshot.val();
       if (!val) return new Error('There are no posts to build');
       const posts = Object.keys(val);
 
       for (let i = 0; i < posts.length; i += 1) {
-        blogTasks.push(rebuild(posts[i]));
+        blogTasks.push(publish(posts[i]));
       }
 
-      Promise.all(blogTasks)
+      return Promise.all(blogTasks)
         .then(resolve)
         .catch(reject);
     });
   });
 }
 
-function unPublish(id) {
+function unpublish(id) {
   return new Promise((resolve, reject) => {
     firebase
       .database()
@@ -103,9 +95,24 @@ function unPublish(id) {
   });
 }
 
+publishedRef.on('child_added', (snapshot) => {
+  const post = snapshot.val();
+  publish(post.id).then(buildIndex);
+});
+
+publishedRef.on('child_removed', (snapshot) => {
+  const post = snapshot.val();
+  unpublish(post.id).then(buildIndex);
+});
+
+publishedRef.on('child_changed', (snapshot) => {
+  const post = snapshot.val();
+  publish(post.id).then(buildIndex);
+});
+
 module.exports = {
-  rebuildIndex,
-  rebuildAll,
-  rebuild,
-  unPublish,
+  buildIndex,
+  publishAll,
+  publish,
+  unpublish,
 };

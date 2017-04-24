@@ -1,5 +1,4 @@
 import cuid from 'cuid';
-import axios from 'axios';
 import { database, auth } from '@/config/firebase';
 
 /**
@@ -40,17 +39,16 @@ export default function Post(post = {}) {
 
   /**
    * Deletes a post for ever
-   * @returns {Promise} Firebase promise
+   * @returns {Promise} Promise
    */
-  this.remove = () => {
-    return axios.get(`/unpublish/${this.id}`)
-      .then(() => publishRef.remove())
-      .then(() => ref.remove());
-  };
+  this.remove = () => Promise.all([
+    publishRef.remove(),
+    ref.remove(),
+  ]);
 
   /**
    * Publish a post to the publish reference and save it in edit mode
-   * @returns {Promise} Firebase promise
+   * @returns {Promise} Promise
    */
   this.publish = () => {
     this.lastSaved = Date.now();
@@ -60,39 +58,19 @@ export default function Post(post = {}) {
     return Promise.all([
       ref.set(payload),
       publishRef.set(payload),
-    ])
-      // Trigger rebuild on the server
-      .then(() => axios.get(`/rebuild/${this.id}`));
+    ]);
   };
 
   /**
-   * Unpublish a post. Delete the post from /published on firebase and
-   * delete the static file on the server
-   * @returns {Promise} Firebase promise
+   * Unpublish a post. Delete the post from /published on firebase
+   * @returns {Promise} Promise
    */
   this.unpublish = () => {
     this.lastPublished = null;
-    return Promise.all([this.set(), publishRef.remove()])
-      // Trigger deletion on the server
-      .then(() => axios.get(`/unpublish/${this.id}`));
-  };
-
-  /**
-   * Tries to get post data from firebase based on the post id
-   * @returns {Promise} Firebase promise
-   */
-  this.hydrate = (id) => {
-    this.id = id;
-    return new Promise((resolve, reject) => {
-      ref.once('value', (snapshot) => {
-        const p = snapshot.val();
-        if (!p) {
-          reject(new Error(`Post with id ${this.id} not found`));
-        } else {
-          resolve(new Post(p));
-        }
-      });
-    });
+    return Promise.all([
+      this.set(),
+      publishRef.remove(),
+    ]);
   };
 
   /**

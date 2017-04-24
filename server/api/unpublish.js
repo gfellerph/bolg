@@ -9,7 +9,8 @@ const bolg = require('../../bolg');
 function unpublish(req, res) {
   res.setHeader('Acces-Control-Allow-Origin', 'localhost');
 
-  bolg.unPublish(req.params.id)
+  bolg.unpublish(req.params.id)
+    .then(bolg.buildIndex)
     .then(() => res.send({ message: 'Unpublish complete.' }))
     .catch(err => res.status(500).send(err));
 }

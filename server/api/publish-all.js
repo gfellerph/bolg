@@ -9,8 +9,8 @@ function publishAll(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'localhost');
 
   bolg
-    .rebuildAll()
-    .then(bolg.rebuildIndex)
+    .publishAll()
+    .then(bolg.buildIndex)
     .then(() => res.send({ message: 'Rebuild complete.' }))
     .catch(err => res.status(500).send(err));
 }

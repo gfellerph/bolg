@@ -16,8 +16,8 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Listen for rebuild requests
-app.get('/rebuild', require('./api/publish-all'));
-app.get('/rebuild/:id', require('./api/publish'));
+app.get('/publish', require('./api/publish-all'));
+app.get('/publish/:id', require('./api/publish'));
 app.get('/unpublish/:id', require('./api/unpublish'));
 
 // catch 404 and forward to error handler

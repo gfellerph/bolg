@@ -29,7 +29,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/img': {target: 'http://localhost:3000', secure: false, },
-      '/rebuild': {target: 'http://localhost:3000', secure: false},
+      '/publish': {target: 'http://localhost:3000', secure: false},
       '/unpublish': {target: 'http://localhost:3000', secure: false}
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

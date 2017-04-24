@@ -10,11 +10,11 @@ function publish(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'localhost');
 
   const operation = req.params.id === 'index'
-    ? bolg.rebuildIndex()
-    : bolg.rebuild(req.params.id);
+    ? bolg.buildIndex()
+    : bolg.publish(req.params.id);
 
   operation
-    .then(bolg.rebuildIndex)
+    .then(bolg.buildIndex)
     .then(() => res.send({ message: 'Rebuild complete.' }))
     .catch(err => res.status(500).send(err));
 }

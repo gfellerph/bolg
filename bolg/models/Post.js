@@ -1,6 +1,7 @@
 const cuid = require('cuid');
 const moment = require('moment');
 const database = require('../config/firebase').database();
+const slugger = require('../helpers').slugger;
 
 function Post(post = {}) {
 
