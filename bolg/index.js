@@ -8,8 +8,8 @@ const helpers = require('./helpers');
 const webpackManifest = require('./config/webpack.manifest.json');
 
 const slugger = helpers.slugger;
-const logoURL = helpers.publishedRef;
-const publishedRef = firebase.database().ref('/published').orderBy('created');
+const logoURL = helpers.logoURL;
+const publishedRef = firebase.database().ref('/published').orderByChild('created');
 
 function buildIndex() {
   return new Promise((resolve) => {
@@ -21,7 +21,7 @@ function buildIndex() {
 
       // Post transforms
       posts = posts.map(post => post.beautify());
-
+      
       const html = hbsTemplates.index({
         posts,
         logoURL: logoURL(),

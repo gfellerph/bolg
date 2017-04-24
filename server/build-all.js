@@ -1,7 +1,7 @@
 const bolg = require('../bolg');
 
-bolg.rebuildAll()
-  .then(bolg.rebuildIndex)
+bolg.publishAll()
+  .then(bolg.buildIndex)
   .then(() => {
     console.log('rebuilt'); process.exit(0);
   }).catch((err) => { throw err; });

@@ -2,6 +2,7 @@ const cuid = require('cuid');
 const moment = require('moment');
 const database = require('../config/firebase').database();
 const slugger = require('../helpers').slugger;
+const marked = require('marked');
 
 function Post(post = {}) {
 
@@ -33,12 +34,12 @@ function Post(post = {}) {
 
   this.beautify = () => {
     const p = this;
-    p.url = `/posts/${slugger(post.title)}`;
-    p.created = moment(post.created).format('DD.MM.YYYY');
-    p.lastEdited = moment(post.lastEdited).format('DD.MM.YYYY');
-    p.lastSaved = moment(post.lastSaved).format('DD.MM.YYYY');
-    p.lastPublished = moment(post.lastPublished).format('DD.MM.YYYY');
-    p.description = marked(`${post.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`);
+    p.url = `/posts/${slugger(this.title)}`;
+    p.created = moment(this.created).format('DD.MM.YYYY');
+    p.lastEdited = moment(this.lastEdited).format('DD.MM.YYYY');
+    p.lastSaved = moment(this.lastSaved).format('DD.MM.YYYY');
+    p.lastPublished = moment(this.lastPublished).format('DD.MM.YYYY');
+    p.description = marked(`${this.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`);
     return p;
   };
 

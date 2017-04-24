@@ -80,8 +80,8 @@ function onListening() {
     ? `pipe ${addr}`
     : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
-  bolg.rebuildAll()
-    .then(bolg.rebuildIndex)
+  bolg.publishAll()
+    .then(bolg.buildIndex)
     .then(() => {
       /* eslint-disable no-console */
       const url = typeof addr === 'string'
