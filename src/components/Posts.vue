@@ -38,7 +38,6 @@
 
     methods: {
       changeCurrentPost(post) {
-        console.log(post);
         this.currentPost = new Post(post);
       },
       slugger(str) {

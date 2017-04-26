@@ -70,7 +70,6 @@
         this.$nextTick(() => {
           md.setSelectionRange(start, end);
           md.focus();
-          console.log(start, end);
         });
       },
       pizzaparty() {
