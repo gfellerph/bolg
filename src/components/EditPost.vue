@@ -3,7 +3,7 @@
     <div class="post-form">
       <div class="post-text">
         <div class="post-markdown">
-          <editor :post="post" @scroll="trackScrollposition" @change="savePost"></editor>
+          <editor v-model="post.markdown" @scroll="trackScrollposition" @input="savePost" @save="savePostImmediately"></editor>
         </div>
       </div>
       <div class="post-images">
