@@ -1,12 +1,22 @@
 {{#extend "layout"}}
   {{#content "navigation"}}
     <nav>
-        <a href="/"><span>Alle Posts</span></a>
+        <a href="/"><span>Eine zrugg</span></a>
         <a href="/"><img class="logo" src="{{logoURL}}" alt=""></a>
-        <a href="/info"><span>Info</span></a>
+        <a href="/info"><span>Hä?</span></a>
     </nav>
+    <p class="text-align-center">
+      <span>&mdash;&nbsp;</span>
+      <span class="italic">{{post.created}}</span>
+      <span>&nbsp;&mdash;</span>
+    </p>
   {{/content}}
   {{#content "main"}}
-    <article class="container">{{{markdown}}}</article>
+    <div class="container">
+      <article>{{{post.html}}}</article>
+      <a class="next-post-link" href="{{nextPost.url}}">
+        <article class="next-post">{{{nextPost.excerpt}}}</article>
+      </a>
+    </div>
   {{/content}}
 {{/extend}}
