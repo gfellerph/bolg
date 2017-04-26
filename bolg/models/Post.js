@@ -1,11 +1,13 @@
 const cuid = require('cuid');
 const moment = require('moment');
-const database = require('../config/firebase').database();
+const firebase = require('../config/firebase');
 const slugger = require('../helpers').slugger;
 const marked = require('marked');
 
-function Post(post = {}) {
+const database = firebase.database();
+const auth = firebase.auth();
 
+function Post(post = {}) {
   // Constants
   const ref = database.ref(`/posts/${this.id}`);
 
@@ -27,9 +29,7 @@ function Post(post = {}) {
    */
   this.set = () => {
     this.lastSaved = Date.now();
-    return ref.set(JSON.parse(JSON.stringify(this))).then(snapshot => {
-      return snapshot;
-    });
+    return ref.set(JSON.parse(JSON.stringify(this)));
   };
 
   this.beautify = () => {
@@ -39,7 +39,9 @@ function Post(post = {}) {
     p.lastEdited = moment(this.lastEdited).format('DD.MM.YYYY');
     p.lastSaved = moment(this.lastSaved).format('DD.MM.YYYY');
     p.lastPublished = moment(this.lastPublished).format('DD.MM.YYYY');
+    p.html = marked(this.markdown, { gfm: true });
     p.description = marked(`${this.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`);
+    p.excerpt = marked(this.markdown.split(' ').slice(0, 40).join(' ') + '...');
     return p;
   };
 
