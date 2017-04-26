@@ -1,17 +1,6 @@
 .bolg-header {
   position: relative;
   padding: $golden-em;
-  margin-bottom: $golden-em;
-
-  &:after {
-    content: '';
-    position: absolute;
-    width: 5em;
-    left: 50%;
-    top: 100%;
-    margin-left: -2.5em;
-    border-top: 2px solid black;
-  }
 
   .logo {
     height: 4rem;
