@@ -8,8 +8,7 @@
       </ul>
     </div>
     <div class="post-preview" v-if="currentPost">
-      <iframe class="post-preview-frame" :src="currenPost.URL" frameborder="0"></iframe>
-      <a :href="editURL" class="button cta">Edit post</a>
+      <iframe class="post-preview-frame" :src="currentPostUrl" frameborder="0"></iframe>
     </div>
   </div>
 </template>
@@ -28,22 +27,23 @@
       };
     },
 
-    /*firebase: {
-      posts: database.ref('/posts'),
-    },*/
-
     created() {
       this.$bindAsArray('posts', database.ref('/posts'));
     },
 
     computed: {
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
+      currentPostUrl() { return `http://localhost:3000/posts/${this.slugger(this.currentPost.title)}.html`; }
     },
 
     methods: {
       changeCurrentPost(post) {
-        // this.currentPost = new Post(post);
+        console.log(post);
+        this.currentPost = new Post(post);
       },
+      slugger(str) {
+        return str.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+      }
     },
 
     components: {
@@ -55,14 +55,27 @@
 <style lang="scss" scoped>
   @import 'src/styles/_variables';
 
+  .post-preview-frame {
+    position: absolute;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    height: 100%;
+  }
+
   .posts {
+    position: relative;
     display: flex;
     width: 100%;
+    height: calc(100vh - 83px);
   }
 
   .post-list-container {
     flex: 0 0 50%;
     border-right: 1px solid black;
+    overflow: auto;
+    height: 100%;
   }
 
   .post-list {
@@ -72,11 +85,8 @@
 
     li {
       padding: 0;
-
-      & + li {
-        border-top: none;
-        border-bottom: 1px solid black;
-      }
+      border-top: none;
+      border-bottom: 1px solid black;
     }
   }
 </style>
