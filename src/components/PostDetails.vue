@@ -1,23 +1,25 @@
 <template>
   <div class="post-details">
-    <div class="post-infos">
-      <h1 class="h4">{{post.title}}</h1>
-      <div class="short-text" v-html="shortText"></div>
-      <table class="meta-infos">
-        <tr>
-          <th>Gmacht:</th>
-          <td>{{dateFormat(post.created, 'D. MMM YYYY')}}</td>
-        </tr>
-        <tr>
-          <th>Zletscht gschribe:</th>
-          <td>{{dateFormat(post.lastEdited, 'D. MMM YYYY')}}</td>
-        </tr>
-      </table>
-    </div>
+    <router-link class="edit-post-link" :to="editLink">
+      <div class="post-infos">
+          <h1 class="h4">{{post.title}}</h1>
+          <div class="short-text" v-html="shortText"></div>
+          <table class="meta-infos">
+            <tr>
+              <th>Gmacht:</th>
+              <td>{{dateFormat(post.created, 'D. MMM YYYY')}}</td>
+            </tr>
+            <tr>
+              <th>Zletscht gschribe:</th>
+              <td>{{dateFormat(post.lastEdited, 'D. MMM YYYY')}}</td>
+            </tr>
+          </table>
+      </div>
+    </router-link>
     <div class="post-controls">
       <post-status :post="post"></post-status>
       <button class="edit-button" @click="deletePost">Lösche</button>
-      <router-link class="button edit-button" :to="editLink">Ändere</router-link>
+      <button class="edit-button" @click="publishPost">Publiziere</button>
     </div>
   </div>
 </template>
@@ -54,6 +56,9 @@
           this.post.remove();
         }
       },
+      publishPost() {
+        this.post.publish();
+      }
     },
 
     components: {
@@ -99,6 +104,11 @@
     .post-status {
       flex: 1 0 auto;
     }
+  }
+
+  .edit-post-link {
+    color: black;
+    text-decoration: none;
   }
 
   .edit-button {
