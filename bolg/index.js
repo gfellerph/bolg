@@ -9,7 +9,8 @@ const webpackManifest = require('./config/webpack.manifest.json');
 
 const slugger = helpers.slugger;
 const logoURL = helpers.logoURL;
-const publishedRef = firebase.database().ref('/published').orderByChild('created');
+const database = firebase.database();
+const publishedRef = database.ref('/published').orderByChild('created');
 
 function buildIndex() {
   return new Promise((resolve) => {
@@ -78,9 +79,7 @@ function publishAll() {
 
 function unpublish(id) {
   return new Promise((resolve, reject) => {
-    firebase
-      .database()
-      .ref(`/posts/${id}`)
+    database.ref(`/posts/${id}`)
       .once('value', (snapshot) => {
         const val = snapshot.val();
         if (!val) return new Error('This post is deleted or something');
