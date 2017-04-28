@@ -36,10 +36,9 @@
 			map = new google.maps.Map(document.getElementById('google-map'), {
 				zoom: 2,
 				center: new google.maps.LatLng(27, 6),
-				styles: mapStyles,
+				// styles: mapStyles,
 				streetViewControl: false,
-				scrollwheel: false,
-				mapTypeId: 'terrain',
+				mapTypeId: google.maps.MapTypeId.HYBRID,
 			});
 
 			map.addListener('click', this.addTipp);
