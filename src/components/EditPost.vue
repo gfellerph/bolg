@@ -33,7 +33,7 @@
   import bus from '@/config/bus';
   import PostMixin from '@/mixins/post-mixin';
   import {states} from '@/config/constants';
-  import Editor from '@/components/editor';
+  import Editor from '@/components/Editor';
   import PostStatus from '@/components/PostStatus';
 
   export default {

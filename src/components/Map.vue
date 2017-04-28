@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import Tipp from '@/Models/Tipp';
+	import Tipp from '@/models/Tipp';
 	import AddTipp from '@/components/AddTipp';
 	import { database } from '@/config/firebase';
 	import mapStyles from '@/config/map-styles.json';

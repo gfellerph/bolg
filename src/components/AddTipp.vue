@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import Tipp from '@/Models/Tipp';
+  import Tipp from '@/models/Tipp';
   import AuthGuard from '@/components/AuthGuard';
   import GoogleLogin from '@/components/GoogleLogin';
 
