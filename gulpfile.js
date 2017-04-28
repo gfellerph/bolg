@@ -3,7 +3,7 @@ const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const autoprefixer = require('gulp-autoprefixer');
 const plumber = require('gulp-plumber');
-const manifest = require('./bolg/config/webpack.manifest.json');
+const manifest = require('./public/config/webpack.manifest.json');
 const writefile = require('./bolg/helpers').writefile;
 const browserSync = require('browser-sync');
 
