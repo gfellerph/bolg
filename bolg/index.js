@@ -1,11 +1,10 @@
-const marked = require('marked');
 const hbsTemplates = require('./config/handlebars');
 const firebase = require('./config/firebase');
 const writefile = require('./writefile');
 const Post = require('./models/Post');
 const fs = require('fs');
 const helpers = require('./helpers');
-const webpackManifest = require('./config/webpack.manifest.json');
+const webpackManifest = require('../public/config/webpack.manifest.json');
 
 const slugger = helpers.slugger;
 const logoURL = helpers.logoURL;
