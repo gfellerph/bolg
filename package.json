@@ -6,11 +6,11 @@
   "private": true,
   "main": "server/server.js",
   "scripts": {
-    "start": "node build/build.js & node ./bin/www",
+    "start": "node build/build.js && node ./bin/www",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "static-pages": "node bolg/index.js",
-    "server": "gulp sass & node server/build-all.js & nodemon ./bin/www -e js,hbs",
+    "server": "gulp sass & node server/build-all.js && nodemon ./bin/www -e js,hbs",
     "gulp": "gulp"
   },
   "dependencies": {
