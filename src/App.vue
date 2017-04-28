@@ -25,7 +25,7 @@
 
     computed: {
       logoURL() {
-        return `/img/bisnaer${parseInt(Math.random() * 31)}.png`;
+        return `/img/bisnaer${parseInt(Math.random() * 31)}.PNG`;
       },
     },
 

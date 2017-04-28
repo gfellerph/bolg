@@ -6,7 +6,7 @@ const dirname = require('path').dirname;
 exports.slugger = str => str.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 
 // Random logo
-exports.logoURL = () => `/img/bisnaer${parseInt(Math.random() * 31, 10)}.png`;
+exports.logoURL = () => `/img/bisnaer${parseInt(Math.random() * 31, 10)}.PNG`;
 
 /**
  * Safely write a file to disk
