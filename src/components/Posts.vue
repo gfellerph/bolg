@@ -33,7 +33,7 @@
 
     computed: {
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
-      currentPostUrl() { return `http://localhost:3000/posts/${this.slugger(this.currentPost.title)}.html`; }
+      currentPostUrl() { return `https://bolg-app.herokuapp.com/posts/${this.slugger(this.currentPost.title)}.html`; }
     },
 
     methods: {
