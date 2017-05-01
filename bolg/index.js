@@ -11,6 +11,10 @@ const logoURL = helpers.logoURL;
 const database = firebase.database();
 const publishedRef = database.ref('/published').orderByChild('created');
 
+/**
+ * Build the index page
+ * @returns {Promise} Promise resolved when the file is written to disk
+ */
 function buildIndex() {
   return new Promise((resolve) => {
     publishedRef.once('value', (snapshot) => {
@@ -29,33 +33,46 @@ function buildIndex() {
   });
 }
 
+/**
+ * Build a single post based on a post object
+ * @param {Post} post - The current post
+ * @param {Post} nextPost - Next post in line for the preview
+ * @returns {Promise} Resolves when the file is written to disk
+ */
+function buildPost(post, nextPost) {
+  if (!post) throw new Error(`Post with id ${post.id} not found, can't touch this.`);
+
+  const filePath = `public/posts/${slugger(post.title)}.html`;
+  const html = hbsTemplates.post({
+    post: post.beautify(),
+    nextPost: (nextPost) ? nextPost.beautify() : null,
+    logoURL: logoURL(),
+    webpack: webpackManifest,
+  });
+
+  return writefile(filePath, html);
+}
+
 // Fetch post data from firebase and rebuild a single post
 function publish(id) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     publishedRef.once('value', (snapshot) => {
       const value = snapshot.val();
       const posts = Object.keys(value).map(post => value[post]);
       let post = null;
       let nextPost = null;
+      let lastPost = null;
 
       // Get current and next post
       for (let i = 0; i < posts.length; i += 1) {
         if (posts[i].id === id) {
           post = new Post(posts[i]);
           if (posts[i + 1]) nextPost = new Post(posts[i + 1]);
+          if (posts[i - 1]) lastPost = new Post(posts[i - 1]);
         }
       }
 
-      if (!post) return reject(new Error(`Post with id ${id} not found, can't touch this.`));
-
-      const filePath = `public/posts/${slugger(post.title)}.html`;
-      const html = hbsTemplates.post({
-        post: post.beautify(),
-        nextPost: (nextPost) ? nextPost.beautify() : null,
-        logoURL: logoURL(),
-        webpack: webpackManifest,
-      });
-      writefile(filePath, html).then(resolve);
+      buildPost(post, nextPost).then(buildPost(lastPost, post)).then(resolve);
     });
   });
 }
