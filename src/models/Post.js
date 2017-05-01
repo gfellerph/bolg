@@ -83,4 +83,10 @@ export default function Post(post = {}) {
       return title ? title[0].replace('# ', '') : '';
     },
   });
+
+  Object.defineProperty(this, 'url', {
+    get() {
+      return this.title.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+    },
+  })
 }
