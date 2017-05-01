@@ -3,8 +3,9 @@
     <div class="tipp-wrapper">
       <div class="yellow"></div>
       <form class="tipp-form box" @click.stop>
-        <h2 class="h5">
-          <input id="username" class="username" type="text" v-model="username" placeholder="Housi">
+        <h2 class="h5 tipp-title">
+          <input ref="nameInput" v-bind:style="displayNameWidth" id="username" class="username" type="text" v-model="tipp.user.displayName" placeholder="Housi">
+          <span ref="mirror" class="mirror">{{tipp.user.displayName}}</span>
           <span>Tipp für {{country}}:</span>
         </h2>
         <textarea
@@ -12,10 +13,13 @@
           id="add-tipp"
           v-model="tipp.text"
         ></textarea>
+        <p>
+          <input class="email" type="email" v-model="tipp.user.email" placeholder="Email (wed wosch)">
+        </p>
         <p class="error" v-if="error">{{error}}</p>
         <p class="text-align-right">
           <button @click="closeOverlay">Abbrechen</button>
-          <button @click="saveTipp" :disabled="loading">Senden</button>
+          <button @click="saveTipp" :disabled="loading || !canSave">Senden</button>
         </p>
       </form>
     </div>
@@ -32,7 +36,6 @@
       return {
         loading: false,
         error: false,
-        username: '',
         tipp: new Tipp(),
       };
     },
@@ -44,7 +47,12 @@
     },
 
     computed: {
-      user() { return this.$store.state.auth.user; }
+      user() { return this.$store.state.auth.user; },
+      canSave() { return this.tipp.user.displayName && this.tipp.text; },
+      displayNameWidth() {
+        const width = this.$refs.mirror ? this.$refs.mirror.offsetWidth : 0;
+        return `width: ${width}px`;
+      }
     },
 
     methods: {
@@ -53,9 +61,9 @@
 
         this.error = false;
         this.loading = true;
-        this.tipp.username = this.username;
         this.tipp.lat = this.lat;
         this.tipp.lng = this.lng;
+        this.tipp.country = this.country;
 
         this.tipp.set().then(() => {
           this.loading = false;
@@ -69,6 +77,17 @@
       },
       closeOverlay() {
         this.$emit('tipp-closed');
+      },
+      
+    },
+
+    watch: {
+      'tipp.user.displayName': function (newName) {
+        const width = this.$refs.mirror ? this.$refs.mirror.offsetWidth : 0;
+        this.$nextTick(() => {
+          this.$refs.nameInput.style.width = `${width}px`;
+        });
+        return `width: ${width}px`;
       },
     },
 
@@ -87,6 +106,18 @@
   @import 'src/styles/_mixins';
   @import 'src/styles/_variables';
 
+  .tipp-title {
+    position: relative;
+  }
+
+  .mirror {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
   .add-tipp {
     position: absolute;
     top: 0;
@@ -97,6 +128,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .email {
+    width: 100%;
   }
 
   .tipp-wrapper {
@@ -156,7 +191,8 @@
 
     input {
       display: inline;
-      width: 50%;
+      width: auto;
+      min-width: 100px;
       padding: $golden-rem / 4 0;
     }
 
