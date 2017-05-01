@@ -1,6 +1,20 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "posts": {
+      ".read": "auth != null && auth.provider === 'password'",
+      ".write": "auth != null && auth.provider === 'password'",
+      "$posts_id": {
+        ".write": true,
+        ".validate": "!url.exists()"
+      }
+    },
+    "tipps": {
+      ".read": true,
+      ".write": true
+    },
+    "published": {
+      ".read": true,
+      ".write": "auth != null && auth.provider === 'password'"
+    }
   }
 }
