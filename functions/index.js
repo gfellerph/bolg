@@ -5,5 +5,6 @@ const storage = require('@google-cloud/storage')();
 // https://ericportis.com/posts/2014/srcset-sizes/
 exports.createThumbnails = functions.storage.object().onChange(event => {
   const filePath = event.data.name;
-  console.log(filePath);
+
+  console.log(filePath, event.data);
 });

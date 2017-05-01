@@ -40,12 +40,12 @@ function buildIndex() {
  * @returns {Promise} Resolves when the file is written to disk
  */
 function buildPost(post, nextPost) {
-  if (!post) throw new Error(`Post with id ${post.id} not found, can't touch this.`);
+  if (!post) throw new Error(`Post with id ${post} not found, can't touch this.`);
 
   const filePath = `public/posts/${slugger(post.title)}.html`;
   const html = hbsTemplates.post({
     post: post.beautify(),
-    nextPost: (nextPost) ? nextPost.beautify() : null,
+    nextPost: nextPost ? nextPost.beautify() : null,
     logoURL: logoURL(),
     webpack: webpackManifest,
   });
@@ -72,7 +72,11 @@ function publish(id) {
         }
       }
 
-      buildPost(post, nextPost).then(buildPost(lastPost, post)).then(resolve);
+      buildPost(post, nextPost)
+        .then(() => {
+          return lastPost ? buildPost(lastPost, post) : true;
+        })
+        .then(resolve);
     });
   });
 }
