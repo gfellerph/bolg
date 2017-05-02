@@ -1,4 +1,4 @@
-$heading-margin: $golden-rem 0 $golden-rem / 2 0;
+$heading-margin: $golden-rem/2 0 $golden-rem/4 0;
 
 html {
   @include ms-respond(font-size, 1);

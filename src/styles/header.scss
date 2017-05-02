@@ -1,6 +1,7 @@
 .bolg-header {
   position: relative;
-  padding: $golden-em;
+  padding: 0 $golden-em;
+  margin: $golden-em auto;
 
   .logo {
     height: 4rem;

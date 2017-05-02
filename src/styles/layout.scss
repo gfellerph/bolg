@@ -26,21 +26,5 @@ img {
 .container {
     margin: 0 auto;
     padding: 0 2em;
-    max-width: 100%;
-
-    @include min($l) {
-        width: 60vw;
-    }
-
-    @include between($s, $l) {
-        width: 70vw;
-    }
-
-    @include between($xxs, $s) {
-        width: 80vw;
-    }
-
-    @include max($xxs) {
-        width: none;
-    }
+    max-width: 35em;
 }
