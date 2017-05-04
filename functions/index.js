@@ -16,7 +16,8 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
   const bucket = storage.bucket(object.bucket);
   const file = bucket.file(object.name);
   const tempFolder = '/tmp';
-  const tempFile = `${tempFolder}/${object.name}`;
+  const tempFileName = object.name.substring(object.name.lastIndexOf('/') + 1);
+  const tempFile = `${tempFolder}/${tempFileName}`;
   const sizes = [
     {
       width: 2560,
@@ -36,13 +37,17 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
     },
   ];
 
-  console.log()
-
   if (object.resourceState === 'not_exists') {
     return console.log('This file has been deleted');
   }
 
-  return true;
+  if (!object.contentType.startsWith('image/')) {
+    return console.log('This is not an image');
+  }
+
+  if (object.name.startsWith('thumbs/')) {
+    return console.log('This is already a thumb');
+  }
 
   return mkdirp(tempFolder)
     .then(() => file.download({ destination: tempFile }))
@@ -53,11 +58,11 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
       tempFile,
       '-thumbnail',
       `${dimension.width}x${dimension.height}>`,
-      `${tempFolder}/${createThumbnailFileName(object.name, dimension)}`,
+      createThumbnailFileName(tempFile, dimension),
     ]))))
 
     .then(() => Promise.all(sizes.map((dimension) => {
-      return bucket.upload(`${tempFolder}/${createThumbnailFileName(object.name, dimension)}`, { destination: createThumbnailFileName('thumbs/' + object.name, dimension) });
+      return bucket.upload(createThumbnailFileName(tempFile, dimension), { destination: createThumbnailFileName('thumbs/' + tempFileName, dimension) });
     })))
 
     .then(() => {
