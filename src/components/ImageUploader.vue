@@ -30,6 +30,7 @@
       const upload = this.image.put();
       upload.on('state_changed', this.onUploadProgress);
       upload.then(snapshot => {
+        debugger;
         this.image.file = null;
         this.image.downloadURL = snapshot.downloadURL;
         bus.$emit('add-image', this.image);

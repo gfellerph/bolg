@@ -27,14 +27,27 @@
   import marked from 'marked';
   import debounce from 'debounce';
   import Post from '@/models/Post';
-  import {database} from '@/config/firebase';
+  import { database } from '@/config/firebase';
   import router from '@/config/router';
   import ImageSelector from '@/components/ImageSelector';
   import bus from '@/config/bus';
   import PostMixin from '@/mixins/post-mixin';
-  import {states} from '@/config/constants';
+  import { states, sizes } from '@/config/constants';
   import Editor from '@/components/Editor';
   import PostStatus from '@/components/PostStatus';
+
+  const getThumbUrl = function (url, size) {
+    const fragments = url.split('.');
+    fragments.splice(fragments.length - 1, 0, `${size.width}x${size.height}`);
+    return fragments.join('.').replace('gallery/', 'thumbs/');
+  }
+
+  const renderer = new marked.Renderer();
+
+  renderer.image = (href, title, text) => {
+    const srcset = sizes.map(size => `${getThumbUrl(href, size)} ${size.width}w`).join(',');
+    return `<img src="${href}" title="${title}" alt="${text}" srcset="${srcset}">`;
+  }
 
   export default {
     mixins: [PostMixin],
@@ -50,7 +63,7 @@
 
     computed: {
       connected() { return this.$store.state.connection.connected; },
-      compiledContent() { return marked(this.post.markdown, {sanitize: false, gfm: true}); },
+      compiledContent() { return marked(this.post.markdown, { sanitize: false, gfm: true, renderer }); },
       canPublish() { return this.state === states.SAVED; },
       hasTitle() { return !!this.post.title; },
       error() {

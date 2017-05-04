@@ -1,7 +1,13 @@
 const functions = require('firebase-functions');
 const storage = require('@google-cloud/storage')();
 const mkdirp = require('mkdirp-promise');
-const spawn = require('child-process-promise').spawn;
+const imagemin = require('imagemin');
+const imageminJpegtran = require('imagemin-jpegtran');
+const imageminPngquant = require('imagemin-pngquant');
+const sharp = require('sharp');
+const fs = require('mz/fs');
+const sizeOf = require('image-size');
+const imageSizeStream = require('image-size-stream');
 
 function createThumbnailFileName(fileName, size) {
   const fragments = fileName.split('.');
@@ -10,6 +16,7 @@ function createThumbnailFileName(fileName, size) {
 }
 
 // https://github.com/firebase/functions-samples/blob/master/generate-thumbnail/functions/index.js
+// https://googlecloudplatform.github.io/google-cloud-node/#/docs/google-cloud/v0.53.0/storage/file
 // https://ericportis.com/posts/2014/srcset-sizes/
 exports.createThumbnails = functions.storage.object().onChange((event) => {
   const object = event.data;
@@ -49,24 +56,53 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
     return console.log('This is already a thumb');
   }
 
+  imagemin(file.createReadStream(), {
+    plugins: [
+      imageminJpegtran(),
+      imageminPngquant({ quality: '65-80' }),
+    ],
+  })
+  .then(stream => {
+    imageSizeStream(stream)
+      .on('size', (dimensions) => {
+
+      })
+  })
+
   return mkdirp(tempFolder)
+
+    // Download the image in question
     .then(() => file.download({ destination: tempFile }))
 
-    // Create a thumbnail for every size object in sizes, wait until
-    // all of them are generated
-    .then(() => Promise.all(sizes.map(dimension => spawn('convert', [
-      tempFile,
-      '-thumbnail',
-      `${dimension.width}x${dimension.height}>`,
-      createThumbnailFileName(tempFile, dimension),
-    ]))))
+    // Read the file as buffer from temp dir
+    .then(() => fs.readFile(tempFile))
 
-    .then(() => Promise.all(sizes.map((dimension) => {
-      return bucket.upload(createThumbnailFileName(tempFile, dimension), { destination: createThumbnailFileName('thumbs/' + tempFileName, dimension) });
+    // Minify image with imagemin
+    .then(buffer => imagemin.buffer(buffer, {
+      plugins: [
+        imageminJpegtran(),
+        imageminPngquant({ quality: '65-80' }),
+      ],
+    }))
+
+    // Create thumbnails with sharp
+    .then(buffer => Promise.all(sizes.filter((size) => {
+      const imgSize = sizeOf(buffer);
+      if (imgSize.width < size.width) return false;
+
+      return sharp(buffer)
+        .resize(size.width)
+        .toFile(createThumbnailFileName(tempFile, size));
     })))
 
-    .then(() => {
-      console.log('Files uploaded');
+    // Upload thumbnails back to server
+    .then((thumbnails) => Promise.all(sizes.map((dimension) => {
+      console.log(thumbnails);
+      return bucket.upload(createThumbnailFileName(tempFile, dimension), { destination: createThumbnailFileName(`thumbs/${tempFileName}`, dimension) })
+    })))
+
+    .then((val) => {
+      console.log('Files uploaded', val);
     })
 
     .catch((err) => { throw err; });
