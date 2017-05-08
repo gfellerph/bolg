@@ -1,9 +1,27 @@
-#map {
-  width: 100vw;
+.map {
+  width: 50%;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  margin: 0;
   height: 50vh;
+
+  @include max($xs) {
+    width: 100vw;
+  }
+}
+
+#google-map {
+  height: 100%;
+}
+
+.entree {
+  @extend .clearfix;
+
+  > div {
+    float: left;
+    width: 50%;
+  }
+
+  .box {
+    padding: 0 $golden-em * 3;
+  }
 }

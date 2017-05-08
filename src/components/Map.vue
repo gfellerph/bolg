@@ -95,19 +95,3 @@
 		},
 	};
 </script>
-
-<style lang="scss">
-	.map {
-		position: relative;
-		width: 100%;
-	}
-
-	#google-map {
-		height: calc(80vh - 80px);
-		width: 100%;
-
-		* {
-			overflow:visible;
-		}
-	}
-</style>
