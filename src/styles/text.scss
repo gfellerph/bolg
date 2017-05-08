@@ -1,16 +1,4 @@
-$heading-margin: $golden-rem/2 0 $golden-rem/4 0;
-
-html {
-  @include ms-respond(font-size, 1);
-
-  @include max($xxs) {
-    background-size: 100% 16px * $golden;
-  }
-
-  @include min($xl) {
-    background-size: 100% 24px * $golden;
-  }
-}
+$heading-margin: $golden-rem 0 $golden-rem 0;
 
 body {
   @include ms-respond(font-size, 1);
@@ -19,15 +7,16 @@ body {
 }
 
 p,
-dl {
-  margin: $golden-rem / 2 auto;
+dl,
+hr {
+  margin: $golden-rem auto;
 }
 
 h1,
 .h1 {
   @include ms-respond(font-size, 2.5);
   @include ms-respond(line-height, 2.7);
-  margin: 2.4em 0 1.2em 0;
+  margin: $golden-rem * 2 0 $golden-rem * 2 0;
 }
 
 h2,
@@ -72,10 +61,26 @@ span.small {
   font-weight: normal;
 }
 
-h1 + p {
-  &::first-letter {
-    font-size: ms-respond(font-size, 1.5);
-    float: left;
-    margin-right: 0.1em;
+article {
+  h1,
+  h2,
+  h3 {
+    text-align: center;
+  }
+
+  h1 + p {
+    &::first-letter {
+      font-size: 3em;
+      float: left;
+      margin-right: 0.1em;
+      line-height: 1;
+    }
+  }
+
+  p + p {
+    &:before {
+      content: '';
+      margin-left: 2.5em;
+    }
   }
 }
