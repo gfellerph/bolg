@@ -3,9 +3,9 @@ const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const autoprefixer = require('gulp-autoprefixer');
 const plumber = require('gulp-plumber');
-const manifest = require('./public/config/webpack.manifest.json');
 const writefile = require('./bolg/helpers').writefile;
 const browserSync = require('browser-sync');
+const fs = require('fs');
 
 function sync(done) {
   return browserSync.init({
@@ -31,8 +31,9 @@ function compileSass() {
     .pipe(gulp.dest('public/css'))
     .pipe(browserSync.stream({ match: '**/*.css' }))
     .on('end', () => {
+      const manifest = JSON.parse(fs.readFileSync('./public/config/webpack.manifest.json', 'utf-8'));
       manifest['/bolg.css'] = '/css/post-index.css';
-      writefile('bolg/config/webpack.manifest.json', JSON.stringify(manifest));
+      writefile('public/config/webpack.manifest.json', JSON.stringify(manifest));
     });
 }
 
