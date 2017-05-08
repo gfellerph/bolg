@@ -18,3 +18,13 @@
 .italic { font-style: italic; }
 
 p.error { color: red; }
+
+.clearfix {
+  &:before, &:after {
+    content: '';
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
