@@ -6,5 +6,9 @@
     "linebreak-style": 0,
     "semi": 0,
     "no-extra-semi": 2
+  },
+  "env": {
+    "browser": true,
+    "node": true
   }
 }

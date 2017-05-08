@@ -5,9 +5,9 @@ const imagemin = require('imagemin');
 const imageminJpegtran = require('imagemin-jpegtran');
 const imageminPngquant = require('imagemin-pngquant');
 const sharp = require('sharp');
-const fs = require('mz/fs');
 const sizeOf = require('image-size');
-const imageSizeStream = require('image-size-stream');
+const stream = require('stream');
+const imageminMozJpeg = require('imagemin-mozjpeg');
 
 function createThumbnailFileName(fileName, size) {
   const fragments = fileName.split('.');
@@ -56,26 +56,42 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
     return console.log('This is already a thumb');
   }
 
-  imagemin(file.createReadStream(), {
-    plugins: [
-      imageminJpegtran(),
-      imageminPngquant({ quality: '65-80' }),
-    ],
-  })
-  .then(stream => {
-    imageSizeStream(stream)
-      .on('size', (dimensions) => {
+  if (object.metageneration > 1) {
+    return console.log('This is only a meta update');
+  }
 
+  const fileBuffer = [];
+  file.createReadStream()
+    .on('data', chunk => fileBuffer.push(chunk))
+    .on('end', () => {
+      imagemin.buffer(Buffer.concat(fileBuffer), {
+        plugins: [
+          mozjpeg(),
+        ]
       })
-  })
+      .then(minifiedBuffer => {
+        const fileSize = sizeOf(minifiedBuffer);
+        const thumbSizes = sizes.filter(size => {
+          if (fileSize.width >= fileSize.height) {
+            size.orientation = 'landscape';
+            return fileSize.width < size.width;
+          } else {
+            size.orientation = 'portrait';
+            return fileSize.height < size.height;
+          }
+        });
+
+        thumbSizes.map(thumbSize => {
+          sharp(minifiedBuffer)
+            .resize
+        })
+      })
+    });
 
   return mkdirp(tempFolder)
 
     // Download the image in question
-    .then(() => file.download({ destination: tempFile }))
-
-    // Read the file as buffer from temp dir
-    .then(() => fs.readFile(tempFile))
+    .then(() => file.download())
 
     // Minify image with imagemin
     .then(buffer => imagemin.buffer(buffer, {
@@ -90,15 +106,9 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
       const imgSize = sizeOf(buffer);
       if (imgSize.width < size.width) return false;
 
-      return sharp(buffer)
-        .resize(size.width)
-        .toFile(createThumbnailFileName(tempFile, size));
-    })))
-
-    // Upload thumbnails back to server
-    .then((thumbnails) => Promise.all(sizes.map((dimension) => {
-      console.log(thumbnails);
-      return bucket.upload(createThumbnailFileName(tempFile, dimension), { destination: createThumbnailFileName(`thumbs/${tempFileName}`, dimension) })
+      const thumbFile = createThumbnailFileName(`thumbs/${tempFileName}`, size);
+      const fileBuffer = sharp(buffer).resize(size.width).toBuffer();
+      return bucket.upload(fileBuffer, { destination: thumbFile });
     })))
 
     .then((val) => {

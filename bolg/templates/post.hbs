@@ -13,10 +13,14 @@
   {{/content}}
   {{#content "main"}}
     <div class="container">
-      <article>{{{post.html}}}</article>
+      <article class="main-post">{{{post.html}}}</article>
+      <hr>
       <a class="next-post-link" href="{{nextPost.url}}">
         <article class="next-post">{{{nextPost.excerpt}}}</article>
       </a>
     </div>
+  {{/content}}
+  {{#content "scripts"}}
+    <script src="{{webpack.[/post.js]}}"></script>
   {{/content}}
 {{/extend}}

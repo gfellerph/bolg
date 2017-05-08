@@ -12,6 +12,7 @@ module.exports = {
     app: './src/main.js',
     map: './src/map.js',
     bolg: './src/styles/post-index.scss',
+    post: './src/post.js',
   },
   output: {
     path: config.build.assetsRoot,
