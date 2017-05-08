@@ -16,11 +16,11 @@ const publishedRef = database.ref('/published').orderByChild('created');
  * @returns {Promise} Promise resolved when the file is written to disk
  */
 function buildIndex() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     publishedRef.once('value', (snapshot) => {
       const val = snapshot.val();
       const filePath = 'public/index.html';
-      if (!val) return resolve(new Error('There are no posts to build an overview with.'));
+      if (!val) return reject(new Error('There are no posts to build an overview with.'));
       const posts = Object.keys(val).map(post => new Post(val[post]).beautify());
 
       const html = hbsTemplates.index({
