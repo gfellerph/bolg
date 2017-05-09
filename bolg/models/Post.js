@@ -34,14 +34,15 @@ function Post(post = {}) {
 
   this.beautify = () => {
     const p = this;
+    const mdOptions = { gfm: true, smartypants: true };
     p.url = `/posts/${slugger(this.title)}`;
     p.created = moment(this.created, 'x').format('DD.MM.YYYY');
     p.lastEdited = moment(this.lastEdited, 'x').format('DD.MM.YYYY');
     p.lastSaved = moment(this.lastSaved, 'x').format('DD.MM.YYYY');
     p.lastPublished = moment(this.lastPublished, 'x').format('DD.MM.YYYY');
-    p.html = marked(this.markdown, { gfm: true });
-    p.description = marked(`${this.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`);
-    p.excerpt = marked(this.markdown.split(' ').slice(0, 40).join(' ') + '...');
+    p.html = marked(this.markdown, mdOptions);
+    p.description = marked(`${this.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`, mdOptions);
+    p.excerpt = marked(this.markdown.split(' ').slice(0, 40).join(' ') + '...', mdOptions);
     return p;
   };
 
