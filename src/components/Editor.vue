@@ -2,8 +2,9 @@
   <div class="editor">
     <nav class="controls">
       <div class="left-controls">
-        <button class="bold small" @click="bolden">B</button>
-        <button class="italic small" @click="pizzaparty">I</button>
+        <button class="bold small" @click="bolden" title="Bold">B</button>
+        <button class="italic small" @click="pizzaparty" title="Italic">I</button>
+        <button class="small" @click="toggleYoutubeEmbed" title="YouTube">YT</button>
       </div>
       <div class="right-controls">
         <button class="help bold small" @click="toggleClippy">?</button>
@@ -23,6 +24,14 @@
     ></textarea>
     <div class="mirror" ref="mirror" v-html="startToCursor"></div>
     <div class="mirror" ref="mirrorRef" v-html="entireText"></div>
+    <div class="youtube-embed box" :class="{show: showYoutubeEmbed}">
+      <h4>Tue dr iFrame Embed Code hie drii:</h4>
+      <input type="text" v-model="youtubeEmbed" id="youtube-embed" >
+      <p class="text-align-right">
+        <button class="small" @click="toggleYoutubeEmbed">Doch nid</button>
+        <button class="small" @click="youtubeInsert">Guet</button>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -38,6 +47,8 @@
         selectionStart: 0,
         startToCursor: '',
         entireText: '',
+        showYoutubeEmbed: false,
+        youtubeEmbed: '',
       };
     },
 
@@ -65,17 +76,43 @@
         const md = this.$refs.md;
         const start = md.selectionStart;
         const end = md.selectionEnd;
-        this.markdown = this.toggle(this.markdown, '**', '**', start, end);
+        const newMarkdown = this.toggle(this.markdown, '**', '**', start, end);
+        const modifier = this.markdown.length < newMarkdown.length ? 4 : -4;
+        this.markdown = newMarkdown;
         this.change();
         this.$nextTick(() => {
-          md.setSelectionRange(start, end);
+          md.setSelectionRange(start, end + modifier);
           md.focus();
         });
       },
       pizzaparty() {
         const md = this.$refs.md;
-        this.markdown = this.toggle(this.markdown, '_', '_', md.selectionStart, md.selectionEnd);
-        this.keyup();
+        const start = md.selectionStart;
+        const end = md.selectionEnd;
+        const newMarkdown = this.toggle(this.markdown, '_', '_', start, end);
+        const modifier = this.markdown.length < newMarkdown.length ? 2 : -2;
+        this.markdown = newMarkdown;
+        this.change();
+        this.$nextTick(() => {
+          md.setSelectionRange(start, end + modifier);
+          md.focus();
+        });
+      },
+      youtubeInsert() {
+        const md = this.$refs.md;
+        const start = md.selectionStart;
+        const stringToInsert = `\n<div class="video-wrapper">${this.youtubeEmbed}</div>\n`;
+        this.markdown = [this.markdown.slice(0, start), stringToInsert, this.markdown.slice(start)].join('');
+        this.youtubeEmbed = '';
+        this.toggleYoutubeEmbed();
+        this.change();
+        this.$nextTick(() => {
+          md.setSelectionRange(start + 1, start + stringToInsert.length);
+          md.focus();
+        });
+      },
+      toggleYoutubeEmbed() {
+        this.showYoutubeEmbed = !this.showYoutubeEmbed;
       },
       change() {
         if (this.markdown !== lastValue) {
@@ -202,5 +239,29 @@
     display: flex;
     flex: 1 0 auto;
     width: 100%;
+  }
+
+  .youtube-embed {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 80%;
+    transform: translate(-50%, -50%);
+    background: white;
+    // border: 1px solid black;
+    box-shadow: 0 0 20px rgba(black, 0.7);
+    padding: $golden-rem;
+
+    font-family: $sans-serif;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0s 0.5s;
+
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.5s, visibility 0s 0s;
+    }
   }
 </style>
