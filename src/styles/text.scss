@@ -3,7 +3,7 @@ $heading-margin: $golden-rem 0 $golden-rem 0;
 body {
   @include ms-respond(font-size, 1);
   line-height: $golden;
-  font-family: $serif;
+  font-family: $text-font;
 }
 
 p,
@@ -16,6 +16,11 @@ pre {
   font-size: 0.8em;
   background: ghostwhite;
   overflow: auto;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $title-font;
 }
 
 h1,
@@ -89,4 +94,10 @@ article {
       margin-left: 2.5em;
     }
   }
+}
+
+hr {
+  border: none;
+  background: black;
+  height: 1px;
 }
