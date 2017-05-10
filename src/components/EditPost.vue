@@ -55,7 +55,7 @@
   // TODO: Move to config
   renderer.image = (href, title, text) => {
     const srcset = sizes.map(size => `${getThumbUrl(href, size)} ${size.width}w`).join(',');
-    return `<img src="${href}" title="${title}" alt="${text}" srcset="${srcset}">`;
+    return `<img src="${href}" title="${title}" alt="${text}" srcset="">`;
   }
 
   export default {
