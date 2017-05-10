@@ -138,7 +138,9 @@
         const percent = target.scrollTop / (target.scrollHeight - target.clientHeight);
         this.$emit('scroll', percent);
       },
-      toggleClippy() {},
+      toggleClippy() {
+        this.$emit('help');
+      },
       cursorPositionChanged(event) {
         this.startToCursor = this.markdown.substring(0, this.$refs.md.selectionStart)
           .replace(/&/g, "&amp;")

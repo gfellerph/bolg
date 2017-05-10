@@ -3,7 +3,13 @@
     <div class="post-form">
       <div class="post-text">
         <div class="post-markdown">
-          <editor v-model="post.markdown" @scroll="trackScrollposition" @input="savePost" @save="savePostImmediately"></editor>
+          <editor
+            v-model="post.markdown"
+            @scroll="trackScrollposition"
+            @input="savePost"
+            @save="savePostImmediately"
+            @help="toggleCheatsheet"
+          ></editor>
         </div>
       </div>
       <div class="post-images">
@@ -19,6 +25,7 @@
       <article id="post-preview" ref="previewArticle">
         <div class="container" v-html="compiledContent"></div>
       </article>
+      <markdown-cheatsheet @closeCheatsheet="toggleCheatsheet" v-if="showCheatSheet"></markdown-cheatsheet>
     </div>
   </div>
 </template>
@@ -35,6 +42,7 @@
   import { states, sizes } from '@/config/constants';
   import Editor from '@/components/Editor';
   import PostStatus from '@/components/PostStatus';
+  import MarkdownCheatsheet from '@/components/MarkdownCheatsheet';
 
   const getThumbUrl = function (url, size) {
     const fragments = url.split('.');
@@ -44,6 +52,7 @@
 
   const renderer = new marked.Renderer();
 
+  // TODO: Move to config
   renderer.image = (href, title, text) => {
     const srcset = sizes.map(size => `${getThumbUrl(href, size)} ${size.width}w`).join(',');
     return `<img src="${href}" title="${title}" alt="${text}" srcset="${srcset}">`;
@@ -58,6 +67,7 @@
         cursorPosition: 0,
         postLoaded: false,
         states,
+        showCheatSheet: false,
       };
     },
 
@@ -125,7 +135,10 @@
           .catch(err => {
             this.error = err.message;
           });
-      }
+      },
+      toggleCheatsheet() {
+        this.showCheatSheet = !this.showCheatSheet;
+      },
     },
 
     created() {
@@ -152,6 +165,7 @@
       ImageSelector,
       Editor,
       PostStatus,
+      MarkdownCheatsheet,
     }
   };
 </script>
@@ -282,5 +296,14 @@
     border-left: 1px solid black;
     line-height: $golden-rem;
     margin: 0;
+  }
+
+  .markdown-cheatsheet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
   }
 </style>
