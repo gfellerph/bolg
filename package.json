@@ -5,6 +5,7 @@
   "author": "Philipp Gfeller <tuelsch@gmail.com>",
   "private": true,
   "main": "server/server.js",
+  "license": "MIT",
   "scripts": {
     "start": "node build/build.js && node ./bin/www",
     "dev": "node build/dev-server.js",
