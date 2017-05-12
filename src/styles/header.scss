@@ -14,22 +14,19 @@
     justify-content: center;
     overflow: hidden;
 
+    .right-link,
+    .left-link {
+      flex: 1 0 50%;
+    }
+
     a {
       @extend .h4;
+      font-family: $text-font;
       margin: 0 $golden-rem;
       font-style: italic;
       color: black;
       flex: 0 0 auto;
       text-decoration: none;
-
-      &:first-child {
-        flex: 1 0 50%;
-        text-align: right;
-      }
-
-      &:last-child {
-        flex: 1 0 50%;
-      }
 
       &.active {
         text-decoration: underline;
