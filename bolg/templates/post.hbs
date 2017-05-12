@@ -14,10 +14,12 @@
   {{#content "main"}}
     <div class="container">
       <article class="main-post">{{{post.html}}}</article>
-      <hr>
-      <a class="next-post-link" href="{{nextPost.url}}">
-        <article class="next-post">{{{nextPost.excerpt}}}</article>
-      </a>
+      {{#if nextPost}}
+        <hr>
+        <a class="next-post-link" href="{{nextPost.url}}">
+          <article class="next-post">{{{nextPost.excerpt}}}</article>
+        </a>
+      {{/if}}
     </div>
   {{/content}}
   {{#content "scripts"}}

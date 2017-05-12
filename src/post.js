@@ -14,7 +14,6 @@ function setBookmark() {
   }));
 }
 window.onload = function onLoad() {
-  console.log('loaded');
   window.onbeforeunload = setBookmark;
   window.onunload = setBookmark;
 }
