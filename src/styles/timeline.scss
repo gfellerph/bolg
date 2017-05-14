@@ -1,24 +1,12 @@
 .timeline {
   list-style: none;
-  border-left: 2px solid lightgrey;
-  margin: 0;
-  padding: $golden-rem * 2 0;
 
   li {
     position: relative;
-    margin: $golden-rem * 4 0;
-    padding-left: $golden-rem;
+    border-bottom: 1px solid black;
 
-    &:before {
-      content: '';
-      position: absolute;
-      top: calc(50% - 7px);
-      left: -8px;
-      height: 8px;
-      width: 8px;
-      border-radius: 8px;
-      background: lightgrey;
-      border: 3px solid white;
+    &:last-child {
+      border-bottom: none;
     }
   }
 
@@ -27,11 +15,11 @@
   }
 }
 
-.post-published {
+/*.post-published {
   position: absolute;
   top: 50%;
   right: calc(100% + 1em);
   color: lightgrey;
   margin: 0;
   transform: translate(0, -50%);
-}
+}*/
