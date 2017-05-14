@@ -1,10 +1,41 @@
 .bolg-header {
   position: relative;
-  padding: 0 $golden-em;
-  margin: $golden-em auto;
+  padding: 0 2em;
+  margin: $golden-rem auto;
+
+  @include max($xs) {
+    width: 100%;
+  }
 
   .logo {
     height: 4rem;
+
+    @include max($xs) {
+      height: 2.9rem;
+    }
+  }
+
+  .post-date {
+    margin-top: $golden-rem / 2;
+  }
+
+  .right-link,
+  .left-link {
+    @include max($xs) {
+      min-width: 32px;
+      text-decoration: none;
+
+      &:hover,
+      &:active {
+        text-decoration: none;
+      }
+    }
+
+    img {
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
   }
 
   nav {
@@ -14,9 +45,8 @@
     justify-content: center;
     overflow: hidden;
 
-    .right-link,
-    .left-link {
-      flex: 1 0 50%;
+    @include max($xs) {
+      justify-content: space-between;
     }
 
     a {
@@ -25,8 +55,13 @@
       margin: 0 $golden-rem;
       font-style: italic;
       color: black;
-      flex: 0 0 auto;
+      flex: 1 0 auto;
       text-decoration: none;
+
+      @include max($xs) {
+        margin: 0;
+        flex: 0 0 auto;
+      }
 
       &.active {
         text-decoration: underline;

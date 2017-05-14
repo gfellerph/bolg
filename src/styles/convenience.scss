@@ -28,3 +28,15 @@ p.error { color: red; }
     clear: both;
   }
 }
+
+.visible-mobile {
+  @include min($xs) {
+    display: none !important;
+  }
+}
+
+.hidden-mobile {
+  @include max($xs) {
+    display: none !important;
+  }
+}

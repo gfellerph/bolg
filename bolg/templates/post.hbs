@@ -7,13 +7,18 @@
   {{/content}}
   {{#content "navigation"}}
     <nav>
-        <a href="/"><span>Reis</span></a>
+        <a class="left-link" href="/">
+          <span class="hidden-mobile">Reis</span>
+          <img src="/img/arrow-back.svg" alt="Zrugg" class="visible-mobile">
+        </a>
         <a href="/"><img class="logo" src="{{logoURL}}" alt=""></a>
-        <a href="/galerie"><span>Bilder</span></a>
+        <a class="right-link" href="/galerie">
+          <span class="hidden-mobile">Bilder</span>
+        </a>
     </nav>
-    <p class="text-align-center">
+    <p class="post-date small text-align-center">
       <span>&mdash;&nbsp;</span>
-      <span class="italic">{{post.created}}</span>
+      <span class="italic">steffi / {{post.created}}</span>
       <span>&nbsp;&mdash;</span>
     </p>
   {{/content}}
@@ -21,7 +26,7 @@
     <div class="container">
       <article class="main-post">{{{post.html}}}</article>
       {{#if nextPost}}
-        <hr>
+        <hr class="blog-divider">
         <a class="next-post-link" href="{{nextPost.url}}">
           <article class="next-post">{{{nextPost.excerpt}}}</article>
         </a>
