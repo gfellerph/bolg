@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta property="og:site_name" content="Bis när">
+    <meta property="og:description" content="Reiseblog vor Steffi und am Phippu">
+    <meta name="Description" content="Reiseblog vor Steffi und am Phippu">
+    <meta name="Keywords" content="Reisen, Blog, Reiseblog, Weltreise, Reise">
+    {{#block "meta"}}{{/block}}
+
     <link rel="stylesheet" href="{{webpack.[/bolg.css]}}">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:700" rel="stylesheet">
     {{#block "styles"}}{{/block}}
+
     <link rel="shortcut icon" href="/favicon.ico">
 </head>
 <body>
@@ -17,7 +23,6 @@
     <main>
         {{#block "main"}}{{/block}}
     </main>
-    <footer class="footer"></footer>
     {{#block "scripts"}}{{/block}}
 </body>
 </html>

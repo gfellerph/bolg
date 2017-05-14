@@ -1,4 +1,10 @@
 {{#extend "layout"}}
+  {{#content "meta"}}
+    <meta property="og:title" content="{{post.title}}">
+    <meta property="og:image" content="{{logoURL}}">
+    
+    <title>{{post.title}}</title>
+  {{/content}}
   {{#content "navigation"}}
     <nav>
         <a href="/"><span>Reis</span></a>
