@@ -1,25 +1,35 @@
 .timeline {
   list-style: none;
 
+  .h4 {
+    margin: $golden-rem / 2 0;
+  }
+
   li {
     position: relative;
     border-bottom: 1px solid black;
+    padding: $golden-rem 0;
+    // margin: $golden-rem / 2 0;
 
     &:last-child {
       border-bottom: none;
     }
+
+    > a {
+      text-decoration: none;
+      color: black;
+    }
   }
 
-  img {
-    max-height: 100px;
+  p {
+    margin: $golden-rem / 2 0;
+  }
+
+  .picture-grid {
+    columns: 3;
   }
 }
 
-/*.post-published {
-  position: absolute;
-  top: 50%;
-  right: calc(100% + 1em);
-  color: lightgrey;
-  margin: 0;
-  transform: translate(0, -50%);
-}*/
+.post-published {
+  color: grey;
+}

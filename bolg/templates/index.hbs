@@ -15,12 +15,11 @@
       <ul class="posts timeline">
         {{#each posts}}
         <li>
-          <h1 class="h4">{{this.title}}</h1>
-          <p class="post-published">{{this.created}}</p>
-          {{{this.description}}}
-          <p>
-            <a href="{{this.url}}" class="button small">mehr</a>
-          </p>
+          <a href="{{this.url}}">
+            <h1 class="h4">{{this.title}}</h1>
+            <p class="post-published">{{this.created}}</p>
+            {{{this.description}}}
+          </a>
         </li>
         {{/each}}
       </ul>
