@@ -40,7 +40,7 @@
   .post-image {
     position: relative;
     background-color: rgba(255, 255, 255, 0.1);
-    flex: 1 0 auto;
+    flex: 0 0 auto;
 
     & + & {
       margin-left: $golden-rem / 2;
@@ -49,7 +49,6 @@
   
   .post-image--preview {
     display: block;
-    //object-fit: cover;
     height: 14vh;
   }
 

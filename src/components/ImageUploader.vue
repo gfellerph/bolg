@@ -30,7 +30,6 @@
       const upload = this.image.put();
       upload.on('state_changed', this.onUploadProgress);
       upload.then(snapshot => {
-        debugger;
         this.image.file = null;
         this.image.downloadURL = snapshot.downloadURL;
         bus.$emit('add-image', this.image);
@@ -69,7 +68,7 @@
     // object-fit: cover;
     display: block;
     height: 14vh;
-    flex: 1 0 auto;
+    flex: 0 0 auto;
   }
   
   .image-upload--progress {
