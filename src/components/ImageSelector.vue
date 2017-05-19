@@ -49,8 +49,8 @@
     },
 
     created() {
-      bus.$on('add-image', this.addImage);
       bus.$on('remove-image', this.removeImage);
+      bus.$on('thumbnails-generated', this.addImage);
     },
 
     computed: {
@@ -127,10 +127,7 @@
 
   .image-upload {
     flex: 0 0 auto;
-
-    & + & {
-      margin-left: $golden-em / 2;
-    }
+    margin-right: $golden-em / 2;
   }
 
   .images {
