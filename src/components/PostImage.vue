@@ -1,6 +1,6 @@
 <template>
   <div class="post-image">
-    <img class="post-image--preview" :src="image.downloadURL">
+    <img class="post-image--preview" :src="smallestImage">
     <div class="image-controls">
       <div @click="removeImage" class="post-image--remove"></div>
       <div @click="insertImage" class="post-image--insert"></div>
@@ -22,6 +22,13 @@
       image: Object,
     },
 
+    computed: {
+      smallestImage() {
+        if (!this.image.thumbnails) return this.image.downloadURL;
+        return this.image.thumbnails[Math.min.apply(null, Object.keys(this.image.thumbnails))];
+      }
+    },
+
     methods: {
       removeImage() {
         bus.$emit('remove-image', this.image.id);
@@ -41,10 +48,7 @@
     position: relative;
     background-color: rgba(255, 255, 255, 0.1);
     flex: 0 0 auto;
-
-    & + & {
-      margin-left: $golden-rem / 2;
-    }
+    margin-right: $golden-em / 2;
   }
   
   .post-image--preview {
