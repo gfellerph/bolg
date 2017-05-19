@@ -6,6 +6,7 @@ const getFileExtension = str => str.substring(str.lastIndexOf('.'), str.length);
 export default function Image(img = {}) {
   this.file = img.file || null;
   this.downloadURL = img.downloadURL || null;
+  this.thumbnails = img.thumbnails || null;
   this.id = img.id || cuid();
 
   const imagesRef = database.ref(`/images/gallery/${this.id}`);
