@@ -1,6 +1,6 @@
 <template>
   <div class="bookmark">
-    <a v-if="bookmark" href="{{post.url}}">
+    <a v-if="bookmark" :href="post.url">
       <h1 class="h4">{{post.title}}</h1>
       <p class="post-created"></p>
       <p></p>
