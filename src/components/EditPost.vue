@@ -206,6 +206,7 @@
 
   .post-images {
     overflow: auto;
+    border-top: 1px solid black;
   }
 
   .post-preview {
@@ -255,6 +256,7 @@
   .post-stats {
     display: flex;
     position: relative;
+    border-top: 1px solid black;
 
     .post-status {
       flex: 1 0 auto;
