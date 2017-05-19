@@ -1,23 +1,34 @@
 import cuid from 'cuid';
-import {storage} from '@/config/firebase';
+import { storage, database } from '@/config/firebase';
+
+const getFileExtension = str => str.substring(str.lastIndexOf('.'), str.length);
 
 export default function Image(img = {}) {
   this.file = img.file || null;
   this.downloadURL = img.downloadURL || null;
   this.id = img.id || cuid();
 
+  const imagesRef = database.ref(`/images/gallery/${this.id}`);
+
   // Methods
-  this.url = function () {
-    return this.file 
+  this.url = () => {
+    return this.file
       ? window.URL.createObjectURL(this.file)
       : this.downloadURL || null;
   };
-  this.put = function () {
+
+  this.put = () => {
     if (!this.file) throw new Error('Can\'t upload image, no file specified');
-    if (this.downloadURL) return new Promise((resolve, reject) => resolve({downloadURL: this.downloadURL}));
-    
+    if (this.downloadURL) return Promise.resolve({ downloadURL: this.downloadURL });
+
     return storage
-      .ref(`/gallery/${this.id}`)
-      .put(this.file);
+      .ref(`/gallery/${this.id}${getFileExtension(this.file.name)}`)
+      .put(this.file, { customMetadata: { id: this.id } });
   };
+
+  this.getThumbnail = (width) => {
+    return new Promise((resolve) => {
+      imagesRef.child(width).once('value', snapshot => resolve(snapshot.val()));
+    });
+  }
 }
