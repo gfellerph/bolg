@@ -108,8 +108,10 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
               metadata: {
                 contentType: object.contentType,
               },
+              public: true,
+              private: false,
+              resumable: false,
             })
-            .then(() => newBucketFile.makePublic())
             .then(() => ({ file: newBucketFile, size }));
         });
     });
@@ -125,7 +127,7 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
     console.log('Medialinks', thumbsObj, object.metadata);
 
     // Don't write to DB if the original file does not have an id
-    if (!object.metadata.id) return;
+    if (!object.metadata.id) return Promise.resolve(true);
 
     // Save the image and use its name (without path or extension) as id for reference
     const path = object.name.substring(0, object.name.lastIndexOf('/'));
