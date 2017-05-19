@@ -90,9 +90,12 @@ article {
   }
 
   p + p {
-    &:before {
-      content: '';
-      margin-left: 2.5em;
+    text-indent: 2.5em;
+  }
+
+  p {
+    img {
+      display: block;
     }
   }
 }
