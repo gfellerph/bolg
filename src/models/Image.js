@@ -8,6 +8,7 @@ export default function Image(img = {}) {
   this.downloadURL = img.downloadURL || null;
   this.thumbnails = img.thumbnails || null;
   this.id = img.id || cuid();
+  this.lastModified = img.file ? img.file.lastModified : Date.now();
 
   const imagesRef = database.ref(`/images/gallery/${this.id}`);
 

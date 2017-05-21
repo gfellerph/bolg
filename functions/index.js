@@ -124,14 +124,19 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
     uploadedThumbnails.map((thumb) => {
       thumbsObj[thumb.size.width] = thumb.file.metadata.mediaLink;
     });
-    console.log('Medialinks', thumbsObj, object.metadata);
+    console.log('Medialinks', thumbsObj, object, file);
 
     // Don't write to DB if the original file does not have an id
     if (!object.metadata.id) return Promise.resolve(true);
 
     // Save the image and use its name (without path or extension) as id for reference
     const path = object.name.substring(0, object.name.lastIndexOf('/'));
-    return firebase.database().ref(`images/${path}/${object.metadata.id}`).set(thumbsObj);
+    return firebase.database().ref(`images/${path}/${object.metadata.id}`).set({
+      id: object.metadata.id,
+      downloadURL: file.metadata.mediaLink,
+      thumbnails: thumbsObj,
+      lastModified: object.metadata.lastModified,
+    });
   })
 
   .catch((err) => { console.log(err); });
