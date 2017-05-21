@@ -62,9 +62,6 @@
       removeImage() {
         this.$emit('remove-image', this.image.id);
       },
-      insertImage() {
-        bus.$emit('insert-image', this.image.downloadURL);
-      }
     }
   };
 </script>

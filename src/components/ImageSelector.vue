@@ -54,7 +54,7 @@
     },
 
     computed: {
-      mappedImages() { return this.post.images.map(image => new Image(typeof image === 'string' ? {downloadURL: image} : {file: image})); },
+      
     },
 
     methods: {
