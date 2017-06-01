@@ -1,13 +1,12 @@
 <template>
   <div class="bookmark">
-    <a v-if="bookmark" :href="post.url">
-      <h1 class="h4">{{post.title}}</h1>
-      <p class="post-created"></p>
-      <p></p>
+    <a v-if="bookmark" :href="post.postUrl">
+      <h1 class="h4">{{post.postTitle}}</h1>
+      <p class="post-created">{{post.created}}</p>
+      <p v-html="post.description"></p>
     </a>
   </div>
 </template>
-
 
 <script>
   import Post from '@/models/Post';

@@ -8,7 +8,7 @@
       </ul>
     </div>
     <div class="post-preview" v-if="currentPost">
-      <iframe class="post-preview-frame" :src="currentPostUrl" frameborder="0"></iframe>
+      <iframe class="post-preview-frame" :src="currentPost.url" frameborder="0"></iframe>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@
 <script>
   import Post from '@/models/Post';
   import PostDetails from '@/components/PostDetails';
-  import {database} from '@/config/firebase';
+  import { database } from '@/config/firebase';
 
   export default {
     data() {
@@ -33,16 +33,12 @@
 
     computed: {
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
-      currentPostUrl() { return `https://bolg-app.herokuapp.com/posts/${this.slugger(this.currentPost.title)}.html`; }
     },
 
     methods: {
       changeCurrentPost(post) {
         this.currentPost = new Post(post);
       },
-      slugger(str) {
-        return str.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
-      }
     },
 
     components: {

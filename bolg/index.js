@@ -21,7 +21,7 @@ function buildIndex() {
       const val = snapshot.val();
       const filePath = 'public/index.html';
       if (!val) return reject(new Error('There are no posts to build an overview with.'));
-      const posts = Object.keys(val).map(post => new Post(val[post]).beautify());
+      const posts = Object.keys(val).map(post => new Post(val[post]));
 
       const html = hbsTemplates.index({
         posts,
@@ -44,8 +44,8 @@ function buildPost(post, nextPost) {
 
   const filePath = `public/posts/${slugger(post.title)}.html`;
   const html = hbsTemplates.post({
-    post: post.beautify(),
-    nextPost: nextPost ? nextPost.beautify() : null,
+    post,
+    nextPost,
     logoURL: logoURL(),
     webpack: webpackManifest,
   });

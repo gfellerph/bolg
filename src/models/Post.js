@@ -1,4 +1,8 @@
 import cuid from 'cuid';
+import marked from 'marked';
+import moment from 'moment';
+import slugger from '@/config/slugger';
+import { liveRootUrl } from '@/config/constants';
 import { database, auth } from '@/config/firebase';
 
 /**
@@ -53,11 +57,12 @@ export default function Post(post = {}) {
   this.publish = () => {
     this.lastSaved = Date.now();
     this.lastPublished = Date.now();
-    const payload = this.normalize();
+    const postToPublish = new Post(this);
+    postToPublish.beautify();
 
     return Promise.all([
-      ref.set(payload),
-      publishRef.set(payload),
+      ref.set(this.normalize()),
+      publishRef.set(postToPublish.normalize()),
     ]);
   };
 
@@ -73,6 +78,20 @@ export default function Post(post = {}) {
     ]);
   };
 
+  this.beautify = () => {
+    const mdOptions = { gfm: true, smartypants: true };
+    this.postUrl = this.url;
+    this.postTitle = this.title;
+    this.created = moment(this.created, 'x').format('DD.MM.YYYY');
+    this.lastEdited = moment(this.lastEdited, 'x').format('DD.MM.YYYY');
+    this.lastSaved = moment(this.lastSaved, 'x').format('DD.MM.YYYY');
+    this.lastPublished = moment(this.lastPublished, 'x').format('DD.MM.YYYY');
+    this.html = marked(this.markdown, mdOptions);
+    this.description = marked(`${this.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`, mdOptions);
+    this.excerpt = marked(`${this.markdown.split(' ').slice(0, 40).join(' ')}...`, mdOptions);
+    return this;
+  };
+
   /**
    * Get the post title, first line starting with a single #
    * @returns {String} Post title extracted from post markdown or empty string
@@ -86,7 +105,8 @@ export default function Post(post = {}) {
 
   Object.defineProperty(this, 'url', {
     get() {
-      return this.title.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+      const url = `${liveRootUrl}${slugger(this.title)}.html`;
+      return url || '';
     },
-  })
+  });
 }
