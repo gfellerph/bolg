@@ -1,10 +1,10 @@
 const hbsTemplates = require('./config/handlebars');
 const firebase = require('./config/firebase');
 const writefile = require('./writefile');
-const Post = require('./models/Post');
+const Post = require('@/models/Post');
 const fs = require('fs');
 const helpers = require('./helpers');
-const webpackManifest = require('../public/config/webpack.manifest.json');
+const webpackManifest = require('../../public/config/webpack.manifest.json');
 
 const slugger = helpers.slugger;
 const logoURL = helpers.logoURL;
@@ -15,7 +15,7 @@ const publishedRef = database.ref('/published').orderByChild('created');
  * Build the index page
  * @returns {Promise} Promise resolved when the file is written to disk
  */
-function buildIndex() {
+export function buildIndex() {
   return new Promise((resolve, reject) => {
     publishedRef.once('value', (snapshot) => {
       const val = snapshot.val();
@@ -39,7 +39,7 @@ function buildIndex() {
  * @param {Post} nextPost - Next post in line for the preview
  * @returns {Promise} Resolves when the file is written to disk
  */
-function buildPost(post, nextPost) {
+export function buildPost(post, nextPost) {
   if (!post) throw new Error(`Post with id ${post} not found, can't touch this.`);
 
   const filePath = `public/posts/${slugger(post.title)}.html`;
@@ -54,7 +54,7 @@ function buildPost(post, nextPost) {
 }
 
 // Fetch post data from firebase and rebuild a single post
-function publish(id) {
+export function publish(id) {
   return new Promise((resolve) => {
     publishedRef.once('value', (snapshot) => {
       const value = snapshot.val();
@@ -81,7 +81,7 @@ function publish(id) {
   });
 }
 
-function publishAll() {
+export function publishAll() {
   const blogTasks = [];
 
   return new Promise((resolve, reject) => {
@@ -101,7 +101,7 @@ function publishAll() {
   });
 }
 
-function unpublish(id) {
+export function unpublish(id) {
   return new Promise((resolve, reject) => {
     database.ref(`/posts/${id}`)
       .once('value', (snapshot) => {
@@ -132,10 +132,3 @@ publishedRef.on('child_changed', (snapshot) => {
   const post = snapshot.val();
   publish(post.id).then(buildIndex);
 });
-
-module.exports = {
-  buildIndex,
-  publishAll,
-  publish,
-  unpublish,
-};

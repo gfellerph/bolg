@@ -3,7 +3,7 @@ const fs = require('fs');
 const dirname = require('path').dirname;
 
 // Create "this-is-a-post" from "This is a Post"
-exports.slugger = str => str
+export const slugger = str => str
   .toLowerCase()
   .replace(/ä/g, 'ae')
   .replace(/ö/g, 'oe')
@@ -12,13 +12,13 @@ exports.slugger = str => str
   .replace(/ +/g, '-');
 
 // Random logo
-exports.logoURL = () => `/img/bisnaer${Math.ceil(Math.random() * 31, 10)}.PNG`;
+export const logoURL = () => `/img/bisnaer${Math.ceil(Math.random() * 31, 10)}.PNG`;
 
 /**
  * Safely write a file to disk
  * @returns {Promise} File written promise
  */
-exports.writefile = (filePath, content) => {
+export const writefile = (filePath, content) => {
   const fileContent = (typeof content === 'object') ? JSON.stringify(content) : content;
   return new Promise((resolve, reject) => {
     mkdirp(dirname(filePath), (err) => {

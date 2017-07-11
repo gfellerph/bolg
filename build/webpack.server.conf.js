@@ -1,5 +1,6 @@
 const path = require('path');
 const config = require('../config/server.env');
+const nodeExternals = require('webpack-node-externals');
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir);
@@ -14,10 +15,12 @@ module.exports = {
     filename: '[name].js',
     publicPath: config.server.assetsPublicPath,
   },
+  externals: [nodeExternals()],
   resolve: {
     extensions: ['.js'],
     alias: {
       '@': resolve('src'),
+      handlebars: 'handlebars/runtime.js',
     },
   },
   module: {

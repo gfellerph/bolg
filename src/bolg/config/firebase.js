@@ -6,4 +6,4 @@ admin.initializeApp({
   databaseURL: 'https://bolg-d1098.firebaseio.com',
 });
 
-module.exports = admin;
+export default admin;
