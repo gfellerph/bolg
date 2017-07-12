@@ -1,10 +1,10 @@
-const hbsTemplates = require('./config/handlebars');
-const firebase = require('./config/firebase');
-const writefile = require('./writefile');
-const Post = require('@/models/Post');
-const fs = require('fs');
-const helpers = require('./helpers');
-const webpackManifest = require('../../public/config/webpack.manifest.json');
+import firebase from '@/bolg/config/firebase';
+import * as hbsTemplates from './config/handlebars';
+import writefile from './writefile';
+import Post from '@/models/Post';
+import fs from 'fs';
+import * as helpers from './helpers';
+import webpackManifest from '../../public/config/webpack.manifest.json';
 
 const slugger = helpers.slugger;
 const logoURL = helpers.logoURL;

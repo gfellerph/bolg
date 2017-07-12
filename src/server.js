@@ -1,9 +1,10 @@
-const express = require('express');
-// const bolg = require('./bolg');
-// const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+import express from 'express';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import publishAll from '@/server/api/publish-all';
+import publish from '@/server/api/publish';
+import unpublish from '@/server/api/unpublish';
 
 const app = express();
 
@@ -16,9 +17,9 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Listen for rebuild requests
-app.get('/publish', require('@/server/api/publish-all'));
-app.get('/publish/:id', require('@/server/api/publish'));
-app.get('/unpublish/:id', require('@/server/api/unpublish'));
+app.get('/publish', publishAll);
+app.get('/publish/:id', publish);
+app.get('/unpublish/:id', unpublish);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

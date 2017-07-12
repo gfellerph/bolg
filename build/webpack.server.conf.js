@@ -14,6 +14,8 @@ module.exports = {
     path: config.server.assetsRoot,
     filename: '[name].js',
     publicPath: config.server.assetsPublicPath,
+    libraryTarget: 'commonjs',
+    library: '',
   },
   externals: [nodeExternals()],
   resolve: {
@@ -24,11 +26,12 @@ module.exports = {
     },
   },
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')],
+        exclude: ['node_modules'],
       },
     ],
   },

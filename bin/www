@@ -24,10 +24,10 @@ function normalizePort(val) {
  * Module dependencies.
  */
 
-const app = require('../server/server');
+const app = require('../server/server').default;
 const debug = require('debug')('express-test-app:server');
 const http = require('http');
-const bolg = require('../bolg');
+// const bolg = require('../src/bolg');
 
 /**
  * Get port from environment and store in Express.
@@ -80,10 +80,10 @@ function onListening() {
     ? `pipe ${addr}`
     : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
-  bolg.publishAll()
+  /*bolg.publishAll()
     .then(bolg.buildIndex)
     .then(() => {
-      /* eslint-disable no-console */
+      /* eslint-disable no-console
       const url = typeof addr === 'string'
         ? addr
         : `http://localhost:${addr.port}`;
@@ -91,7 +91,7 @@ function onListening() {
     })
     .catch((err) => {
       throw err
-    })
+    })*/
 }
 
 
