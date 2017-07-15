@@ -1,4 +1,4 @@
-const bolg = require('../../bolg');
+const bolg = require('../index');
 
 /**
  * Build all posts, then the index

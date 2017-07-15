@@ -1,4 +1,4 @@
-const bolg = require('../../bolg');
+const bolg = require('../index');
 
 /**
  * Unpublish a previously published blog post, so

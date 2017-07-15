@@ -8,7 +8,7 @@
       </ul>
     </div>
     <div class="post-preview" v-if="currentPost">
-      <iframe class="post-preview-frame" :src="currentPost.url" frameborder="0"></iframe>
+      <iframe class="post-preview-frame" :src="currentPost.liveUrl" frameborder="0"></iframe>
     </div>
   </div>
 </template>

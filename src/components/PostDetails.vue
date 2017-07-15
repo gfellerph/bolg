@@ -28,7 +28,7 @@
   import dateFormat from '@/filters/date-format';
   import PostMixin from '@/mixins/post-mixin';
   import PostStatus from '@/components/PostStatus';
-  import {states} from '@/config/constants';
+  import { states } from '@/config/constants';
   import marked from 'marked';
 
   export default {

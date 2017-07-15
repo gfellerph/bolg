@@ -16,7 +16,7 @@
 
 <script>
   import AuthGuard from '@/components/AuthGuard';
-  import {mapState} from 'vuex';
+  import { mapState } from 'vuex';
 
   export default {
     data() {

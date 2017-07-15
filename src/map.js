@@ -3,11 +3,8 @@
 import Vue from 'vue';
 import Map from '@/components/Map';
 import Bookmark from '@/components/Bookmark';
-// import router from './config/router';
 import store from './config/store';
-import dateFormat from './filters/date-format';
 
-Vue.filter('dateFormat', dateFormat);
 Vue.config.productionTip = false;
 
 const mapElement = document.getElementById('map');
@@ -29,5 +26,5 @@ if (bookmarkElement) {
     store,
     template: '<Bookmark/>',
     components: { Bookmark },
-  })
+  });
 }

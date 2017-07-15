@@ -7,9 +7,9 @@ import connectionStore from '@/stores/connection-store';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	strict: true,
-	modules: {
-		auth: authStore,
-		connection: connectionStore,
-	},
+  strict: true,
+  modules: {
+    auth: authStore,
+    connection: connectionStore,
+  },
 });

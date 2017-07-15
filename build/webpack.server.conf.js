@@ -22,6 +22,7 @@ module.exports = {
     extensions: ['.js'],
     alias: {
       '@': resolve('src'),
+      server: resolve('src/server'),
       handlebars: 'handlebars/runtime.js',
     },
   },
@@ -36,4 +37,6 @@ module.exports = {
     ],
   },
   target: 'node',
+  watch: true,
+  bail: true,
 };

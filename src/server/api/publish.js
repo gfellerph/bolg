@@ -1,4 +1,4 @@
-const bolg = require('../../bolg');
+const bolg = require('../index');
 
 /**
  * Publish a specific post. Needs a post id or 'index' to publish

@@ -1,8 +1,8 @@
-import firebase from '@/bolg/config/firebase';
-import * as hbsTemplates from './config/handlebars';
+import fs from 'fs';
+import firebase from '@/config/firebase-admin';
+import * as hbsTemplates from '@/config/handlebars';
 import writefile from './writefile';
 import Post from '@/models/Post';
-import fs from 'fs';
 import * as helpers from './helpers';
 import webpackManifest from '../../public/config/webpack.manifest.json';
 

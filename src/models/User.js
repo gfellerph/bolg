@@ -1,4 +1,4 @@
-import {auth} from '@/config/firebase';
+import { auth } from '@/config/firebase';
 // import store from '@/config/store';
 
 export default function User(user = {}) {

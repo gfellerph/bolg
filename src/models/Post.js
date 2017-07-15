@@ -1,9 +1,9 @@
 import cuid from 'cuid';
-import marked from 'marked';
 import moment from 'moment';
-import slugger from '@/config/slugger';
+import { slugger } from '@/config/constants';
 import { liveRootUrl } from '@/config/constants';
 import { database, auth } from '@/config/firebase';
+import { marked, excerpt, description } from '@/config/markdown';
 
 /**
  * A blog post
@@ -21,6 +21,9 @@ export default function Post(post = {}) {
   this.author = post.author || auth.currentUser.uid;
   this.markdown = post.markdown || '';
   this.images = post.images || [];
+  this.html = post.html || null;
+  this.excerpt = post.excerpt || null;
+  this.description = post.description || null;
 
   // Constants
   const ref = database.ref(`/posts/${this.id}`);
@@ -79,16 +82,16 @@ export default function Post(post = {}) {
   };
 
   this.beautify = () => {
-    const mdOptions = { gfm: true, smartypants: true };
     this.postUrl = this.url;
+    this.postLiveUrl = this.liveUrl;
     this.postTitle = this.title;
     this.created = moment(this.created, 'x').format('DD.MM.YYYY');
     this.lastEdited = moment(this.lastEdited, 'x').format('DD.MM.YYYY');
     this.lastSaved = moment(this.lastSaved, 'x').format('DD.MM.YYYY');
     this.lastPublished = moment(this.lastPublished, 'x').format('DD.MM.YYYY');
-    this.html = marked(this.markdown, mdOptions);
-    this.description = marked(`${this.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`, mdOptions);
-    this.excerpt = marked(`${this.markdown.split(' ').slice(0, 40).join(' ')}...`, mdOptions);
+    this.html = marked(this.markdown);
+    this.description = description(this.markdown);
+    this.excerpt = excerpt(this.markdown);
     return this;
   };
 
@@ -103,9 +106,16 @@ export default function Post(post = {}) {
     },
   });
 
-  Object.defineProperty(this, 'url', {
+  Object.defineProperty(this, 'liveUrl', {
     get() {
       const url = `${liveRootUrl}${slugger(this.title)}.html`;
+      return url || '';
+    },
+  });
+
+  Object.defineProperty(this, 'url', {
+    get() {
+      const url = `/posts/${slugger(this.title)}.html`;
       return url || '';
     },
   });

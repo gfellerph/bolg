@@ -35,4 +35,12 @@ export const sizes = [
     width: 640,
     height: 360,
   },
-]
+];
+
+export const slugger = str => str
+    .toLowerCase()
+    .replace(/ä/g, 'ae')
+    .replace(/ö/g, 'oe')
+    .replace(/ü/g, 'ue')
+    .replace(/[^\w ]+/g, ' ')
+    .replace(/ +/g, '-');
