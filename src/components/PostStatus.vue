@@ -31,13 +31,13 @@
       },
       message() {
         const lastPublished = this.post.lastPublished
-          ? moment(this.post.lastPublished).format('DD.MM.YY HH:MM')
-          : 'nie';
+          ? `publiziert am ${moment(this.post.lastPublished).format('DD.MM.YY HH:MM')}`
+          : 'nid publiziert';
 
         const messages = {
           '0': 'i bi am lade...',
           '1': 'du schribsch öppis',
-          '2': `gschpicheret (zletscht publiziert ${lastPublished})`,
+          '2': `gschpicheret (${lastPublished})`,
           '3': `fähler o.O: `,
           '4': 'du schribsch öppis (ke netz)',
           '5': 'gschpicheret (ke netz)',
