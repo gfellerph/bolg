@@ -1,0 +1,14 @@
+<svg width="33" height="22" viewBox="0 0 33 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>arrow-forward</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(160 215)">
+<g id="arrow-forward">
+<g id="Arrow Back">
+<use xlink:href="#path0_fill" transform="matrix(-1 1.22465e-16 -1.22465e-16 -1 -127.894 -193.201)" fill="#121313"/>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" fill-rule="evenodd" d="M 31.1058 10.0002L 3.27775 10.0002L 11.6027 1.70725C 11.9937 1.31625 11.9937 0.68325 11.6027 0.29325C 11.2117 -0.0977498 10.5788 -0.0977498 10.1888 0.29325L 0.28875 10.1923C -0.09625 10.5773 -0.09625 11.2213 0.28875 11.6063L 10.1888 21.5063C 10.5798 21.8973 11.2127 21.8973 11.6027 21.5063C 11.9937 21.1153 11.9937 20.4822 11.6027 20.0922L 3.27775 12.0002L 31.1058 12.0002C 31.6578 12.0002 32.1057 11.5522 32.1057 11.0002C 32.1057 10.4482 31.6578 10.0002 31.1058 10.0002Z"/>
+</defs>
+</svg>

@@ -6,22 +6,10 @@
 
   @include max($xs) {
     width: 100%;
+    height: 70vh;
   }
 }
 
 #google-map {
   height: 100%;
-}
-
-.entree {
-  @extend .clearfix;
-
-  > div {
-    float: left;
-    width: 50%;
-  }
-
-  .box {
-    padding: 0 $golden-em * 3;
-  }
 }

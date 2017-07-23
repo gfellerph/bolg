@@ -1,14 +1,13 @@
 <template>
 	<div class="map">
 		<div id="google-map"></div>
-		<div class="popup" v-if="showPopup">
-			<add-tipp
-				:lat="lat"
-				:lng="lng"
-				:country="country"
-				@tipp-added="resetTipp"
-				@tipp-closed="closeTipp"></add-tipp>
-		</div>
+		<add-tipp
+			:lat="lat"
+			:lng="lng"
+			:country="country"
+			v-if="showPopup"
+			@tipp-added="resetTipp"
+			@tipp-closed="closeTipp"></add-tipp>
 	</div>
 </template>
 
@@ -48,7 +47,7 @@
 				const marker = new google.maps.Marker({
 					position: new google.maps.LatLng(tipp.lat, tipp.lng),
 					map: map,
-					title: `${tipp.username.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+					title: `${tipp.user.displayName.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
 				});
 				const infowindow = new google.maps.InfoWindow({
 					content: `
@@ -67,20 +66,7 @@
 			addTipp(event) {
 				this.lat = event.latLng.lat();
 				this.lng = event.latLng.lng();
-				reverseGeocode(this.lat, this.lng)
-					.then(res => {
-						this.showPopup = true;
-						if (res.data.results < 1) {
-							this.country = 'di witi See';
-						} else {
-							this.country = res.data.results[0].address_components.filter(component => {
-								return component.types.indexOf('country') >= 0;
-							})[0].long_name;
-						}
-					})
-					.catch(err => {
-						throw err;
-					});
+				this.showPopup = true;
 			},
 			resetTipp(tipp) {
 				this.showPopup = false;

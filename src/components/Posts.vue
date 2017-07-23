@@ -37,7 +37,6 @@
 
     methods: {
       changeCurrentPost(post) {
-        console.log(post.postRef);
         this.currentPost = post.lastPublished ? new Post(post) : '';
       },
     },

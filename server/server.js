@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72,7 +72,7 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_promise__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_promise__);
@@ -80,10 +80,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_fs__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config_firebase_admin__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__config_handlebars__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__writefile__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__models_Post__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__helpers__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__public_config_webpack_manifest_json__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__writefile__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__models_Post__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__helpers__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__public_config_webpack_manifest_json__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__public_config_webpack_manifest_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__public_config_webpack_manifest_json__);
 /* harmony export (immutable) */ __webpack_exports__["buildIndex"] = buildIndex;
 /* harmony export (immutable) */ __webpack_exports__["buildPost"] = buildPost;
@@ -231,7 +231,7 @@ module.exports = require("fs");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return liveRootUrl; });
 /* unused harmony export states */
@@ -380,11 +380,11 @@ module.exports = require("morgan");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase_admin__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase_admin__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase_admin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase_admin__);
 
 
-var serviceAccount = __webpack_require__(22);
+var serviceAccount = __webpack_require__(23);
 
 __WEBPACK_IMPORTED_MODULE_0_firebase_admin___default.a.initializeApp({
   credential: __WEBPACK_IMPORTED_MODULE_0_firebase_admin___default.a.credential.cert(serviceAccount),
@@ -398,11 +398,11 @@ __WEBPACK_IMPORTED_MODULE_0_firebase_admin___default.a.initializeApp({
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuefire__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuefire__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuefire___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vuefire__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return database; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return auth; });
@@ -439,9 +439,9 @@ var FacebookProvider = __WEBPACK_IMPORTED_MODULE_0_firebase___default.a.auth ? n
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fs__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_handlebars__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_handlebars__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_handlebars___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_handlebars__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_handlebars_layouts__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_handlebars_layouts__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_handlebars_layouts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_handlebars_layouts__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return index; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return post; });
@@ -464,15 +464,47 @@ var post = __WEBPACK_IMPORTED_MODULE_1_handlebars___default.a.compile(postTempla
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_marked__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_marked___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_marked__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return marked; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return excerpt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return description; });
+
+
+var markdownOptions = {
+  gfm: true,
+  smartypants: true
+};
+
+var marked = function marked(str) {
+  return __WEBPACK_IMPORTED_MODULE_0_marked___default()(str, markdownOptions);
+};
+var excerpt = function excerpt(str) {
+  return __WEBPACK_IMPORTED_MODULE_0_marked___default()(str.split(' ').slice(0, 40).join(' ') + '...', markdownOptions);
+};
+var description = function description(str) {
+  return __WEBPACK_IMPORTED_MODULE_0_marked___default()(str.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ') + '...', markdownOptions);
+};
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_cuid__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_cuid__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_cuid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_cuid__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config_constants__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__config_firebase__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__config_constants__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__config_firebase__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__config_markdown__ = __webpack_require__(17);
 /* harmony export (immutable) */ __webpack_exports__["a"] = Post;
+
+
 
 
 
@@ -490,15 +522,15 @@ function Post() {
   this.lastEdited = post.lastEdited || null;
   this.lastSaved = post.lastSaved || null;
   this.lastPublished = post.lastPublished || null;
-  this.author = post.author || __WEBPACK_IMPORTED_MODULE_4__config_firebase__["a" /* auth */].currentUser.uid;
+  this.author = post.author || __WEBPACK_IMPORTED_MODULE_5__config_firebase__["a" /* auth */].currentUser.uid;
   this.markdown = post.markdown || '';
   this.images = post.images || [];
   this.html = post.html || null;
   this.excerpt = post.excerpt || null;
   this.description = post.description || null;
 
-  var ref = __WEBPACK_IMPORTED_MODULE_4__config_firebase__["b" /* database */].ref('/posts/' + this.id);
-  var publishRef = __WEBPACK_IMPORTED_MODULE_4__config_firebase__["b" /* database */].ref('/published/' + this.id);
+  var ref = __WEBPACK_IMPORTED_MODULE_5__config_firebase__["b" /* database */].ref('/posts/' + this.id);
+  var publishRef = __WEBPACK_IMPORTED_MODULE_5__config_firebase__["b" /* database */].ref('/published/' + this.id);
 
   this.normalize = function () {
     return JSON.parse(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify___default()(_this));
@@ -513,9 +545,32 @@ function Post() {
     return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default.a.all([publishRef.remove(), ref.remove()]);
   };
 
+  this.publish = function () {
+    _this.lastSaved = Date.now();
+    _this.lastPublished = Date.now();
+    var postToPublish = new Post(_this);
+    postToPublish.beautify();
+
+    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default.a.all([ref.set(_this.normalize()), publishRef.set(postToPublish.normalize())]);
+  };
+
   this.unpublish = function () {
     _this.lastPublished = null;
     return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default.a.all([_this.set(), publishRef.remove()]);
+  };
+
+  this.beautify = function () {
+    _this.postUrl = _this.url;
+    _this.postLiveUrl = _this.liveUrl;
+    _this.postTitle = _this.title;
+    _this.created = __WEBPACK_IMPORTED_MODULE_3_moment___default()(_this.created, 'x').format('DD.MM.YYYY');
+    _this.lastEdited = __WEBPACK_IMPORTED_MODULE_3_moment___default()(_this.lastEdited, 'x').format('DD.MM.YYYY');
+    _this.lastSaved = __WEBPACK_IMPORTED_MODULE_3_moment___default()(_this.lastSaved, 'x').format('DD.MM.YYYY');
+    _this.lastPublished = __WEBPACK_IMPORTED_MODULE_3_moment___default()(_this.lastPublished, 'x').format('DD.MM.YYYY');
+    _this.html = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__config_markdown__["a" /* marked */])(_this.markdown);
+    _this.description = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__config_markdown__["b" /* description */])(_this.markdown);
+    _this.excerpt = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__config_markdown__["c" /* excerpt */])(_this.markdown);
+    return _this;
   };
 
   Object.defineProperty(this, 'title', {
@@ -527,21 +582,21 @@ function Post() {
 
   Object.defineProperty(this, 'liveUrl', {
     get: function get() {
-      var url = '' + __WEBPACK_IMPORTED_MODULE_3__config_constants__["a" /* liveRootUrl */] + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__config_constants__["b" /* slugger */])(this.title) + '.html';
+      var url = '' + __WEBPACK_IMPORTED_MODULE_4__config_constants__["a" /* liveRootUrl */] + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__config_constants__["b" /* slugger */])(this.title) + '.html';
       return url || '';
     }
   });
 
   Object.defineProperty(this, 'url', {
     get: function get() {
-      var url = '/posts/' + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__config_constants__["b" /* slugger */])(this.title) + '.html';
+      var url = '/posts/' + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__config_constants__["b" /* slugger */])(this.title) + '.html';
       return url || '';
     }
   });
 }
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -587,7 +642,7 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__server_index__["publishAll"])
 /* harmony default export */ __webpack_exports__["default"] = (app);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -595,7 +650,7 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__server_index__["publishAll"])
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_typeof__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_typeof__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_typeof__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return slugger; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return logoURL; });
@@ -627,7 +682,7 @@ var writefile = function writefile(filePath, content) {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -649,28 +704,28 @@ var dirname = __webpack_require__(6).dirname;
 });
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = {
 	"/app.css": "/css/app.c20c2de8cc13642282c5b8e93e165d5a.css",
 	"/app.css.map": "/css/app.c20c2de8cc13642282c5b8e93e165d5a.css.map",
-	"/app.js": "/js/app.866e30aa15020e1f363f.js",
-	"/app.js.map": "/js/app.866e30aa15020e1f363f.js.map",
+	"/app.js": "/js/app.e7c27931ac8ab62e520c.js",
+	"/app.js.map": "/js/app.e7c27931ac8ab62e520c.js.map",
 	"/bolg.css": "/css/bolg.6e7cd94656343b6548fd31c1a98072a0.css",
 	"/bolg.css.map": "/css/bolg.6e7cd94656343b6548fd31c1a98072a0.css.map",
-	"/bolg.js": "/js/bolg.2322eef0a1d59ca07c60.js",
-	"/bolg.js.map": "/js/bolg.2322eef0a1d59ca07c60.js.map",
+	"/bolg.js": "/js/bolg.291ba20fec33378411b0.js",
+	"/bolg.js.map": "/js/bolg.291ba20fec33378411b0.js.map",
 	"/map.css": "/css/map.11f194237afd68344b5633fe1040a6ed.css",
 	"/map.css.map": "/css/map.11f194237afd68344b5633fe1040a6ed.css.map",
-	"/map.js": "/js/map.ffa4342e62cea7564a26.js",
-	"/map.js.map": "/js/map.ffa4342e62cea7564a26.js.map",
-	"/post.js": "/js/post.fe0d8c51295fe6a4aabe.js",
-	"/post.js.map": "/js/post.fe0d8c51295fe6a4aabe.js.map"
+	"/map.js": "/js/map.e442e56da14ab9b1cc52.js",
+	"/map.js.map": "/js/map.e442e56da14ab9b1cc52.js.map",
+	"/post.js": "/js/post.3565453a87daed1024d4.js",
+	"/post.js.map": "/js/post.3565453a87daed1024d4.js.map"
 };
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -687,61 +742,73 @@ module.exports = {
 };
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = require("axios");
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("babel-runtime/core-js/object/keys");
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("babel-runtime/helpers/typeof");
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = require("cuid");
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("firebase");
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("firebase-admin");
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = require("handlebars");
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = require("handlebars-layouts");
 
 /***/ }),
-/* 31 */
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = require("marked");
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports) {
+
+module.exports = require("moment");
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = require("vue");
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = require("vuefire");
