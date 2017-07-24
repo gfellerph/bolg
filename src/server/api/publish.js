@@ -1,4 +1,4 @@
-const bolg = require('../index');
+import { buildIndex, publish } from '../index';
 
 /**
  * Publish a specific post. Needs a post id or 'index' to publish
@@ -6,17 +6,15 @@ const bolg = require('../index');
  * @param {Object} req Express request
  * @param {Object} res Express response
  */
-function publish(req, res) {
+export default function publishAll(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'localhost');
 
   const operation = req.params.id === 'index'
-    ? bolg.buildIndex()
-    : bolg.publish(req.params.id);
+    ? buildIndex()
+    : publish(req.params.id);
 
   operation
-    .then(bolg.buildIndex)
+    .then(buildIndex)
     .then(() => res.send({ message: 'Rebuild complete.' }))
     .catch(err => res.status(500).send(err));
 }
-
-module.exports = publish;

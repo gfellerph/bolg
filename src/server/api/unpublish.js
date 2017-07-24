@@ -1,4 +1,4 @@
-const bolg = require('../index');
+import { unpublish, buildIndex } from '../index';
 
 /**
  * Unpublish a previously published blog post, so
@@ -6,13 +6,11 @@ const bolg = require('../index');
  * @param {Object} req Express request object
  * @param {Object} res Express response object
  */
-function unpublish(req, res) {
+export default function unpublishApi(req, res) {
   res.setHeader('Acces-Control-Allow-Origin', 'localhost');
 
-  bolg.unpublish(req.params.id)
-    .then(bolg.buildIndex)
+  unpublish(req.params.id)
+    .then(buildIndex)
     .then(() => res.send({ message: 'Unpublish complete.' }))
     .catch(err => res.status(500).send(err));
 }
-
-module.exports = unpublish;

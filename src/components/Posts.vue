@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import Post from '@/models/Post';
+  import Post from '@/models/PostAdmin';
   import PostDetails from '@/components/PostDetails';
   import { database } from '@/config/firebase';
 
@@ -37,7 +37,7 @@
 
     methods: {
       changeCurrentPost(post) {
-        this.currentPost = new Post(post);
+        this.currentPost = post.lastPublished ? new Post(post) : '';
       },
     },
 

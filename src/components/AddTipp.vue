@@ -1,27 +1,92 @@
 <template>
-  <div class="add-tipp" @click="closeOverlay" @keydown.esc="closeOverlay">
-    <div class="tipp-wrapper">
-      <div class="yellow"></div>
-      <form class="tipp-form box" @click.stop>
-        <h2 class="h5 tipp-title">
-          <input ref="nameInput" v-bind:style="displayNameWidth" id="username" class="username" type="text" v-model="tipp.user.displayName" placeholder="Housi">
-          <span ref="mirror" class="mirror">{{tipp.user.displayName}}</span>
-          <span>Tipp für {{country}}:</span>
-        </h2>
-        <textarea
-          name="add-tipp"
-          id="add-tipp"
-          v-model="tipp.text"
-        ></textarea>
-        <p>
-          <input class="email" type="email" v-model="tipp.user.email" placeholder="Email (wed wosch)">
-        </p>
-        <p class="error" v-if="error">{{error}}</p>
-        <p class="text-align-right">
-          <button @click="closeOverlay">Abbrechen</button>
-          <button @click="saveTipp" :disabled="loading || !canSave">Senden</button>
-        </p>
-      </form>
+  <div class="tipp" @click="closeOverlay" @keydown.esc="closeOverlay">
+    <div class="tipp__wrapper" :style="stepOffset">
+      <div class="tipp__slide">
+        <div class="tipp__card" @click.stop>
+          <h4 class="tipp__title">Wie heissisch du?</h4>
+          <p>
+            <input
+              ref="nameInput"
+              id="username"
+              class="username"
+              type="text"
+              v-model="tipp.user.displayName"
+              placeholder="Name">
+          </p>
+          <div class="tipp__meta">
+            <span class="tipp__counter">1/3</span>
+            <div class="tipp__buttons">
+              <button
+                class="tipp__forward"
+                @click="stepForward"
+                :disabled="!tipp.user.displayName"
+              >
+                <img src="/img/arrow-forward.svg" alt="">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tipp__slide">
+        <div class="tipp__card" @click.stop>
+          <h4 class="tipp__title">Was isch di Tipp, {{tipp.user.displayName}}?</h4>
+          <p>
+            <textarea
+              class="tipp__text"
+              name="add-tipp"
+              id="add-tipp"
+              v-model="tipp.text"
+            ></textarea>
+          </p>
+          <div class="tipp__meta">
+            <span class="tipp__counter">2/3</span>
+            <div class="tipp__buttons">
+              <button
+                class="tipp__back"
+                @click="stepBack"
+              >
+                <img src="/img/arrow-back.svg" alt="">
+              </button>
+              <button
+                class="tipp__forward"
+                @click="stepForward"
+                :disabled="!tipp.text"
+              >
+                <img src="/img/arrow-forward.svg" alt="">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tipp__slide">
+        <div class="tipp__card" @click.stop>
+          <h4 class="tipp__title">Merci schön</h4>
+          <p class="italic">Wed wosch chasch no dis Email agä, de chöi mir dir antworte. Muesch aber o nid.</p>
+          <p>
+            <input
+              id="tipp__email"
+              class="tipp__email"
+              type="text"
+              v-model="tipp.user.email"
+              placeholder="Email">
+          </p>
+          <div class="tipp__meta">
+            <span class="tipp__counter">3/3</span>
+            <div class="tipp__buttons">
+              <button
+                class="tipp__back"
+                @click="stepBack"
+              >
+                <img src="/img/arrow-back.svg" alt="">
+              </button>
+              <button
+                @click="saveTipp"
+                :disabled="loading || !canSave"
+              >Fertig!</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +102,7 @@
         loading: false,
         error: false,
         tipp: new Tipp(),
+        step: 0,
       };
     },
 
@@ -49,10 +115,7 @@
     computed: {
       user() { return this.$store.state.auth.user; },
       canSave() { return this.tipp.user.displayName && this.tipp.text; },
-      displayNameWidth() {
-        const width = this.$refs.mirror ? this.$refs.mirror.offsetWidth : 0;
-        return `width: ${width}px`;
-      }
+      stepOffset() { return `transform: translate3d(${this.step * -100/3}%, 0, 0);`},
     },
 
     methods: {
@@ -75,20 +138,9 @@
           this.error = err.message;
         });
       },
-      closeOverlay() {
-        this.$emit('tipp-closed');
-      },
-      
-    },
-
-    watch: {
-      'tipp.user.displayName': function (newName) {
-        const width = this.$refs.mirror ? this.$refs.mirror.offsetWidth : 0;
-        this.$nextTick(() => {
-          this.$refs.nameInput.style.width = `${width}px`;
-        });
-        return `width: ${width}px`;
-      },
+      closeOverlay() { this.$emit('tipp-closed'); },
+      stepBack() { this.step -= 1; },
+      stepForward() { this.step += 1; },
     },
 
     mounted() {
@@ -105,104 +157,79 @@
 <style lang="scss" scoped>
   @import 'src/styles/_mixins';
   @import 'src/styles/_variables';
+  @import 'src/styles/convenience';
 
-  .tipp-title {
-    position: relative;
-  }
-
-  .mirror {
-    position: absolute;
-    visibility: hidden;
-    z-index: -1;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-
-  .add-tipp {
+  .tipp {
     position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
-    background: rgba(white, 0.8);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .tipp__wrapper {
     display: flex;
-    justify-content: center;
+    width: 300%;
+    height: 100%;
+
+    transform: translate3d(0,0,0);
+    transition: transform 300ms;
+  }
+
+  .tipp__slide {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: percentage(1/3);
+    height: 100%;
+    padding: 0 2rem;
+  }
+
+  .tipp__card {
+    @extend .box;
+    background: white;
+    padding: 2rem;
+    max-width: 45rem;
+    overflow: hidden;
+    box-shadow: 0 0 40px black;
+  }
+
+  .tipp__meta {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
   }
 
-  .email {
-    width: 100%;
+  .tipp__title {
+    text-align: center;
   }
 
-  .tipp-wrapper {
-    position: relative;
-
-    &:before,
-    &:after {
-      content: '';
-      position: absolute;
-    }
-
-    &:before {
-      top: -5px;
-      right: -6px;
-      bottom: -2px;
-      left: -4px;
-      opacity: 0.4;
-      background-color: cyan;
-      transform: rotate(0.5deg);
-    }
-
-    &:after {
-      top: -2px;
-      right: -2px;
-      bottom: -4px;
-      left: -5px;
-      opacity: 0.4;
-      background-color: magenta;
-      transform: rotate(-0.75deg);
-    }
-
-    .yellow {
-      position: absolute;
-      top: -3px;
-      right: -3px;
-      bottom: -5px;
-      left: -2px;
-      background: yellow;
-    }
+  .tipp__text {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    min-height: 100px;
+    border: 1px solid black;
+    padding: 0.5rem;
   }
 
-  .tipp-form {
-    position: relative;
-    background: white;
-    background: white;
-    padding: $golden-rem;
-    z-index: 1;
-    font-family: $sans-serif;
-    
-    @include max($xs) {
-      max-width: 90vw;
+  .tipp__buttons {
+    display: flex;
+
+    button {
+      display: block;
+      padding: 0;
+      border: none;
+
+      & + button {
+        margin-left: 2rem;
+      }
     }
 
-    @include min($xs) {
-      max-width: 60vw;
-    }
-
-    input {
-      display: inline;
-      width: auto;
-      min-width: 100px;
-      padding: $golden-rem / 4 0;
-    }
-
-    textarea {
-      font-family: inherit;
-      font-size: inherit;
-      width: 100%;
-      height: 20vh;
-      border: 1px solid black;
-      padding: $golden-rem / 2;
+    img {
+      display: block;
+      height: 24px;
     }
   }
 </style>

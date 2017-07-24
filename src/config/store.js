@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import authStore from '@/stores/auth-store';
 import connectionStore from '@/stores/connection-store';
 
-Vue.use(Vuex);
+// Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: true,

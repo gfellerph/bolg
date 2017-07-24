@@ -4,12 +4,16 @@ import * as hbsTemplates from '@/config/handlebars';
 import writefile from './writefile';
 import Post from '@/models/Post';
 import * as helpers from './helpers';
-import webpackManifest from '../../public/config/webpack.manifest.json';
+// import webpackManifest from '../../public/config/webpack.manifest.json';
 
 const slugger = helpers.slugger;
 const logoURL = helpers.logoURL;
 const database = firebase.database();
 const publishedRef = database.ref('/published').orderByChild('created');
+
+function webpackManifest() {
+  return JSON.parse(fs.readFileSync('public/config/webpack.manifest.json', 'utf8'));
+}
 
 /**
  * Build the index page
@@ -26,7 +30,7 @@ export function buildIndex() {
       const html = hbsTemplates.index({
         posts,
         logoURL: logoURL(),
-        webpack: webpackManifest,
+        webpack: webpackManifest(),
       });
       writefile(filePath, html).then(resolve);
     });
@@ -47,7 +51,7 @@ export function buildPost(post, nextPost) {
     post,
     nextPost,
     logoURL: logoURL(),
-    webpack: webpackManifest,
+    webpack: webpackManifest(),
   });
 
   return writefile(filePath, html);

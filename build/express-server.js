@@ -16,6 +16,7 @@ nodemon.on('restart', () => {
 
 webpack(config, (err, stats) => {
   if (err) throw err;
+  
   process.stdout.write(`${stats.toString({
     colors: true,
     modules: false,
@@ -25,4 +26,5 @@ webpack(config, (err, stats) => {
     hash: false,
     version: false,
   })}\n\n------------\n\n`);
+  nodemon.emit('restart');
 });

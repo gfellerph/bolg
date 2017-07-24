@@ -32,7 +32,7 @@ module.exports = {
   },
   externals: {
     firebase: 'firebase',
-    moment: 'moment',
+    vue: 'Vue',
   },
   module: {
     rules: [

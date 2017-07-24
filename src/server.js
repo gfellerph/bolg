@@ -11,7 +11,7 @@ const app = express();
 
 // Serve the static files
 // app.use(favicon('public', 'favicon.ico'));
-app.use(express.static('public', { extensions: ['html'] }));
+app.use(express.static('public'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -23,14 +23,14 @@ app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
-});
+}); */
 
 // error handler
-app.use((err, req, res) => {
+/* app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -38,8 +38,7 @@ app.use((err, req, res) => {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
-
+}); */
 publishAll().then(buildIndex);
 
 export default app;
