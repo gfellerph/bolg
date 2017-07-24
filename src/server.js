@@ -39,7 +39,6 @@ app.get('/unpublish/:id', unpublishApi);
   res.status(err.status || 500);
   res.render('error');
 }); */
-
 publishAll().then(buildIndex);
 
 export default app;

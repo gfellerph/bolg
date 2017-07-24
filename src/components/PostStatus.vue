@@ -41,7 +41,7 @@
           '3': `fähler o.O: `,
           '4': 'du schribsch öppis (ke netz)',
           '5': 'gschpicheret (ke netz)',
-          '6': `publiziert (${lastPublished})`,
+          '6': lastPublished,
         }
 
         return messages[this.state];
