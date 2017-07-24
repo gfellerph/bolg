@@ -1,5 +1,5 @@
 <template>
-	<div class="map">
+	<div class="map" :class="{grayscale: showPopup}">
 		<div id="google-map"></div>
 		<add-tipp
 			:lat="lat"
@@ -48,6 +48,7 @@
 					position: new google.maps.LatLng(tipp.lat, tipp.lng),
 					map: map,
 					title: `${tipp.user.displayName.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+					icon: '/img/inuksuk.png',
 				});
 				const infowindow = new google.maps.InfoWindow({
 					content: `
@@ -81,3 +82,18 @@
 		},
 	};
 </script>
+
+<style lang="scss">
+	.map {
+		overflow: hidden;
+
+		#google-map {
+			transition: filter 300ms, opacity 300ms;
+		}
+
+		&.grayscale #google-map{
+			filter: grayscale(0.75) blur(3px);
+			opacity: 0.75;
+		}
+	}
+</style>
