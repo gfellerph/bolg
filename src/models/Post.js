@@ -119,4 +119,11 @@ export default function Post(post = {}) {
       return url || '';
     },
   });
+
+  Object.defineProperty(this, 'heroImageUrl', {
+    get() {
+      const image = this.images.length ? this.images[0].thumbnails['640'] : '';
+      return image;
+    },
+  });
 }

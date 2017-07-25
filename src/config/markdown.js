@@ -7,4 +7,15 @@ const markdownOptions = {
 
 export const marked = str => markdownParser(str, markdownOptions);
 export const excerpt = str => markdownParser(`${str.split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
-export const description = str => markdownParser(`${str.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`, markdownOptions);
+export const description = (str) => {
+  const md = str
+    // Remove headings
+    .replace(/#+.+\n/gm, '')
+    // Remove images
+    .replace(/!\[.*?\]\((.*?)\)/gm, '')
+    // Get 20 first words
+    .split(' ')
+    .slice(0, 20)
+    .join(' ')
+  return markdownParser(`${md}...`, markdownOptions);
+}

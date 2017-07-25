@@ -1,4 +1,7 @@
 {{#extend "layout"}}
+  {{#content "meta"}}
+    <title>bis när</title>
+  {{/content}}
   {{#content "styles"}}
     <link rel="stylesheet" href="{{webpack.[/map.css]}}">
   {{/content}}
@@ -6,19 +9,26 @@
     <nav>
         <a href="/" class="active"><span>Reis</span></a>
         <a href="/"><img class="logo" src="{{logoURL}}" alt=""></a>
-        <a href="/galerie"><span>Bilder</span></a>
+        <a href="/gallery.html"><span>Bilder</span></a>
     </nav>
   {{/content}}
   {{#content "main"}}
     <div id="map"></div>
     <div class="container">
-      <ul class="posts timeline">
+      <div id="bookmark"></div>
+      <h1>Posts</h1>
+      <ul class="posts">
         {{#each posts}}
-        <li>
+        <li class="post">
           <a href="{{this.url}}">
-            <h1 class="h4">{{this.title}}</h1>
-            <p class="post-published">{{this.created}}</p>
-            {{{this.description}}}
+            {{#if this.heroImageUrl}}
+              <img class="post__title-image" src="{{this.heroImageUrl}}" alt="Titelbild für {{this.title}}">
+            {{/if}}
+            <div class="post__overlay">
+              <h2 class="post__title h4">{{this.title}}</h2>
+              <p class="post__published">{{this.created}}</p>
+              {{{this.description}}}
+            </div>
           </a>
         </li>
         {{/each}}
