@@ -1,11 +1,17 @@
 <template>
-  <div class="bookmark">
-    <a v-if="bookmark" :href="post.postUrl">
-      <h1 class="h4">{{post.postTitle}}</h1>
-      <p class="post-created">{{post.created}}</p>
-      <p v-html="post.description"></p>
-    </a>
-  </div>
+  <ul class="posts">
+    <li class="post" v-if="post">
+      <a :href="post.url">
+        <div class="post__badge">witerläse</div>
+        <img v-if="post.heroImageUrl" class="post__title-image" :src="post.heroImageUrl" :alt="`Titelbild für ${post.title}`">
+        <div class="post__overlay">
+          <h2 class="post__title h4">{{post.title}}</h2>
+          <p class="post__published">{{post.created}}</p>
+          <div v-html="post.description"></div>
+        </div>
+      </a>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -16,26 +22,59 @@
     data() {
       return {
         bookmark: false,
-        post: new Post(),
+        post: null,
       };
     },
 
     created() {
       if (!window.localStorage) return;
 
-      const bookmark = window.localStorage.getItem('bookmark');
+      const bookmark = JSON.parse(window.localStorage.getItem('bookmark'));
       
       if (!bookmark) return;
-
+      console.log('bookmark', bookmark, `/published/${bookmark.postId}`);
       const postRef = database.ref(`/published/${bookmark.postId}`);
-      postRef.once('value', (snapshot) => {
+      postRef.on('value', (snapshot) => {
+        if (!snapshot.val()) return;
+        console.log('firebase response', snapshot.val());
         this.post = new Post(snapshot.val());
       });
-    }
+    },
   };
 </script>
 
+<style lang="scss">
+  .post__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem 1rem;
+    background: dodgerblue;
+    color: white;
+    transform-origin: top left;
+    transform: rotate(90deg);
 
-<style lang="scss" scoped>
-  
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      left: 100%;
+      height: 0;
+      width: 0;
+      display: block;
+      border: 1px solid transparent;
+      border-width: 11.25px;
+      border-left-color: dodgerblue;
+    }
+
+    &:before {
+      top: 0;
+      border-top-color: dodgerblue;
+    }
+
+    &:after {
+      bottom: 0;
+      border-bottom-color: dodgerblue;
+    }
+  }
 </style>
