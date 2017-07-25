@@ -73,6 +73,7 @@
       },
       addImage(image) {
         this.imagesForUpload = this.imagesForUpload.filter(img => image.id !== img.id);
+        console.log('addimages', image);
         this.post.images.push(image);
         this.post.set();
       },

@@ -28,20 +28,20 @@
 
     mounted() {
       // Upload image if it is a file
-      this.URL = this.image.url();
-      const upload = this.image.put();
+      const img = new Image(this.image);
+      this.URL = img.url();
+      const upload = img.put();
       upload.on('state_changed', this.onUploadProgress);
       upload.then(snapshot => {
-        this.image.file = null;
+        img.file = null;
         this.generatingThumbs = true;
-        this.image.downloadURL = snapshot.downloadURL;
-        bus.$emit('add-image', this.image);
+        img.downloadURL = snapshot.downloadURL;
+        bus.$emit('add-image', img);
         database.ref(`/images/gallery`).on('child_added', (snapshot) => {
-          if (snapshot.key !== this.image.id) return;
-          const thumbnails = snapshot.val();
-          this.image.thumbnails = thumbnails;
+          if (snapshot.key !== img.id) return;
+          img.thumbnails = snapshot.val().thumbnails;
           this.generatingThumbs = false;
-          bus.$emit('thumbnails-generated', this.image);
+          bus.$emit('thumbnails-generated', img);
         });
       });
     },
