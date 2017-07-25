@@ -1,29 +1,25 @@
 {{#extend "layout"}}
-  {{#content "styles"}}
-    <link rel="stylesheet" href="{{webpack.[/map.css]}}">
-  {{/content}}
   {{#content "navigation"}}
     <nav>
         <a href="/"><span>Reis</span></a>
         <a href="/"><img class="logo" src="{{logoURL}}" alt=""></a>
-        <a href="/galerie" class="active"><span>Bilder</span></a>
+        <a href="/gallery.html" class="active"><span>Bilder</span></a>
     </nav>
   {{/content}}
   {{#content "main"}}
     <div class="container">
-      <article class="month picture-grid">
-
-      </article>
+      {{#each postsPerMonth}}
+        <article class="month">
+          <h1>{{@key}}</h1>
+          <div class="picture-grid">
+            {{#each this}}
+              {{#if this.thumbnails.[320]}}
+                <img src="{{this.thumbnails.[320]}}" alt="">
+              {{/if}}
+            {{/each}}
+          </div>
+        </article>
+      {{/each}}
     </div>
-  {{/content}}
-
-  {{#content "scripts"}}
-    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-database.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/de-ch.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ"></script>
-    <script src="{{webpack.[/vendor.js]}}"></script>
-    <script src="{{webpack.[/map.js]}}"></script>
   {{/content}}
 {{/extend}}

@@ -1,4 +1,4 @@
-import { buildIndex, publishAll } from '../index';
+import { buildIndex, publishAll, buildGallery } from '../index';
 
 /**
  * Build all posts, then the index
@@ -10,6 +10,7 @@ export default function publishAllApi(req, res) {
 
   publishAll()
     .then(buildIndex)
+    .then(buildGallery)
     .then(() => res.send({ message: 'Rebuild complete.' }))
     .catch(err => res.status(500).send(err));
 }

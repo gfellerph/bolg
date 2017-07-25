@@ -1,18 +1,47 @@
 import fs from 'fs';
+import moment from '@/config/moment';
 import firebase from '@/config/firebase-admin';
 import * as hbsTemplates from '@/config/handlebars';
 import writefile from './writefile';
 import Post from '@/models/Post';
 import * as helpers from './helpers';
-// import webpackManifest from '../../public/config/webpack.manifest.json';
 
 const slugger = helpers.slugger;
 const logoURL = helpers.logoURL;
 const database = firebase.database();
+const postsRef = database.ref('/posts').orderByChild('created');
 const publishedRef = database.ref('/published').orderByChild('created');
 
 function webpackManifest() {
   return JSON.parse(fs.readFileSync('public/config/webpack.manifest.json', 'utf8'));
+}
+
+export function buildGallery() {
+  return new Promise((resolve) => {
+    postsRef.once('value', (snapshot) => {
+      const val = snapshot.val();
+      const postsArray = Object.keys(val).map(key => val[key]);
+      const postsPerMonth = {};
+      const filePath = 'public/gallery.html';
+
+      postsArray.map((post) => {
+        const createdDate = new Date(post.created);
+        const month = createdDate.getMonth();
+        const year = createdDate.getFullYear();
+        const monthName = `${moment.months()[month]} ${year}`;
+        if (!postsPerMonth[monthName]) postsPerMonth[monthName] = [];
+        post.images.map(image => postsPerMonth[monthName].push(image));
+      });
+
+      const html = hbsTemplates.gallery({
+        postsPerMonth,
+        logoURL: logoURL(),
+        webpack: webpackManifest(),
+      });
+
+      resolve(writefile(filePath, html));
+    });
+  });
 }
 
 /**

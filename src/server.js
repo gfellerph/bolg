@@ -22,6 +22,10 @@ app.get('/publish', publishAllApi);
 app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
 
+// Custom routes
+app.get('/galerie', res => res.sendfile('public/gallery.html'));
+app.get('/bolg', res => res.sendfile('public/bolg.html'));
+
 // catch 404 and forward to error handler
 /* app.use((req, res, next) => {
   const err = new Error('Not Found');
