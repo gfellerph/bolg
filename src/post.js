@@ -22,5 +22,7 @@ function setBookmark() {
   }));
 }
 
-window.onbeforeunload = setBookmark;
-window.onunload = setBookmark;
+if (window.location.href.indexOf('bolg.html') <= 0) {
+  window.onbeforeunload = setBookmark;
+  window.onunload = setBookmark;
+}

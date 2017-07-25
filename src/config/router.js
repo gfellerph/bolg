@@ -6,6 +6,7 @@ import Posts from '@/components/Posts';
 import EditPost from '@/components/EditPost';
 import Login from '@/components/Login';
 import Map from '@/components/Map';
+import Bookmark from '@/components/Bookmark';
 
 Vue.use(Router);
 
@@ -47,6 +48,11 @@ const router = new Router({
       path: '/map',
       name: 'Map',
       component: Map,
+    },
+    {
+      path: '/bookmark',
+      name: 'Bookmark',
+      component: Bookmark,
     },
   ],
 });
