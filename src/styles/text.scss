@@ -27,7 +27,7 @@ h1,
 .h1 {
   @include ms-respond(font-size, 2.5);
   @include ms-respond(line-height, 2.7);
-  margin: $golden-rem * 3 0 $golden-rem * 2 0;
+  margin: $golden-em * 3 0 $golden-em * 2 0;
 }
 
 h2,
