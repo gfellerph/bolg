@@ -1,17 +1,18 @@
+const documentHeight = () => Math.max(
+  document.body.scrollHeight,
+  document.body.offsetHeight,
+  document.html.clientHeight,
+  document.html.scrollHeight,
+  document.html.offsetHeight,
+);
+
 function setBookmark() {
-  const body = document.body;
   const html = document.documentElement;
-  const documentHeight = Math.max(
-    body.scrollHeight,
-    body.offsetHeight,
-    html.clientHeight,
-    html.scrollHeight,
-    html.offsetHeight,
-  );
+  const height = documentHeight();
   const postMeta = document.querySelector('meta[property="id"]');
   const postId = postMeta ? postMeta.getAttribute('content') : null;
   const scrollPosition = window.pageYOffset || html.scrollTop;
-  const scrollPercent = scrollPosition / documentHeight;
+  const scrollPercent = scrollPosition / height;
 
   if (!window.localStorage) return;
 
@@ -22,7 +23,19 @@ function setBookmark() {
   }));
 }
 
+function restoreBookmark() {
+  if (!window.localStorage) return;
+
+  const bookmark = JSON.parse(window.localStorage.getItem('bookmark'));
+  if (window.location.href === bookmark.url && window.location.hash === 'bookmark') {
+    const height = documentHeight();
+    const offset = height * bookmark.scrollPercent;
+    if (window.scrollTo) window.scrollTo(0, offset);
+  }
+}
+
 if (window.location.href.indexOf('bolg.html') <= 0) {
   window.onbeforeunload = setBookmark;
   window.onunload = setBookmark;
+  window.onload = restoreBookmark;
 }
