@@ -86,7 +86,8 @@
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.16.1",
     "webpack-manifest-plugin": "^1.1.0",
-    "webpack-merge": "^2.6.1"
+    "webpack-merge": "^2.6.1",
+    "write-file-webpack-plugin": "^4.1.0"
   },
   "engines": {
     "node": ">= 7.8.0",
