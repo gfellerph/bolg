@@ -151,17 +151,19 @@ export function unpublish(id) {
   });
 }
 
+// TODO: remove constant connection to firebase. listen only to
+// http requests from the backend, this is much more efficient
 publishedRef.on('child_added', (snapshot) => {
   const post = snapshot.val();
-  publish(post.id).then(buildIndex);
+  publish(post.id).then(buildIndex).then(buildGallery);
 });
 
 publishedRef.on('child_removed', (snapshot) => {
   const post = snapshot.val();
-  unpublish(post.id).then(buildIndex);
+  unpublish(post.id).then(buildIndex).then(buildGallery);
 });
 
 publishedRef.on('child_changed', (snapshot) => {
   const post = snapshot.val();
-  publish(post.id).then(buildIndex);
+  publish(post.id).then(buildIndex).then(buildGallery);
 });

@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import publishAllApi from '@/server/api/publish-all';
 import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
-import { publishAll, buildIndex } from '@/server/index';
+import { publishAll, buildIndex, buildGallery } from '@/server/index';
 
 const app = express();
 
@@ -43,6 +43,6 @@ app.get('/bolg', res => res.sendfile('public/bolg.html'));
   res.status(err.status || 500);
   res.render('error');
 }); */
-publishAll().then(buildIndex);
+publishAll().then(buildIndex).then(buildGallery);
 
 export default app;
