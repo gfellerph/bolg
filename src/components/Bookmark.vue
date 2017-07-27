@@ -1,7 +1,7 @@
 <template>
   <ul class="posts">
     <li class="post" v-if="post">
-      <a :href="post.url">
+      <a :href="postUrl">
         <div class="post__badge">witerläse</div>
         <img v-if="post.heroImageUrl" class="post__title-image" :src="post.heroImageUrl" :alt="`Titelbild für ${post.title}`">
         <div class="post__overlay">
@@ -39,6 +39,10 @@
         console.log('firebase response', snapshot.val());
         this.post = new Post(snapshot.val());
       });
+    },
+
+    computed: {
+      postUrl() { return `${this.post.url}#bookmark`; }
     },
   };
 </script>
