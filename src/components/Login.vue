@@ -2,7 +2,7 @@
   <div class="login">
     <auth-guard>
       <router-link slot="auth" to="/">Home</router-link>
-      <form slot="no-auth">
+      <div slot="no-auth">
         <p>
           <label for="email">Email</label>
           <input id="email" v-model="email" type="text">
@@ -13,11 +13,10 @@
         </p>
         <p v-if="error">{{error}}</p>
         <p><button @click="login">Login</button></p>
-      </form>
+      </div>
     </auth-guard>
   </div>
 </template>
-
 
 <script>
   import User from '@/models/User';
@@ -68,7 +67,12 @@
   };
 </script>
 
-
 <style lang="scss" scoped>
-  
+  .login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
 </style>

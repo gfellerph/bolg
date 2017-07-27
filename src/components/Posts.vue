@@ -2,7 +2,7 @@
   <div class="posts">
     <div class="post-list-container">
       <ul class="post-list">
-        <li v-for="post in posts" @click="changeCurrentPost(post)" @mouseenter="changeCurrentPost(post)">
+        <li v-for="post in reversedPosts" @click="changeCurrentPost(post)" @mouseenter="changeCurrentPost(post)">
           <post-details :post="new Post(post)" />
         </li>
       </ul>
@@ -28,11 +28,12 @@
     },
 
     created() {
-      this.$bindAsArray('posts', database.ref('/posts'));
+      this.$bindAsArray('posts', database.ref('/posts').orderByChild('created'));
     },
 
     computed: {
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
+      reversedPosts() { return this.posts.reverse(); }
     },
 
     methods: {
@@ -63,7 +64,8 @@
     position: relative;
     display: flex;
     width: 100%;
-    height: calc(100vh - 83px);
+    height: calc(100vh - 80px);
+    margin: 0;
   }
 
   .post-list-container {

@@ -37,7 +37,9 @@
 				center: new google.maps.LatLng(27, 6),
 				// styles: mapStyles,
 				streetViewControl: false,
-				mapTypeId: google.maps.MapTypeId.HYBRID,
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				mapTypeControl: false,
+				fullscreenControl: true,
 			});
 
 			map.addListener('click', this.addTipp);
@@ -92,8 +94,7 @@
 		}
 
 		&.grayscale #google-map{
-			filter: grayscale(0.75) blur(3px);
-			opacity: 0.75;
+			filter: blur(3px);
 		}
 	}
 </style>

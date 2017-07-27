@@ -29,7 +29,7 @@
   import PostMixin from '@/mixins/post-mixin';
   import PostStatus from '@/components/PostStatus';
   import { states } from '@/config/constants';
-  import marked from 'marked';
+  import { description } from '@/config/markdown';
 
   export default {
     mixins: [PostMixin],
@@ -46,7 +46,7 @@
 
     computed: {
       editLink() { return `/edit/${this.post.id}`; },
-      shortText() { return marked(`${this.post.markdown.replace(/#+.+\n/gm, '').split(' ').slice(0, 20).join(' ')}...`); },
+      shortText() { return description(this.post.markdown); },
     },
 
     methods: {

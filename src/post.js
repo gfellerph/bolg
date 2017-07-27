@@ -1,9 +1,9 @@
 const documentHeight = () => Math.max(
   document.body.scrollHeight,
   document.body.offsetHeight,
-  document.html.clientHeight,
-  document.html.scrollHeight,
-  document.html.offsetHeight,
+  document.documentElement.clientHeight,
+  document.documentElement.scrollHeight,
+  document.documentElement.offsetHeight,
 );
 
 function setBookmark() {

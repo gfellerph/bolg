@@ -20,7 +20,7 @@ export function buildGallery() {
   return new Promise((resolve) => {
     postsRef.once('value', (snapshot) => {
       const val = snapshot.val();
-      const postsArray = Object.keys(val).map(key => val[key]);
+      const postsArray = Object.keys(val).map(key => val[key]).reverse();
       const postsPerMonth = {};
       const filePath = 'public/gallery.html';
 
@@ -54,7 +54,7 @@ export function buildIndex() {
       const val = snapshot.val();
       const filePath = 'public/index.html';
       if (!val) return reject(new Error('There are no posts to build an overview with.'));
-      const posts = Object.keys(val).map(post => new Post(val[post]));
+      const posts = Object.keys(val).map(post => new Post(val[post])).reverse();
 
       const html = hbsTemplates.index({
         posts,
@@ -91,7 +91,7 @@ export function publish(id) {
   return new Promise((resolve) => {
     publishedRef.once('value', (snapshot) => {
       const value = snapshot.val();
-      const posts = Object.keys(value).map(post => value[post]);
+      const posts = Object.keys(value).map(post => value[post]).reverse();
       let post = null;
       let nextPost = null;
       let lastPost = null;
