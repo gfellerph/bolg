@@ -7,6 +7,7 @@ import EditPost from '@/components/EditPost';
 import Login from '@/components/Login';
 import Map from '@/components/Map';
 import Bookmark from '@/components/Bookmark';
+import Story from '@/components/Story';
 
 Vue.use(Router);
 
@@ -53,6 +54,11 @@ const router = new Router({
       path: '/bookmark',
       name: 'Bookmark',
       component: Bookmark,
+    },
+    {
+      path: '/story',
+      name: 'Story',
+      component: Story,
     },
   ],
 });
