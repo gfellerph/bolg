@@ -1,7 +1,6 @@
 import cuid from 'cuid';
 import moment from 'moment';
-import { slugger } from '@/config/constants';
-import { liveRootUrl } from '@/config/constants';
+import { slugger, liveRootUrl } from '@/config/constants';
 import { database, auth } from '@/config/firebase';
 import { marked, excerpt, description } from '@/config/markdown';
 
