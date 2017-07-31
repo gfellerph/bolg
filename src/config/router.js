@@ -22,7 +22,7 @@ const router = new Router({
       },
     },
     {
-      path: '/create',
+      path: '/createPost',
       name: 'NewPost',
       component: EditPost,
       meta: {
@@ -56,9 +56,20 @@ const router = new Router({
       component: Bookmark,
     },
     {
-      path: '/story',
+      path: '/createStory',
       name: 'Story',
       component: Story,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/story/:id',
+      name: 'Story',
+      component: Story,
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 });

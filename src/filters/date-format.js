@@ -1,7 +1,6 @@
-import moment from 'moment';
+import moment from '@/config/moment';
 
-export default function (value, format) {
-  if (!format) format = 'DD.MM.YYYY';
+export default function (value, format = 'DD.MM.YYYY') {
   if (value) {
     return moment(value).format(format);
   }

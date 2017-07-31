@@ -31,9 +31,9 @@
 </template>
 
 <script>
-  import marked from 'marked';
   import debounce from 'debounce';
-  import Post from '@/models/Post';
+  import { marked } from '@/config/markdown';
+  import Post from '@/models/PostAdmin';
   import { database } from '@/config/firebase';
   import router from '@/config/router';
   import ImageSelector from '@/components/ImageSelector';

@@ -3,10 +3,10 @@
     <header class="header">
       <nav>
         <router-link class="button" to="/">Overview</router-link>
-        <router-link class="button" to="/create">Create post</router-link>
+        <router-link class="button" to="/createPost">Create post</router-link>
         <router-link class="button" to="/map">Map</router-link>
         <router-link class="button" to="/bookmark">Bookmark</router-link>
-        <router-link class="button" to="/story">Create story</router-link>
+        <router-link class="button" to="/createStory">Create story</router-link>
       </nav>
       <img class="logo" :src="logoURL" alt="">
       <profile></profile>
