@@ -27,7 +27,7 @@ function restoreBookmark() {
   if (!window.localStorage) return;
 
   const bookmark = JSON.parse(window.localStorage.getItem('bookmark'));
-  if (window.location.href === bookmark.url && window.location.hash === 'bookmark') {
+  if (bookmark && window.location.href === bookmark.url && window.location.hash === 'bookmark') {
     const height = documentHeight();
     const offset = height * bookmark.scrollPercent;
     if (window.scrollTo) window.scrollTo(0, offset);
