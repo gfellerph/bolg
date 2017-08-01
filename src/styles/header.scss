@@ -9,18 +9,20 @@
 
   .logo {
     height: 4rem;
+    display: block;
 
     @include max($xs) {
       height: 2.9rem;
     }
   }
 
-  .post-date {
-    margin-top: $golden-rem / 2;
-  }
-
   .right-link,
   .left-link {
+    text-align: center;
+
+    @include min($xs) {
+      min-width: 70px;
+    }
     @include max($xs) {
       min-width: 32px;
       text-decoration: none;

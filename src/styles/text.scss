@@ -27,7 +27,7 @@ h1,
 .h1 {
   @include ms-respond(font-size, 2.5);
   @include ms-respond(line-height, 2.7);
-  margin: $golden-em * 3 0 $golden-em * 2 0;
+  margin: 2.4em 0 1.2em 0;
 }
 
 h2,
@@ -68,7 +68,6 @@ h6,
 small,
 p.small,
 span.small {
-  @extend .h6;
   @include ms-respond(font-size, 0.5);
   @include ms-respond(line-height, 1);
   font-weight: normal;
@@ -89,10 +88,6 @@ article {
       line-height: 1;
     }
   }
-
-  /*p + p {
-    text-indent: 2.5em;
-  }*/
 
   p {
     img {

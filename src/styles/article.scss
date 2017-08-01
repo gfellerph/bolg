@@ -1,6 +1,18 @@
 .main-post {
-  *:first-child {
+  @include min($xs) {
+    margin: $golden-rem * 2 0;
+  }
+
+  @include max($xs) {
+    margin: $golden-rem 0;
+  }
+
+  > *:first-child {
     margin-top: 0;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
   }
 }
 
