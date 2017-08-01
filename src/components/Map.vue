@@ -49,12 +49,12 @@
 				const marker = new google.maps.Marker({
 					position: new google.maps.LatLng(tipp.lat, tipp.lng),
 					map: map,
-					title: `${tipp.user.displayName.split(' ')[0]}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+					title: `${tipp.user.displayName}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
 					icon: '/img/inuksuk.png',
 				});
 				const infowindow = new google.maps.InfoWindow({
 					content: `
-						<h5>${tipp.username}</h5>
+						<h5>${tipp.user.displayName}</h5>
 						<p>${tipp.text}</p>
 					`,
 				});
@@ -95,6 +95,24 @@
 
 		&.grayscale #google-map{
 			filter: blur(3px);
+		}
+	}
+
+	.gm-style {
+		font: inherit !important;
+	}
+
+	.gm-style-iw {
+		> div > div {
+			h5 {
+				font-size: 1.5em;
+				margin-top: 1em;
+			}
+
+			p {
+				font-size: inherit !important;
+				margin-bottom: 1em;
+			}
 		}
 	}
 </style>

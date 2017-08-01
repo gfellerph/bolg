@@ -7,7 +7,6 @@
         <div class="post__overlay">
           <h2 class="post__title h4">{{post.title}}</h2>
           <p class="post__published">{{post.created}}</p>
-          <div v-html="post.description"></div>
         </div>
       </a>
     </li>
@@ -32,11 +31,9 @@
       const bookmark = JSON.parse(window.localStorage.getItem('bookmark'));
       
       if (!bookmark) return;
-      console.log('bookmark', bookmark, `/published/${bookmark.postId}`);
       const postRef = database.ref(`/published/${bookmark.postId}`);
       postRef.on('value', (snapshot) => {
         if (!snapshot.val()) return;
-        console.log('firebase response', snapshot.val());
         this.post = new Post(snapshot.val());
       });
     },
