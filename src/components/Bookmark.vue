@@ -32,11 +32,9 @@
       const bookmark = JSON.parse(window.localStorage.getItem('bookmark'));
       
       if (!bookmark) return;
-      console.log('bookmark', bookmark, `/published/${bookmark.postId}`);
       const postRef = database.ref(`/published/${bookmark.postId}`);
       postRef.on('value', (snapshot) => {
         if (!snapshot.val()) return;
-        console.log('firebase response', snapshot.val());
         this.post = new Post(snapshot.val());
       });
     },
