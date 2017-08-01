@@ -57,7 +57,7 @@ const router = new Router({
     },
     {
       path: '/createStory',
-      name: 'Story',
+      name: 'NewStory',
       component: Story,
       meta: {
         requiresAuth: true,
@@ -65,7 +65,7 @@ const router = new Router({
     },
     {
       path: '/story/:id',
-      name: 'Story',
+      name: 'EditStory',
       component: Story,
       meta: {
         requiresAuth: true,

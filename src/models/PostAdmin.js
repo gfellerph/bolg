@@ -6,17 +6,19 @@ import { marked, excerpt, description } from '@/config/markdown';
 const ref = id => database.ref(`/posts/${id}`);
 const publishRef = id => database.ref(`/published/${id}`);
 
-Post.prototype.set = () => {
+Post.prototype.set = function set() {
   this.lastSaved = Date.now();
-  return ref(this.id).set();
+  return ref(this.id).set(this.normalize());
 }
 
-Post.prototype.remove = () => Promise.all([
-  publishRef(this.id).remove(),
-  ref(this.id).remove(),
-]);
+Post.prototype.remove = function remove() {
+  return Promise.all([
+    publishRef(this.id).remove(),
+    ref(this.id).remove(),
+  ]);
+}
 
-Post.prototype.publish = () => {
+Post.prototype.publish = function publish() {
   this.lastSaved = Date.now();
   this.lastPublished = Date.now();
   const postToPublish = new Post(this);
@@ -28,7 +30,7 @@ Post.prototype.publish = () => {
   ]);
 }
 
-Post.prototype.unpublish = () => {
+Post.prototype.unpublish = function unpublish() {
   this.lastPublished = null;
   return Promise.all([
     this.set(),
@@ -36,7 +38,7 @@ Post.prototype.unpublish = () => {
   ]);
 }
 
-Post.prototype.beautify = () => {
+Post.prototype.beautify = function beautify() {
   this.postUrl = this.url;
   this.postLiveUrl = this.liveUrl;
   this.postTitle = this.title;

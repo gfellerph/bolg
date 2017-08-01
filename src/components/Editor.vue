@@ -18,9 +18,6 @@
       ref="md"
       @keydown="keydown"
       @scroll="scroll"
-      @keyup="cursorPositionChanged"
-      @click="cursorPositionChanged"
-      @focus="cursorPositionChanged"
     ></textarea>
     <div class="mirror" ref="mirror" v-html="startToCursor"></div>
     <div class="mirror" ref="mirrorRef" v-html="entireText"></div>

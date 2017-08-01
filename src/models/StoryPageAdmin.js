@@ -5,12 +5,12 @@ import moment from '@/config/moment';
 
 const ref = (storyId, pageId) => database.ref(`/posts/${storyId}/pages/${pageId}`);
 
-StoryPage.prototype.set = (storyId) => {
+StoryPage.prototype.set = function set(storyId) {
   this.lastSaved = Date.now();
   return ref(storyId, this.id).set();
 }
 
-StoryPage.prototype.remove = (storyId) => {
+StoryPage.prototype.remove = function remove(storyId) {
   return ref(storyId, this.id).remove();
 }
 

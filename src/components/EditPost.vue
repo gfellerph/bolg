@@ -32,7 +32,7 @@
 
 <script>
   import debounce from 'debounce';
-  import { marked } from '@/config/markdown';
+  import marked from 'marked';
   import Post from '@/models/PostAdmin';
   import { database } from '@/config/firebase';
   import router from '@/config/router';
@@ -55,7 +55,9 @@
   // TODO: Move to config
   renderer.image = (href, title, text) => {
     const srcset = sizes.map(size => `${getThumbUrl(href, size)} ${size.width}w`).join(',');
-    return `<img src="${href}" title="${title}" alt="${text}" srcset="">`;
+    const titleAttr = title ? `title="${title}"` : '';
+    console.log(`<img src="${href}" ${titleAttr} alt="${text}" srcset="">`);
+    return `<img src="${href}" ${titleAttr} alt="${text}" srcset="">`;
   }
 
   export default {
