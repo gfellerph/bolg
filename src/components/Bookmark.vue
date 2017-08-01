@@ -7,7 +7,6 @@
         <div class="post__overlay">
           <h2 class="post__title h4">{{post.title}}</h2>
           <p class="post__published">{{post.created}}</p>
-          <div v-html="post.description"></div>
         </div>
       </a>
     </li>
