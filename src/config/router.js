@@ -81,7 +81,7 @@ router.beforeEach((to, from, next) => {
     if (!auth.currentUser) {
       next({
         path: '/login',
-        query: { redirect: to.fullPath }
+        query: { redirect: to.fullPath },
       });
     }
   }

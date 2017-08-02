@@ -13,9 +13,9 @@
         </p>
       </div>
       <ul class="story__page-list">
-        <li>
-          <span>Site </span>
-          <button>X</button>
+        <li v-for="page in story.pages">
+          <span>Site {{$index}}</span>
+          <button v-if="$index">X</button>
         </li>
       </ul>
     </div>

@@ -1,4 +1,5 @@
 import cuid from 'cuid';
+import StoryPage from '@/models/StoryPage';
 import { slugger } from '@/config/constants';
 
 export default function Story(story = {}) {
@@ -8,7 +9,7 @@ export default function Story(story = {}) {
   this.lastSaved = story.lastSaved || null;
   this.lastPublished = story.lastPublished || null;
   this.author = story.author || null;
-  this.pages = story.pages || [];
+  this.pages = story.pages || [new StoryPage()];
   this.images = story.images || [];
 
   this.normalize = () => JSON.parse(JSON.stringify(this));
