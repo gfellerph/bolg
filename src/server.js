@@ -2,6 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import enforce from 'express-sslify';
 import publishAllApi from '@/server/api/publish-all';
 import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
@@ -16,6 +17,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 // Listen for rebuild requests
 app.get('/publish', publishAllApi);
