@@ -42,9 +42,7 @@
 				fullscreenControl: true,
 			});
 
-			if (window.outerWidth >= 768) {
-				map.addListener('click', this.addTipp);
-			}
+			if (window.outerWidth >= 768)	map.addListener('click', this.addTipp);
 
 			database.ref('/tipps').on('child_added', snapshot => {
 				const tipp = snapshot.val();
@@ -52,7 +50,12 @@
 					position: new google.maps.LatLng(tipp.lat, tipp.lng),
 					map: map,
 					title: `${tipp.user.displayName}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
-					icon: '/img/inuksuk.png',
+					icon: {
+						url: '/img/inuksuk.png',
+						size: new google.maps.Size(36, 34),
+						origin: new google.maps.Point(0,0),
+						anchor: new google.maps.Point(18, 17),
+					},
 				});
 				const infowindow = new google.maps.InfoWindow({
 					content: `
