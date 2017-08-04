@@ -42,7 +42,7 @@
 				fullscreenControl: true,
 			});
 
-			map.addListener('click', this.addTipp);
+			map.addListener('mousedown', this.addTipp);
 
 			database.ref('/tipps').on('child_added', snapshot => {
 				const tipp = snapshot.val();
