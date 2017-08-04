@@ -12,3 +12,9 @@
 #google-map {
   height: 100%;
 }
+
+.map-tipp {
+  @include max($xs) {
+    display: none;
+  }
+}
