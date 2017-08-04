@@ -12,7 +12,7 @@ export const slugger = str => str
   .replace(/ +/g, '-');
 
 // Random logo
-export const logoURL = () => `/img/bisnaer${Math.ceil(Math.random() * 31, 10)}.PNG`;
+export const logoURL = () => `/img/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`;
 
 /**
  * Safely write a file to disk

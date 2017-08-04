@@ -1,8 +1,8 @@
 import express from 'express';
 import logger from 'morgan';
+import path from 'path';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import enforce from 'express-sslify';
 import publishAllApi from '@/server/api/publish-all';
 import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
@@ -17,7 +17,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 // Listen for rebuild requests
 app.get('/publish', publishAllApi);
@@ -25,14 +24,18 @@ app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
 
 // Custom routes
-app.get('/galerie', res => res.sendfile('public/gallery.html'));
-app.get('/bolg', res => res.sendfile('public/bolg.html'));
+app.get('/galerie', (req, res) => res.sendFile('/public/gallery.html', { root: process.cwd() }));
+app.get('/bolg', (req, res) => res.sendFile('/public/bolg.html', { root: process.cwd() }));
 
 // catch 404 and forward to error handler
 /* app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  if (!req.app.get('env') === 'development') {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  } else {
+    next();
+  }
 }); */
 
 // error handler

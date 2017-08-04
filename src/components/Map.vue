@@ -44,6 +44,27 @@
 
 			if (window.outerWidth >= 768)	map.addListener('click', this.addTipp);
 
+			const partyMarker = new google.maps.Marker({
+				position: new google.maps.LatLng(46.94159375513991, 7.429281771183014),
+				map: map,
+				title: 'Party Party!',
+				icon: {
+					url: '/img/party.png',
+					size: new google.maps.Size(36,36),
+					origin: new google.maps.Point(0,0),
+					anchor: new google.maps.Point(18,18),
+				},
+			});
+			const partyWindow = new google.maps.InfoWindow({
+				content: `
+					<h5>Steffi & Phippu</h5>
+					<p>Hie geit am 19. Ougschte d'Party ab!</p>
+				`
+			});
+			partyMarker.addListener('click', () => {
+				partyWindow.open(map, partyMarker);
+			});
+
 			database.ref('/tipps').on('child_added', snapshot => {
 				const tipp = snapshot.val();
 				const marker = new google.maps.Marker({
