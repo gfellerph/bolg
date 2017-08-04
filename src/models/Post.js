@@ -20,6 +20,7 @@ export default function Post(post = {}) {
   this.html = post.html || null;
   this.excerpt = post.excerpt || null;
   this.description = post.description || null;
+  this.type = 'post';
 
   /**
    * Normalize the post object, no functions, ready for setting to firebase
@@ -56,6 +57,12 @@ export default function Post(post = {}) {
     get() {
       const image = this.images.length ? this.images[0].thumbnails['640'] : '';
       return image;
+    },
+  });
+
+  Object.defineProperty(this, 'editUrl', {
+    get() {
+      return `/editpost/${this.id}`;
     },
   });
 }

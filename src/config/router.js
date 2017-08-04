@@ -22,7 +22,7 @@ const router = new Router({
       },
     },
     {
-      path: '/createPost',
+      path: '/createpost',
       name: 'NewPost',
       component: EditPost,
       meta: {
@@ -30,7 +30,7 @@ const router = new Router({
       },
     },
     {
-      path: '/edit/:id',
+      path: '/editpost/:id',
       name: 'EditPost',
       component: EditPost,
       meta: {
@@ -56,7 +56,7 @@ const router = new Router({
       component: Bookmark,
     },
     {
-      path: '/createStory',
+      path: '/createstory',
       name: 'NewStory',
       component: Story,
       meta: {
@@ -64,7 +64,7 @@ const router = new Router({
       },
     },
     {
-      path: '/story/:id',
+      path: '/editstory/:id',
       name: 'EditStory',
       component: Story,
       meta: {

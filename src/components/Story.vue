@@ -1,23 +1,31 @@
 <template>
   <div class="story__create">
     <div class="panel story__pages-panel">
-      <div class="story__page-controls">
-        <button>Add page</button>
-        <p class="story__title">
-          <label for="story__title">Titel:</label>
-          <input
-            id="story__title"
-            type="text"
-            v-model="storyTitle"
+      <div class="story__meta-panel">
+        <div class="story__page-controls">
+          <button @click="addPage">Add page</button>
+          <p class="story__title">
+            <label for="story__title">Titel:</label>
+            <input
+              id="story__title"
+              type="text"
+              v-model="storyTitle"
+            >
+          </p>
+        </div>
+        <ul class="story__page-list">
+          <li
+            class="story__page"
+            v-for="page, index in story.pages"
+            @click="switchPage(index)"
+            :class="{'story__page--active': index == activePage}"
           >
-        </p>
+            <span>Site {{index + 1}}</span>
+            <button v-if="index" @click="removePage(index)">X</button>
+          </li>
+        </ul>
       </div>
-      <ul class="story__page-list">
-        <li v-for="page in story.pages">
-          <span>Site {{$index}}</span>
-          <button v-if="$index">X</button>
-        </li>
-      </ul>
+      <PostStatus :post="story"></PostStatus>
     </div>
     <div class="panel story__editor">
       <Editor />
@@ -29,7 +37,9 @@
 <script>
   import debounce from 'debounce';
   import Story from '@/models/StoryAdmin';
+  import StoryPage from '@/models/StoryPage';
   import Editor from '@/components/Editor';
+  import PostStatus from '@/components/PostStatus';
 
   export default {
     data() {
@@ -43,6 +53,15 @@
     methods: {
       getStory() {
         return new Story();
+      },
+      addPage() {
+        this.story.pages.push(new StoryPage());
+      },
+      removePage(index) {
+        this.story.pages.splice(index, 1);
+      },
+      switchPage(index) {
+        if (this.activePage !== index) this.activePage = index;
       },
       saveStory(markdown) {
         this.story.pages[this.activePage].markdown = markdown;
@@ -62,6 +81,8 @@
     created() {
       if (this.$route.params && this.$route.params.id) {
         this.getStory(this.$route.params.id);
+      } else {
+        this.story.set();
       }
     },
 
@@ -77,6 +98,7 @@
 
     components: {
       Editor,
+      PostStatus,
     }
   }
 </script>
@@ -96,6 +118,44 @@
 
     & + .panel {
       border-left: 1px solid black;
+    }
+  }
+
+  .story__pages-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .story__meta-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+  }
+
+  .story__page-list {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .story__page {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid black;
+
+    &--active {
+      background: rgba(black, 0.3);
+    }
+
+    span {
+      flex: 1 0 auto;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    button {
+      flex: 0 0 auto;
     }
   }
 </style>

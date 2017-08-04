@@ -1,6 +1,6 @@
 <template>
   <div class="post-details">
-    <router-link class="edit-post-link" :to="editLink">
+    <router-link class="edit-post-link" :to="post.editUrl">
       <div class="post-infos">
           <h1 class="h4">{{post.title}}</h1>
           <div class="short-text" v-html="shortText"></div>
@@ -26,17 +26,15 @@
 
 <script>
   import dateFormat from '@/filters/date-format';
-  import PostMixin from '@/mixins/post-mixin';
   import PostStatus from '@/components/PostStatus';
-  import { states } from '@/config/constants';
   import { description } from '@/config/markdown';
 
   export default {
-    mixins: [PostMixin],
+    // mixins: [PostMixin],
   
     data() {
       return {
-        states,
+        // states,
       };
     },
 
@@ -45,7 +43,6 @@
     },
 
     computed: {
-      editLink() { return `/edit/${this.post.id}`; },
       shortText() { return description(this.post.markdown); },
     },
 
