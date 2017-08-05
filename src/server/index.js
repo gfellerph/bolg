@@ -18,17 +18,17 @@ function webpackManifest() {
 
 export function buildGallery() {
   return new Promise((resolve) => {
-    postsRef.once('value', (snapshot) => {
+    publishedRef.once('value', (snapshot) => {
       const val = snapshot.val();
       const postsArray = Object.keys(val).map(key => val[key]).reverse();
       const postsPerMonth = {};
       const filePath = 'public/gallery.html';
 
       postsArray.map((post) => {
-        const createdDate = new Date(post.created);
-        const month = createdDate.getMonth();
-        const year = createdDate.getFullYear();
-        const monthName = `${moment.months()[month]} ${year}`;
+        const createdDate = moment(post.created, 'DD.MM.YYYY');
+        const month = createdDate.month();
+        const year = createdDate.year();
+        const monthName = `${moment.months(month)} ${year}`;
         if (!postsPerMonth[monthName]) postsPerMonth[monthName] = [];
         post.images.map(image => postsPerMonth[monthName].push(image));
       });
@@ -100,8 +100,8 @@ export function publish(id) {
       for (let i = 0; i < posts.length; i += 1) {
         if (posts[i].id === id) {
           post = new Post(posts[i]);
-          if (posts[i + 1]) nextPost = new Post(posts[i + 1]);
-          if (posts[i - 1]) lastPost = new Post(posts[i - 1]);
+          if (posts[i - 1]) nextPost = new Post(posts[i - 1]);
+          if (posts[i + 1]) lastPost = new Post(posts[i + 1]);
         }
       }
 
