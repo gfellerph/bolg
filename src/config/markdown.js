@@ -5,7 +5,10 @@ const markdownOptions = {
   smartypants: true,
 };
 
-export const marked = str => markdownParser(str, markdownOptions);
+export const marked = (str, options) => {
+  const mergedOptions = Object.assign({}, markdownOptions, options);
+  return markdownParser(str, mergedOptions);
+}
 export const excerpt = str => markdownParser(`${str.split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
 export const description = (str) => {
   const md = str
