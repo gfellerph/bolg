@@ -88,7 +88,7 @@
         this.$refs.previewArticle.scrollTop = (article.scrollHeight - article.clientHeight) * percent;
       },
       insertImage(url) {
-        const image = `\n![alt text](${url} "some alt")\n`;
+        const image = `\n![alt text](${url})\n`;
         const position = document.getElementById('markdown-editor').selectionStart || 0;
         this.post.markdown = [
           this.post.markdown.slice(0, position),
