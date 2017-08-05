@@ -31,7 +31,8 @@
 </template>
 
 <script>
-  import marked from 'marked';
+  import origMarked from 'marked';
+  import { marked } from '@/config/markdown';
   import debounce from 'debounce';
   import Post from '@/models/Post';
   import { database } from '@/config/firebase';
@@ -50,12 +51,15 @@
     return fragments.join('.').replace('gallery/', 'thumbs/');
   }
 
-  const renderer = new marked.Renderer();
+  const renderer = new origMarked.Renderer();
 
-  // TODO: Move to config
   renderer.image = (href, title, text) => {
-    const srcset = sizes.map(size => `${getThumbUrl(href, size)} ${size.width}w`).join(',');
-    return `<img src="${href}" title="${title}" alt="${text}" srcset="">`;
+    const srcset = '';
+    const hrefAttr = href ? ` src="${href}"` : '';
+    const titleAttr = title ? ` title="${title}"` : '';
+    const altAttr = text ? ` alt="${text}"` : '';
+    const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
+    return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}>`;
   }
 
   export default {
@@ -68,12 +72,13 @@
         postLoaded: false,
         states,
         showCheatSheet: false,
+        renderer: new origMarked.Renderer(),
       };
     },
 
     computed: {
       connected() { return this.$store.state.connection.connected; },
-      compiledContent() { return marked(this.post.markdown, { sanitize: false, gfm: true, renderer }); },
+      compiledContent() { return marked(this.post.markdown, { renderer }); },
       canPublish() { return this.state === states.SAVED; },
       hasTitle() { return !!this.post.title; },
       error() {
