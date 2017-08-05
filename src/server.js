@@ -1,6 +1,6 @@
 import express from 'express';
 import logger from 'morgan';
-import path from 'path';
+import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import publishAllApi from '@/server/api/publish-all';
@@ -16,6 +16,7 @@ app.use(express.static('public'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Listen for rebuild requests
