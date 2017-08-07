@@ -1,6 +1,8 @@
 import express from 'express';
 import logger from 'morgan';
 import compression from 'compression';
+import favicon from 'serve-favicon';
+import herokuSslRedirect from 'heroku-ssl-redirect';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import publishAllApi from '@/server/api/publish-all';
@@ -11,13 +13,14 @@ import { publishAll, buildIndex, buildGallery } from '@/server/index';
 const app = express();
 
 // Serve the static files
-// app.use(favicon('public', 'favicon.ico'));
-app.use(express.static('public'));
+app.use(favicon('public', 'inuksuk.ico'));
+app.use(herokuSslRedirect());
+app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('public'));
 
 // Listen for rebuild requests
 app.get('/publish', publishAllApi);
