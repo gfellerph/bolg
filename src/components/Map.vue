@@ -38,6 +38,8 @@
 				mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControl: false,
 				fullscreenControl: true,
+				draggableCursor: null,
+				draggingCursor: null,
 			});
 
 			if (window.outerWidth >= 768)	map.addListener('click', this.addTipp);
