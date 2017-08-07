@@ -1,6 +1,6 @@
 import { auth } from '@/config/firebase';
-// import store from '@/config/store';
 
+// TODO: remove firebase from default user model
 export default function User(user = {}) {
   this.uid = user.uid || null;
   this.displayName = user.displayName || '';

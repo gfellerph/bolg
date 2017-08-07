@@ -15,7 +15,6 @@
 	import Tipp from '@/models/Tipp';
 	import AddTipp from '@/components/AddTipp';
 	import { database } from '@/config/firebase';
-	import mapStyles from '@/config/map-styles.json';
 	import { reverseGeocode } from '@/config/constants';
 
 	let map = null;
@@ -35,7 +34,6 @@
 			map = new google.maps.Map(document.getElementById('google-map'), {
 				zoom: 2,
 				center: new google.maps.LatLng(27, 6),
-				// styles: mapStyles,
 				streetViewControl: false,
 				mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControl: false,

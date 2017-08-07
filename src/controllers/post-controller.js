@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from '@/config/moment';
 import Post from '@/models/Post';
 import { database } from '@/config/firebase';
 import { marked, description, excerpt } from '@/config/markdown';

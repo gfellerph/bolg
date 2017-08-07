@@ -2,7 +2,7 @@
   <div class="posts">
     <div class="post-list-container">
       <ul class="post-list">
-        <li v-for="post in reversedPosts" @click="changeCurrentPost(post)" @mouseenter="changeCurrentPost(post)">
+        <li v-for="post in reversedPosts" @mouseenter="changeCurrentPost(post)">
           <post-details :post="new Post(post)" />
         </li>
       </ul>
@@ -15,6 +15,7 @@
 
 <script>
   import Post from '@/models/PostAdmin';
+  import Story from '@/models/StoryAdmin';
   import PostDetails from '@/components/PostDetails';
   import { database } from '@/config/firebase';
 
@@ -24,6 +25,7 @@
         currentPost: null,
         posts: [],
         Post,
+        Story,
       };
     },
 
@@ -38,7 +40,11 @@
 
     methods: {
       changeCurrentPost(post) {
-        this.currentPost = post.lastPublished ? new Post(post) : '';
+        if (post.lastPublished) {
+          this.currentPost = new Post(post);
+        } else {
+          this.currentPost = null;
+        }
       },
     },
 

@@ -6,7 +6,7 @@
 
 
 <script>
-  import moment from 'moment';
+  import moment from '@/config/moment';
   import { states } from '@/config/constants';
 
   const classes = {

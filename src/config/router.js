@@ -7,6 +7,7 @@ import EditPost from '@/components/EditPost';
 import Login from '@/components/Login';
 import Map from '@/components/Map';
 import Bookmark from '@/components/Bookmark';
+import Story from '@/components/Story';
 
 Vue.use(Router);
 
@@ -21,7 +22,7 @@ const router = new Router({
       },
     },
     {
-      path: '/create',
+      path: '/createpost',
       name: 'NewPost',
       component: EditPost,
       meta: {
@@ -29,7 +30,7 @@ const router = new Router({
       },
     },
     {
-      path: '/edit/:id',
+      path: '/editpost/:id',
       name: 'EditPost',
       component: EditPost,
       meta: {
@@ -54,6 +55,22 @@ const router = new Router({
       name: 'Bookmark',
       component: Bookmark,
     },
+    {
+      path: '/createstory',
+      name: 'NewStory',
+      component: Story,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/editstory/:id',
+      name: 'EditStory',
+      component: Story,
+      meta: {
+        requiresAuth: true,
+      },
+    },
   ],
 });
 
@@ -64,7 +81,7 @@ router.beforeEach((to, from, next) => {
     if (!auth.currentUser) {
       next({
         path: '/login',
-        query: { redirect: to.fullPath }
+        query: { redirect: to.fullPath },
       });
     }
   }

@@ -93,8 +93,6 @@
 
 <script>
   import Tipp from '@/models/Tipp';
-  import AuthGuard from '@/components/AuthGuard';
-  import GoogleLogin from '@/components/GoogleLogin';
 
   export default {
     data() {
@@ -145,11 +143,6 @@
 
     mounted() {
       document.getElementById('username').focus();
-    },
-
-    components: {
-      AuthGuard,
-      GoogleLogin,
     },
   }
 </script>

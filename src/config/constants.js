@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export const liveRootUrl = 'https://bolg-app.herokuapp.com/posts/';
 
 export const states = {
@@ -13,10 +11,6 @@ export const states = {
 };
 
 export const mapsAPIKey = 'AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ';
-
-export function reverseGeocode(lat, lng) {
-  return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${mapsAPIKey}`);
-}
 
 export const sizes = [
   {
