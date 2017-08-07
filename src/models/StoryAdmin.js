@@ -1,7 +1,7 @@
 import Story from '@/models/Story';
-import { database, auth } from '@/config/firebase';
+import { database } from '@/config/firebase';
 import moment from '@/config/moment';
-import { slugger } from '@/config/constants';
+// import { slugger } from '@/config/constants';
 
 const ref = id => database.ref(`/stories/${id}`);
 const publishRef = id => database.ref(`/publishedstories/${id}`);

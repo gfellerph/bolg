@@ -3,7 +3,7 @@
     <div class="post-list-container">
       <ul class="post-list">
         <li v-for="post in reversedPosts" @mouseenter="changeCurrentPost(post)">
-          <post-details :post="post.type === 'post' ? new Post(post) : new Story(post)" />
+          <post-details :post="new Post(post)" />
         </li>
       </ul>
     </div>
@@ -41,7 +41,9 @@
     methods: {
       changeCurrentPost(post) {
         if (post.lastPublished) {
-          this.currentPost = post.type === 'post' ? new Post(post) : new Story(post);
+          this.currentPost = new Post(post);
+        } else {
+          this.currentPost = null;
         }
       },
     },
