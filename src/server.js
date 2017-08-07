@@ -1,5 +1,6 @@
 import express from 'express';
 import logger from 'morgan';
+import path from 'path';
 import compression from 'compression';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
@@ -13,7 +14,7 @@ import { publishAll, buildIndex, buildGallery } from '@/server/index';
 const app = express();
 
 // Serve the static files
-// app.use(favicon('public', 'inuksuk.ico'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(herokuSslRedirect());
 app.use(compression());
 app.use(logger('dev'));
