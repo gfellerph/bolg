@@ -1,9 +1,9 @@
 {
-  "name": "Bis när - Reiseblog vor Steffi und am Phippu",
+  "name": "bis när",
   "short_name": "bis när",
   "start_url": "/",
   "display": "browser",
-  "background_color": "white",
+  "background_color": "seagreen",
   "description": "Reiseblog vor Steffi und am Phippu",
   "dir": "ltr",
   "lang": "de-CH",
