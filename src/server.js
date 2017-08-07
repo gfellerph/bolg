@@ -13,7 +13,7 @@ import { publishAll, buildIndex, buildGallery } from '@/server/index';
 const app = express();
 
 // Serve the static files
-app.use(favicon('public', 'inuksuk.ico'));
+// app.use(favicon('public', 'inuksuk.ico'));
 app.use(herokuSslRedirect());
 app.use(compression());
 app.use(logger('dev'));
