@@ -2,7 +2,7 @@
   "name": "Bis när - Reiseblog vor Steffi und am Phippu",
   "short_name": "bis när",
   "start_url": "/",
-  "display": "standalone",
+  "display": "browser",
   "background_color": "white",
   "description": "Reiseblog vor Steffi und am Phippu",
   "dir": "ltr",
