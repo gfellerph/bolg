@@ -54,19 +54,12 @@
   const renderer = new origMarked.Renderer();
 
   renderer.image = (href, title, text) => {
-<<<<<<< HEAD
     const srcset = '';
     const hrefAttr = href ? ` src="${href}"` : '';
     const titleAttr = title ? ` title="${title}"` : '';
     const altAttr = text ? ` alt="${text}"` : '';
     const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
     return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}>`;
-=======
-    const srcset = sizes.map(size => `${getThumbUrl(href, size)} ${size.width}w`).join(',');
-    const titleAttr = title ? `title="${title}"` : '';
-    console.log(`<img src="${href}" ${titleAttr} alt="${text}" srcset="">`);
-    return `<img src="${href}" ${titleAttr} alt="${text}" srcset="">`;
->>>>>>> stories
   }
 
   export default {
