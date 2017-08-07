@@ -3,8 +3,8 @@ import { database, auth } from '@/config/firebase';
 import moment from '@/config/moment';
 import { slugger } from '@/config/constants';
 
-const ref = id => database.ref(`/posts/${id}`);
-const publishRef = id => database.ref(`/published/${id}`);
+const ref = id => database.ref(`/stories/${id}`);
+const publishRef = id => database.ref(`/publishedstories/${id}`);
 
 Story.prototype.set = function set() {
   this.lastSaved = Date.now();
