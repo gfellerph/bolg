@@ -7,11 +7,12 @@
   "main": "server/server.js",
   "license": "MIT",
   "scripts": {
-    "start": "node build/build.js && node ./bin/www",
+    "start": "node ./bin/www",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "static-pages": "node bolg/index.js",
-    "server": "node build/express-server"
+    "server": "node build/express-server",
+    "heroku-postbuild": "node build/build.js"
   },
   "dependencies": {
     "autoprefixer": "^6.7.2",
@@ -92,9 +93,7 @@
     "write-file-webpack-plugin": "^4.1.0"
   },
   "engines": {
-    "node": ">= 7.8.0",
-    "npm": ">= 5.3.0",
-    "yarn": ">=0.27.5"
+    "node": ">= 7.8.0"
   },
   "browserslist": [
     "> 1%",
