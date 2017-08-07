@@ -13,6 +13,7 @@ module.exports = {
     map: './src/map.js',
     bolg: './src/styles/post-index.scss',
     post: './src/post.js',
+    gallery: './src/gallery.js',
   },
   output: {
     path: config.build.assetsRoot,
