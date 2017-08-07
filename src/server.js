@@ -14,7 +14,7 @@ import { publishAll, buildIndex, buildGallery } from '@/server/index';
 const app = express();
 
 // Serve the static files
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(herokuSslRedirect());
 app.use(compression());
 app.use(logger('dev'));
