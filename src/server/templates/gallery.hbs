@@ -14,12 +14,15 @@
           <div class="picture-grid">
             {{#each this}}
               {{#if this.thumbnails.[320]}}
-                <img src="{{this.thumbnails.[320]}}" alt="">
+                <img class="gallery__image" src="{{this.thumbnails.[320]}}" alt="Bilder aus dem Blog" data-hd="{{this.thumbnails.[1920]}}">
               {{/if}}
             {{/each}}
           </div>
         </article>
       {{/each}}
     </div>
+  {{/content}}
+  {{#content "scripts"}}
+    <script src="{{webpack.[/gallery.js]}}"></script>
   {{/content}}
 {{/extend}}

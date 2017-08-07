@@ -7,8 +7,9 @@
         </li>
       </ul>
     </div>
-    <div class="post-preview" v-if="currentPost">
-      <iframe class="post-preview-frame" :src="currentPost.liveUrl" frameborder="0"></iframe>
+    <div class="post-preview">
+      <iframe v-if="currentPost" class="post-preview-frame" :src="currentPost.liveUrl" frameborder="0"></iframe>
+      <p v-if="!currentPost" class="posts__blank-slate">Post no nid publiziert</p>
     </div>
   </div>
 </template>
@@ -66,6 +67,10 @@
     height: 100%;
   }
 
+  .post-preview {
+    width: 100%;
+  }
+
   .posts {
     position: relative;
     display: flex;
@@ -91,5 +96,13 @@
       border-top: none;
       border-bottom: 1px solid black;
     }
+  }
+
+  .posts__blank-slate {
+    font-style: italic;
+    color: rgba(black, 0.3);
+    text-align: center;
+    margin: 2em;
+    font-size: 2em;
   }
 </style>

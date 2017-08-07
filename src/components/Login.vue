@@ -2,7 +2,7 @@
   <div class="login">
     <auth-guard>
       <router-link slot="auth" to="/">Home</router-link>
-      <div slot="no-auth">
+      <div slot="no-auth" @keyup.enter="login">
         <p>
           <label for="email">Email</label>
           <input id="email" v-model="email" type="text">
@@ -11,8 +11,8 @@
           <label for="password">Password</label>
           <input id="password" v-model="password" type="password">
         </p>
-        <p v-if="error">{{error}}</p>
-        <p><button @click="login">Login</button></p>
+        <p class="error" v-if="error">{{error}}</p>
+        <p><button :disabled="loading" @click="login">Login</button></p>
       </div>
     </auth-guard>
   </div>
