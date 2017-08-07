@@ -31,11 +31,8 @@
 </template>
 
 <script>
-<<<<<<< HEAD
   import origMarked from 'marked';
   import { marked } from '@/config/markdown';
-=======
->>>>>>> stories
   import debounce from 'debounce';
   import Post from '@/models/PostAdmin';
   import { database } from '@/config/firebase';
