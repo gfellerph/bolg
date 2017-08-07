@@ -12,7 +12,7 @@
     "build": "node build/build.js",
     "static-pages": "node bolg/index.js",
     "server": "node build/express-server",
-    "heroku-postbuild": "node build/build.js"
+    "postinstall": "node build/build.js"
   },
   "dependencies": {
     "autoprefixer": "^6.7.2",
