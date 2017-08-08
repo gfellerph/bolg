@@ -2,15 +2,6 @@ const mkdirp = require('mkdirp');
 const fs = require('fs');
 const dirname = require('path').dirname;
 
-// Create "this-is-a-post" from "This is a Post"
-export const slugger = str => str
-  .toLowerCase()
-  .replace(/ä/g, 'ae')
-  .replace(/ö/g, 'oe')
-  .replace(/ü/g, 'ue')
-  .replace(/[^\w ]+/g, ' ')
-  .replace(/ +/g, '-');
-
 // Random logo
 export const logoURL = () => `/img/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`;
 
