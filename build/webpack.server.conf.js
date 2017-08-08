@@ -37,6 +37,6 @@ module.exports = {
     ],
   },
   target: 'node',
-  watch: true,
+  watch: process.env.NODE_ENV !== 'production',
   bail: true,
 };
