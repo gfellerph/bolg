@@ -5,8 +5,8 @@ import * as hbsTemplates from '@/config/handlebars';
 import writefile from './writefile';
 import Post from '@/models/Post';
 import * as helpers from './helpers';
+import { slugger } from '@/config/constants';
 
-const slugger = helpers.slugger;
 const logoURL = helpers.logoURL;
 const database = firebase.database();
 // const postsRef = database.ref('/posts').orderByChild('created');
