@@ -9,7 +9,7 @@ import * as helpers from './helpers';
 const slugger = helpers.slugger;
 const logoURL = helpers.logoURL;
 const database = firebase.database();
-const postsRef = database.ref('/posts').orderByChild('created');
+// const postsRef = database.ref('/posts').orderByChild('created');
 const publishedRef = database.ref('/published').orderByChild('created');
 
 function webpackManifest() {

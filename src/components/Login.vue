@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import User from '@/models/User';
+  import User from '@/models/UserAdmin';
   import router from '@/config/router';
   import AuthGuard from '@/components/AuthGuard';
   import {auth} from '@/config/firebase';
