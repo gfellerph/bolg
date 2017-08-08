@@ -37,4 +37,5 @@ export const slugger = str => str
     .replace(/ö/g, 'oe')
     .replace(/ü/g, 'ue')
     .replace(/[^\w ]+/g, ' ')
+    .trim()
     .replace(/ +/g, '-');
