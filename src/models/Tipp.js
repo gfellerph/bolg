@@ -9,7 +9,8 @@ export default function Tipp(tipp = {}) {
   this.user = tipp.user || new User();
   this.country = tipp.country || '';
   this.text = tipp.text || '';
-  this.location = tipp.location || null;
+  this.lat = tipp.lat || null;
+  this.lng = tipp.lng || null;
   this.approved = tipp.approved || false;
 
   const ref = database.ref(`/tipps/${this.id}`);
@@ -25,4 +26,10 @@ export default function Tipp(tipp = {}) {
    * @returns {Promise} Firebase promise
    */
   this.set = () => ref.set(this.normalize());
+
+  /**
+   * Remove the tipp from firebase
+   * @returns {Promise} Firebase promise
+   */
+  this.remove = () => ref.remove();
 }

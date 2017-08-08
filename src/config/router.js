@@ -8,6 +8,7 @@ import Login from '@/components/Login';
 import Map from '@/components/Map';
 import Bookmark from '@/components/Bookmark';
 import Story from '@/components/Story';
+import Tipps from '@/components/Tipps';
 
 Vue.use(Router);
 
@@ -67,6 +68,14 @@ const router = new Router({
       path: '/editstory/:id',
       name: 'EditStory',
       component: Story,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/tipps',
+      name: 'Tipps',
+      component: Tipps,
       meta: {
         requiresAuth: true,
       },
