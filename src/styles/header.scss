@@ -1,6 +1,6 @@
 .bolg-header {
   position: relative;
-  padding: 0 2em;
+  padding: 0 $golden-rem;
   margin: $golden-rem auto;
 
   @include max($xs) {
