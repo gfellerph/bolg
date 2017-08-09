@@ -45,6 +45,9 @@
 </script>
 
 <style lang="scss">
+  @import '../styles/_variables';
+  @import '../styles/_mixins';
+
   .post__badge {
     position: absolute;
     top: 0;
@@ -54,6 +57,13 @@
     color: white;
     transform-origin: top left;
     transform: rotate(90deg);
+
+    @include max($xs) {
+      top: $golden-rem / 2;
+      right: auto;
+      left: 0;
+      transform: none;
+    }
 
     &:before,
     &:after {
