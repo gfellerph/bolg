@@ -5,6 +5,7 @@
         <button class="bold small" @click="bolden" title="Bold">B</button>
         <button class="italic small" @click="pizzaparty" title="Italic">I</button>
         <button class="small" @click="toggleYoutubeEmbed" title="YouTube">YT</button>
+        <label><input type="checkbox" v-model="autoscroll">autoscroll</label>
       </div>
       <div class="right-controls">
         <button class="help bold small" @click="toggleClippy">?</button>
@@ -46,6 +47,7 @@
         entireText: '',
         showYoutubeEmbed: false,
         youtubeEmbed: '',
+        autoscroll: true,
       };
     },
 
@@ -131,6 +133,7 @@
         }
       },
       scroll(event) {
+        if (!this.autoscroll) return;
         const target = event.target;
         const percent = target.scrollTop / (target.scrollHeight - target.clientHeight);
         this.$emit('scroll', percent);
@@ -203,6 +206,7 @@
     .left-controls,
     .right-controls {
       display: flex;
+      align-items: center;
     }
 
     button {
@@ -211,6 +215,14 @@
       margin-left: 0;
       min-width: 2rem;
       text-align: center;
+    }
+
+    label {
+      margin: 0;
+    }
+
+    input[type="checkbox"] {
+      margin: 0 $golden-rem / 4;
     }
 
     .left-controls {
