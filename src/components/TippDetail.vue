@@ -4,6 +4,8 @@
       <h2 class="h5">
         <span>{{tipp.user.displayName}}</span>
         <span v-if="tipp.user.email">(<a :href="`mailto:${tipp.user.email}`">{{tipp.user.email}}</a>)</span>
+        <br>
+        <time class="tipp__created">{{dateFormat(tipp.created)}}</time>
       </h2>
       <p>{{tipp.text}}</p>
       <p>
@@ -30,12 +32,14 @@
 
 <script>
   import Tipp from '@/models/Tipp';
+  import dateFormat from '@/filters/date-format';
 
   export default {
     data() {
       return {
         editMode: false,
         editTipp: null,
+        dateFormat,
       }
     },
     props: {
@@ -61,5 +65,11 @@
   .tipp__text {
     border: 1px solid black;
     padding: 0.5em;
+  }
+
+  .tipp__created {
+    font-style: italic;
+    color: grey;
+    font-size: 0.9em;
   }
 </style>
