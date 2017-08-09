@@ -11,10 +11,10 @@ function createThumbnailFileName(fileName, size) {
   let newFileName = '';
   if (fileName.indexOf('.') >= 0) {
     const fragments = fileName.split('.');
-    fragments.splice(fragments.length - 1, 0, `${size.width}x${size.height}`);
+    fragments.splice(fragments.length - 1, 0, `${size.width}`);
     newFileName = fragments.join('.');
   } else {
-    newFileName = `${fileName}.${size.width}x${size.height}`;
+    newFileName = `${fileName}.${size.width}`;
   }
   return newFileName;
 }

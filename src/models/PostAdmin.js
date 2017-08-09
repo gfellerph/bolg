@@ -39,6 +39,10 @@ Post.prototype.unpublish = function unpublish() {
 }
 
 Post.prototype.beautify = function beautify() {
+  const images = {};
+  this.images.map((image) => {
+    images[image.id] = image.thumbnails;
+  });
   this.postUrl = this.url;
   this.postLiveUrl = this.liveUrl;
   this.postTitle = this.title;
@@ -46,7 +50,7 @@ Post.prototype.beautify = function beautify() {
   this.lastEdited = moment(this.lastEdited, 'x').format('DD.MM.YYYY');
   this.lastSaved = moment(this.lastSaved, 'x').format('DD.MM.YYYY');
   this.lastPublished = moment(this.lastPublished, 'x').format('DD.MM.YYYY');
-  this.html = marked(this.markdown);
+  this.html = marked(this.markdown, { images });
   this.description = description(this.markdown);
   this.excerpt = excerpt(this.markdown);
   return this;

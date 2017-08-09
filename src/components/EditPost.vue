@@ -31,7 +31,6 @@
 </template>
 
 <script>
-  import origMarked from 'marked';
   import { marked } from '@/config/markdown';
   import debounce from 'debounce';
   import Post from '@/models/PostAdmin';
@@ -45,23 +44,6 @@
   import PostStatus from '@/components/PostStatus';
   import MarkdownCheatsheet from '@/components/MarkdownCheatsheet';
 
-  const getThumbUrl = function (url, size) {
-    const fragments = url.split('.');
-    fragments.splice(fragments.length - 1, 0, `${size.width}x${size.height}`);
-    return fragments.join('.').replace('gallery/', 'thumbs/');
-  }
-
-  const renderer = new origMarked.Renderer();
-
-  renderer.image = (href, title, text) => {
-    const srcset = '';
-    const hrefAttr = href ? ` src="${href}"` : '';
-    const titleAttr = title ? ` title="${title}"` : '';
-    const altAttr = text ? ` alt="${text}"` : '';
-    const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
-    return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}>`;
-  }
-
   export default {
     mixins: [PostMixin],
 
@@ -72,13 +54,17 @@
         postLoaded: false,
         states,
         showCheatSheet: false,
-        renderer: new origMarked.Renderer(),
       };
     },
 
     computed: {
       connected() { return this.$store.state.connection.connected; },
-      compiledContent() { return marked(this.post.markdown, { renderer }); },
+      compiledContent() {
+        const images = {};
+        this.post.images.map((image) => {
+          images[image.id] = image.thumbnails;
+        });
+        return marked(this.post.markdown, { images }); },
       canPublish() { return this.state === states.SAVED; },
       hasTitle() { return !!this.post.title; },
       error() {

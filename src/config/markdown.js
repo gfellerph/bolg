@@ -7,6 +7,25 @@ const markdownOptions = {
 
 export const marked = (str, options) => {
   const mergedOptions = Object.assign({}, markdownOptions, options);
+  const renderer = new markdownParser.Renderer();
+  renderer.image = (href, title, text) => {
+    let srcset;
+    if (options.images) {
+      const idRegex = /%2F([A-Za-z0-9]+)\.jpg/g;
+      const match = idRegex.exec(href);
+      const id = match ? match[1] : null;
+      if (id) {
+        const thumbs = options.images[id];
+        srcset = thumbs ? Object.keys(thumbs).map(key => `${thumbs[key]} ${key}w`).join(',') : null;
+      }
+    }
+    const hrefAttr = href ? ` src="${href}"` : '';
+    const titleAttr = title ? ` title="${title}"` : '';
+    const altAttr = text ? ` alt="${text}"` : '';
+    const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
+    return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}>`;
+  }
+  mergedOptions.renderer = renderer;
   return markdownParser(str, mergedOptions);
 }
 export const excerpt = str => markdownParser(`${str.split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
