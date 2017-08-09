@@ -27,7 +27,7 @@
     },
     computed: {
       filteredTipps() {
-        return this.tipps.filter(tipp => tipp.text.toLowerCase().includes(this.search.toLowerCase()) || tipp.user.displayName.toLowerCase().includes(this.search.toLowerCase()));
+        return this.tipps.filter(tipp => tipp.text.toLowerCase().includes(this.search.toLowerCase()) || tipp.user.displayName.toLowerCase().includes(this.search.toLowerCase())).reverse();
       }
     },
     components: {
