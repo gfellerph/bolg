@@ -1,9 +1,13 @@
 <template>
-  <div class="post-image">
+  <div class="post-image" :class="{active: active}" @click="activateImage">
     <img class="post-image--preview" :src="smallestImage">
     <div class="image-controls">
-      <div @click="removeImage" class="post-image--remove"></div>
-      <div @click="insertImage" class="post-image--insert"></div>
+      <button @click="insertImage" class="post-image--insert">
+        <img src="/img/insert.svg" alt="">
+      </button>
+      <button @click="removeImage" class="post-image--remove">
+        <img src="/img/trash.svg" alt="">
+      </button>
     </div>
   </div>
 </template>
@@ -20,6 +24,7 @@
 
     props: {
       image: Object,
+      active: Boolean,
     },
 
     computed: {
@@ -31,10 +36,14 @@
 
     methods: {
       removeImage() {
-        bus.$emit('remove-image', this.image.id);
+        this.$emit('remove-image', this.image.id);
       },
       insertImage() {
-        bus.$emit('insert-image', this.image.downloadURL);
+        this.$emit('insert-image', this.image.downloadURL);
+      },
+      activateImage() {
+        const url = this.image.thumbnails[640] ? this.image.thumbnails[640] : this.image.downloadURL;
+        this.$emit('activate-image', { id: this.image.id, url });
       },
     }
   };
@@ -49,6 +58,16 @@
     background-color: rgba(255, 255, 255, 0.1);
     flex: 0 0 auto;
     margin-right: $golden-em / 2;
+    
+    &:hover {
+      .image-controls {
+        opacity: 0.8;
+      }  
+    }
+
+    &.active {
+      outline: 5px solid dodgerblue;
+    }
   }
   
   .post-image--preview {
@@ -60,26 +79,49 @@
     opacity: 0;
     transition: opacity 200ms;
 
-    &:hover {
-      opacity: 0.8;
-    }
   }
   
   .post-image--insert {
     position: absolute;
-    background: royalblue;
-    top: 0;
+    background: seagreen;
+    bottom: 0;
     left: 0;
-    width: 50%;
-    height: 100%;
+    border: none;
+    padding: 10px;
+
+    &:hover {
+      text-shadow: none;
+      animation: none;
+      transform: scale(1.1);
+    }
+
+    img {
+      display: block;
+      width: 32px;
+      height: 32px;
+    }
   }
 
   .post-image--remove {
     position: absolute;
     background: crimson;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
+    right: 0px;
+    bottom: 0px;
+    padding: 10px;
+    border: none;
+    margin: 0;
+    transition: transform 200ms;
+
+    &:hover {
+      text-shadow: none;
+      animation: none;
+      transform: scale(1.1);
+    }
+
+    img {
+      display: block;
+      width: 32px;
+      height: 32px;
+    }
   }
 </style>

@@ -5,6 +5,10 @@
         v-for="image in post.images"
         :image="image"
         :key="image.id"
+        :active="image.id === post.titleImage.id"
+        @remove-image="removeImage"
+        @thumbnails-generated="addImage"
+        @activate-image="activateImage"
       ></post-image>
       <image-uploader
         v-for="image in imagesForUpload"
@@ -49,12 +53,9 @@
     },
 
     created() {
-      bus.$on('remove-image', this.removeImage);
+      /* bus.$on('remove-image', this.removeImage);
       bus.$on('thumbnails-generated', this.addImage);
-    },
-
-    computed: {
-      
+      bus.$on('activate-image', this.activateImage); */
     },
 
     methods: {
@@ -80,6 +81,10 @@
         this.post.images = this.post.images.filter(image => image.id !== id);
         this.post.set();
       },
+      activateImage(url) {
+        this.post.titleImage = url;
+        this.post.set();
+      }
     },
 
     components: {

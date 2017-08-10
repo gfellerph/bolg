@@ -20,7 +20,12 @@ export default function Post(post = {}) {
   this.html = post.html || null;
   this.excerpt = post.excerpt || null;
   this.description = post.description || null;
+  this.titleImage = post.titleImage || null;
   this.type = 'post';
+
+  if (!this.titleImage && this.images.length) {
+    this.titleImage = this.images[0].thumbnails[640] ? { id: this.id, url: this.images[0].thumbnails[640] } : null;
+  }
 
   /**
    * Normalize the post object, no functions, ready for setting to firebase
@@ -55,7 +60,7 @@ export default function Post(post = {}) {
 
   Object.defineProperty(this, 'heroImageUrl', {
     get() {
-      const image = this.images.length ? this.images[0].thumbnails['640'] : '';
+      const image = this.titleImage ? this.titleImage.url : this.images[0].thumbnails['640'];
       return image;
     },
   });
