@@ -36,12 +36,12 @@
         img.file = null;
         this.generatingThumbs = true;
         img.downloadURL = snapshot.downloadURL;
-        bus.$emit('add-image', img);
+        this.$emit('add-image', img);
         database.ref(`/images/gallery`).on('child_added', (snapshot) => {
           if (snapshot.key !== img.id) return;
           img.thumbnails = snapshot.val().thumbnails;
           this.generatingThumbs = false;
-          bus.$emit('thumbnails-generated', img);
+          this.$emit('thumbnails-generated', img);
         });
       });
     },

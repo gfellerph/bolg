@@ -2,10 +2,10 @@
   <div class="post-image" :class="{active: active}" @click="activateImage">
     <img class="post-image--preview" :src="smallestImage">
     <div class="image-controls">
-      <button @click="insertImage" class="post-image--insert">
+      <button @click.stop="insertImage" class="post-image--insert">
         <img src="/img/insert.svg" alt="">
       </button>
-      <button @click="removeImage" class="post-image--remove">
+      <button @click.stop="removeImage" class="post-image--remove">
         <img src="/img/trash.svg" alt="">
       </button>
     </div>
@@ -39,7 +39,7 @@
         this.$emit('remove-image', this.image.id);
       },
       insertImage() {
-        this.$emit('insert-image', this.image.downloadURL);
+        bus.$emit('insert-image', this.image.downloadURL);
       },
       activateImage() {
         const url = this.image.thumbnails[640] ? this.image.thumbnails[640] : this.image.downloadURL;

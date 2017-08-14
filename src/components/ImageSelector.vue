@@ -7,17 +7,21 @@
         :key="image.id"
         :active="image.id === post.titleImage.id"
         @remove-image="removeImage"
-        @thumbnails-generated="addImage"
         @activate-image="activateImage"
       ></post-image>
       <image-uploader
         v-for="image in imagesForUpload"
         :image="image"
         :key="image.id"
+        @thumbnails-generated="addImage"
       ></image-uploader>
       <div class="image-upload-wrapper">
         <p class="text-align-center">Drop or click for pics</p>
-        <input type="file" multiple @change="onFileChange" />
+        <input
+          type="file"
+          multiple
+          @change="onFileChange"
+        />
       </div>
     </div>
   </div>
@@ -54,8 +58,8 @@
 
     created() {
       /* bus.$on('remove-image', this.removeImage);
-      bus.$on('thumbnails-generated', this.addImage);
       bus.$on('activate-image', this.activateImage); */
+      this.$on('thumbnails-generated', this.addImage);
     },
 
     methods: {
