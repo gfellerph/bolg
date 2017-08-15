@@ -3,7 +3,9 @@
 > A Vue.js blog
 
 Blog/Backend/Server hosted on heroku
+
 Images/Data/Functions with Firebase
+
 Live: https://bisnär.ch
 
 Features:
