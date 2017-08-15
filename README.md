@@ -1,6 +1,16 @@
 # bolg
 
-> A Vue.js project
+> A Vue.js blog
+
+Blog/Backend/Server hosted on heroku
+Images/Data/Functions with Firebase
+Live: https://bisnär.ch
+
+Features:
+- Static precompiled posts
+- Markdown/Vue.js post editor
+- Node.js server
+- Google map for travel tipps
 
 ## Build Setup
 
