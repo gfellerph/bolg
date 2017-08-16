@@ -9,8 +9,20 @@
   margin: $golden-rem 0;
 }
 
-.post__title-image {
+.post__link {
   display: block;
+  padding-top: 56.25%;
+}
+
+.post__title-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .post__title {

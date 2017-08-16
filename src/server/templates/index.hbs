@@ -23,9 +23,9 @@
       <ul class="posts">
         {{#each posts}}
           <li class="post">
-            <a href="{{this.url}}">
+            <a href="{{this.url}}" class="post__link">
               {{#if this.heroImageUrl}}
-                <img class="post__title-image" src="{{this.heroImageUrl}}" alt="Titelbild für {{this.title}}">
+                <div class="post__title-image" style="background-image:url({{this.heroImageUrl}})"></div>
               {{/if}}
               <div class="post__overlay">
                 <h2 class="post__title h4">{{this.title}}</h2>

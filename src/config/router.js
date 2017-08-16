@@ -55,6 +55,9 @@ const router = new Router({
       path: '/bookmark',
       name: 'Bookmark',
       component: Bookmark,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/createstory',

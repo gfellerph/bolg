@@ -1,9 +1,9 @@
 <template>
   <ul class="posts">
     <li class="post" v-if="post">
-      <a :href="postUrl">
+      <a class="post__link" :href="postUrl">
+        <div class="post__title-image" :style="backgroundImage"></div>
         <div class="post__badge">witerläse</div>
-        <img v-if="post.heroImageUrl" class="post__title-image" :src="post.heroImageUrl" :alt="`Titelbild für ${post.title}`">
         <div class="post__overlay">
           <h2 class="post__title h4">{{post.title}}</h2>
           <p class="post__published">{{post.created}}</p>
@@ -29,7 +29,6 @@
       if (!window.localStorage) return;
 
       const bookmark = JSON.parse(window.localStorage.getItem('bookmark'));
-      
       if (!bookmark) return;
       const postRef = database.ref(`/published/${bookmark.postId}`);
       postRef.on('value', (snapshot) => {
@@ -39,7 +38,8 @@
     },
 
     computed: {
-      postUrl() { return `${this.post.url}#bookmark`; }
+      postUrl() { return this.post ? `${this.post.url}#bookmark` : ''; },
+      backgroundImage() { return this.post ? `background-image:url(${this.post.heroImageUrl})` : ''; },
     },
   };
 </script>
