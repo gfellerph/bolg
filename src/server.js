@@ -21,16 +21,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static('public'));
+app.use(express.static('public', {
+  extensions: 'html',
+}));
 
 // Listen for rebuild requests
 app.get('/publish', publishAllApi);
 app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
-
-// Custom routes
-app.get('/galerie', (req, res) => res.sendFile('/public/gallery.html', { root: process.cwd() }));
-app.get('/bolg', (req, res) => res.sendFile('/public/bolg.html', { root: process.cwd() }));
 
 // catch 404 and forward to error handler
 // TODO: Find a way to manage errors
