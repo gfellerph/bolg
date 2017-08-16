@@ -9,9 +9,7 @@ body {
 p,
 dl,
 hr {
-  margin: $golden-em / 2 auto;
-  margin-top: 1rem;
-  margin-bottom: $golden-em;
+  margin: $golden-em auto;
 }
 
 pre {
