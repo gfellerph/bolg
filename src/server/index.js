@@ -77,7 +77,6 @@ export function buildIndex() {
     publishedRef.once('value', (snapshot) => {
       const val = snapshot.val();
       const filePath = 'public/index.html';
-      if (!val) return reject(new Error('There are no posts to build an overview with.'));
       const posts = Object.keys(val).map(post => new Post(val[post])).reverse();
       const manifest = webpackManifest();
       const html = hbsTemplates.index({
