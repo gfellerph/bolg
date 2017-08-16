@@ -46,7 +46,7 @@ export function buildGallery() {
       const val = snapshot.val();
       const postsArray = Object.keys(val).map(key => val[key]).reverse();
       const postsPerMonth = {};
-      const filePath = 'public/gallery.html';
+      const filePath = 'public/galerie.html';
 
       postsArray.map((post) => {
         const createdDate = moment(post.created, 'DD.MM.YYYY');
