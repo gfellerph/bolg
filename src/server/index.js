@@ -80,7 +80,6 @@ export function buildIndex() {
       if (!val) return reject(new Error('There are no posts to build an overview with.'));
       const posts = Object.keys(val).map(post => new Post(val[post])).reverse();
       const manifest = webpackManifest();
-      console.log(manifest);
       const html = hbsTemplates.index({
         posts,
         logoURL: logoURL(),
