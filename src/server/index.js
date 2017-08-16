@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import moment from '@/config/moment';
 import firebase from '@/config/firebase-admin';
 import * as hbsTemplates from '@/config/handlebars';
@@ -7,13 +8,36 @@ import Post from '@/models/Post';
 import * as helpers from './helpers';
 import { slugger } from '@/config/constants';
 
+const cssInlineThreshold = 10; // KB
 const logoURL = helpers.logoURL;
 const database = firebase.database();
-// const postsRef = database.ref('/posts').orderByChild('created');
 const publishedRef = database.ref('/published').orderByChild('created');
 
+function inlineCSS(file) {
+  if (!file.endsWith('.css')) return '';
+
+  const filePath = path.resolve(process.cwd() + '/public' + file);
+  const fileStats = fs.statSync(filePath);
+  let html = '';
+
+  if (fileStats.size / 1000.0 < cssInlineThreshold) {
+    // Inline the file
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    html = `<style>${fileContent}</style>`;
+  } else {
+    html = `<link rel="stylesheet" href="${file}">`;
+  }
+
+  return html;
+}
+
 function webpackManifest() {
-  return JSON.parse(fs.readFileSync('public/config/webpack.manifest.json', 'utf8'));
+  const manifest = JSON.parse(fs.readFileSync('public/config/webpack.manifest.json', 'utf8'));
+  Object.keys(manifest).map((entry) => {
+    manifest[entry] = entry.endsWith('.css') ? inlineCSS(manifest[entry]) : manifest[entry];
+  });
+
+  return manifest;
 }
 
 export function buildGallery() {
@@ -55,11 +79,11 @@ export function buildIndex() {
       const filePath = 'public/index.html';
       if (!val) return reject(new Error('There are no posts to build an overview with.'));
       const posts = Object.keys(val).map(post => new Post(val[post])).reverse();
-
+      const manifest = webpackManifest();
       const html = hbsTemplates.index({
         posts,
         logoURL: logoURL(),
-        webpack: webpackManifest(),
+        webpack: manifest,
       });
       writefile(filePath, html).then(resolve);
     });
