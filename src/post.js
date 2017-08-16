@@ -1,3 +1,5 @@
+import mediumZoom from '@/config/medium-zoom';
+
 const documentHeight = () => Math.max(
   document.body.scrollHeight,
   document.body.offsetHeight,
@@ -37,5 +39,6 @@ function restoreBookmark() {
 if (window.location.href.indexOf('bolg.html') <= 0) {
   window.onbeforeunload = setBookmark;
   window.onunload = setBookmark;
-  window.onload = restoreBookmark;
+  window.addEventListener('load', restoreBookmark);
+  window.addEventListener('DOMContentLoaded', mediumZoom);
 }

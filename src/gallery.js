@@ -1,7 +1,3 @@
-import mediumZoom from 'medium-zoom';
+import mediumZoom from '@/config/medium-zoom';
 
-window.addEventListener('DOMContentLoaded', () => {
-  mediumZoom('.container img', {
-    margin: 48,
-  });
-});
+window.addEventListener('DOMContentLoaded', mediumZoom);
