@@ -22,17 +22,19 @@
       <h1>Posts</h1>
       <ul class="posts">
         {{#each posts}}
-        <li class="post">
-          <a href="{{this.url}}">
-            {{#if this.heroImageUrl}}
-              <img class="post__title-image" src="{{this.heroImageUrl}}" alt="Titelbild für {{this.title}}">
-            {{/if}}
-            <div class="post__overlay">
-              <h2 class="post__title h4">{{this.title}}</h2>
-              <p class="post__published">{{this.created}}</p>
-            </div>
-          </a>
-        </li>
+          <li class="post">
+            <a href="{{this.url}}">
+              {{#if this.heroImageUrl}}
+                <img class="post__title-image" src="{{this.heroImageUrl}}" alt="Titelbild für {{this.title}}">
+              {{/if}}
+              <div class="post__overlay">
+                <h2 class="post__title h4">{{this.title}}</h2>
+                <p class="post__published">{{this.created}}</p>
+              </div>
+            </a>
+          </li>
+        {{else}}
+          <p class="italic grey-text">Da si ja no gar keiner Posts...</p>
         {{/each}}
       </ul>
     </div>

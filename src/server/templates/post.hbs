@@ -30,6 +30,11 @@
         <a class="next-post-link" href="{{nextPost.url}}">
           <article class="next-post">{{{nextPost.excerpt}}}</article>
         </a>
+      {{else}}
+        <hr class="blog-divider">
+        <p class="text-align-center">
+          <a href="/galerie"></a>
+        </p>
       {{/if}}
     </div>
   {{/content}}
