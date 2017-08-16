@@ -46,14 +46,14 @@ export default function Post(post = {}) {
 
   Object.defineProperty(this, 'liveUrl', {
     get() {
-      const url = `${liveRootUrl}${slugger(this.title)}.html`;
+      const url = `${liveRootUrl}${slugger(this.title)}`;
       return url || '';
     },
   });
 
   Object.defineProperty(this, 'url', {
     get() {
-      const url = `/posts/${slugger(this.title)}.html`;
+      const url = `/posts/${slugger(this.title)}`;
       return url || '';
     },
   });
