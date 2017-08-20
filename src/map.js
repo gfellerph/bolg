@@ -4,6 +4,7 @@ import Vue from 'vue';
 import Map from '@/components/Map';
 import Bookmark from '@/components/Bookmark';
 import store from './config/store';
+import 'promise-polyfill';
 
 Vue.config.productionTip = false;
 
