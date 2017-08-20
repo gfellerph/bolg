@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import 'es6-promise/auto';
 import Vuex from 'vuex';
 
 import authStore from '@/stores/auth-store';
