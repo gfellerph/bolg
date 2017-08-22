@@ -1,0 +1,31 @@
+{{#extend "layout"}}
+  {{#content "meta"}}
+    <meta property="og:title" content="Abgmäudet">
+    <meta property="og:image" content="{{logoURL}}">
+    <title>Abgmäudet</title>
+  {{/content}}
+  {{#content "navigation"}}
+    <nav>
+        <a class="left-link" href="/">
+          <span class="hidden-mobile">Reis</span>
+          <img src="/img/arrow-back.svg" alt="Zrugg" class="visible-mobile">
+        </a>
+        <a href="/"><img class="logo" src="{{logoURL}}" alt=""></a>
+        <a class="right-link" href="/galerie">
+          <span class="hidden-mobile">Bilder</span>
+        </a>
+    </nav>
+  {{/content}}
+  {{#content "main"}}
+    <div class="container">
+      <h1>Du hesch di abgmäudet...</h1>
+      <p class="text-align-center">
+        <img src="/img/sad.gif" alt="Mir si truurig">
+        <em>si üser Gschichte nümm interessant gnue?</em>
+      </p>
+    </div>
+  {{/content}}
+  {{#content "scripts"}}
+    <script defer="defer" src="{{webpack.[/post.js]}}"></script>
+  {{/content}}
+{{/extend}}

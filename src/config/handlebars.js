@@ -7,6 +7,7 @@ const indexTemplate = fs.readFileSync('src/server/templates/index.hbs', 'utf-8')
 const postTemplate = fs.readFileSync('src/server/templates/post.hbs', 'utf-8');
 const galleryTemplate = fs.readFileSync('src/server/templates/gallery.hbs', 'utf-8');
 const mailTemplate = fs.readFileSync('src/server/templates/mail.hbs', 'utf-8');
+const unsubscribedTemplate = fs.readFileSync('src/server/templates/unsubscribed.hbs', 'utf-8');
 
 handlebars.registerHelper(layouts(handlebars));
 handlebars.registerPartial('layout', layout);
@@ -15,3 +16,4 @@ export const index = handlebars.compile(indexTemplate);
 export const post = handlebars.compile(postTemplate);
 export const gallery = handlebars.compile(galleryTemplate);
 export const mail = handlebars.compile(mailTemplate);
+export const unsubscribed = handlebars.compile(unsubscribedTemplate);
