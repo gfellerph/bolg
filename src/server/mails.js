@@ -16,11 +16,11 @@ const request = sendgrid.emptyRequest({
 export default function () {
   return sendgrid.API(request)
     .then((response) => {
+      console.log(JSON.stringify(response.body));
       console.log(response.statusCode);
-      console.log(response.body);
       console.log(response.headers);
     })
     .catch((error) => {
-      console.error(error);
+      console.error(JSON.stringify(error));
     });
 }
