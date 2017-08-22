@@ -84,8 +84,22 @@ export function buildIndex() {
         logoURL: logoURL(),
         webpack: manifest,
       });
-      writefile(filePath, html).then(resolve);
+      writefile(filePath, html).then(resolve).catch(reject);
     });
+  });
+}
+
+/**
+ * Build a single personalized email, ready to be sent
+ * @param {Subscriber} subscriber The subscriber object
+ * @param {Post} post The post to notify the subscriber about
+ * @returns {String} Compiled HTML mail template
+ */
+export function buildNotificationMail(subscriber, post) {
+  return hbsTemplates.mail({
+    post,
+    subscriber,
+    logoUrl: logoURL(),
   });
 }
 
