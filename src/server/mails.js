@@ -1,4 +1,6 @@
 import Sendgrid from 'sendgrid';
+import firebase from '@/config/firebase-admin';
+import { objectToArray } from '@/config/constants';
 
 const helper = Sendgrid.mail;
 const sender = new helper.Email('tuelsch@gmail.com', 'Philipp Gfeller');
