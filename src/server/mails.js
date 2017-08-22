@@ -1,7 +1,7 @@
 import Sendgrid from 'sendgrid';
 
 const helper = Sendgrid.mail;
-const sender = new helper.Email('adiemerci@bisnär.ch');
+const sender = new helper.Email('adiemerci@bisnaer.ch');
 const reciever = new helper.Email('tuelsch@gmail.com');
 const content = new helper.Content('text/plain', 'He, tsäueli');
 const subject = 'Nöis mail';
