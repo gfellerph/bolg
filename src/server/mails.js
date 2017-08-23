@@ -18,7 +18,7 @@ function buildNotificationMail(subscriber, post) {
   return hbsTemplates.mail({
     post,
     subscriber,
-    logoUrl: logoURL(),
+    logoUrl: `https://bisnär.ch${logoURL()}`,
   });
 }
 
