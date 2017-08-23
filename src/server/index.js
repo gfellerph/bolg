@@ -7,6 +7,7 @@ import writefile from './writefile';
 import Post from '@/models/Post';
 import * as helpers from './helpers';
 import { slugger } from '@/config/constants';
+import enqueueNotifications from '@/server/mails';
 
 const cssInlineThreshold = 10; // KB
 const logoURL = helpers.logoURL;
@@ -86,20 +87,6 @@ export function buildIndex() {
       });
       writefile(filePath, html).then(resolve).catch(reject);
     });
-  });
-}
-
-/**
- * Build a single personalized email, ready to be sent
- * @param {Subscriber} subscriber The subscriber object
- * @param {Post} post The post to notify the subscriber about
- * @returns {String} Compiled HTML mail template
- */
-export function buildNotificationMail(subscriber, post) {
-  return hbsTemplates.mail({
-    post,
-    subscriber,
-    logoUrl: logoURL(),
   });
 }
 
@@ -192,7 +179,13 @@ export function unpublish(id) {
 // http requests from the backend, this is much more efficient
 publishedRef.on('child_added', (snapshot) => {
   const post = snapshot.val();
-  publish(post.id).then(buildIndex).then(buildGallery);
+  publish(post.id)
+    .then(buildIndex)
+    .then(buildGallery)
+    .then(() => enqueueNotifications(post))
+    .catch(error => {
+      console.error(error);
+    })
 });
 
 publishedRef.on('child_removed', (snapshot) => {

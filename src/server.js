@@ -8,7 +8,6 @@ import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
 import unsubscribe from '@/server/api/unsubscribe';
 import { publishAll, buildIndex, buildGallery } from '@/server/index';
-import mail from '@/server/mails';
 
 const app = express();
 
@@ -29,7 +28,6 @@ app.get('/publish', publishAllApi);
 app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
 app.get('/unsubscribe/:id', unsubscribe);
-app.get('/sendtestmail', mail);
 
 // catch 404 and forward to error handler
 // TODO: Find a way to manage errors
