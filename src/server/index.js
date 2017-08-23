@@ -178,7 +178,7 @@ export function unpublish(id) {
 // TODO: remove constant connection to firebase. listen only to
 // http requests from the backend, this is much more efficient
 publishedRef.on('child_added', (snapshot) => {
-  const post = snapshot.val();
+  const post = new Post(snapshot.val());
   publish(post.id)
     .then(buildIndex)
     .then(buildGallery)
