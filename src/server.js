@@ -51,6 +51,6 @@ app.use((err, req, res) => {
 }); */
 
 // Initially build all the files
-publishAll().then(buildIndex).then(buildGallery);
+// publishAll().then(buildIndex).then(buildGallery);
 
 export default app;
