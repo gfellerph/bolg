@@ -7,7 +7,6 @@ import publishAllApi from '@/server/api/publish-all';
 import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
 import unsubscribe from '@/server/api/unsubscribe';
-import { publishAll, buildIndex, buildGallery } from '@/server/index';
 
 const app = express();
 
