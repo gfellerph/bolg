@@ -182,8 +182,8 @@ publishedRef.on('child_added', (snapshot) => {
   publish(post.id)
     .then(buildIndex)
     .then(buildGallery)
-    .then(() => enqueueNotifications(post))
-    .catch(error => {
+    // .then(() => enqueueNotifications(post))
+    .catch((error) => {
       console.error(error);
     })
 });
