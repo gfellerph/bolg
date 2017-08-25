@@ -10,9 +10,9 @@
     "start": "node ./bin/www",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
-    "static-pages": "node bolg/index.js",
     "server": "node build/express-server",
-    "postinstall": "node build/build.js"
+    "postinstall": "node build/build.js",
+    "bolg": "node build/bolg.js"
   },
   "dependencies": {
     "autoprefixer": "^6.7.2",
