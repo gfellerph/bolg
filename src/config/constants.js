@@ -10,6 +10,9 @@ export const states = {
   PUBLISHED: 6,
 };
 
+// Random logo
+export const logoURL = () => `/img/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`;
+
 export const mapsAPIKey = 'AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ';
 
 export const sizes = [
