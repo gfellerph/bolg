@@ -1,23 +1,42 @@
-var utils = require('./utils')
-var webpack = require('webpack')
-var config = require('../config')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-
+let utils = require('./utils')
+let webpack = require('webpack')
+let config = require('../config')
+let path = require('path')
+let merge = require('webpack-merge')
+let baseWebpackConfig = require('./webpack.base.conf')
+let HtmlWebpackPlugin = require('html-webpack-plugin')
+let FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+let HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
+function resolve(dir) {
+  return path.join(__dirname, '..', dir);
+}
 // add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-})
+delete baseWebpackConfig.entry;
 
 module.exports = merge(baseWebpackConfig, {
   entry: {
-
+    'one-time-mailer': './src/server/templates/one-time-mailer.pug',
+  },
+  output: {
+    path: config.build.assetsRoot,
+    filename: '[name].js',
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath,
+  },
+  resolve: {
+    extensions: ['.pug'],
+    alias: {
+      '@': resolve('src'),
+    },
   },
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+    rules: [
+      {
+        test: /\.pug$/,
+        loader: ['file-loader?name=[name].html', 'extract-loader', 'html-loader', 'pug-html-loader'],
+      },
+    ],
   },
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
@@ -25,18 +44,9 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.dev.env,
     }),
-    // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      template: 'src/server/templates/bolg.html',
-      // template: 'index.html',
-      filename: 'bolg.html',
-      inject: true,
-      alwaysWriteToDisk: true,
-    }),
     new FriendlyErrorsPlugin(),
-    new HtmlWebpackHarddiskPlugin(),
   ],
+  watch: true,
+  target: 'web',
 })

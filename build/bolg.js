@@ -1,9 +1,6 @@
 const webpack = require('webpack');
 const chalk = require('chalk');
-const config = require('./webpack.dev.conf');
-
-config.watch = true;
-delete config.entry.app;
+const config = require('./webpack.bolg.dev.conf');
 
 webpack(config, (err, stats) => {
   if (err) throw err;
