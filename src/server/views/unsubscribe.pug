@@ -1,0 +1,25 @@
+extends _layout
+
+block meta
+  title Abgmäudet
+
+block styles
+  !=webpackManifest['/bolg.css']
+  //- link(href=webpackManifest['bolg.css'])
+
+block navigation
+  nav
+    a.left-link(href="/")
+      span.hidden-mobile Reis
+      img.visible-mobile(src="/img/arrow-back.svg" alt="Zrugg")
+    a(href="/")
+      img.logo(src=logoURL alt="Logo")
+    a.right-link(href="/galerie")
+      span.hidden-mobile Bilder
+
+block body
+  .container
+    h1 Du hesch di abgmäudet...
+    p.text-align-center
+      img(src="/img/sad.gif" alt="Mir si truurig")
+      em si üser Gschichte nümm interessant gnue?
