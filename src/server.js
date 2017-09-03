@@ -10,6 +10,9 @@ import unsubscribe from '@/server/api/unsubscribe';
 
 const app = express();
 
+app.set('views', './src/server/views');
+app.set('view engine', 'pug');
+
 // Redirect to https
 app.use(herokuSslRedirect());
 
