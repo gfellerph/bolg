@@ -7,7 +7,6 @@ import writefile from './writefile';
 import Post from '@/models/Post';
 import * as helpers from './helpers';
 import { slugger } from '@/config/constants';
-import enqueueNotifications from '@/server/mails';
 
 const cssInlineThreshold = 10; // KB
 const logoURL = helpers.logoURL;
@@ -182,7 +181,6 @@ publishedRef.on('child_added', (snapshot) => {
   publish(post.id)
     .then(buildIndex)
     .then(buildGallery)
-    // .then(() => enqueueNotifications(post))
     .catch((error) => {
       console.error(error);
     })
