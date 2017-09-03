@@ -32,7 +32,7 @@ function inlineCSS(file) {
   return html;
 }
 
-function webpackManifest() {
+export function webpackManifest() {
   const manifest = JSON.parse(fs.readFileSync('public/config/webpack.manifest.json', 'utf8'));
   Object.keys(manifest).map((entry) => {
     manifest[entry] = entry.endsWith('.css') ? inlineCSS(manifest[entry]) : manifest[entry];
