@@ -18,6 +18,7 @@ export default function Post(post = {}) {
   this.markdown = post.markdown || '';
   this.images = post.images || [];
   this.html = post.html || null;
+  this.notificationSent = post.notificationSent || false;
   this.excerpt = post.excerpt || null;
   this.description = post.description || null;
   this.titleImage = post.titleImage || null;
