@@ -57,7 +57,16 @@
     .footer {
       padding: 25px 0;
     }
+    .preheader {
+      display:none !important;
+      visibility:hidden;
+      opacity:0;
+      color:transparent;
+      height:0;
+      width:0;
+    }
   </style>
+  <span class="preheader" style="display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;">{{post.title}}</span>
   <table class="wrapper" style="font-family: Georgia, 'Times New Roman', Times, serif;font-size: 18px;width: 100%;table-layout: fixed;border-collapse: collapse;border-spacing: 0;">
     <tr>
       <td align="center" class="wrapper__td" style="padding: 0;text-align: center;">
@@ -65,14 +74,14 @@
           <tr>
             <td align="center" class="logo" style="padding: 25px 0;">
               <a href="https://bisnär.ch">
-                <img src="{{logoUrl}}" alt="logo" style="display: block;max-width: 100%;height:64px;">
+                <img src="{{logoUrl}}" style="display: block;max-width: 100%;height:64px;">
               </a>
             </td>
           </tr>
           <tr>
             <td style="padding: 0;">
               <a href="{{post.liveUrl}}">
-                <img src="{{post.heroImageUrl}}" alt="hero" style="display: block;max-width: 100%;">
+                <img src="{{post.heroImageUrl}}" style="display: block;max-width: 100%;">
               </a>
               <h1>{{post.title}}</h1>
             </td>
