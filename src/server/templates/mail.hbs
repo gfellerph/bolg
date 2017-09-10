@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <!--[if gte mso 9]><xml>
+   <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+   </o:OfficeDocumentSettings>
+  </xml><![endif]-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hey {{subscriber.displayName}}, es git e nöii Gschicht uf bisnär.ch</title>
+</head>
+<body style="margin: 0;font-family: Georgia, 'Times New Roman', Times, serif;font-size: 18px;">
+  <style>
+    body {
+      margin: 0;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-size: 18px;
+    }
+    table {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-size: 18px;
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    img {
+      display: block;
+      max-width: 100%;
+    }
+    td {
+      padding: 0;
+    }
+    .wrapper__td {
+      text-align: center;
+    }
+    .content {
+      width: 600px;
+      margin: 0 auto;
+    }
+    .logo {
+      padding: 25px 0;
+    }
+    .cta__container {
+      padding: 25px 0;
+    }
+    .cta {
+      display: inline-block;
+      padding: 10px 25px;
+      border: 1px solid black;
+      text-decoration: none;
+      color: rgb(0,0,1);
+    }
+    .footer {
+      padding: 25px 0;
+    }
+    .preheader {
+      display:none !important;
+      visibility:hidden;
+      opacity:0;
+      color:transparent;
+      height:0;
+      width:0;
+    }
+  </style>
+  <span class="preheader" style="display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;">Uf bisnär.ch gits e nöii Gschicht mit em Titu: {{post.title}}</span>
+  <table class="wrapper" style="font-family: Georgia, 'Times New Roman', Times, serif;font-size: 18px;width: 100%;table-layout: fixed;border-collapse: collapse;border-spacing: 0;">
+    <tr>
+      <td align="center" class="wrapper__td" style="padding: 0;text-align: center;">
+        <table class="content" style="font-family: Georgia, 'Times New Roman', Times, serif;font-size: 18px;width: 600px;table-layout: fixed;border-collapse: collapse;border-spacing: 0;margin: 0 auto;">
+          <tr>
+            <td align="center" class="logo" style="padding: 25px 0;">
+              <a href="https://bisnär.ch">
+                <img src="{{logoUrl}}" style="display: block;max-width: 100%;height:64px;">
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0;">
+              <a href="{{post.liveUrl}}">
+                <img src="{{post.heroImageUrl}}" style="display: block;max-width: 100%;">
+              </a>
+              <h1>{{post.title}}</h1>
+            </td>
+          </tr>
+          <tr>
+            <td class="cta__container" align="center" style="padding: 25px 0;">
+              <a class="cta" href="{{post.liveUrl}}" style="display: inline-block;padding: 10px 25px;border: 1px solid black;text-decoration: none;color: rgb(0,0,1);">Itze läse</a>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" style="padding: 25px 0;">
+              <p>Ugh, I wott mi vo däm Zügs <a href="https://bisnär.ch/unsubscribe/{{subscriber.uid}}">abmäude</a>. Süsch scho gnue Spam.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -1,34 +1,37 @@
 import express from 'express';
-import logger from 'morgan';
 import path from 'path';
 import compression from 'compression';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
-import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
 import publishAllApi from '@/server/api/publish-all';
 import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
-import { publishAll, buildIndex, buildGallery } from '@/server/index';
+import unsubscribe from '@/server/api/unsubscribe';
+import notifySubscribers from '@/server/api/notify-subscribers';
 
 const app = express();
 
+app.set('views', './src/server/views');
+app.set('view engine', 'pug');
+
+// Redirect to https
+app.use(herokuSslRedirect());
+
+// Gzip all the things
+app.use(compression());
+
 // Serve the static files
 app.use(favicon(path.resolve('public/favicon.ico')));
-app.use(herokuSslRedirect());
-app.use(compression());
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public', {
   extensions: 'html',
 }));
 
-// Listen for rebuild requests
+// Routes
 app.get('/publish', publishAllApi);
 app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
+app.get('/unsubscribe/:id', unsubscribe);
+app.get('/notifysubscribers/:id', notifySubscribers);
 
 // catch 404 and forward to error handler
 // TODO: Find a way to manage errors
@@ -48,6 +51,8 @@ app.use((err, req, res) => {
   res.status(err.status || 500);
   res.render('error');
 }); */
-publishAll().then(buildIndex).then(buildGallery);
+
+// Initially build all the files
+// publishAll().then(buildIndex).then(buildGallery);
 
 export default app;

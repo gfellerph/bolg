@@ -31,7 +31,7 @@ function inlineCSS(file) {
   return html;
 }
 
-function webpackManifest() {
+export function webpackManifest() {
   const manifest = JSON.parse(fs.readFileSync('public/config/webpack.manifest.json', 'utf8'));
   Object.keys(manifest).map((entry) => {
     manifest[entry] = entry.endsWith('.css') ? inlineCSS(manifest[entry]) : manifest[entry];
@@ -84,7 +84,7 @@ export function buildIndex() {
         logoURL: logoURL(),
         webpack: manifest,
       });
-      writefile(filePath, html).then(resolve);
+      writefile(filePath, html).then(resolve).catch(reject);
     });
   });
 }
@@ -177,8 +177,13 @@ export function unpublish(id) {
 // TODO: remove constant connection to firebase. listen only to
 // http requests from the backend, this is much more efficient
 publishedRef.on('child_added', (snapshot) => {
-  const post = snapshot.val();
-  publish(post.id).then(buildIndex).then(buildGallery);
+  const post = new Post(snapshot.val());
+  publish(post.id)
+    .then(buildIndex)
+    .then(buildGallery)
+    .catch((error) => {
+      console.error(error);
+    })
 });
 
 publishedRef.on('child_removed', (snapshot) => {

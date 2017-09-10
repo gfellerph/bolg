@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <!--[if gte mso 9]><xml>
+   <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+   </o:OfficeDocumentSettings>
+  </xml><![endif]-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Nöii Gschicht</title>
+</head>
+<body>
+  <style>
+    body {
+      margin: 0;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-size: 18px;
+    }
+    table {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-size: 18px;
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    img {
+      display: block;
+      max-width: 100%;
+    }
+    td {
+      padding: 0;
+    }
+    .wrapper__td {
+      text-align: center;
+    }
+    .content {
+      width: 600px;
+      margin: 0 auto;
+    }
+    .logo {
+      padding: 25px 0;
+    }
+    .cta__container {
+      padding: 25px 0;
+    }
+    .cta {
+      display: inline-block;
+      padding: 10px 25px;
+      border: 1px solid black;
+      text-decoration: none;
+      color: rgb(0,0,1);
+    }
+    .footer {
+      padding: 25px 0;
+    }
+  </style>
+  <table class="wrapper">
+    <tr>
+      <td align="center" class="wrapper__td">
+        <table class="content">
+          <tr>
+            <td align="center" class="logo">
+              <img src="{{logoUrl}}" alt="logo">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="{{post.url}}">
+                <img src="{{post.heroImageUrl}}" alt="hero">
+              </a>
+              <h1>{{post.title}}</h1>
+            </td>
+          </tr>
+          <tr>
+            <td class="cta__container" align="center">
+              <a class="cta" href="{{post.url}}">Itze läse</a>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer">
+              <p>Ugh, I wott mi vo däm Zügs <a href="https://bisnär.ch/unsubscribe/{{subscriber.id}}">abmäude</a>. Süsch scho gnue Spam.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

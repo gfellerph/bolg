@@ -9,6 +9,7 @@ import Map from '@/components/Map';
 import Bookmark from '@/components/Bookmark';
 import Story from '@/components/Story';
 import Tipps from '@/components/Tipps';
+import Subscribe from '@/components/Subscribe';
 
 Vue.use(Router);
 
@@ -79,6 +80,14 @@ const router = new Router({
       path: '/tipps',
       name: 'Tipps',
       component: Tipps,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/subscribe',
+      name: 'Subscribe',
+      component: Subscribe,
       meta: {
         requiresAuth: true,
       },

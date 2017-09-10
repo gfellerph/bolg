@@ -17,6 +17,7 @@
       </div>
       <div class="post-stats">
         <post-status :post="post"></post-status>
+        <button class="notification-button" @click="sendNotification" :disabled="post.notificationSent || !connected || notificationPending">Notify</button>
         <button class="unpublish-button" @click="unpublishPost" :disabled="state === states.LOADING || !post.lastPublished">Unpublish</button>
         <button class="publish-button" @click="publishPost" :disabled="state !== states.SAVED">Publish</button>
       </div>
@@ -31,8 +32,9 @@
 </template>
 
 <script>
-  import { marked } from '@/config/markdown';
+  import axios from 'axios';
   import debounce from 'debounce';
+  import { marked } from '@/config/markdown';
   import Post from '@/models/PostAdmin';
   import { database } from '@/config/firebase';
   import router from '@/config/router';
@@ -54,6 +56,7 @@
         postLoaded: false,
         states,
         showCheatSheet: false,
+        notificationPending: false,
       };
     },
 
@@ -129,6 +132,20 @@
       },
       toggleCheatsheet() {
         this.showCheatSheet = !this.showCheatSheet;
+      },
+      sendNotification() {
+        this.notificationPending = true;
+        axios
+          .get(`/notifysubscribers/${this.post.id}`)
+          .then(() => {
+            this.notificationPending = false;
+            this.post.notificationSent = true;
+            return this.post.set();
+          })
+          .catch(err => {
+            this.notificationPending = false;
+            this.err = err.message;
+          });
       },
     },
 
