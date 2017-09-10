@@ -3,12 +3,15 @@
 import Vue from 'vue';
 import Map from '@/components/Map';
 import Bookmark from '@/components/Bookmark';
-import store from './config/store';
+import Subscribe from '@/components/Subscribe';
+import store from '@/config/store';
+import '@/config/validation';
 
 Vue.config.productionTip = false;
 
 const mapElement = document.getElementById('map');
 const bookmarkElement = document.getElementById('bookmark');
+const subscribeElement = document.getElementById('subscribe');
 
 /* eslint-disable no-new */
 if (mapElement) {
@@ -26,5 +29,13 @@ if (bookmarkElement) {
     store,
     template: '<Bookmark/>',
     components: { Bookmark },
+  });
+}
+
+if (subscribeElement) {
+  new Vue({
+    el: '#subscribe',
+    template: '<Subscribe/>',
+    components: { Subscribe },
   });
 }
