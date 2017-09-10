@@ -11,7 +11,7 @@ export default function notifySubscribers(req, res) {
     }
     const post = new Post(value);
     enqueueNotifications(post).then(() => {
-      res.send({ message: 'Notifications enqueued' });
+      res.status(200).send({ message: 'Notifications enqueued' });
     })
     .catch(error => res.status(500).send(JSON.stringify(error)));
   });
