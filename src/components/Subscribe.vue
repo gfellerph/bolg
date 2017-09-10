@@ -1,53 +1,46 @@
 <template>
-  <div class="subscribe">
-    <h2 class="h4">Wosch es Mail becho we mir e nöii Gschicht schribe?</h2>
+  <div class="subscribe" @keydown.esc="cancel">
+    <h2 class="h4">Wosch es Mail becho we mir e nöii Gschicht gschribe hei?</h2>
     <p>De gib üs doch churz di Name und dini Mail Adrässe ah, mir verspräche o dassmer di nid zuespame und dini Adrässe nid de Chinese verchoufe (vilech).</p>
-    <div class="subscribe__form" :style="stepOffset">
-      <div class="subscribe__slide text-align-center">
-        <button @click="stepForward">Ou ja, bitte!</button>
-      </div>
-      <div class="subscribe__slide">
-        <p>
-          <label for="name">Wie heissisch du?</label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            v-model="subscriber.displayName"
-          >
-        </p>
-        <p class="error"></p>
-        <p class="text-align-right">
-          <button @click="cancel">Doch nid</button>
-          <button @click="stepForward">
-            <img src="/img/arrow-forward.svg" alt="">
-          </button>
-        </p>
-      </div>
-      <div class="subscribe__slide">
-        <p>
-          <label for="mail">Email</label>
-          <input
-            id="mail"
-            name="mail"
-            type="email"
-            v-model="subscriber.email"
-          >
-        </p>
-        <p class="error"></p>
-        <p class="text-align-right">
-          <button @click="stepBack">
-            <img src="/img/arrow-back.svg" alt="">
-          </button>
-          <button :disabled="loading" @click="addSubscriber">
-            <img src="/img/arrow-forward.svg" alt="">
-          </button>
-        </p>
-      </div>
-      <div class="subscribe__slide">
-        <h3>He merci {{subscriber.displayName}}!</h3>
-        <p>Mir schicke dir itz immer es Mail wemer e nöii Gschicht schribe</p>
-      </div>
+    <div v-if="step===0" class="text-align-center">
+      <button @click="stepForward">Ou ja, bitte!</button>
+    </div>
+    <div  
+      v-if="step===1"
+      @blur="errors.has('name') || !subscriber.displayName ? null : stepForward()"
+    >
+      <p>
+        <label for="name">Wie heissisch du?</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          v-validate="'required'"
+          v-model="subscriber.displayName"
+        >
+      </p>
+      <p class="error" v-bind:key="error.id" v-for="error in errors.collect('name')">{{error}}</p>
+      <p>
+        <label for="mail">Email</label>
+        <input
+          id="mail"
+          name="mail"
+          type="email"
+          v-model="subscriber.email"
+          v-validate="'required|email'"
+        >
+      </p>
+      <p class="error" v-bind:key="error.id" v-for="error in errors.collect('mail')">{{error}}</p>
+      <p class="text-align-right">
+        <button @click="cancel">Doch nid</button>
+        <button :disabled="loading || errors.any()" @click="addSubscriber">
+          <img src="/img/arrow-forward.svg" alt="">
+        </button>
+      </p>
+    </div>
+    <div v-if="step===2" class="subscribe__slide">
+      <h3>He merci {{subscriber.displayName}}!</h3>
+      <p>Mir schicke dir itz immer es Mail wemer e nöii Gschicht schribe</p>
     </div>
   </div>
 </template>
@@ -60,34 +53,26 @@
       return {
         subscriber: new Subscriber(),
         step: 0,
-        steps: 4,
         loading: false,
-        error: false,
       };
-    },
-
-    computed: {
-      stepOffset() { return `
-        width: ${this.steps * 100}%;
-        transform: translate3d(${this.step * -100/this.steps}%, 0, 0);
-      `},
     },
 
     methods: {
       addSubscriber() {
-        this.loading = true;
-        this.error = false;
-        this.subscriber
-          .set()
-          .then(() => {
-            this.error = false;
-            this.loading = false;
-            this.stepForward();
-          })
-          .catch(error => {
-            this.error = error;
-            this.loading = false;
-          });
+        this.$validator.validateAll()
+        .then((result) => {
+          if (!result) throw new Error('Form invalid');
+          this.loading = true;
+          this.error = false;
+          return this.subscriber.set();
+        })
+        .then(() => {
+          this.loading = false;
+          this.stepForward();
+        })
+        .catch(error => {
+          this.loading = false;
+        });
       },
       stepBack() { this.step -= 1; },
       stepForward() { this.step += 1; },
