@@ -3,6 +3,8 @@ import mediumZoom from '@/config/medium-zoom';
 window.addEventListener('DOMContentLoaded', () => {
   const zoomer = mediumZoom();
 
+  if (!zoomer) return;
+
   zoomer.addEventListeners('show', (event) => {
     const img = event.currentTarget;
 

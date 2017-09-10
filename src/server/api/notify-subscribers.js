@@ -10,7 +10,6 @@ export default function notifySubscribers(req, res) {
       return res.status(404).send('Post to notify users about not found');
     }
     const post = new Post(value);
-    console.log(post);
     enqueueNotifications(post).then(() => {
       res.send({ message: 'Notifications enqueued' });
     })
