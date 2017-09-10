@@ -26,7 +26,7 @@ const buildAPICall = (post, subscriber) => {
   const html = buildNotificationMail(subscriber, post);
   const reciever = new helper.Email(subscriber.email);
   const content = new helper.Content('text/html', html);
-  const subject = 'Nöii Gschicht';
+  const subject = `Hey ${subscriber.displayName}, es git e nöii Gschicht uf bisnär.ch`;
   const mail = new helper.Mail(sender, subject, reciever, content);
   return sendgrid.emptyRequest({
     method: 'POST',

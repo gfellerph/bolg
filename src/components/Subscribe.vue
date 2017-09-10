@@ -1,6 +1,6 @@
 <template>
   <div class="subscribe" @keydown.esc="cancel">
-    <h2 class="h3">Newsletter</h2>
+    <h2 class="h3">Benachrichtigunge</h2>
     <div v-if="step==0">
       <p>Wosch es Mail becho we mir e nöii Gschicht gschribe hei? De gib üs doch churz di Name und dini Mail Adrässe aa, mir verspräche o dassmer di nid zuespame und dini Adrässe nid de Chinese verchoufe (vilech).</p>
       <p class="text-align-center">
