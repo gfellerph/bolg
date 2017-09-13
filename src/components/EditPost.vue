@@ -298,6 +298,7 @@
   }
 
   .publish-button,
+  .notification-button,
   .unpublish-button {
     padding: $golden-rem / 4 $golden-rem / 2;
     background: white;
