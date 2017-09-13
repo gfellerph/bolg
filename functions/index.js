@@ -67,6 +67,10 @@ exports.createThumbnails = functions.storage.object().onChange((event) => {
     return console.log('This is already a thumb');
   }
 
+  if (object.name.toLowerCase().indexOf('.gif') > -1) {
+    return console.log('This is a gif');
+  }
+
   if (object.metageneration > 1) {
     return console.log('This is only a meta update');
   }
