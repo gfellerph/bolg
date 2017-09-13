@@ -99,8 +99,10 @@ hr {
   height: 1px;
 }
 
-img + em {
+img + em,
+.picture-grid + .picture-subtitle {
   display: block;
+  font-style: italic;
   margin: $golden-rem / 4 0;
   text-align: center;
   font-size: 0.85em;
