@@ -11,7 +11,7 @@ export const marked = (str, options) => {
   renderer.image = (href, title, text) => {
     let srcset;
     if (options.images) {
-      const idRegex = /%2F([A-Za-z0-9]+)\.jpg/g;
+      const idRegex = /%2F([A-Za-z0-9]+)\./g;
       const match = idRegex.exec(href);
       const id = match ? match[1] : null;
       if (id) {
