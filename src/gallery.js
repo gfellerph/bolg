@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (!zoomer) return;
 
-  zoomer.addEventListeners('show', (event) => {
+  zoomer.addEventListeners('shown', (event) => {
     const img = event.currentTarget;
 
     if (!img.hasAttribute('data-hd')) return;
