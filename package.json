@@ -42,6 +42,7 @@
     "pug": "^2.0.0-rc.3",
     "sendgrid": "^5.2.2",
     "serve-favicon": "^2.4.2",
+    "style-loader": "^0.18.2",
     "vee-validate": "^2.0.0-rc.14",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0",
