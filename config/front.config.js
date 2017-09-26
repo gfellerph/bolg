@@ -1,7 +1,7 @@
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const baseConfig = require('./base.config.js');
 const paths = require('./paths');
 
@@ -14,7 +14,6 @@ const devConfig = merge(baseConfig, {
   },
   output: {
     path: paths.public,
-    filename: '[name].js',
     publicPath: paths.assets,
   },
   module: {
@@ -41,7 +40,10 @@ const devConfig = merge(baseConfig, {
         ignore: ['.*'],
       },
     ]),
-    new FriendlyErrorsPlugin(),
+    new ManifestPlugin({
+      fileName: paths.frontManifest,
+      basePath: paths.assets,
+    }),
   ],
   target: 'web',
   stats: 'minimal',
