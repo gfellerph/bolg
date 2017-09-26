@@ -9,7 +9,8 @@ var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.prod.conf')
-var serverConfig = require('./webpack.server.conf')
+var serverConfig = require('../config/server.prod.config')
+var frontConfig = require('../config/front.prod.config')
 
 var spinner = ora('building for production...')
 spinner.start()
@@ -32,21 +33,33 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       '  Opening index.html over file:// won\'t work.\n'
     ))
 
-    rm('server', err => {
-      if (err) throw err
-      webpack(serverConfig, function (err, stats) {
-        spinner.stop()
+    webpack(frontConfig, function (frontErr, frontStats) {
+      if (frontErr) throw frontErr;
+      process.stdout.write(frontStats.toString({
+        colors: true,
+        modules: false,
+        children: false,
+        chunks: false,
+        chunkModules: false
+      }) + '\n\n')
+      
+      rm('server', err => {
         if (err) throw err
-        process.stdout.write(stats.toString({
-          colors: true,
-          modules: false,
-          children: false,
-          chunks: false,
-          chunkModules: false
-        }) + '\n\n')
-
-        console.log(chalk.cyan('  Build complete.\n'))
+        webpack(serverConfig, function (err, stats) {
+          spinner.stop()
+          if (err) throw err
+          process.stdout.write(stats.toString({
+            colors: true,
+            modules: false,
+            children: false,
+            chunks: false,
+            chunkModules: false
+          }) + '\n\n')
+  
+          console.log(chalk.cyan('  Build complete.\n'))
+        })
       })
     })
+
   })
 })
