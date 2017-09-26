@@ -5,9 +5,8 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = {
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.scss'],
+    extensions: ['.js', '.vue', '.scss'],
     alias: {
-      vue$: 'vue/dist/vue.esm.js',
       '@': paths.src,
     },
   },
