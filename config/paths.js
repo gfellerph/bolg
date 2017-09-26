@@ -7,7 +7,7 @@ module.exports = {
   test: path.resolve(root, 'test'),
   public: path.resolve(root, 'public'),
   server: path.resolve(root, 'server'),
-  manifest: path.resolve(root, 'public/config/webpack.manifest.json'),
   static: path.resolve(root, 'src/static'),
+  frontManifest: 'config/front.manifest.json',
   assets: '/',
 };
