@@ -1,20 +1,18 @@
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const baseConfig = require('./base.config');
 const frontConfig = require('./front.config');
 
-const devConfig = merge(baseConfig, frontConfig, {
+const devConfig = merge(frontConfig, {
   output: {
-    filename: '[name].js',
+    filename: 'js/[name].js',
   },
   plugins: [
     new ExtractTextPlugin({
-      filename: '/css/[name].css',
+      filename: 'css/[name].css',
       allChunks: true,
     }),
   ],
   watch: true,
-  devtool: '#cheap-module-eval-source-map',
 });
 
 module.exports = devConfig;
