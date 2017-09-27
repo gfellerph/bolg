@@ -18,9 +18,10 @@ function inlineCSS(file) {
 
   const filePath = path.resolve(process.cwd() + '/public' + file);
   const fileStats = fs.statSync(filePath);
+  const devMode = process.env.NODE_ENV === 'development';
   let html = '';
 
-  if (fileStats.size / 1000.0 < cssInlineThreshold) {
+  if (!devMode && fileStats.size / 1000.0 < cssInlineThreshold) {
     // Inline the file
     const fileContent = fs.readFileSync(filePath, 'utf8');
     html = `<style>${fileContent}</style>`;
@@ -32,7 +33,8 @@ function inlineCSS(file) {
 }
 
 export function webpackManifest() {
-  const manifest = JSON.parse(fs.readFileSync('public/config/webpack.manifest.json', 'utf8'));
+  const manifest = JSON.parse(fs.readFileSync('public/config/front.manifest.json', 'utf8'));
+
   Object.keys(manifest).map((entry) => {
     manifest[entry] = entry.endsWith('.css') ? inlineCSS(manifest[entry]) : manifest[entry];
   });

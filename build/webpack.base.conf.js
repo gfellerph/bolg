@@ -10,10 +10,6 @@ function resolve(dir) {
 module.exports = {
   entry: {
     app: './src/main.js',
-    map: './src/map.js',
-    bolg: './src/styles/post-index.scss',
-    post: './src/post.js',
-    gallery: './src/gallery.js',
   },
   output: {
     path: config.build.assetsRoot,
