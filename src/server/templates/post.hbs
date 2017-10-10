@@ -25,6 +25,13 @@
   {{#content "main"}}
     <div class="container">
       <article class="main-post">{{{post.html}}}</article>
+      <div class="drawing">
+        <canvas id="drawing" class="drawing__canvas"></canvas>
+        <p class="text-align-center">
+          <button class="drawing__clear">Lösche</button>
+          <button class="drawing__submit">Schicke</button>
+        </p>
+      </div>
       {{#if nextPost}}
         <hr class="blog-divider">
         <a class="next-post-link" href="{{nextPost.url}}">
