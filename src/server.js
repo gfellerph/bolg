@@ -8,6 +8,7 @@ import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
 import unsubscribe from '@/server/api/unsubscribe';
 import notifySubscribers from '@/server/api/notify-subscribers';
+import tipps from '@/server/api/tipps';
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
 app.get('/unsubscribe/:id', unsubscribe);
 app.get('/notifysubscribers/:id', notifySubscribers);
+app.get('/tipps', tipps);
 
 // catch 404 and forward to error handler
 // TODO: Find a way to manage errors
