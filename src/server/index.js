@@ -51,12 +51,10 @@ export function buildGallery() {
       const filePath = 'public/galerie.html';
 
       postsArray.map((post) => {
-        const createdDate = moment(post.created, 'DD.MM.YYYY');
-        const month = createdDate.month();
-        const year = createdDate.year();
-        const monthName = `${moment.months(month)} ${year}`;
-        if (!postsPerMonth[monthName]) postsPerMonth[monthName] = [];
-        post.images.map(image => postsPerMonth[monthName].push(image));
+        if (!postsPerMonth[post.postTitle]) postsPerMonth[post.postTitle] = [[], []];
+        for (let i = 0; i < post.images.length; i++) {
+          postsPerMonth[post.postTitle][i % 2].push(post.images[i]);
+        }
       });
 
       const html = hbsTemplates.gallery({
