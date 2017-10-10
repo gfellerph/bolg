@@ -13,6 +13,7 @@
 
     @include max($xs) {
       height: 2.9rem;
+      max-width: 130px;
     }
   }
 
