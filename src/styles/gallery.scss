@@ -1,0 +1,10 @@
+.gallery {
+  @extend .clearfix;
+  margin: 0 $golden-rem / -8;
+}
+
+.gallery__column {
+  float: left;
+  width: 50%;
+  padding: 0 $golden-rem / 8;
+}
