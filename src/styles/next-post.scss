@@ -17,3 +17,11 @@
   color: black;
   text-decoration: none;
 }
+
+.next-post__title {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+}
