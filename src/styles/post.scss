@@ -12,6 +12,10 @@
 .post__link {
   display: block;
   padding-top: 56.25%;
+
+  @include max($xxs) {
+    padding-top: 75%;
+  }
 }
 
 .post__title-image {
@@ -26,11 +30,11 @@
 }
 
 .post__title {
-  margin-bottom: 0;
+  margin-top: 0;
 }
 
 .post__published {
-  margin: 0;
+  margin: 0.5em 0;
   font-size: 0.8em;
 }
 
@@ -45,4 +49,9 @@
   padding: $golden-rem * 2 $golden-rem $golden-rem $golden-rem;
   max-height: 100%;
   overflow: hidden;
+
+  @include max(360px) {
+    $halfgr: $golden-rem / 2;
+    padding: $golden-rem $halfgr $halfgr $halfgr;
+  }
 }
