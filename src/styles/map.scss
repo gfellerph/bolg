@@ -3,9 +3,12 @@
   position: relative;
   margin: 0 auto;
   height: 60vh;
+  background-image: url(/img/map-background-desktop.jpg);
+  background-size: cover;
 
   @include max($xs) {
     height: 70vh;
+    background-image: url(/img/map-background-mobile.jpg);
   }
 
   * {

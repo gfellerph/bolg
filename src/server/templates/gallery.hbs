@@ -14,18 +14,23 @@
       {{#each postsPerMonth}}
         <article class="month">
           <h1>{{@key}}</h1>
-          <div class="picture-grid">
+          <div class="gallery">
             {{#each this}}
-              {{#if this.thumbnails.[320]}}
-                <img class="gallery__image" src="{{this.thumbnails.[320]}}" alt="Bilder aus dem Blog" data-hd="{{this.thumbnails.[1920]}}">
-              {{/if}}
-            {{else}}
-              <p class="italic text-align-center">Da si ja no gar keiner Bilder...</p>
+              <div class="gallery__column">
+                {{#each this}}
+                  {{#if this.thumbnails.[320]}}
+                    <img class="gallery__image" src="{{this.thumbnails.[320]}}" alt="Bilder aus dem Blog" data-zoom-target="{{this.thumbnails.[1920]}}">
+                  {{/if}}
+                {{/each}}
+              </div>
             {{/each}}
           </div>
         </article>
+      {{else}}
+        <p class="italic text-align-center">Da si ja no gar keiner Bilder...</p>
       {{/each}}
     </div>
+    <img class="medium-zoom__close-button" src="/img/close.svg" alt="Close Button">
   {{/content}}
   {{#content "scripts"}}
     <script defer="defer" src="{{webpack.[/gallery.js]}}"></script>

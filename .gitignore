@@ -2,7 +2,8 @@
 node_modules/
 dist/
 public
-server/server.js
+server/server.*
+.env
 npm-debug.log
 yarn-error.log
 webpack.manifest.json

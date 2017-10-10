@@ -13,7 +13,7 @@
     </nav>
   {{/content}}
   {{#content "main"}}
-    <div id="map"></div>
+    <div id="map" class="map"></div>
     <div class="container">
       <p class="text-align-center map-tipp">
         <img src="/img/map-tipp.png" alt="Click hie und gib üs e Reisetipp">
@@ -28,8 +28,8 @@
                 <div class="post__title-image" style="background-image:url({{this.heroImageUrl}})"></div>
               {{/if}}
               <div class="post__overlay">
-                <h2 class="post__title h4">{{this.title}}</h2>
                 <p class="post__published">{{this.created}}</p>
+                <h2 class="post__title h4">{{this.title}}</h2>
               </div>
             </a>
           </li>
