@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import compression from 'compression';
+import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import publishAllApi from '@/server/api/publish-all';
@@ -9,6 +10,8 @@ import unpublishApi from '@/server/api/unpublish';
 import unsubscribe from '@/server/api/unsubscribe';
 import notifySubscribers from '@/server/api/notify-subscribers';
 import tipps from '@/server/api/tipps';
+import putDrawing from '@/server/api/put-drawing';
+import putImage from '@/server/api/put-images';
 
 const app = express();
 
@@ -26,6 +29,9 @@ app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
 }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 app.get('/publish', publishAllApi);
@@ -34,6 +40,7 @@ app.get('/unpublish/:id', unpublishApi);
 app.get('/unsubscribe/:id', unsubscribe);
 app.get('/notifysubscribers/:id', notifySubscribers);
 app.get('/tipps', tipps);
+app.put('/api/drawing', putDrawing);
 
 // catch 404 and forward to error handler
 // TODO: Find a way to manage errors
