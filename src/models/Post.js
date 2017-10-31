@@ -23,6 +23,7 @@ export default function Post(post = {}) {
   this.description = post.description || null;
   this.titleImage = post.titleImage || null;
   this.type = 'post';
+  this.drawings = post.drawings || [];
 
   if (!this.titleImage && this.images.length) {
     this.titleImage = this.images[0].thumbnails[640] ? { id: this.id, url: this.images[0].thumbnails[640] } : null;
