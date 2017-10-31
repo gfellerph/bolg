@@ -21,15 +21,25 @@
       <span class="italic">{{post.created}}</span>
       <span>&nbsp;&mdash;</span>
     </p>
+    <div class="drawing__display">
+      <a href="#zeichne" title="Wosch ou öppis zeichne?">
+        {{#each post.drawings}}
+          <img data-no-zoom="" src="{{this}}" alt="Zeichnig">
+        {{/each}}
+      </a>
+    </div>
   {{/content}}
   {{#content "main"}}
     <div class="container">
       <article class="main-post">{{{post.html}}}</article>
-      <div class="drawing">
+      <hr class="blog-divider">
+      <div class="drawing" id="zeichne">
+        <p class="italic text-align-center">Zeichne dini Meinig zur Gschicht.</p>
         <canvas id="drawing" class="drawing__canvas"></canvas>
         <p class="text-align-center">
           <button class="drawing__clear">Lösche</button>
-          <button disabled class="drawing__submit">Schicke</button>
+          <button class="drawing__save">Schicke</button>
+          <img src="" class="drawing__result">
         </p>
       </div>
       {{#if nextPost}}

@@ -5,3 +5,23 @@
   height: 225px;
   margin: 0 auto;
 }
+
+.drawing__display {
+  position: absolute;
+  left: 0;
+  width: 100vw;
+
+  a {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: space-around;
+    justify-content: space-around;
+  }
+
+  img {
+    display: block;
+    width: 20vw;
+    max-width: 100px;
+    opacity: 0.375;
+  }
+}
