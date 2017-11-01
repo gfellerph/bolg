@@ -1,4 +1,5 @@
 import mediumZoom from '@/config/medium-zoom';
+import drawing from '@/modules/drawing';
 
 const documentHeight = () => Math.max(
   document.body.scrollHeight,
@@ -40,5 +41,8 @@ if (window.location.href.indexOf('bolg.html') <= 0) {
   window.onbeforeunload = setBookmark;
   window.onunload = setBookmark;
   window.addEventListener('load', restoreBookmark);
-  window.addEventListener('DOMContentLoaded', mediumZoom);
+  window.addEventListener('DOMContentLoaded', () => {
+    mediumZoom();
+    drawing();
+  });
 }
