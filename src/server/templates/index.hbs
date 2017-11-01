@@ -18,11 +18,10 @@
       <p class="text-align-center map-tipp">
         <img src="/img/map-tipp.png" alt="Click hie und gib üs e Reisetipp">
       </p>
-      <div id="bookmark"></div>
       <h1>Gschichte</h1>
       <ul class="posts">
         {{#each posts}}
-          <li class="post">
+          <li class="post" data-id="{{this.id}}">
             <a href="{{this.url}}" class="post__link">
               {{#if this.heroImageUrl}}
                 <div class="post__title-image" style="background-image:url({{this.heroImageUrl}})"></div>
