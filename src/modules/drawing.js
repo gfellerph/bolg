@@ -101,6 +101,7 @@ export default function initCanvas() {
     const postMeta = document.querySelector('meta[property="id"]');
     const postId = postMeta ? postMeta.getAttribute('content') : null;
     const sendButton = document.querySelector('.drawing__save');
+    const imageData = canvas.toDataURL();
 
     // Clear canvas and say thanks
     clear();
@@ -109,7 +110,7 @@ export default function initCanvas() {
     sendButton.setAttribute('disabled', 'disabled');
 
     // Put the drawing
-    axios.put('/api/drawing', `source=${canvas.toDataURL()}&postid=${postId}`)
+    axios.put('/api/drawing', `source=${imageData}&postid=${postId}`)
       .then(() => {
         canvas.classList.remove('merci');
         sendButton.removeAttribute('disabled');
