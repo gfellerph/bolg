@@ -22,6 +22,6 @@ export default function putImages(req, res) {
       res.send('ok');
     })
     .catch((err) => {
-      throw err;
+      res.error(err);
     });
 }
