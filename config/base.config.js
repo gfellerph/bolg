@@ -7,12 +7,12 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.scss'],
     alias: {
+      vue$: 'vue/dist/vue.esm.js',
       '@': paths.src,
     },
   },
   externals: {
     firebase: 'firebase',
-    vue: 'Vue',
   },
   module: {
     rules: [
