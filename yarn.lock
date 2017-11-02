@@ -1451,6 +1451,10 @@ coa@~1.0.1:
   dependencies:
     q "^1.1.2"
 
+coalescy@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/coalescy/-/coalescy-1.0.0.tgz#4b065846b836361ada6c4b4a4abf4bc1cac31bf1"
+
 code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
@@ -2391,6 +2395,16 @@ eslint-config-airbnb@^14.1.0:
   dependencies:
     eslint-config-airbnb-base "^11.1.0"
 
+eslint-friendly-formatter@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-friendly-formatter/-/eslint-friendly-formatter-3.0.0.tgz#278874435a6c46ec1d94fa0b1ff494e30ef04290"
+  dependencies:
+    chalk "^1.0.0"
+    coalescy "1.0.0"
+    extend "^3.0.0"
+    minimist "^1.2.0"
+    text-table "^0.2.0"
+
 eslint-import-resolver-node@^0.2.0:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.2.3.tgz#5add8106e8c928db2cba232bcd9efa846e3da16c"
@@ -2637,7 +2651,7 @@ express@^4.14.1, express@^4.15.2:
     utils-merge "1.0.0"
     vary "~1.1.0"
 
-extend@~3.0.0, extend@~3.0.1:
+extend@^3.0.0, extend@~3.0.0, extend@~3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
 
@@ -6626,7 +6640,7 @@ tar@^2.0.0, tar@^2.2.0, tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-text-table@~0.2.0:
+text-table@^0.2.0, text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
