@@ -1,9 +1,8 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
-import Map from '@/components/Map';
+import GoogleMap from '@/components/Map';
 import Subscribe from '@/components/Subscribe';
-import store from '@/config/store';
 import '@/config/validation';
 import { setBookmarkFlag } from '@/modules/bookmark';
 
@@ -17,9 +16,8 @@ window.addEventListener('DOMContentLoaded', () => {
   if (mapElement) {
     new Vue({
       el: '#map',
-      store,
-      template: '<Map/>',
-      components: { Map },
+      template: '<google-map/>',
+      components: { GoogleMap },
     });
   }
   
