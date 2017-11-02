@@ -3,7 +3,6 @@
     <router-link class="edit-post-link" :to="post.editUrl">
       <div class="post-infos">
           <h1 class="h4">{{post.title}}</h1>
-          <div class="short-text" v-html="shortText"></div>
           <table class="meta-infos">
             <tr>
               <th>Gmacht:</th>
