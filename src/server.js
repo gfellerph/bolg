@@ -9,9 +9,9 @@ import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
 import unsubscribe from '@/server/api/unsubscribe';
 import notifySubscribers from '@/server/api/notify-subscribers';
-import tipps from '@/server/api/tipps';
+import { getTipps, postTipp } from '@/server/api/tipps';
 import putDrawing from '@/server/api/put-drawing';
-import putImage from '@/server/api/put-images';
+import { postSubscriber } from '@/server/api/subscriber';
 
 const app = express();
 
@@ -40,12 +40,14 @@ app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
 app.get('/unsubscribe/:id', unsubscribe);
 app.get('/notifysubscribers/:id', notifySubscribers);
-app.get('/tipps', tipps);
+app.get('/api/tipps', getTipps);
+app.post('/api/tipp', postTipp);
 app.put('/api/drawing', putDrawing);
+app.post('/api/subscriber', postSubscriber);
 
 // catch 404 and forward to error handler
 // TODO: Find a way to manage errors
-/* app.use((req, res, next) => {
+app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -60,7 +62,7 @@ app.use((err, req, res) => {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-}); */
+});
 
 // Initially build all the files
 // publishAll().then(buildIndex).then(buildGallery);
