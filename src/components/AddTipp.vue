@@ -92,6 +92,7 @@
 </template>
 
 <script>
+  import axios from 'axios';
   import Tipp from '@/models/Tipp';
 
   export default {
@@ -126,15 +127,17 @@
         this.tipp.lng = this.lng;
         this.tipp.country = this.country;
 
-        this.tipp.set().then(() => {
-          this.loading = false;
-          this.tipp = new Tipp();
-          this.closeOverlay();
-        })
-        .catch(err => {
-          this.loading = false;
-          this.error = err.message;
-        });
+        axios
+          .post('/api/tipp', this.tipp.normalize())
+          .then(() => {
+            this.loading = false;
+            this.tipp = new Tipp();
+            this.closeOverlay();
+          })
+          .catch(err => {
+            this.loading = false;
+            this.error = err.message;
+          });
       },
       closeOverlay() { this.$emit('tipp-closed'); },
       stepBack() { this.step -= 1; },
