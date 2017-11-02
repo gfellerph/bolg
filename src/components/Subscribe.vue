@@ -50,12 +50,13 @@
 </template>
 
 <script>
-  import Subscriber from '@/models/Subscriber';
+  import axios from 'axios';
+  import User from '@/models/User';
 
   export default {
     data() {
       return {
-        subscriber: new Subscriber(),
+        subscriber: new User(),
         step: 0,
         loading: false,
       };
@@ -68,7 +69,7 @@
           if (!result) throw new Error('Form invalid');
           this.loading = true;
           this.error = false;
-          return this.subscriber.set();
+          return axios.post('/api/subscriber', this.subscriber.normalize());
         })
         .then(() => {
           this.loading = false;
@@ -85,7 +86,7 @@
       },
       cancel() {
         this.step = 0;
-        this.subscriber = new Subscriber();
+        this.subscriber = new User();
        },
     },
   }
