@@ -131,6 +131,7 @@
 
     p {
       font-family: $sans-serif;
+      margin: 0;
     }
   }
 

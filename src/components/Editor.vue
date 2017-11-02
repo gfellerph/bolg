@@ -47,7 +47,7 @@
         entireText: '',
         showYoutubeEmbed: false,
         youtubeEmbed: '',
-        autoscroll: true,
+        autoscroll: false,
       };
     },
 
