@@ -2,7 +2,7 @@
   <div class="tipps">
     <input type="text" v-model="search" placeholder="Fiutere">
     <ul class="tipps__list">
-      <li class="tipps__item" v-for="tipp in filteredTipps">
+      <li v-bind:key="tipp.id" class="tipps__item" v-for="tipp in filteredTipps">
         <tipp-detail :tipp="new Tipp(tipp)"></tipp-detail>
       </li>
     </ul>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import Tipp from '@/models/Tipp';
+  import Tipp from '@/models/TippAdmin';
   import { database } from '@/config/firebase';
   import TippDetail from '@/components/TippDetail';
 
@@ -18,7 +18,7 @@
     data() {
       return {
         Tipp,
-        tipp: [],
+        tipps: [],
         search: '',
       };
     },

@@ -6,7 +6,6 @@ import Posts from '@/components/Posts';
 import EditPost from '@/components/EditPost';
 import Login from '@/components/Login';
 import Map from '@/components/Map';
-import Bookmark from '@/components/Bookmark';
 import Story from '@/components/Story';
 import Tipps from '@/components/Tipps';
 import Subscribe from '@/components/Subscribe';
@@ -51,14 +50,6 @@ const router = new Router({
       path: '/map',
       name: 'Map',
       component: Map,
-    },
-    {
-      path: '/bookmark',
-      name: 'Bookmark',
-      component: Bookmark,
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: '/createstory',

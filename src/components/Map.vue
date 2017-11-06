@@ -12,9 +12,9 @@
 </template>
 
 <script>
+	import axios from 'axios';
 	import Tipp from '@/models/Tipp';
 	import AddTipp from '@/components/AddTipp';
-	import { database } from '@/config/firebase';
 	import { reverseGeocode } from '@/config/constants';
 
 	let map = null;
@@ -44,30 +44,35 @@
 
 			if (window.outerWidth >= 768)	map.addListener('click', this.addTipp);
 
-			database.ref('/tipps').on('child_added', snapshot => {
-				const tipp = snapshot.val();
-				const marker = new google.maps.Marker({
-					position: new google.maps.LatLng(tipp.lat, tipp.lng),
-					map: map,
-					title: `${tipp.user.displayName}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
-					icon: {
-						url: '/img/inuksuk.png',
-						size: new google.maps.Size(36, 34),
-						origin: new google.maps.Point(0,0),
-						anchor: new google.maps.Point(18, 17),
-					},
+			axios.get('/api/tipps')
+				.then((res) => {
+					const tipps = res.data;
+
+					this.markers = tipps.map((tipp) => {
+						const marker = new google.maps.Marker({
+							position: new google.maps.LatLng(tipp.lat, tipp.lng),
+							map: map,
+							title: `${tipp.user.displayName}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+							icon: {
+								url: '/img/inuksuk.png',
+								size: new google.maps.Size(36, 34),
+								origin: new google.maps.Point(0,0),
+								anchor: new google.maps.Point(18, 17),
+							},
+						});
+						const infowindow = new google.maps.InfoWindow({
+							content: `
+								<h5>${tipp.user.displayName}</h5>
+								<p>${tipp.text}</p>
+							`,
+						});
+						marker.addListener('click', () => {
+							infowindow.open(map, marker);
+						});
+
+						return marker;
+					});
 				});
-				const infowindow = new google.maps.InfoWindow({
-					content: `
-						<h5>${tipp.user.displayName}</h5>
-						<p>${tipp.text}</p>
-					`,
-				});
-				marker.addListener('click', () => {
-					infowindow.open(map, marker);
-				});
-				this.markers.push(marker);
-			});
 		},
 
 		methods: {

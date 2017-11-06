@@ -18,11 +18,10 @@
       <p class="text-align-center map-tipp">
         <img src="/img/map-tipp.png" alt="Click hie und gib üs e Reisetipp">
       </p>
-      <div id="bookmark"></div>
       <h1>Gschichte</h1>
       <ul class="posts">
         {{#each posts}}
-          <li class="post">
+          <li class="post" data-id="{{this.id}}">
             <a href="{{this.url}}" class="post__link">
               {{#if this.heroImageUrl}}
                 <div class="post__title-image" style="background-image:url({{this.heroImageUrl}})"></div>
@@ -43,10 +42,7 @@
   {{/content}}
 
   {{#content "scripts"}}
-    <script defer="defer" src="https://www.gstatic.com/firebasejs/3.7.1/firebase-app.js"></script>
-    <script defer="defer" src="https://www.gstatic.com/firebasejs/3.7.1/firebase-database.js"></script>
-    <script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.1/vue.min.js"></script>
-    <script defer="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ"></script>
-    <script defer="defer" src="{{webpack.[/map.js]}}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ"></script>
+    <script src="{{webpack.[/map.js]}}"></script>
   {{/content}}
 {{/extend}}

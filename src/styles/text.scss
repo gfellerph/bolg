@@ -99,6 +99,18 @@ hr {
   height: 1px;
 }
 
+blockquote {
+  font-size: 1.25em;
+  font-style: italic;
+}
+
+blockquote em {
+  display: block;
+  text-align: right;
+  font-style: initial;
+  font-size: 1rem;
+}
+
 img + em,
 .picture-grid + .picture-subtitle {
   display: block;

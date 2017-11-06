@@ -7,7 +7,8 @@ if (!process.env.NODE_ENV) {
 
 var opn = require('opn')
 var path = require('path')
-var app = require('../server/server').default;
+var express = require('express')
+var app = express()
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
@@ -52,6 +53,9 @@ app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
 app.use(devMiddleware)
+app.use(express.static('public', {
+  extensions: 'html',
+}));
 
 // enable hot-reload and state-preserving
 // compilation error display

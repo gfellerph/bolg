@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import compression from 'compression';
+import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import publishAllApi from '@/server/api/publish-all';
@@ -8,6 +9,9 @@ import publishApi from '@/server/api/publish';
 import unpublishApi from '@/server/api/unpublish';
 import unsubscribe from '@/server/api/unsubscribe';
 import notifySubscribers from '@/server/api/notify-subscribers';
+import { getTipps, postTipp } from '@/server/api/tipps';
+import putDrawing from '@/server/api/put-drawing';
+import { postSubscriber } from '@/server/api/subscriber';
 
 const app = express();
 
@@ -24,7 +28,11 @@ app.use(compression());
 app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
+  maxAge: '1y',
 }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 app.get('/publish', publishAllApi);
@@ -32,10 +40,14 @@ app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
 app.get('/unsubscribe/:id', unsubscribe);
 app.get('/notifysubscribers/:id', notifySubscribers);
+app.get('/api/tipps', getTipps);
+app.post('/api/tipp', postTipp);
+app.put('/api/drawing', putDrawing);
+app.post('/api/subscriber', postSubscriber);
 
 // catch 404 and forward to error handler
 // TODO: Find a way to manage errors
-/* app.use((req, res, next) => {
+app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -50,7 +62,7 @@ app.use((err, req, res) => {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-}); */
+});
 
 // Initially build all the files
 // publishAll().then(buildIndex).then(buildGallery);
