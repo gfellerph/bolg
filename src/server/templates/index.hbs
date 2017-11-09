@@ -15,9 +15,6 @@
   {{#content "main"}}
     <div id="map" class="map"></div>
     <div class="container">
-      <p class="text-align-center map-tipp">
-        <img src="/img/map-tipp.png" alt="Click hie und gib üs e Reisetipp">
-      </p>
       <h1>Gschichte</h1>
       <ul class="posts">
         {{#each posts}}
@@ -42,7 +39,7 @@
   {{/content}}
 
   {{#content "scripts"}}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&libraries=places"></script>
     <script src="{{webpack.[/map.js]}}"></script>
   {{/content}}
 {{/extend}}
