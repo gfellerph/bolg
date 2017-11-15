@@ -15,6 +15,7 @@ export const getTipps = (req, res) => {
       delete tipp.created;
       delete tipp.approved;
       delete tipp.country;
+      delete tipp.user.uid;
       delete tipp.user.email;
       delete tipp.user.emailVerified;
       delete tipp.user.isAnonymous;
