@@ -15,4 +15,6 @@ export default function Tipp(tipp = {}) {
    * @returns {Object} Clean post object without functions
    */
   this.normalize = () => JSON.parse(JSON.stringify(this));
+
+  this.title = () => `${this.user.displayName}s Tipp: ${this.text.substring(0, 22)}${this.text.length > 22 ? '...' : ''}`;
 }

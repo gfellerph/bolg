@@ -44,11 +44,12 @@
 				.then((res) => {
 					const tipps = res.data;
 
-					this.markers = tipps.map((tipp) => {
+					this.markers = tipps.map((tippData) => {
+						const tipp = new Tipp(tippData);
 						const marker = new google.maps.Marker({
 							position: new google.maps.LatLng(tipp.lat, tipp.lng),
 							map: this.map,
-							title: `${tipp.user.displayName}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+							title: tipp.title(),
 							icon: {
 								url: '/img/inuksuk-map.svg',
 								size: new google.maps.Size(36, 34),
@@ -85,10 +86,6 @@
 </script>
 
 <style lang="scss">
-	.map {
-		overflow: hidden;
-	}
-
 	.gm-style {
 		font: inherit !important;
 	}
