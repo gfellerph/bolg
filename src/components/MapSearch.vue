@@ -8,24 +8,30 @@
         ref="searchInput"
         v-model="searchTerm"
       >
-      <img v-if="!hasPlace" class="map-search__icon" src="/img/search.svg" alt="">
-      <button v-if="hasPlace" class="plain" @click="clearSearch">
+      <img v-if="status == state.INITIAL" class="map-search__icon" src="/img/search.svg" alt="">
+      <button
+        class="plain map-search__reset"
+        v-if="status != state.INITIAL"
+        @click="reset"
+      >
         <img class="map-search__icon" src="/img/close.svg" alt="">
       </button>
     </div>
     <button
-      v-if="hasPlace && !location"
+      v-if="status == state.LOCATION_SELECTED"
       class="map-search__cta"
       @click="addTipp"
     >Reisetipp zu däm Ort gä?</button>
     <tipp-info
-      v-if="!hasPlace && showTippInfo"
+      v-if="status == state.INITIAL && showTippInfo"
       v-on:close-tipp-info="toggleTippInfo"
     ></tipp-info>
     <add-tipp
-      v-if="hasPlace && location"
+      v-if="status == state.ADD_TIPP"
       :location="location"
-      v-on:close-add-tipp="closeAddTipp"
+      :map="map"
+      v-on:close-add-tipp="reset"
+      v-on:tipp-add-success="addTippSuccess"
     ></add-tipp>
     <add-tipp-success
       v-if="status == state.ADD_TIPP_SUCCESS"
@@ -40,6 +46,14 @@
   import AddTippSuccess from '@/components/AddTippSuccess';
   import TippInfo from '@/components/TippInfo';
 
+  const state = {
+    INITIAL: 0,
+    SEARCHING: 1,
+    LOCATION_SELECTED: 2,
+    ADD_TIPP: 3,
+    ADD_TIPP_SUCCESS: 4
+  }
+
   export default {
     components: {
       AddTipp,
@@ -49,10 +63,10 @@
 
     data() {
       return {
+        state,
+        status: state.INITIAL,
         searchTerm: '',
         searchBox: null,
-        selectedPlace: null,
-        selectedLocation: null,
         showTippInfo: true,
         location: null,
         marker: new google.maps.Marker({
@@ -69,11 +83,10 @@
 
     props: {
       map: Object,
-      test: String,
     },
 
     watch: {
-      selectedLocation(val) {
+      location(val) {
 
         // Reset marker
         if (!val) {
@@ -89,57 +102,45 @@
 
     mounted() {
       bus.$on('map-click', (latLng) => {
-        this.selectedLocation = latLng;
-        this.selectedPlace = '';
+        this.location = latLng;
+        this.status = state.LOCATION_SELECTED;
       });
-    },
-
-    computed: {
-      hasPlace() { return this.searchTerm === this.selectedPlace; }
     },
 
     methods: {
       init(map) {
         this.searchBox = new google.maps.places.SearchBox(this.$refs.searchInput);
-        this.searchBox.addListener('places_changed', () => {
-          this.selectedPlace = this.searchTerm;
-          const place = this.searchBox.getPlaces()[0];
-
-          if (!place.geometry) {
-            return;
-          }
-
-          this.selectedLocation = place.geometry.location;
-
-          // If the place has a geometry, then present it on a map.
-          if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-          } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(17);  // Why 17? Because it looks good.
-          }
-        });
+        this.searchBox.addListener('places_changed', this.placeChanged);
       },
-      search() {
+      placeChanged() {
+        const place = this.searchBox.getPlaces()[0];
 
+        if (!place.geometry) {
+          return;
+        }
+
+        this.location = place.geometry.location;
+        this.status = state.LOCATION_SELECTED;
+
+        // If the place has a geometry, then present it on a map.
+        if (place.geometry.viewport) {
+          this.map.fitBounds(place.geometry.viewport);
+        } else {
+          this.map.setCenter(place.geometry.location);
+          this.map.setZoom(17);  // Why 17? Because it looks good.
+        }
       },
-      clearSearch() {
+      reset() {
         this.searchTerm = '';
         this.location = null;
-        this.selectedLocation = null;
-        this.selectedPlace = null;
+        this.status = state.INITIAL;
         this.$nextTick(() => {
           this.$refs.searchInput.focus();
         });
       },
       toggleTippInfo() { this.showTippInfo = !this.showTippInfo; },
-      addTipp() { this.location = this.selectedLocation; },
-      closeAddTipp() {
-        this.location = null;
-        this.$nextTick(() => {
-          this.$refs.searchInput.focus();
-        });
-      },
+      addTipp() { this.status = state.ADD_TIPP; },
+      addTippSuccess() { this.status = state.ADD_TIPP_SUCCESS; },
     },
   }
 </script>
@@ -206,14 +207,25 @@
       font-family: 'Roboto', sans-serif;
       border-bottom: none;
     }
+
+    .map-search__reset {
+      font-size: 1em;
+      padding: $golden-em / 2;
+
+      .map-search__icon {
+        margin: 0;
+      }
+    }
   }
+
 
   .map-search__icon {
     display: block;
     max-width: none;
-    width: 18px;
-    height: 18px;
-    margin: 0 $golden-em/2;
+    width: $golden-em;
+    height: $golden-em;
+    margin: 0 $golden-em / 2;
+    padding: ($golden-em - 1em) / 2;
   }
 
 </style>
