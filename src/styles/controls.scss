@@ -1,6 +1,7 @@
 input[type="text"],
 input[type="password"],
-input[type="email"] {
+input[type="email"],
+textarea {
   width: 100%;
   background: none;
   border: none;
@@ -10,19 +11,13 @@ input[type="email"] {
   font-size: inherit;
   font-weight: inherit;
   line-height: inherit;
-
+  
   border-bottom: 1px solid black;
   padding: $golden-em / 2;
 }
 
 textarea {
-  display: block;
-  background: none;
-  border: none;
-  width: 100%;
-  padding: 0 $golden-rem / 2;
-  resize: none;
-  outline: none;
+  resize: vertical;
 }
 
 button,
@@ -60,7 +55,8 @@ button,
     margin-left: $golden-em / 2;
   }
 
-  &.plain {
+  &.plain,
+  &.blank {
     border: none;
     padding: 0;
     margin: 0;

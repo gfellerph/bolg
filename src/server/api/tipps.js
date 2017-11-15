@@ -5,12 +5,25 @@ const ref = firebase.database().ref('/tipps');
 
 export const getTipps = (req, res) => {
   ref.once('value', (snapshot) => {
-    const tipps = snapshot.val();
+    const tippsSnapshot = snapshot.val();
 
-    if (!tipps) return res.error('Database error');
+    if (!tippsSnapshot) return res.error('Database error');
+
+    const tipps = Object.keys(tippsSnapshot).map((key) => {
+      const tipp = tippsSnapshot[key];
+      delete tipp.id;
+      delete tipp.created;
+      delete tipp.approved;
+      delete tipp.country;
+      delete tipp.user.uid;
+      delete tipp.user.email;
+      delete tipp.user.emailVerified;
+      delete tipp.user.isAnonymous;
+      return tipp;
+    });
 
     // Send tipps as array
-    return res.send(Object.keys(tipps).map(tipp => tipps[tipp]));
+    return res.send(tipps);
   });
 }
 
