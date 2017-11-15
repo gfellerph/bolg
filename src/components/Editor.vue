@@ -5,6 +5,7 @@
         <button class="bold small" @click="bolden" title="Bold">B</button>
         <button class="italic small" @click="pizzaparty" title="Italic">I</button>
         <button class="small" @click="toggleYoutubeEmbed" title="YouTube">YT</button>
+        <button class="small" @click="insertPictureGrid" title="Picture Grid">PG</button>
         <label><input type="checkbox" v-model="autoscroll">autoscroll</label>
       </div>
       <div class="right-controls">
@@ -96,6 +97,12 @@
           md.setSelectionRange(start, end + modifier);
           md.focus();
         });
+      },
+      insertPictureGrid() {
+        const md = this.$refs.md;
+        const start = md.selectionStart;
+        const template = `<div class="picture-grid">\n</div>\n\n<p class="picture-subtitle"></p>`;
+        this.markdown = `${this.markdown.slice(0, start)}${template}${this.markdown.slice(start, this.markdown.length)}`;
       },
       youtubeInsert() {
         const md = this.$refs.md;
