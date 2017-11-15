@@ -53,28 +53,42 @@
 
     props: {
       location: Object,
-      hasPlace: Boolean,
+      map: Object,
     },
 
     methods: {
       send(event) {
         this.error = false;
         this.loading = true;
-        this.tipp.lat = this.lat;
-        this.tipp.lng = this.lng;
-        this.tipp.country = this.country;
+        this.tipp.lat = this.location.lat();
+        this.tipp.lng = this.location.lng();
 
         axios
-          .post('/api/tip', this.tipp.normalize())
+          .post('/api/tipp', this.tipp.normalize())
           .then(() => {
+            this.addTemporaryTipp();
             this.loading = false;
+            this.error = false;
             this.tipp = new Tipp();
-            this.closeOverlay();
+            this.$emit('tipp-add-success');
           })
           .catch(err => {
             this.loading = false;
             this.error = err.message;
           });
+      },
+      addTemporaryTipp() {
+        const tempMarker = new google.maps.Marker({
+          title:  this.tipp.title(),
+          position: this.location,
+          map: this.map,
+					icon: {
+						url: '/img/inuksuk-map.svg',
+						size: new google.maps.Size(36, 34),
+						origin: new google.maps.Point(0,0),
+						anchor: new google.maps.Point(18, 17),
+					},
+				});
       },
       cancel() {
         this.$emit('close-add-tipp');
