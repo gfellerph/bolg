@@ -27,17 +27,23 @@
       :location="location"
       v-on:close-add-tipp="closeAddTipp"
     ></add-tipp>
+    <add-tipp-success
+      v-if="status == state.ADD_TIPP_SUCCESS"
+      v-on:close-add-tipp-success="reset"
+    ></add-tipp-success>
   </div>
 </template>
 
 <script>
   import bus from '@/config/bus';
   import AddTipp from '@/components/AddTipp';
+  import AddTippSuccess from '@/components/AddTippSuccess';
   import TippInfo from '@/components/TippInfo';
 
   export default {
     components: {
       AddTipp,
+      AddTippSuccess,
       TippInfo,
     },
 
