@@ -17,8 +17,10 @@ export default function putImages(req, res) {
     .store(awsConfig(`bolg/drawings/${drawingId}.png`))
     .meta()
     .then((meta) => {
-      ref.set(meta.location);
-      publishedRef.set(meta.location);
+      const cloudFront = `https://d3ieg3cxah9p4i.cloudfront.net/${meta.location.split('/bolg/')[1]}`;
+      ref.set(cloudFront);
+      publishedRef.set(cloudFront);
+
       res.send('ok');
     })
     .catch((err) => {
