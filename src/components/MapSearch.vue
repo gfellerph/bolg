@@ -119,6 +119,7 @@
           return;
         }
 
+        this.searchTerm = place.formatted_address;
         this.location = place.geometry.location;
         this.status = state.LOCATION_SELECTED;
 
