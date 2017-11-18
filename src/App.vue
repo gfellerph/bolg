@@ -6,6 +6,7 @@
         <router-link class="button" to="/createpost">Create post</router-link>
         <router-link class="button" to="/map">Map</router-link>
         <router-link class="button" to="/tipps">Tipps</router-link>
+        <router-link class="button" to="/drawings">Drawings</router-link>
         <!-- <router-link class="button" to="/createstory">Create story</router-link>-->
       </nav>
       <img class="logo" :src="logoURL" alt="">
