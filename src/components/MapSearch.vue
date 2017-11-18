@@ -170,6 +170,7 @@
     position: absolute;
     top: $golden-rem;
     left: $golden-rem;
+    z-index: 1;
 
     @include min($s) {
       width: 33%;
@@ -180,6 +181,8 @@
     }
 
     @include max($xxs) {
+      top: 0;
+      left: $golden-rem;
       right: $golden-rem;
     }
   }
@@ -203,6 +206,14 @@
     display: flex;
     align-items: center;
     margin-bottom: $golden-rem/2;
+
+    @include max($xxs) {
+      margin-right: $golden-rem * -1;
+      margin-left: $golden-rem * -1;
+      border-top: 1px solid lightgrey;
+      border-radius: 0;
+      box-shadow: none;
+    }
     
     .map-search__input {
       font-family: 'Roboto', sans-serif;

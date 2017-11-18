@@ -1,11 +1,11 @@
 <template>
 	<div class="map">
-		<div id="google-map"></div>
 		<map-search
 			ref="mapSearch"
 			:map="map"
 			:test="'test'"
 		></map-search>
+		<div id="google-map"></div>
 	</div>
 </template>
 
@@ -31,7 +31,7 @@
 				streetViewControl: false,
 				mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControl: false,
-				fullscreenControl: true,
+				fullscreenControl: false,
 				draggableCursor: null,
 				draggingCursor: null,
 			});
@@ -86,6 +86,9 @@
 </script>
 
 <style lang="scss">
+	@import 'src/styles/_mixins';
+  @import 'src/styles/_variables';
+
 	.gm-style {
 		font: inherit !important;
 	}
@@ -101,6 +104,12 @@
 				font-size: inherit !important;
 				margin-bottom: 1em;
 			}
+		}
+	}
+
+	.map {
+		@include max($xxs) {
+			padding-top: 51px;
 		}
 	}
 </style>
