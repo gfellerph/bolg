@@ -10,6 +10,7 @@ import Story from '@/components/Story';
 import Tipps from '@/components/Tipps';
 import Subscribe from '@/components/Subscribe';
 import Drawings from '@/components/Drawings';
+import Subscribers from '@/components/Subscribers';
 
 Vue.use(Router);
 
@@ -88,6 +89,14 @@ const router = new Router({
       path: '/drawings',
       name: 'Drawings',
       component: Drawings,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/subscribers',
+      name: 'Subscribers',
+      component: Subscribers,
       meta: {
         requiresAuth: true,
       },
