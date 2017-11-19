@@ -15,7 +15,7 @@
   }
 
   @include max($xs) {
-    height: calc(100vh - 98px);
+    height: 100vw;
     background-image: url(/img/map-background-mobile.jpg);
   }
 
