@@ -1,0 +1,25 @@
+@media print {
+  .drawing p,
+  .drawing canvas,
+  .next-post-link,
+  .blog-divider,
+  nav .left-link,
+  nav .right-link {
+    display: none !important;
+  }
+
+  .drawing__display {
+    margin-top: $golden-em * 2;
+    padding-top: $golden-em * 2;
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+
+    img {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+  }
+}

@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import moment from '@/config/moment';
 import firebase from '@/config/firebase-admin';
 import * as hbsTemplates from '@/config/handlebars';
 import writefile from './writefile';
@@ -184,6 +183,10 @@ publishedRef.on('child_added', (snapshot) => {
     .catch((error) => {
       console.error(error);
     })
+});
+
+publishedRef.on('value', (snapshot) => {
+  if (!snapshot.val()) throw new Error('wtf');
 });
 
 publishedRef.on('child_removed', (snapshot) => {

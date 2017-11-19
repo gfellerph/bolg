@@ -1,60 +1,57 @@
 <template>
-	<div class="map" :class="{grayscale: showPopup}">
+	<div class="map">
+		<map-search
+			ref="mapSearch"
+			:map="map"
+			:test="'test'"
+		></map-search>
 		<div id="google-map"></div>
-		<add-tipp
-			:lat="lat"
-			:lng="lng"
-			:country="country"
-			v-if="showPopup"
-			@tipp-added="resetTipp"
-			@tipp-closed="closeTipp"></add-tipp>
 	</div>
 </template>
 
 <script>
 	import axios from 'axios';
+	import bus from '@/config/bus';
 	import Tipp from '@/models/Tipp';
 	import AddTipp from '@/components/AddTipp';
-	import { reverseGeocode } from '@/config/constants';
-
-	let map = null;
+	import MapSearch from '@/components/MapSearch';
 
 	export default {
 		data() {
 			return {
-				showPopup: false,
-				lat: 0,
-				lng: 0,
-				country: '',
 				markers: [],
+				map: null,
 			};
 		},
 
 		mounted() {
-			map = new google.maps.Map(document.getElementById('google-map'), {
+			this.map = new google.maps.Map(document.getElementById('google-map'), {
 				zoom: 2,
 				center: new google.maps.LatLng(27, 6),
 				streetViewControl: false,
 				mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControl: false,
-				fullscreenControl: true,
+				fullscreenControl: false,
 				draggableCursor: null,
 				draggingCursor: null,
 			});
 
-			if (window.outerWidth >= 768)	map.addListener('click', this.addTipp);
+			this.$refs.mapSearch.init(this.map);
+
+			if (window.outerWidth >= 768)	this.map.addListener('click', this.addTipp);
 
 			axios.get('/api/tipps')
 				.then((res) => {
 					const tipps = res.data;
 
-					this.markers = tipps.map((tipp) => {
+					this.markers = tipps.map((tippData) => {
+						const tipp = new Tipp(tippData);
 						const marker = new google.maps.Marker({
 							position: new google.maps.LatLng(tipp.lat, tipp.lng),
-							map: map,
-							title: `${tipp.user.displayName}s Tipp: ${tipp.text.substring(0, 22)}${tipp.text.length > 22 ? '...' : ''}`,
+							map: this.map,
+							title: tipp.title(),
 							icon: {
-								url: '/img/inuksuk.png',
+								url: '/img/inuksuk-map.svg',
 								size: new google.maps.Size(36, 34),
 								origin: new google.maps.Point(0,0),
 								anchor: new google.maps.Point(18, 17),
@@ -67,7 +64,7 @@
 							`,
 						});
 						marker.addListener('click', () => {
-							infowindow.open(map, marker);
+							infowindow.open(this.map, marker);
 						});
 
 						return marker;
@@ -77,36 +74,20 @@
 
 		methods: {
 			addTipp(event) {
-				this.lat = event.latLng.lat();
-				this.lng = event.latLng.lng();
-				this.showPopup = true;
-			},
-			resetTipp(tipp) {
-				this.showPopup = false;
-			},
-			closeTipp() {
-				this.showPopup = false;
+				bus.$emit('map-click', event.latLng);
 			},
 		},
 
 		components: {
 			AddTipp,
+			MapSearch,
 		},
 	};
 </script>
 
 <style lang="scss">
-	.map {
-		overflow: hidden;
-
-		#google-map {
-			transition: filter 300ms, opacity 300ms;
-		}
-
-		&.grayscale #google-map{
-			filter: blur(3px);
-		}
-	}
+	@import 'src/styles/_mixins';
+  @import 'src/styles/_variables';
 
 	.gm-style {
 		font: inherit !important;
@@ -123,6 +104,12 @@
 				font-size: inherit !important;
 				margin-bottom: 1em;
 			}
+		}
+	}
+
+	.map {
+		@include max($xxs) {
+			padding-top: 51px;
 		}
 	}
 </style>
