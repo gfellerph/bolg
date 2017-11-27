@@ -77,7 +77,8 @@ article {
     text-align: center;
   }
 
-  h1 + p {
+  h1 + p,
+  .big-first-letter {
     &::first-letter {
       font-size: $golden-em * 2;
       float: left;
@@ -112,7 +113,7 @@ blockquote em {
 }
 
 img + em,
-.picture-grid + .picture-subtitle {
+.picture-subtitle {
   display: block;
   font-style: italic;
   margin: $golden-rem / 4 0;

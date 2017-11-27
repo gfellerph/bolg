@@ -187,7 +187,7 @@
   }
   .post-form,
   .post-preview {
-    flex: 0 0 50%;
+    flex: 1 1 50%;
   }
 
   .post-form {
@@ -215,6 +215,7 @@
   .post-images {
     overflow: auto;
     border-top: 1px solid black;
+    max-width: 50vw;
   }
 
   .post-preview {

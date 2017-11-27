@@ -1,14 +1,22 @@
 <template>
   <div id="app" class="app box">
     <header class="header">
-      <nav>
-        <router-link class="button" to="/">Overview</router-link>
-        <router-link class="button" to="/createpost">Create post</router-link>
-        <router-link class="button" to="/map">Map</router-link>
-        <router-link class="button" to="/tipps">Tipps</router-link>
-        <router-link class="button" to="/drawings">Drawings</router-link>
-        <router-link class="button" to="/subscribers">Subscribers</router-link>
-        <!-- <router-link class="button" to="/createstory">Create story</router-link>-->
+      <nav class="navigation">
+        <input type="checkbox" id="nav">
+        <label for="nav"><img src="/img/menu.svg" alt="Menu"></label>
+        <label for="nav" class="navigation__closer"></label>
+        <div class="offcanvas">
+          <label for="nav" class="navigation__mini-closer">
+            <img style="width: 24px;" src="/img/close.svg" alt="">
+          </label>
+          <router-link to="/">Overview</router-link>
+          <router-link to="/createpost">Create post</router-link>
+          <router-link to="/map">Map</router-link>
+          <router-link to="/tipps">Tipps</router-link>
+          <router-link to="/drawings">Drawings</router-link>
+          <router-link to="/subscribers">Subscribers</router-link>
+          <!-- <router-link to="/createstory">Create story</router-link>-->
+        </div>
       </nav>
       <img class="logo" :src="logoURL" alt="">
       <profile></profile>
@@ -64,7 +72,7 @@
 </script>
 
 <style lang="scss">
-  @import 'src/styles/_index';
+  @import 'src/styles/post-index';
 
   .app {
     flex-grow: 1;
@@ -86,5 +94,85 @@
   
   .logo {
       height: 2.5rem;
+  }
+
+  .profile {
+    flex: 2 1 50%;
+    text-align: right;
+  }
+
+  .offcanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    min-width: 250px;
+    visibility: hidden;
+    opacity: 0;
+    padding: $golden-rem / 2 0;
+    transition: opacity 0.3s, visibility 0s 0.3s;
+    background: white;
+    box-shadow: 0 4px 5px rgba(0,0,0,0.5);
+    z-index: 1;
+
+    a {
+      display: block;
+      padding: $golden-rem / 4 $golden-rem / 2;
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.1s;
+
+      &:hover {
+        color: seagreen;
+      }
+    }
+  }
+
+  .navigation__closer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0s 0.3s;
+    z-index: 1;
+  }
+
+  #nav {
+    &:checked {
+      & ~ .offcanvas,
+      & ~ .navigation__closer {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s, visibility 0s 0s;
+      }
+    }
+  }
+
+  .navigation {
+    flex: 2 1 50%;
+
+    input[type=checkbox] {
+      position: absolute;
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  .navigation__mini-closer {
+    position: absolute;
+    margin: 0;
+    top: $golden-rem / 4;
+    right: $golden-rem / 4;
+
+    img {
+      display: block;
+      width: $golden-rem / 1.5;
+      height: $golden-rem / 1.5;
+    }
   }
 </style>

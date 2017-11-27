@@ -103,6 +103,11 @@
         const start = md.selectionStart;
         const template = `<div class="picture-grid">\n</div>\n\n<p class="picture-subtitle"></p>`;
         this.markdown = `${this.markdown.slice(0, start)}${template}${this.markdown.slice(start, this.markdown.length)}`;
+        this.change();
+        this.$nextTick(() => {
+          md.setSelectionRange(start + 26, start + 26);
+          md.focus();
+        });
       },
       youtubeInsert() {
         const md = this.$refs.md;
