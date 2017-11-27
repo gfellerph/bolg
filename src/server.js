@@ -28,7 +28,6 @@ app.use(compression());
 app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
-  maxAge: '1y',
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
