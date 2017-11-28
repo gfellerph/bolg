@@ -15,7 +15,7 @@
 
 
 <script>
-  import AuthGuard from '@/components/AuthGuard';
+  import AuthGuard from 'src/components/AuthGuard';
   import { mapState } from 'vuex';
 
   export default {
@@ -24,16 +24,16 @@
     },
 
     computed: mapState({
-        user: state => state.auth.user,
+      user: state => state.auth.user,
     }),
 
     methods: {
-      logout() { this.user.logout(); }
+      logout() { this.user.logout(); },
     },
 
     components: {
       AuthGuard,
-    }
+    },
   };
 </script>
 

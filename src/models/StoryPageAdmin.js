@@ -1,7 +1,7 @@
-import StoryPage from '@/models/StoryPage';
-import { database } from '@/config/firebase';
-import { marked } from '@/config/markdown';
-import moment from '@/config/moment';
+import StoryPage from 'src/models/StoryPage';
+import { database } from 'src/config/firebase';
+import { marked } from 'src/config/markdown';
+import moment from 'src/config/moment';
 
 const ref = (storyId, pageId) => database.ref(`/posts/${storyId}/pages/${pageId}`);
 

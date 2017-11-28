@@ -33,7 +33,6 @@ const devConfig = merge(backConfig, {
     }),
   ],
   devtool: '#source-map',
-  chunksSortMode: 'dependency',
 });
 
 module.exports = devConfig;

@@ -34,21 +34,18 @@
 <script>
   import axios from 'axios';
   import debounce from 'debounce';
-  import { marked } from '@/config/markdown';
-  import Post from '@/models/PostAdmin';
-  import { database } from '@/config/firebase';
-  import router from '@/config/router';
-  import ImageSelector from '@/components/ImageSelector';
-  import bus from '@/config/bus';
-  import PostMixin from '@/mixins/post-mixin';
-  import { states, sizes } from '@/config/constants';
-  import Editor from '@/components/Editor';
-  import PostStatus from '@/components/PostStatus';
-  import MarkdownCheatsheet from '@/components/MarkdownCheatsheet';
+  import { marked } from 'src/config/markdown';
+  import Post from 'src/models/PostAdmin';
+  import { database } from 'src/config/firebase';
+  import router from 'src/config/router';
+  import ImageSelector from 'src/components/ImageSelector.vue';
+  import bus from 'src/config/bus';
+  import { states } from 'src/config/constants';
+  import Editor from 'src/components/Editor';
+  import PostStatus from 'src/components/PostStatus';
+  import MarkdownCheatsheet from 'src/components/MarkdownCheatsheet';
 
   export default {
-    mixins: [PostMixin],
-
     data() {
       return {
         post: new Post(),
@@ -63,17 +60,19 @@
     computed: {
       connected() { return this.$store.state.connection.connected; },
       compiledContent() {
-        const images = {};
-        this.post.images.map((image) => {
-          images[image.id] = image.thumbnails;
+        const images = this.post.images.reduce((acc, image) => {
+          acc[image.id] = image.thumbnails;
+          return acc;
         });
-        return marked(this.post.markdown, { images }); },
+
+        return marked(this.post.markdown, { images });
+      },
       canPublish() { return this.state === states.SAVED; },
       hasTitle() { return !!this.post.title; },
       error() {
         if (!this.post.title) { return 'This post has no title'; }
         return false;
-      }
+      },
     },
 
     methods: {
@@ -95,18 +94,18 @@
         this.post.lastEdited = Date.now();
         this.debouncedSave();
       },
-      debouncedSave: debounce(function () {
+      debouncedSave: debounce(() => {
         this.savePostImmediately();
       }, 1000),
       savePostImmediately() {
         this.post.set().then(() => {
-          if (this.$route.fullPath == '/create') router.replace(`/edit/${this.post.id}`);
+          if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
         });
       },
       getPost(id) {
         database
           .ref(`/posts/${id}`)
-          .once('value', snapshot => {
+          .once('value', (snapshot) => {
             this.postLoaded = true;
             const post = snapshot.val();
             if (post) this.post = new Post(post);
@@ -117,7 +116,7 @@
           .then(() => {
             this.error = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.error = err.message;
           });
       },
@@ -126,7 +125,7 @@
           .then(() => {
             this.error = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.error = err.message;
           });
       },
@@ -142,7 +141,7 @@
             this.post.notificationSent = true;
             return this.post.set();
           })
-          .catch(err => {
+          .catch((err) => {
             this.notificationPending = false;
             this.err = err.message;
           });
@@ -160,13 +159,13 @@
     },
 
     watch: {
-      $route (to, from) {
+      $route(to) {
         if (to.params.id) {
           this.getPost(to.params.id);
         } else {
           this.post = new Post();
         }
-      }
+      },
     },
 
     components: {
@@ -174,7 +173,7 @@
       Editor,
       PostStatus,
       MarkdownCheatsheet,
-    }
+    },
   };
 </script>
 

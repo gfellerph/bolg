@@ -92,7 +92,7 @@
 </template>
 
 <script>
-  import Tipp from '@/models/Tipp';
+  import Tipp from 'src/models/Tipp';
 
   export default {
     data() {
@@ -113,7 +113,7 @@
     computed: {
       user() { return this.$store.state.auth.user; },
       canSave() { return this.tipp.user.displayName && this.tipp.text; },
-      stepOffset() { return `transform: translate3d(${this.step * -100/3}%, 0, 0);`},
+      stepOffset() { return `transform: translate3d(${(this.step * -100) / 3}%, 0, 0);` },
     },
 
     methods: {
@@ -126,15 +126,16 @@
         this.tipp.lng = this.lng;
         this.tipp.country = this.country;
 
-        this.tipp.set().then(() => {
-          this.loading = false;
-          this.tipp = new Tipp();
-          this.closeOverlay();
-        })
-        .catch(err => {
-          this.loading = false;
-          this.error = err.message;
-        });
+        this.tipp.set()
+          .then(() => {
+            this.loading = false;
+            this.tipp = new Tipp();
+            this.closeOverlay();
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.error = err.message;
+          });
       },
       closeOverlay() { this.$emit('tipp-closed'); },
       stepBack() { this.step -= 1; },

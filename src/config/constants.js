@@ -37,10 +37,10 @@ export const sizes = [
 export const objectToArray = obj => Object.keys(obj).map(key => obj[key]);
 
 export const slugger = str => str
-    .toLowerCase()
-    .replace(/ä/g, 'ae')
-    .replace(/ö/g, 'oe')
-    .replace(/ü/g, 'ue')
-    .replace(/[^\w ]+/g, ' ')
-    .trim()
-    .replace(/ +/g, '-');
+  .toLowerCase()
+  .replace(/ä/g, 'ae')
+  .replace(/ö/g, 'oe')
+  .replace(/ü/g, 'ue')
+  .replace(/[^\w ]+/g, ' ')
+  .trim()
+  .replace(/ +/g, '-');

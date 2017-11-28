@@ -4,7 +4,6 @@ export default function registerDispatcher(element) {
   const lastPosition = { x: 0, y: 0 };
 
   element.addEventListener('touchstart', (e) => {
-    console.log(e);
     lastPosition.x = e.changedTouches[0].clientX;
     lastPosition.y = e.changedTouches[0].clientY;
     lastTime = Date.now();

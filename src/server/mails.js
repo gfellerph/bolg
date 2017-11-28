@@ -1,8 +1,8 @@
 import Sendgrid from 'sendgrid';
-import firebase from '@/config/firebase-admin';
-import { objectToArray } from '@/config/constants';
-import * as hbsTemplates from '@/config/handlebars';
-import { logoURL } from '@/server/helpers';
+import firebase from 'src/config/firebase-admin';
+import { objectToArray } from 'src/config/constants';
+import * as hbsTemplates from 'src/config/handlebars';
+import { logoURL } from 'src/server/helpers';
 
 const helper = Sendgrid.mail;
 const sender = new helper.Email('tuelsch@gmail.com', 'Philipp Gfeller');

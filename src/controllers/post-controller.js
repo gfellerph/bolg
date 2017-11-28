@@ -1,7 +1,7 @@
-import moment from '@/config/moment';
-import Post from '@/models/Post';
-import { database } from '@/config/firebase';
-import { marked, description, excerpt } from '@/config/markdown';
+import moment from 'src/config/moment';
+import Post from 'src/models/Post';
+import { database } from 'src/config/firebase';
+import { marked, description, excerpt } from 'src/config/markdown';
 
 export const beautify = (postToBeautify) => {
   if (!postToBeautify) throw new Error(`Post to beautify was ${postToBeautify}`);
@@ -45,7 +45,6 @@ export const publish = (post) => {
  * @returns {Promise} Promise
  */
 export const unpublish = (post) => {
-  const postRef = database.ref(`/posts/${post.id}`);
   const publishRef = database.ref(`/published/${post.id}`);
   const postToUnpublish = new Post(post);
 

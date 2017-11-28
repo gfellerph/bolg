@@ -8,7 +8,7 @@ var path = require('path')
 var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../config')
-var webpackConfig = require('./webpack.prod.conf')
+var webpackConfig = require('./back.prod.config')
 var serverConfig = require('../config/server.prod.config')
 var frontConfig = require('../config/front.prod.config')
 

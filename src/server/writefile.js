@@ -1,6 +1,6 @@
 const mkdirp = require('mkdirp');
 const fs = require('fs');
-const dirname = require('path').dirname;
+const { dirname } = require('path');
 
 export default function (filePath, content) {
   return new Promise((resolve, reject) => {

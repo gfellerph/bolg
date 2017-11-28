@@ -71,8 +71,8 @@
 
         return toggled;
       },
-      bolden(e) {
-        const md = this.$refs.md;
+      bolden() {
+        const { md } = this.$refs;
         const start = md.selectionStart;
         const end = md.selectionEnd;
         const newMarkdown = this.toggle(this.markdown, '**', '**', start, end);
@@ -85,7 +85,7 @@
         });
       },
       pizzaparty() {
-        const md = this.$refs.md;
+        const { md } = this.$refs;
         const start = md.selectionStart;
         const end = md.selectionEnd;
         const newMarkdown = this.toggle(this.markdown, '_', '_', start, end);
@@ -98,7 +98,7 @@
         });
       },
       youtubeInsert() {
-        const md = this.$refs.md;
+        const { md } = this.$refs;
         const start = md.selectionStart;
         const stringToInsert = `\n<div class="video-wrapper">${this.youtubeEmbed}</div>\n`;
         this.markdown = [this.markdown.slice(0, start), stringToInsert, this.markdown.slice(start)].join('');
@@ -134,25 +134,25 @@
       },
       scroll(event) {
         if (!this.autoscroll) return;
-        const target = event.target;
+        const { target } = event;
         const percent = target.scrollTop / (target.scrollHeight - target.clientHeight);
         this.$emit('scroll', percent);
       },
       toggleClippy() {
         this.$emit('help');
       },
-      cursorPositionChanged(event) {
+      cursorPositionChanged() {
         this.startToCursor = this.markdown.substring(0, this.$refs.md.selectionStart)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
           .replace(/\n/g, '<br>');
         this.entireText = this.markdown
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
           .replace(/\n/g, '<br>');
-        this.$nextTick(function () {
+        this.$nextTick(() => {
           const textareaHeight = this.$refs.mirrorRef.scrollHeight;
           const mirrorHeight = this.$refs.mirror.scrollHeight;
           let percent = mirrorHeight / textareaHeight;
@@ -163,7 +163,7 @@
     },
 
     created() {
-      this.$watch('value', function () {
+      this.$watch('value', () => {
         this.markdown = this.value;
       });
     },

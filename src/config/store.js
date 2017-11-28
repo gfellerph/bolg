@@ -1,8 +1,8 @@
 import 'es6-promise/auto';
 import Vuex from 'vuex';
 
-import authStore from '@/stores/auth-store';
-import connectionStore from '@/stores/connection-store';
+import authStore from 'src/stores/auth-store';
+import connectionStore from 'src/stores/connection-store';
 
 // Vue.use(Vuex);
 

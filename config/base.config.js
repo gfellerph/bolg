@@ -8,7 +8,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.scss'],
     alias: {
-      '@': paths.src,
+      src: paths.src,
     },
   },
   externals: {

@@ -1,5 +1,5 @@
 import cuid from 'cuid';
-import { storage, database } from '@/config/firebase';
+import { storage, database } from 'src/config/firebase';
 
 const getFileExtension = str => str.substring(str.lastIndexOf('.'), str.length);
 
@@ -14,9 +14,10 @@ export default function Image(img = {}) {
 
   // Methods
   this.url = () => {
-    return this.file
+    const url = this.file
       ? window.URL.createObjectURL(this.file)
       : this.downloadURL || null;
+    return url;
   };
 
   this.put = () => {
@@ -28,9 +29,8 @@ export default function Image(img = {}) {
       .put(this.file, { customMetadata: { id: this.id } });
   };
 
-  this.getThumbnail = (width) => {
-    return new Promise((resolve) => {
+  this.getThumbnail = width =>
+    new Promise((resolve) => {
       imagesRef.child(width).once('value', snapshot => resolve(snapshot.val()));
     });
-  }
 }

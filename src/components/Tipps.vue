@@ -2,7 +2,11 @@
   <div class="tipps">
     <input type="text" v-model="search" placeholder="Fiutere">
     <ul class="tipps__list">
-      <li class="tipps__item" v-for="tipp in filteredTipps">
+      <li
+        class="tipps__item"
+        v-bind:key="tipp.id"
+        v-for="tipp in filteredTipps"
+      >
         <tipp-detail :tipp="new Tipp(tipp)"></tipp-detail>
       </li>
     </ul>
@@ -10,9 +14,9 @@
 </template>
 
 <script>
-  import Tipp from '@/models/Tipp';
-  import { database } from '@/config/firebase';
-  import TippDetail from '@/components/TippDetail';
+  import Tipp from 'src/models/Tipp';
+  import { database } from 'src/config/firebase';
+  import TippDetail from 'src/components/TippDetail';
 
   export default {
     data() {
@@ -27,12 +31,16 @@
     },
     computed: {
       filteredTipps() {
-        return this.tipps.filter(tipp => tipp.text.toLowerCase().includes(this.search.toLowerCase()) || tipp.user.displayName.toLowerCase().includes(this.search.toLowerCase())).reverse();
-      }
+        const filterString = this.search.toLowerCase();
+        return this.tipps.filter((tipp) => {
+          const searchString = `${tipp.text}${tipp.user.displayName}`.toLowerCase();
+          return searchString.includes(filterString)
+        }).reverse();
+      },
     },
     components: {
       TippDetail,
-    }
+    },
   };
 </script>
 

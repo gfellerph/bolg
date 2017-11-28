@@ -28,10 +28,9 @@
 </template>
 
 <script>
-  import ImageUploader from '@/components/ImageUploader';
-  import PostImage from '@/components/PostImage';
-  import Image from '@/models/Image';
-  import bus from '@/config/bus';
+  import ImageUploader from 'src/components/ImageUploader';
+  import PostImage from 'src/components/PostImage';
+  import Image from 'src/models/Image';
 
   export default {
     data() {
@@ -46,7 +45,7 @@
     },
 
     mounted() {
-      window.addEventListener('dragover', function (e) { e.preventDefault(); });
+      window.addEventListener('dragover', (e) => { e.preventDefault(); });
       window.addEventListener('dragenter', this.onDragEnter);
       window.addEventListener('dragleave', this.onDragLeave);
       window.addEventListener('drop', this.onFileChange);
@@ -71,9 +70,9 @@
       },
       onFileChange(event) {
         event.preventDefault();
-        var images = event.target.files || event.dataTransfer.files;
-        for (var i = 0; i < images.length; i++) {
-          this.imagesForUpload.push(new Image({file: images[i]}));
+        const images = event.target.files || event.dataTransfer.files;
+        for (let i = 0; i < images.length; i++) {
+          this.imagesForUpload.push(new Image({ file: images[i] }));
         }
       },
       addImage(image) {
@@ -88,13 +87,13 @@
       activateImage(url) {
         this.post.titleImage = url;
         this.post.set();
-      }
+      },
     },
 
     components: {
       ImageUploader,
       PostImage,
-    }
+    },
   };
 </script>
 

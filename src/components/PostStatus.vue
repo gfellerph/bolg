@@ -6,8 +6,8 @@
 
 
 <script>
-  import moment from '@/config/moment';
-  import { states } from '@/config/constants';
+  import moment from 'src/config/moment';
+  import { states } from 'src/config/constants';
 
   const classes = {
     0: 'loading',
@@ -35,13 +35,13 @@
           : 'nid publiziert';
 
         const messages = {
-          '0': 'i bi am lade...',
-          '1': 'du schribsch öppis',
-          '2': `gschpicheret (${lastPublished})`,
-          '3': `fähler o.O: `,
-          '4': 'du schribsch öppis (ke netz)',
-          '5': 'gschpicheret (ke netz)',
-          '6': lastPublished,
+          0: 'i bi am lade...',
+          1: 'du schribsch öppis',
+          2: `gschpicheret (${lastPublished})`,
+          3: 'fähler o.O:',
+          4: 'du schribsch öppis (ke netz)',
+          5: 'gschpicheret (ke netz)',
+          6: lastPublished,
         }
 
         return messages[this.state];
@@ -61,24 +61,31 @@
         }
 
         // Post is edited when lastEdited is bigger than lastSaved and lastPublished
-        if (this.post.lastEdited && this.post.lastEdited > this.post.lastSaved && this.post.lastEdited > this.post.lastPublished) {
+        if (this.post.lastEdite
+          && this.post.lastEdited > this.post.lastSaved
+          && this.post.lastEdited > this.post.lastPublished) {
           status = states.EDITING;
         }
 
-        // Post is saved when lastSaved is bigger than or equal to lastEdited and bigger than lastPublished
-        if (this.post.lastSaved && this.post.lastSaved >= this.post.lastEdited && this.post.lastSaved > this.post.lastPublished) {
+        // Post is saved when lastSaved is bigger than or equal to
+        // lastEdited and bigger than lastPublished
+        if (this.post.lastSaved
+          && this.post.lastSaved >= this.post.lastEdited
+          && this.post.lastSaved > this.post.lastPublished) {
           status = states.SAVED;
         }
 
         // Post is published when lastPublished is bigger than or equal to lastEdited and lastSaved
-        if (this.post.lastPublished && this.post.lastPublished >= this.post.lastEdited && this.post.lastPublished >= this.post.lastSaved) {
+        if (this.post.lastPublished
+          && this.post.lastPublished >= this.post.lastEdited
+          && this.post.lastPublished >= this.post.lastSaved) {
           status = states.PUBLISHED;
         }
 
         // Alter editing or saved states to offline states
         if (!this.connected) {
-          if (status == states.EDITING) status = states.EDITING_OFFLINE;
-          if (status == states.SAVED) status = states.SAVED_OFFLINE;
+          if (status === states.EDITING) status = states.EDITING_OFFLINE;
+          if (status === states.SAVED) status = states.SAVED_OFFLINE;
         }
 
         return status;

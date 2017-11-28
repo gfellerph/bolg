@@ -25,9 +25,9 @@
 </template>
 
 <script>
-  import dateFormat from '@/filters/date-format';
-  import PostStatus from '@/components/PostStatus';
-  import { description } from '@/config/markdown';
+  import dateFormat from 'src/filters/date-format';
+  import PostStatus from 'src/components/PostStatus';
+  import { description } from 'src/config/markdown';
 
   export default {
     // mixins: [PostMixin],
@@ -49,13 +49,15 @@
     methods: {
       dateFormat,
       deletePost() {
+        /* eslint no-restricted-globals: 0 */
+        /* eslint no-alert: 0 */
         if (confirm('wosch würk dä Post lösche?')) {
           this.post.remove();
         }
       },
       publishPost() {
         this.post.publish();
-      }
+      },
     },
 
     components: {

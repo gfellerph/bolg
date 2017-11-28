@@ -31,8 +31,8 @@
 </template>
 
 <script>
-  import Tipp from '@/models/Tipp';
-  import dateFormat from '@/filters/date-format';
+  import Tipp from 'src/models/Tipp';
+  import dateFormat from 'src/filters/date-format';
 
   export default {
     data() {
@@ -51,12 +51,14 @@
         this.editMode = !this.editMode;
       },
       deleteTipp() {
+        /* eslint no-alert: 0 */
+        /* eslint no-restricted-globals: 0 */
         return confirm('Wosch würk lösche?') ? this.tipp.remove() : false;
       },
       saveTipp() {
         this.editMode = false;
         return this.editTipp.set();
-      }
+      },
     },
   };
 </script>

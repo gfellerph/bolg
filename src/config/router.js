@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { auth } from '@/config/firebase';
+import { auth } from 'src/config/firebase';
 
-import Posts from '@/components/Posts';
-import EditPost from '@/components/EditPost';
-import Login from '@/components/Login';
-import Map from '@/components/Map';
-import Story from '@/components/Story';
-import Tipps from '@/components/Tipps';
-import Subscribe from '@/components/Subscribe';
+import Posts from 'src/components/Posts';
+import EditPost from 'src/components/EditPost';
+import Login from 'src/components/Login';
+import Map from 'src/components/Map';
+import Story from 'src/components/Story';
+import Tipps from 'src/components/Tipps';
+import Subscribe from 'src/components/Subscribe';
 
 Vue.use(Router);
 

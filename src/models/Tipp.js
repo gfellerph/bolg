@@ -1,6 +1,6 @@
 import cuid from 'cuid';
-import User from '@/models/User';
-import { database } from '@/config/firebase';
+import User from 'src/models/User';
+import { database } from 'src/config/firebase';
 
 export default function Tipp(tipp = {}) {
   // Properties

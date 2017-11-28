@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import tinify from 'tinify';
-import awsConfig from '@/config/tinify-aws';
-import firebase from '@/config/firebase-admin';
+import awsConfig from 'src/config/tinify-aws';
+import firebase from 'src/config/firebase-admin';
 
 tinify.key = process.env.TINYPNG_API_KEY;
 

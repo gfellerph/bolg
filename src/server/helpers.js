@@ -1,6 +1,6 @@
 const mkdirp = require('mkdirp');
 const fs = require('fs');
-const dirname = require('path').dirname;
+const { dirname } = require('path');
 
 // Random logo
 export const logoURL = () => `/img/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`;

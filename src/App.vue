@@ -18,16 +18,16 @@
 </template>
 
 <script>
-  import Profile from '@/components/Profile';
-  import store from '@/config/store';
-  import { auth, database } from '@/config/firebase';
+  import Profile from 'src/components/Profile';
+  import store from 'src/config/store';
+  import { auth, database } from 'src/config/firebase';
 
   export default {
     name: 'app',
 
     computed: {
       logoURL() {
-        return `/img/bisnaer${parseInt(Math.random() * 31)}.PNG`;
+        return `/img/bisnaer${parseInt(Math.random() * 31, 10)}.PNG`;
       },
     },
 
@@ -35,7 +35,6 @@
       // Listen to auth changes at firebase
       auth
         .onAuthStateChanged((user) => {
-
           // Dispatch according to auth state
           if (user) {
             store.commit('LOGIN', { user });
@@ -46,7 +45,7 @@
 
       database
         .ref('.info/connected')
-        .on('value', function (snapshot) {
+        .on('value', (snapshot) => {
           if (snapshot.val()) {
             store.commit('ONLINE');
           } else {
@@ -57,7 +56,7 @@
 
     components: {
       Profile,
-    }
+    },
   }
 </script>
 

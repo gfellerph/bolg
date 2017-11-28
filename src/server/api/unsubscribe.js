@@ -1,6 +1,6 @@
-import firebase from '@/config/firebase-admin';
-import { logoURL } from '@/config/constants';
-import { webpackManifest } from '@/server/index';
+import firebase from 'src/config/firebase-admin';
+import { logoURL } from 'src/config/constants';
+import { webpackManifest } from 'src/server/index';
 
 /**
  * Remove a subscriber from firebase

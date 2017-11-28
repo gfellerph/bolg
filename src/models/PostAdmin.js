@@ -1,7 +1,7 @@
-import Post from '@/models/Post';
-import { database } from '@/config/firebase';
-import moment from '@/config/moment';
-import { marked, excerpt, description } from '@/config/markdown';
+import Post from 'src/models/Post';
+import { database } from 'src/config/firebase';
+import moment from 'src/config/moment';
+import { marked, excerpt, description } from 'src/config/markdown';
 
 const ref = id => database.ref(`/posts/${id}`);
 const publishRef = id => database.ref(`/published/${id}`);
@@ -39,9 +39,9 @@ Post.prototype.unpublish = function unpublish() {
 }
 
 Post.prototype.beautify = function beautify() {
-  const images = {};
-  this.images.map((image) => {
-    images[image.id] = image.thumbnails;
+  const images = this.images.reduce((acc, image) => {
+    acc[image.id] = image.thumbnails;
+    return acc;
   });
   this.postUrl = this.url;
   this.postLiveUrl = this.liveUrl;

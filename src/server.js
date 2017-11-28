@@ -4,14 +4,13 @@ import compression from 'compression';
 import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
-import publishAllApi from '@/server/api/publish-all';
-import publishApi from '@/server/api/publish';
-import unpublishApi from '@/server/api/unpublish';
-import unsubscribe from '@/server/api/unsubscribe';
-import notifySubscribers from '@/server/api/notify-subscribers';
-import tipps from '@/server/api/tipps';
-import putDrawing from '@/server/api/put-drawing';
-import putImage from '@/server/api/put-images';
+import publishAllApi from 'src/server/api/publish-all';
+import publishApi from 'src/server/api/publish';
+import unpublishApi from 'src/server/api/unpublish';
+import unsubscribe from 'src/server/api/unsubscribe';
+import notifySubscribers from 'src/server/api/notify-subscribers';
+import tipps from 'src/server/api/tipps';
+import putDrawing from 'src/server/api/put-drawing';
 
 const app = express();
 

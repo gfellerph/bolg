@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import Subscriber from '@/models/Subscriber';
+  import Subscriber from 'src/models/Subscriber';
 
   export default {
     data() {
@@ -64,19 +64,19 @@
     methods: {
       addSubscriber() {
         this.$validator.validateAll()
-        .then((result) => {
-          if (!result) throw new Error('Form invalid');
-          this.loading = true;
-          this.error = false;
-          return this.subscriber.set();
-        })
-        .then(() => {
-          this.loading = false;
-          this.step = 2;
-        })
-        .catch(error => {
-          this.loading = false;
-        });
+          .then((result) => {
+            if (!result) throw new Error('Form invalid');
+            this.loading = true;
+            this.error = false;
+            return this.subscriber.set();
+          })
+          .then(() => {
+            this.loading = false;
+            this.step = 2;
+          })
+          .catch(() => {
+            this.loading = false;
+          });
       },
       stepBack() { this.step -= 1; },
       stepForward() {
@@ -86,7 +86,7 @@
       cancel() {
         this.step = 0;
         this.subscriber = new Subscriber();
-       },
+      },
     },
   }
 </script>
