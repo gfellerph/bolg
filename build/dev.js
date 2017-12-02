@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const nodemon = require('nodemon');
 const frontConfig = require('../config/front.dev.config');
 const serverConfig = require('../config/server.dev.config');
+const backConfig = require('../config/back.dev.config');
 const dotenv = require('dotenv');
 const rm = require('rimraf');
 const paths = require('../config/paths');
@@ -49,18 +50,21 @@ const startServer = function () {
 }
 
 rmPub
-.then(rmServer)
-.then(() => {
-  let frontBuilt = false;
-  const wat = webpack(frontConfig, (err, stats) => {
-    if (err) console.log(err);
+  .then(rmServer)
+  .then(() => {
+    let frontBuilt = false;
+    webpack(frontConfig, (err) => {
+      if (err) console.log(err);
 
-    if (!frontBuilt) {
-      frontBuilt = true;
-      startServer();
-    }
+      if (!frontBuilt) {
+        frontBuilt = true;
+        startServer();
+      }
+    });
+    /* webpack(backConfig, (err) => {
+      if (err) console.log(err);
+    }); */
+  })
+  .catch((err) => {
+    console.log(err);
   });
-})
-.catch((err) => {
-  console.log(err);
-});

@@ -2,30 +2,30 @@ require('./check-versions')()
 
 process.env.NODE_ENV = 'production'
 
-var ora = require('ora')
-var rm = require('rimraf')
-var path = require('path')
-var chalk = require('chalk')
-var webpack = require('webpack')
-var config = require('../config')
-var webpackConfig = require('./back.prod.config')
-var serverConfig = require('../config/server.prod.config')
-var frontConfig = require('../config/front.prod.config')
+const ora = require('ora')
+const rm = require('rimraf')
+const path = require('path')
+const chalk = require('chalk')
+const webpack = require('webpack')
+const config = require('../config')
+const backConfig = require('../config/back.prod.config')
+const serverConfig = require('../config/server.prod.config')
+const frontConfig = require('../config/front.prod.config')
 
-var spinner = ora('building for production...')
+const spinner = ora('building for production...')
 spinner.start()
 
-rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
+rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), (err) => {
   if (err) throw err
-  webpack(webpackConfig, function (err, stats) {
-    if (err) throw err
-    process.stdout.write(stats.toString({
+  webpack(backConfig, (backErr, backStats) => {
+    if (backErr) throw backErr
+    process.stdout.write(`${backStats.toString({
       colors: true,
       modules: false,
       children: false,
       chunks: false,
-      chunkModules: false
-    }) + '\n\n')
+      chunkModules: false,
+    })}\n\n`)
 
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
@@ -33,33 +33,32 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       '  Opening index.html over file:// won\'t work.\n'
     ))
 
-    webpack(frontConfig, function (frontErr, frontStats) {
+    webpack(frontConfig, (frontErr, frontStats) => {
       if (frontErr) throw frontErr;
-      process.stdout.write(frontStats.toString({
+      process.stdout.write(`${frontStats.toString({
         colors: true,
         modules: false,
         children: false,
         chunks: false,
-        chunkModules: false
-      }) + '\n\n')
-      
-      rm('server', err => {
-        if (err) throw err
-        webpack(serverConfig, function (err, stats) {
+        chunkModules: false,
+      })}\n\n`);
+
+      rm('server', (rmServerErr) => {
+        if (rmServerErr) throw rmServerErr
+        webpack(serverConfig, (serverErr, serverStats) => {
           spinner.stop()
-          if (err) throw err
-          process.stdout.write(stats.toString({
+          if (serverErr) throw serverErr
+          process.stdout.write(`${serverStats.toString({
             colors: true,
             modules: false,
             children: false,
             chunks: false,
-            chunkModules: false
-          }) + '\n\n')
-  
+            chunkModules: false,
+          })}\n\n`);
+
           console.log(chalk.cyan('  Build complete.\n'))
         })
       })
     })
-
   })
 })
