@@ -12,11 +12,11 @@ const express = require('express')
 const webpack = require('webpack')
 const proxyMiddleware = require('http-proxy-middleware')
 const webpackConfig = process.env.NODE_ENV === 'testing'
-  ? require('./webpack.prod.conf')
+  ? require('../config/back.prod.config')
   : require('../config/back.dev.config')
 
 // default port where dev server listens for incoming traffic
-const port = process.env.PORT || config.dev.port
+const port = process.env.PORT || 8081
 // automatically open browser, if not set will be false
 const autoOpenBrowser = !!config.dev.autoOpenBrowser
 // Define HTTP proxies to your custom API backend
@@ -66,7 +66,7 @@ app.use(express.static('public', {
   extensions: 'html',
 }));
 
-const uri = `http://localhost:${port}/bolg.html`
+const uri = `http://localhost:${port}`
 
 let resolveReadyPromise
 const readyPromise = new Promise((resolve) => {
