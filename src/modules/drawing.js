@@ -5,6 +5,7 @@ export default function initCanvas() {
   const clearButton = document.querySelector('.drawing__clear');
   const saveButton = document.querySelector('.drawing__save');
   const errorMessage = document.querySelector('.drawing__error');
+  const displayContainer = document.querySelector('.drawing__display');
   const ctx = canvas.getContext('2d');
   const mouse = { x: 0, y: 0 };
 
@@ -102,9 +103,12 @@ export default function initCanvas() {
     const postId = postMeta ? postMeta.getAttribute('content') : null;
     const sendButton = document.querySelector('.drawing__save');
     const imageData = canvas.toDataURL();
+    const newImg = document.createElement('img');
 
     // Clear canvas and say thanks
     clear();
+    newImg.src = imageData;
+    displayContainer.appendChild(newImg);
     errorMessage.classList.remove('show');
     canvas.classList.add('merci');
     sendButton.setAttribute('disabled', 'disabled');

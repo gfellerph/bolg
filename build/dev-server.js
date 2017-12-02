@@ -56,6 +56,9 @@ app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
 app.use(devMiddleware)
+app.use(express.static('public', {
+  extensions: 'html',
+}));
 
 // enable hot-reload and state-preserving
 // compilation error display

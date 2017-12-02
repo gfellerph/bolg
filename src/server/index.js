@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import firebase from 'src/config/firebase-admin';
-import * as hbsTemplates from 'src/config/handlebars';
-import Post from 'src/models/Post';
-import { slugger } from 'src/config/constants';
+import firebase from '@/config/firebase-admin';
+import * as hbsTemplates from '@/config/handlebars';
+import writefile from './writefile';
+import Post from '@/models/Post';
 import * as helpers from './helpers';
 import writefile from './writefile';
 
@@ -183,6 +183,10 @@ publishedRef.on('child_added', (snapshot) => {
     .catch((error) => {
       throw new Error(error);
     })
+});
+
+publishedRef.on('value', (snapshot) => {
+  if (!snapshot.val()) throw new Error('wtf');
 });
 
 publishedRef.on('child_removed', (snapshot) => {

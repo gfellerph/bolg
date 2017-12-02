@@ -4,13 +4,14 @@ import compression from 'compression';
 import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
-import publishAllApi from 'src/server/api/publish-all';
-import publishApi from 'src/server/api/publish';
-import unpublishApi from 'src/server/api/unpublish';
-import unsubscribe from 'src/server/api/unsubscribe';
-import notifySubscribers from 'src/server/api/notify-subscribers';
-import tipps from 'src/server/api/tipps';
-import putDrawing from 'src/server/api/put-drawing';
+import publishAllApi from '@/server/api/publish-all';
+import publishApi from '@/server/api/publish';
+import unpublishApi from '@/server/api/unpublish';
+import unsubscribe from '@/server/api/unsubscribe';
+import notifySubscribers from '@/server/api/notify-subscribers';
+import { getTipps, postTipp } from '@/server/api/tipps';
+import putDrawing from '@/server/api/put-drawing';
+import { postSubscriber } from '@/server/api/subscriber';
 
 const app = express();
 
@@ -27,7 +28,6 @@ app.use(compression());
 app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
-  maxAge: '1y',
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
@@ -39,12 +39,14 @@ app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
 app.get('/unsubscribe/:id', unsubscribe);
 app.get('/notifysubscribers/:id', notifySubscribers);
-app.get('/tipps', tipps);
+app.get('/api/tipps', getTipps);
+app.post('/api/tipp', postTipp);
 app.put('/api/drawing', putDrawing);
+app.post('/api/subscriber', postSubscriber);
 
 // catch 404 and forward to error handler
 // TODO: Find a way to manage errors
-/* app.use((req, res, next) => {
+app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -59,7 +61,7 @@ app.use((err, req, res) => {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-}); */
+});
 
 // Initially build all the files
 // publishAll().then(buildIndex).then(buildGallery);

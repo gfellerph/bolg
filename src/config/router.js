@@ -83,6 +83,22 @@ const router = new Router({
         requiresAuth: true,
       },
     },
+    {
+      path: '/drawings',
+      name: 'Drawings',
+      component: Drawings,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/subscribers',
+      name: 'Subscribers',
+      component: Subscribers,
+      meta: {
+        requiresAuth: true,
+      },
+    },
   ],
 });
 

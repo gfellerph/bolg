@@ -77,7 +77,8 @@ article {
     text-align: center;
   }
 
-  h1 + p {
+  h1 + p,
+  .big-first-letter {
     &::first-letter {
       font-size: $golden-em * 2;
       float: left;
@@ -99,8 +100,21 @@ hr {
   height: 1px;
 }
 
+blockquote {
+  font-size: 1.25em;
+  font-style: italic;
+}
+
+blockquote em {
+  display: block;
+  text-align: right;
+  font-style: initial;
+  font-size: 1rem;
+}
+
 img + em,
-.picture-grid + .picture-subtitle {
+video + em,
+.picture-subtitle {
   display: block;
   font-style: italic;
   margin: $golden-rem / 4 0;

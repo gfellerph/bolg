@@ -38,10 +38,10 @@
       auth.onAuthStateChanged((user) => {
         if (user) {
           if (this.$route.query.redirect) {
-            router.push({ path: this.$route.query.redirect });
-          } else {
-            router.push({ path: '/' })
+            router.push({path: this.$route.query.redirect});
           }
+        } else {
+          router.push({path: '/'})
         }
       });
     },

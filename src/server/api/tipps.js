@@ -1,14 +1,39 @@
-import firebase from 'src/config/firebase-admin';
+import firebase from '@/config/firebase-admin';
+import Tipp from '@/models/TippAdmin';
 
-export default function getTipps(req, res) {
-  firebase
-    .database()
-    .ref('/tipps')
-    .once('value', (snapshot) => {
-      const tipps = snapshot.val();
+const ref = firebase.database().ref('/tipps');
 
-      if (!tipps) return res.error('Database error');
+export const getTipps = (req, res) => {
+  ref.once('value', (snapshot) => {
+    const tippsSnapshot = snapshot.val();
 
-      return res.send(tipps);
+    if (!tippsSnapshot) return res.error('Database error');
+
+    const tipps = Object.keys(tippsSnapshot).map((key) => {
+      const tipp = tippsSnapshot[key];
+      delete tipp.id;
+      delete tipp.created;
+      delete tipp.approved;
+      delete tipp.country;
+      delete tipp.user.uid;
+      delete tipp.user.email;
+      delete tipp.user.emailVerified;
+      delete tipp.user.isAnonymous;
+      return tipp;
     });
+
+    // Send tipps as array
+    return res.send(tipps);
+  });
 }
+
+export const postTipp = (req, res) => {
+  const tipp = new Tipp(req.body);
+  return tipp.set()
+    .then(() => {
+      res.send('ok');
+    })
+    .catch((err) => {
+      res.error(err);
+    });
+};

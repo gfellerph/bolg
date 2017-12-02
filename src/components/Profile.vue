@@ -2,8 +2,6 @@
   <div class="profile">
     <auth-guard>
       <div slot="auth">
-        <img v-if="user.photoUrl" :src="user.photoUrl" alt="">
-        <span>{{user.displayName || user.email}}</span>
         <button @click="logout" class="small">Logout</button>
       </div>
       <div slot="no-auth">

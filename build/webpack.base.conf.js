@@ -29,7 +29,6 @@ module.exports = {
   },
   externals: {
     firebase: 'firebase',
-    vue: 'Vue',
   },
   module: {
     rules: [

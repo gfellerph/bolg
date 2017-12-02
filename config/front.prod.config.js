@@ -4,6 +4,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const frontConfig = require('./front.config');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const devConfig = merge(frontConfig, {
   output: {
@@ -32,5 +33,11 @@ const devConfig = merge(frontConfig, {
   ],
   devtool: '#source-map',
 });
+
+if (process.env.npm_config_report) {
+  devConfig.plugins.push(new BundleAnalyzerPlugin({
+    analyzerPort: 8889,
+  }))
+}
 
 module.exports = devConfig;

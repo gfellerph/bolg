@@ -14,15 +14,15 @@
 </template>
 
 <script>
-  import Tipp from 'src/models/Tipp';
-  import { database } from 'src/config/firebase';
-  import TippDetail from 'src/components/TippDetail';
+  import Tipp from '@/models/TippAdmin';
+  import { database } from '@/config/firebase';
+  import TippDetail from '@/components/TippDetail';
 
   export default {
     data() {
       return {
         Tipp,
-        tipp: [],
+        tipps: [],
         search: '',
       };
     },
