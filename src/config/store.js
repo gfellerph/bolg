@@ -1,10 +1,11 @@
 import 'es6-promise/auto';
+import Vue from 'vue';
 import Vuex from 'vuex';
 
 import authStore from 'src/stores/auth-store';
 import connectionStore from 'src/stores/connection-store';
 
-// Vue.use(Vuex);
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: true,
