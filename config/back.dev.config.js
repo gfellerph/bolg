@@ -7,7 +7,7 @@ const backConfig = require('./back.config');
 const paths = require('./paths');
 
 // add hot-reload related code to entry chunks
-Object.keys(backConfig.entry).forEach(function (name) {
+Object.keys(backConfig.entry).forEach((name) => {
   backConfig.entry[name] = ['./build/dev-client'].concat(backConfig.entry[name])
 });
 
@@ -22,11 +22,10 @@ const devConfig = merge(backConfig, {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
-      filename: paths.backIndex,
+      filename: 'bolg.html',
       template: paths.backIndex,
       inject: true,
-      serviceWorkerLoader: `<script>${fs.readFileSync(path.join(__dirname,
-        './service-worker-dev.js'), 'utf-8')}</script>`
+      serviceWorkerLoader: `<script>${fs.readFileSync(paths.serviceWorkerDev, 'utf-8')}</script>`,
     }),
   ],
   devtool: '#cheap-module-eval-source-map',

@@ -6,14 +6,16 @@ const EsLintFriendlyFormatter = require('eslint-friendly-formatter');
 
 module.exports = {
   resolve: {
-    extensions: ['.js', '.vue', '.scss'],
+    extensions: [
+      '.js',
+      '.vue',
+      '.scss',
+      '.json',
+    ],
     alias: {
+      vue$: 'vue/dist/vue.esm.js',
       src: paths.src,
     },
-  },
-  externals: {
-    firebase: 'firebase',
-    vue: 'Vue',
   },
   module: {
     rules: [
@@ -45,6 +47,14 @@ module.exports = {
         },
       },
       {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('media/[name].[hash:7].[ext]'),
+        },
+      },
+      {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
         query: {
@@ -57,4 +67,5 @@ module.exports = {
   plugins: [
     new FriendlyErrorsPlugin(),
   ],
+  bail: true,
 };
