@@ -9,6 +9,8 @@ import Map from 'src/components/Map';
 import Story from 'src/components/Story';
 import Tipps from 'src/components/Tipps';
 import Subscribe from 'src/components/Subscribe';
+import Drawings from 'src/components/Drawings';
+import Subscribers from 'src/components/Subscribers';
 
 Vue.use(Router);
 

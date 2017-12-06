@@ -51,7 +51,7 @@
 
 <script>
   import axios from 'axios';
-  import User from '@/models/User';
+  import User from 'src/models/User';
 
   export default {
     data() {
@@ -65,19 +65,19 @@
     methods: {
       addSubscriber() {
         this.$validator.validateAll()
-        .then((result) => {
-          if (!result) throw new Error('Form invalid');
-          this.loading = true;
-          this.error = false;
-          return axios.post('/api/subscriber', this.subscriber.normalize());
-        })
-        .then(() => {
-          this.loading = false;
-          this.step = 2;
-        })
-        .catch(error => {
-          this.loading = false;
-        });
+          .then((result) => {
+            if (!result) throw new Error('Form invalid');
+            this.loading = true;
+            this.error = false;
+            return axios.post('/api/subscriber', this.subscriber.normalize());
+          })
+          .then(() => {
+            this.loading = false;
+            this.step = 2;
+          })
+          .catch(() => {
+            this.loading = false;
+          });
       },
       stepBack() { this.step -= 1; },
       stepForward() {
@@ -87,7 +87,7 @@
       cancel() {
         this.step = 0;
         this.subscriber = new User();
-       },
+      },
     },
   }
 </script>

@@ -1,4 +1,4 @@
-import Subscriber from '@/models/SubscriberAdmin';
+import Subscriber from 'src/models/SubscriberAdmin';
 
 export const getSubscriber = () => {};
 export const postSubscriber = (req, res) => {

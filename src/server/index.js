@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import firebase from '@/config/firebase-admin';
-import * as hbsTemplates from '@/config/handlebars';
+import firebase from 'src/config/firebase-admin';
+import * as hbsTemplates from 'src/config/handlebars';
+import Post from 'src/models/Post';
+import { slugger } from 'src/config/constants';
 import writefile from './writefile';
-import Post from '@/models/Post';
 import * as helpers from './helpers';
-import writefile from './writefile';
 
 const cssInlineThreshold = 10; // KB
 const { logoURL } = helpers;

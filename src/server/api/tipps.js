@@ -1,5 +1,5 @@
-import firebase from '@/config/firebase-admin';
-import Tipp from '@/models/TippAdmin';
+import firebase from 'src/config/firebase-admin';
+import Tipp from 'src/models/TippAdmin';
 
 const ref = firebase.database().ref('/tipps');
 

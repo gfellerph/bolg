@@ -4,7 +4,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const frontConfig = require('./front.config');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const devConfig = merge(frontConfig, {
   output: {

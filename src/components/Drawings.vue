@@ -21,9 +21,9 @@
 </template>
 
 <script>
-  import Post from '@/models/Post';
-  import DrawingsDetail from '@/components/DrawingsDetail';
-  import { database } from '@/config/firebase';
+  import Post from 'src/models/Post';
+  import DrawingsDetail from 'src/components/DrawingsDetail';
+  import { database } from 'src/config/firebase';
 
   export default {
     components: {
@@ -50,8 +50,8 @@
             drawings: post.drawings,
           };
         });
-      }
-    }
+      },
+    },
   }
 </script>
 

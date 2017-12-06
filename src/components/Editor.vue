@@ -99,9 +99,9 @@
         });
       },
       insertPictureGrid() {
-        const md = this.$refs.md;
+        const { md } = this.$refs;
         const start = md.selectionStart;
-        const template = `<div class="picture-grid">\n</div>\n\n<p class="picture-subtitle"></p>`;
+        const template = '<div class="picture-grid">\n</div>\n\n<p class="picture-subtitle"></p>';
         this.markdown = `${this.markdown.slice(0, start)}${template}${this.markdown.slice(start, this.markdown.length)}`;
         this.change();
         this.$nextTick(() => {

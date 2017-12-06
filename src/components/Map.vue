@@ -1,97 +1,99 @@
 <template>
-	<div class="map">
-		<map-search
-			ref="mapSearch"
-			:map="map"
-			:test="'test'"
-		></map-search>
-		<div id="google-map"></div>
-	</div>
+  <div class="map">
+    <map-search
+      ref="mapSearch"
+      :map="map"
+      :test="'test'"
+    ></map-search>
+    <div id="google-map"></div>
+  </div>
 </template>
 
 <script>
-	import axios from 'axios';
-	import bus from '@/config/bus';
-	import Tipp from '@/models/Tipp';
-	import AddTipp from '@/components/AddTipp';
-	import MapSearch from '@/components/MapSearch';
+  import axios from 'axios';
+  import bus from 'src/config/bus';
+  import Tipp from 'src/models/Tipp';
+  import AddTipp from 'src/components/AddTipp';
+  import MapSearch from 'src/components/MapSearch';
 
-	export default {
-		data() {
-			return {
-				markers: [],
-				map: null,
-			};
-		},
+  /* global google */
 
-		mounted() {
-			this.map = new google.maps.Map(document.getElementById('google-map'), {
-				zoom: 2,
-				center: new google.maps.LatLng(27, 6),
-				streetViewControl: false,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
-				mapTypeControl: false,
-				fullscreenControl: false,
-				draggableCursor: null,
-				draggingCursor: null,
-			});
+  export default {
+    data() {
+      return {
+        markers: [],
+        map: null,
+      };
+    },
 
-			this.$refs.mapSearch.init(this.map);
+    mounted() {
+      this.map = new google.maps.Map(document.getElementById('google-map'), {
+        zoom: 2,
+        center: new google.maps.LatLng(27, 6),
+        streetViewControl: false,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        fullscreenControl: false,
+        draggableCursor: null,
+        draggingCursor: null,
+      });
 
-			if (window.outerWidth >= 768)	this.map.addListener('click', this.addTipp);
+      this.$refs.mapSearch.init(this.map);
 
-			axios.get('/api/tipps')
-				.then((res) => {
-					const tipps = res.data;
+      if (window.outerWidth >= 768) this.map.addListener('click', this.addTipp);
 
-					this.markers = tipps.map((tippData) => {
-						const tipp = new Tipp(tippData);
-						const marker = new google.maps.Marker({
-							position: new google.maps.LatLng(tipp.lat, tipp.lng),
-							map: this.map,
-							title: tipp.title(),
-							icon: {
-								url: '/img/inuksuk-map.svg',
-								size: new google.maps.Size(36, 34),
-								origin: new google.maps.Point(0,0),
-								anchor: new google.maps.Point(18, 17),
-							},
-						});
-						const infowindow = new google.maps.InfoWindow({
-							content: `
-								<h5>${tipp.user.displayName}</h5>
-								<p>${tipp.text}</p>
-							`,
-						});
-						marker.addListener('click', () => {
-							infowindow.open(this.map, marker);
-						});
+      axios.get('/api/tipps')
+        .then((res) => {
+          const tipps = res.data;
 
-						return marker;
-					});
-				});
-		},
+          this.markers = tipps.map((tippData) => {
+            const tipp = new Tipp(tippData);
+            const marker = new google.maps.Marker({
+              position: new google.maps.LatLng(tipp.lat, tipp.lng),
+              map: this.map,
+              title: tipp.title(),
+              icon: {
+                url: '/img/inuksuk-map.svg',
+                size: new google.maps.Size(36, 34),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(18, 17),
+              },
+            });
+            const infowindow = new google.maps.InfoWindow({
+              content: `
+                <h5>${tipp.user.displayName}</h5>
+                <p>${tipp.text}</p>
+              `,
+            });
+            marker.addListener('click', () => {
+              infowindow.open(this.map, marker);
+            });
 
-		methods: {
-			addTipp(event) {
-				bus.$emit('map-click', event.latLng);
-			},
-		},
+            return marker;
+          });
+        });
+    },
 
-		components: {
-			AddTipp,
-			MapSearch,
-		},
-	};
+    methods: {
+      addTipp(event) {
+        bus.$emit('map-click', event.latLng);
+      },
+    },
+
+    components: {
+      AddTipp,
+      MapSearch,
+    },
+  };
 </script>
 
 <style lang="scss">
-	@import 'src/styles/_mixins';
+  @import 'src/styles/_mixins';
   @import 'src/styles/_variables';
 
-	.gm-style {
-		font: inherit !important;
-	}
+  .gm-style {
+    font: inherit !important;
+  }
 
   .gm-style-iw {
     > div > div {
@@ -100,16 +102,16 @@
         margin-top: 1em;
       }
 
-			p {
-				font-size: inherit !important;
-				margin-bottom: 1em;
-			}
-		}
-	}
+      p {
+        font-size: inherit !important;
+        margin-bottom: 1em;
+      }
+    }
+  }
 
-	.map {
-		@include max($xxs) {
-			padding-top: 51px;
-		}
-	}
+  .map {
+    @include max($xxs) {
+      padding-top: 51px;
+    }
+  }
 </style>

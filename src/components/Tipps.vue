@@ -14,9 +14,9 @@
 </template>
 
 <script>
-  import Tipp from '@/models/TippAdmin';
-  import { database } from '@/config/firebase';
-  import TippDetail from '@/components/TippDetail';
+  import Tipp from 'src/models/TippAdmin';
+  import { database } from 'src/config/firebase';
+  import TippDetail from 'src/components/TippDetail';
 
   export default {
     data() {
