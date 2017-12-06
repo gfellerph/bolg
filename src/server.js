@@ -45,7 +45,6 @@ app.put('/api/drawing', putDrawing);
 app.post('/api/subscriber', postSubscriber);
 
 // catch 404 and forward to error handler
-// TODO: Find a way to manage errors
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
