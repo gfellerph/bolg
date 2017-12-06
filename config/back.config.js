@@ -1,7 +1,5 @@
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
 const baseConfig = require('./base.config.js');
 const paths = require('./paths');
 
@@ -29,19 +27,6 @@ const backConfig = merge(baseConfig, {
       },
     ],
   },
-  plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: paths.static,
-        to: paths.public,
-        ignore: ['.*'],
-      },
-    ]),
-    new ManifestPlugin({
-      fileName: paths.frontManifest,
-      basePath: paths.assets,
-    }),
-  ],
   target: 'web',
   stats: 'minimal',
 });
