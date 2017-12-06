@@ -7,12 +7,24 @@
   "main": "server/server.js",
   "license": "MIT",
   "scripts": {
-    "dev": "node build/dev.js",
     "start": "node ./bin/www",
-    "back": "node build/dev-server.js",
-    "build": "node build/build.js",
-    "postinstall": "node build/build.js",
-    "prod-back": "webpack --config config/back.prod.config.js"
+
+    "clean:public": "rimraf public",
+    "clean:server": "rimraf server",
+    "clean": "npm-run-all -p clean:*",
+
+    "server:watch": "webpack --config config/server.dev.config.js",
+    "server:start": "nodemon bin/www",
+
+    "dev:front": "webpack --config config/front.dev.config.js",
+    "dev:back": "node build/dev-server.js",
+    "dev:server": "npm-run-all -p server:*",
+    "dev": "npm-run-all -s clean -p dev:*",
+
+    "prod:front": "webpack --config config/front.prod.config.js",
+    "prod:back": "webpack --config config/back.prod.config.js",
+    "prod:server": "webpack --config config/server.prod.config.js",
+    "prod": "npm-run-all clean prod:*"
   },
   "dependencies": {
     "autoprefixer": "^7.1.6",
