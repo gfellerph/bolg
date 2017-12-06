@@ -34,13 +34,6 @@ const devMiddleware = require('webpack-dev-middleware')(compiler, {
 const hotMiddleware = require('webpack-hot-middleware')(compiler, {
   log: false,
 })
-// force page reload when html-webpack-plugin template changes
-compiler.plugin('compilation', (compilation) => {
-  compilation.plugin('html-webpack-plugin-after-emit', (data, cb) => {
-    hotMiddleware.publish({ action: 'reload' })
-    cb()
-  })
-})
 
 // proxy api requests
 Object.keys(proxyTable).forEach((context) => {
@@ -56,9 +49,7 @@ app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
 app.use(devMiddleware)
-app.use(express.static('public', {
-  extensions: 'html',
-}));
+app.use(express.static('src/static'));
 
 // enable hot-reload and state-preserving
 // compilation error display
