@@ -1,7 +1,7 @@
-import firebase from 'src/config/firebase-admin';
+import { database } from 'src/config/firebase-admin';
 import Tipp from 'src/models/TippAdmin';
 
-const ref = firebase.database().ref('/tipps');
+const ref = database.ref('/tipps');
 
 export const getTipps = (req, res) => {
   ref.once('value', (snapshot) => {

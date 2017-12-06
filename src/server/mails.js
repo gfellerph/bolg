@@ -1,5 +1,5 @@
 import Sendgrid from 'sendgrid';
-import firebase from 'src/config/firebase-admin';
+import { database } from 'src/config/firebase-admin';
 import { objectToArray } from 'src/config/constants';
 import * as hbsTemplates from 'src/config/handlebars';
 import { logoURL } from 'src/server/helpers';
@@ -36,7 +36,7 @@ const buildAPICall = (post, subscriber) => {
 }
 
 export default function enqueueNotifications(post) {
-  const ref = firebase.database().ref('/subscribers');
+  const ref = database.ref('/subscribers');
   return new Promise((resolve, reject) => {
     ref.once('value', (snapshot) => {
       const val = snapshot.val();

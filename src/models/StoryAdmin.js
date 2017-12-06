@@ -1,5 +1,5 @@
 import Story from 'src/models/Story';
-import { database } from 'src/config/firebase';
+import { database } from 'src/config/firebase-admin';
 import moment from 'src/config/moment';
 // import { slugger } from 'src/config/constants';
 

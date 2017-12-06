@@ -1,5 +1,5 @@
 import Post from 'src/models/Post';
-import { database } from 'src/config/firebase';
+import { database } from 'src/config/firebase-admin';
 import moment from 'src/config/moment';
 import { marked, excerpt, description } from 'src/config/markdown';
 
@@ -42,7 +42,7 @@ Post.prototype.beautify = function beautify() {
   const images = this.images.reduce((acc, image) => {
     acc[image.id] = image.thumbnails;
     return acc;
-  });
+  }, {});
   this.postUrl = this.url;
   this.postLiveUrl = this.liveUrl;
   this.postTitle = this.title;

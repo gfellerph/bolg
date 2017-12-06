@@ -1,5 +1,5 @@
 import User from 'src/models/User';
-import { database } from 'src/config/firebase';
+import { database } from 'src/config/firebase-admin';
 
 const ref = uid => database.ref(`/subscribers/${uid}`);
 

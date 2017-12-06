@@ -1,9 +1,9 @@
 import enqueueNotifications from 'src/server/mails';
-import firebase from 'src/config/firebase-admin';
+import { database } from 'src/config/firebase-admin';
 import Post from 'src/models/Post';
 
 export default function notifySubscribers(req, res) {
-  const ref = firebase.database().ref(`/posts/${req.params.id}`);
+  const ref = database.ref(`/posts/${req.params.id}`);
   ref.once('value', (snapshot) => {
     const value = snapshot.val();
     if (!value) {

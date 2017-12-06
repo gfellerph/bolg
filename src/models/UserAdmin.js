@@ -1,5 +1,5 @@
 import User from 'src/models/User';
-import { auth } from 'src/config/firebase';
+import { auth } from 'src/config/firebase-admin';
 
 User.prototype.login = function login(email, password) {
   return auth
