@@ -1,6 +1,9 @@
 {
-  "script": "bin/www",
-  "ext": "hbs",
-  "watch": ["src/server/templates"],
-  "ignore": ["node_modules/**", "*.js"]
+  "ext": "hbs js",
+  "watch": ["src/server/templates", "server/server.js"],
+  "ignore": ["node_modules/**"],
+  "verbose": true,
+  "env": {
+    "NODE_ENV": "development"
+  }
 }
