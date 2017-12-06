@@ -2,6 +2,7 @@ import admin from 'firebase-admin';
 
 const serviceAccount = require('./firebase-admin-key.json');
 
+// Add private info from .env file (not in GIT)
 serviceAccount.private_key = process.env.FIREBASE_ADMIN_PRIVATE_KEY.replace(/\\n/g, '\n');
 serviceAccount.private_key_id = process.env.FIREBASE_ADMIN_PRIVATE_KEY_ID;
 
