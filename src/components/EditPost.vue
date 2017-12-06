@@ -63,7 +63,7 @@
         const images = this.post.images.reduce((acc, image) => {
           acc[image.id] = image.thumbnails;
           return acc;
-        });
+        }, {});
 
         return marked(this.post.markdown, { images });
       },

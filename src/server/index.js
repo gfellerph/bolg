@@ -33,11 +33,10 @@ function inlineCSS(file) {
 
 export function webpackManifest() {
   const manifest = JSON.parse(fs.readFileSync('public/config/front.manifest.json', 'utf8'));
-
   return Object.keys(manifest).reduce((acc, entry) => {
     acc[entry] = entry.endsWith('.css') ? inlineCSS(manifest[entry]) : manifest[entry];
     return acc;
-  });
+  }, {});
 }
 
 export function buildGallery() {
@@ -50,10 +49,10 @@ export function buildGallery() {
       const postsPerMonth = postsArray.reduce((acc, post) => {
         acc[post.postTitle] = [[], []];
         for (let i = 0; i < post.images.length; i++) {
-          postsPerMonth[post.postTitle][i % 2].push(post.images[i]);
+          acc[post.postTitle][i % 2].push(post.images[i]);
         }
         return acc;
-      });
+      }, {});
 
       const html = hbsTemplates.gallery({
         postsPerMonth,
