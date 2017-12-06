@@ -1,5 +1,4 @@
 const paths = require('./paths');
-const utils = require('./utils');
 const vueLoaderConfig = require('./vue-loader.conf');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const EsLintFriendlyFormatter = require('eslint-friendly-formatter');
