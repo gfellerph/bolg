@@ -2,7 +2,7 @@ import admin from 'firebase-admin';
 
 const serviceAccount = require('./firebase-admin-key.json');
 
-if (!admin.apps.length) {
+if (admin.apps.length === 0) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://bolg-d1098.firebaseio.com',
@@ -10,4 +10,5 @@ if (!admin.apps.length) {
   });
 }
 
-export default admin;
+export const database = admin.database();
+export const storage = admin.storage();
