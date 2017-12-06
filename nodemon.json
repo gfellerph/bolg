@@ -1,0 +1,6 @@
+{
+  "script": "bin/www",
+  "ext": "hbs",
+  "watch": ["src/server/templates"],
+  "ignore": ["node_modules/**", "*.js"]
+}
