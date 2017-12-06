@@ -28,7 +28,6 @@ module.exports = {
     assetsSubDirectory: path.resolve(__dirname, '../public'),
     assetsPublicPath: '/',
     proxyTable: {
-      '/img': { target: 'http://localhost:3000', secure: false },
       '/publish': { target: 'http://localhost:3000', secure: false },
       '/unpublish': { target: 'http://localhost:3000', secure: false },
       '/api': { target: 'http://localhost:3000', secure: false },
