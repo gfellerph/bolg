@@ -1,4 +1,5 @@
 const path = require('path');
+
 const root = path.resolve(__dirname, '..');
 
 module.exports = {
@@ -13,4 +14,5 @@ module.exports = {
   serviceWorkerDev: path.resolve(root, 'config/service-worker-dev.js'),
   serviceWorkerProd: path.resolve(root, 'config/service-worker-prod.js'),
   assets: '/',
+  resolve: segment => path.resolve(root, segment),
 };

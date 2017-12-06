@@ -11,7 +11,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const UglifyJS = require('uglify-es');
 const backConfig = require('./back.config');
 const paths = require('./paths');
-const utils = require('../build/utils');
+const utils = require('./utils');
 
 const sw = UglifyJS.minify(fs.readFileSync(path.join(
   __dirname,
