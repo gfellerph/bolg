@@ -1,8 +1,9 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const serverConfig = require('./server.config');
 
-const serverDevConfig = merge(serverConfig, {
+const serverProdConfig = merge(serverConfig, {
   devtool: '#source-map',
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
@@ -14,4 +15,10 @@ const serverDevConfig = merge(serverConfig, {
   ],
 });
 
-module.exports = serverDevConfig;
+if (process.env.npm_config_report) {
+  serverProdConfig.plugins.push(new BundleAnalyzerPlugin({
+    analyzerPort: 8887,
+  }));
+}
+
+module.exports = serverProdConfig;

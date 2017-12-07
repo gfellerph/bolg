@@ -18,7 +18,7 @@ const sw = UglifyJS.minify(fs.readFileSync(path.join(
   './service-worker-prod.js',
 ), 'utf-8'));
 
-const devConfig = merge(backConfig, {
+const prodConfig = merge(backConfig, {
   output: {
     filename: 'js/[name].[chunkhash].js',
     chunkFilename: 'js/[id].[chunkhash].js',
@@ -99,7 +99,7 @@ const devConfig = merge(backConfig, {
 });
 
 if (process.env.npm_config_report) {
-  devConfig.plugins.push(new BundleAnalyzerPlugin());
+  prodConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
-module.exports = devConfig;
+module.exports = prodConfig;
