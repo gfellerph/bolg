@@ -31,12 +31,10 @@ export default (database) => {
     return postRef(post.id).set(postData);
   };
 
-  const remove = (post) => {
-    return Promise.all([
-      publishedRef(post.id).remove(),
-      postRef(post.id).remove(),
-    ]);
-  };
+  const remove = post => Promise.all([
+    publishedRef(post.id).remove(),
+    postRef(post.id).remove(),
+  ]);
 
   const publish = (post) => {
     const postCopy = new Post(post);

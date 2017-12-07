@@ -1,3 +1,4 @@
+import Tipp from 'src/models/Tipp';
 import { database } from 'src/config/firebase-admin';
 import TippController from 'src/controllers/tipp-controller';
 
