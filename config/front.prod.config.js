@@ -6,7 +6,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const frontConfig = require('./front.config');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const devConfig = merge(frontConfig, {
+const prodConfig = merge(frontConfig, {
   output: {
     filename: 'js/[name].[chunkhash].js',
   },
@@ -35,9 +35,9 @@ const devConfig = merge(frontConfig, {
 });
 
 if (process.env.npm_config_report) {
-  devConfig.plugins.push(new BundleAnalyzerPlugin({
+  prodConfig.plugins.push(new BundleAnalyzerPlugin({
     analyzerPort: 8889,
   }))
 }
 
-module.exports = devConfig;
+module.exports = prodConfig;

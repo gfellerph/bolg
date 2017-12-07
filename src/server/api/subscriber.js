@@ -1,11 +1,15 @@
-import Subscriber from 'src/models/SubscriberAdmin';
+import User from 'src/models/User';
+import { database } from 'src/config/firebase-admin';
+import SubscriberController from 'src/controllers/subscriber-controller';
+
+const subscriberCtrl = SubscriberController(database);
 
 export const getSubscriber = () => {};
 export const postSubscriber = (req, res) => {
-  const newSubscriber = new Subscriber(req.body);
+  const newSubscriber = new User(req.body);
 
-  return newSubscriber
-    .set()
+  return subscriberCtrl
+    .set(newSubscriber)
     .then(() => {
       res.send('ok');
     })

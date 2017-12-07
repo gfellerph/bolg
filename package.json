@@ -24,7 +24,7 @@
     "prod:front": "webpack --config config/front.prod.config.js",
     "prod:back": "webpack --config config/back.prod.config.js",
     "prod:server": "webpack --config config/server.prod.config.js",
-    "prod": "npm-run-all clean prod:*"
+    "prod": "npm-run-all -s clean -p prod:*"
   },
   "dependencies": {
     "autoprefixer": "^7.1.6",
