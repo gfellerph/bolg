@@ -1,5 +1,5 @@
 import Story from 'src/models/Story';
-import { database } from 'src/config/firebase-admin';
+import { database } from 'src/config/firebase';
 import moment from 'src/config/moment';
 
 const ref = id => database.ref(`/stories/${id}`);

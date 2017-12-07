@@ -1,5 +1,5 @@
 import StoryPage from 'src/models/StoryPage';
-import { database } from 'src/config/firebase-admin';
+import { database } from 'src/config/firebase';
 import { marked } from 'src/config/markdown';
 import moment from 'src/config/moment';
 
