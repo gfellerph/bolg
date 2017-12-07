@@ -16,10 +16,6 @@ const devConfig = merge(baseConfig, {
     path: paths.public,
     publicPath: paths.assets,
   },
-  externals: {
-    firebase: 'firebase',
-    vue: 'Vue',
-  },
   module: {
     rules: [
       {
