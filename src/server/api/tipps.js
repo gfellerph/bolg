@@ -1,6 +1,7 @@
 import { database } from 'src/config/firebase-admin';
-import Tipp from 'src/models/TippAdmin';
+import TippController from 'src/controllers/tipp-controller';
 
+const tippCtrl = TippController(database);
 const ref = database.ref('/tipps');
 
 export const getTipps = (req, res) => {
@@ -29,7 +30,7 @@ export const getTipps = (req, res) => {
 
 export const postTipp = (req, res) => {
   const tipp = new Tipp(req.body);
-  return tipp.set()
+  return tippCtrl.set(tipp)
     .then(() => {
       res.send('ok');
     })

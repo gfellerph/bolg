@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import Tipp from 'src/models/TippAdmin';
+  import Tipp from 'src/models/Tipp';
   import { database } from 'src/config/firebase';
   import TippDetail from 'src/components/TippDetail';
 
