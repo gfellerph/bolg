@@ -44,3 +44,15 @@ export const slugger = str => str
   .replace(/[^\w ]+/g, ' ')
   .trim()
   .replace(/ +/g, '-');
+
+export const formatDate = (dateInput = Date.now()) => {
+  const date = new Date(dateInput);
+  let days = date.getDate();
+  let month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  if (days < 10) days = `0${days}`;
+  if (month < 10) month = `0${month}`;
+
+  return `${days}.${month}.${year}`;
+}

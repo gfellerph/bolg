@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import Post from 'src/models/PostAdmin';
+  import Post from 'src/models/Post';
   import Story from 'src/models/StoryAdmin';
   import PostDetails from 'src/components/PostDetails';
   import { database } from 'src/config/firebase';
@@ -40,6 +40,8 @@
 
     computed: {
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
+
+      /* TODO: Sort instead of reverse! */
       reversedPosts() { return this.posts.reverse(); },
     },
 

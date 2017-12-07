@@ -1,71 +1,72 @@
-import moment from 'src/config/moment';
 import Post from 'src/models/Post';
-import { database } from 'src/config/firebase';
-import { marked, description, excerpt } from 'src/config/markdown';
+import { formatDate } from 'src/config/constants';
+import { marked, excerpt, description } from 'src/config/markdown';
 
-export const beautify = (postToBeautify) => {
-  if (!postToBeautify) throw new Error(`Post to beautify was ${postToBeautify}`);
+export default (database) => {
+  const postRef = id => database.ref(`/posts/${id}`);
+  const publishedRef = id => database.ref(`/published/${id}`);
 
-  const post = new Post(postToBeautify);
+  const beautify = (post) => {
+    const postCopy = new Post(post);
+    const images = post.images.reduce((acc, image) => {
+      acc[image.id] = image.thumbnails;
+      return acc;
+    }, {});
+    postCopy.postUrl = post.url;
+    postCopy.postLiveUrl = post.liveUrl;
+    postCopy.postTitle = post.title;
+    postCopy.created = formatDate(post.created);
+    postCopy.lastEdited = formatDate(post.lastEdited);
+    postCopy.lastSaved = formatDate(post.lastSaved);
+    postCopy.lastPublished = formatDate(post.lastPublished);
+    postCopy.html = marked(post.markdown, { images });
+    postCopy.description = description(post.markdown);
+    postCopy.excerpt = excerpt(post.markdown);
+    return postCopy;
+  }
 
-  post.postUrl = post.url;
-  post.postLiveUrl = post.liveUrl;
-  post.postTitle = post.title;
-  post.created = moment(post.created, 'x').format('DD.MM.YYYY');
-  post.lastEdited = moment(post.lastEdited, 'x').format('DD.MM.YYYY');
-  post.lastSaved = moment(Date.now(), 'x').format('DD.MM.YYYY');
-  post.lastPublished = moment(Date.now(), 'x').format('DD.MM.YYYY');
-  post.html = marked(post.markdown);
-  post.description = description(post.markdown);
-  post.excerpt = excerpt(post.markdown);
+  const set = (post) => {
+    const postData = post.normalize();
+    postData.lastSaved = Date.now();
+    return postRef(post.id).set(postData);
+  };
 
-  return post;
-}
+  const remove = (post) => {
+    return Promise.all([
+      publishedRef(post.id).remove(),
+      postRef(post.id).remove(),
+    ]);
+  };
 
-/**
- * Publish a post to the publish reference and save it in edit mode
- * @returns {Promise} Promise
- */
-export const publish = (post) => {
-  const postRef = database.ref(`/posts/${post.id}`);
-  const publishRef = database.ref(`/published/${post.id}`);
-  const postToPublish = new Post(post);
+  const publish = (post) => {
+    const postCopy = new Post(post);
 
-  postToPublish.lastSaved = Date.now();
-  postToPublish.lastPublished = Date.now();
+    postCopy.lastSaved = Date.now();
+    postCopy.lastPublished = Date.now();
 
-  return Promise.all([
-    postRef.set(postToPublish.normalize()),
-    publishRef.set(beautify(postToPublish).normalize()),
-  ]);
-}
+    const postData = postCopy.normalize();
+    const publishData = beautify(postCopy).normalize();
 
-/**
- * Unpublish a post. Delete the post from /published on firebase
- * @returns {Promise} Promise
- */
-export const unpublish = (post) => {
-  const publishRef = database.ref(`/published/${post.id}`);
-  const postToUnpublish = new Post(post);
+    return Promise.all([
+      postRef(post.id).set(postData),
+      publishedRef(post.id).set(publishData),
+    ]);
+  };
 
-  postToUnpublish.lastPublished = null;
+  const unpublish = (post) => {
+    const postData = post.normalize();
+    postData.lastPublished = null;
+    return Promise.all([
+      set(post),
+      publishedRef(post.id).remove(),
+    ]);
+  };
 
-  return Promise.all([
-    postToUnpublish.set(),
-    publishRef.remove(),
-  ]);
-};
-
-/**
- * Deletes a post for ever
- * @returns {Promise} Promise
- */
-export const remove = (post) => {
-  const postRef = database.ref(`/posts/${post.id}`);
-  const publishRef = database.ref(`/published/${post.id}`);
-
-  return Promise.all([
-    publishRef.remove(),
-    postRef.remove(),
-  ]);
+  return {
+    set,
+    remove,
+    publish,
+    unpublish,
+    beautify,
+  }
 }

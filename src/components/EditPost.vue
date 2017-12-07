@@ -35,7 +35,7 @@
   import axios from 'axios';
   import debounce from 'debounce';
   import { marked } from 'src/config/markdown';
-  import Post from 'src/models/PostAdmin';
+  import Post from 'src/models/Post';
   import { database } from 'src/config/firebase';
   import router from 'src/config/router';
   import ImageSelector from 'src/components/ImageSelector.vue';
@@ -44,6 +44,9 @@
   import Editor from 'src/components/Editor';
   import PostStatus from 'src/components/PostStatus';
   import MarkdownCheatsheet from 'src/components/MarkdownCheatsheet';
+  import PostController from 'src/controllers/post-controller';
+
+  const postCtrl = PostController(database);
 
   export default {
     data() {
@@ -98,7 +101,7 @@
         this.savePostImmediately();
       }, 1000),
       savePostImmediately() {
-        this.post.set().then(() => {
+        postCtrl.set(this.post).then(() => {
           if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
         });
       },
@@ -112,7 +115,7 @@
           });
       },
       publishPost() {
-        this.post.publish()
+        postCtrl.publish(this.post)
           .then(() => {
             this.error = false;
           })
@@ -121,7 +124,7 @@
           });
       },
       unpublishPost() {
-        this.post.unpublish()
+        postCtrl.unpublish(this.post)
           .then(() => {
             this.error = false;
           })
@@ -139,7 +142,7 @@
           .then(() => {
             this.notificationPending = false;
             this.post.notificationSent = true;
-            return this.post.set();
+            return postCtrl.set(this.post);
           })
           .catch((err) => {
             this.notificationPending = false;
