@@ -2,7 +2,11 @@
   <div class="posts">
     <div class="post-list-container">
       <ul class="post-list">
-        <li v-bind:key="post.id" v-for="post in reversedPosts" @mouseenter="changeCurrentPost(post)">
+        <li
+          v-bind:key="post.id"
+          v-for="post in reversedPosts"
+          @mouseenter="changeCurrentPost(post)"
+        >
           <post-details :post="new Post(post)" />
         </li>
       </ul>
@@ -15,10 +19,10 @@
 </template>
 
 <script>
-  import Post from '@/models/PostAdmin';
-  import Story from '@/models/StoryAdmin';
-  import PostDetails from '@/components/PostDetails';
-  import { database } from '@/config/firebase';
+  import Post from 'src/models/PostAdmin';
+  import Story from 'src/models/StoryAdmin';
+  import PostDetails from 'src/components/PostDetails';
+  import { database } from 'src/config/firebase';
 
   export default {
     data() {
@@ -36,7 +40,7 @@
 
     computed: {
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
-      reversedPosts() { return this.posts.reverse(); }
+      reversedPosts() { return this.posts.reverse(); },
     },
 
     methods: {
@@ -51,7 +55,7 @@
 
     components: {
       PostDetails,
-    }
+    },
   };
 </script>
 

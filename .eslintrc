@@ -5,7 +5,23 @@
     "no-multiple-empty-lines": ["error", { "max": 1 }],
     "linebreak-style": 0,
     "semi": 0,
-    "no-extra-semi": 2
+    "no-extra-semi": 2,
+    "no-plusplus": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "build/**/*.js",
+          "config/**/*.js"
+        ]
+      }
+    ],
+    "import/extensions": ["off", "always",
+      {
+      "js": "never",
+      "vue": "never"
+      }
+    ]
   },
   "env": {
     "browser": true,
@@ -13,8 +29,8 @@
     "es6": true
   },
   "settings": {
-    "import/resolver": "webpack",
-    "import/extensions": [".js", ".vue"]
+    "import/resolver": { "webpack": { "config": "config/base.config.js" }},
+    "import/extensions": [".js"]
   },
-  "plugins": ["import"]
+  "plugins": ["import", "vue"]
 }

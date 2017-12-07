@@ -43,8 +43,8 @@
     methods: {
       closeCheatsheet() {
         this.$emit('closeCheatsheet');
-      }
-    }
+      },
+    },
   };
 </script>
 

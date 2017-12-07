@@ -1,4 +1,4 @@
-import moment from '@/config/moment';
+import moment from 'src/config/moment';
 
 export default function (value, format = 'DD.MM.YYYY') {
   if (value) {

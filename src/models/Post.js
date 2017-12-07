@@ -1,5 +1,5 @@
 import cuid from 'cuid';
-import { slugger, liveRootUrl } from '@/config/constants';
+import { slugger, liveRootUrl } from 'src/config/constants';
 
 /**
  * A blog post
@@ -26,7 +26,9 @@ export default function Post(post = {}) {
   this.drawings = post.drawings || [];
 
   if (!this.titleImage && this.images.length) {
-    this.titleImage = this.images[0].thumbnails[640] ? { id: this.id, url: this.images[0].thumbnails[640] } : null;
+    this.titleImage = this.images[0].thumbnails[640]
+      ? { id: this.id, url: this.images[0].thumbnails[640] }
+      : null;
   }
 
   /**

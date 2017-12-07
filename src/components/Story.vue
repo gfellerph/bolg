@@ -16,7 +16,8 @@
         <ul class="story__page-list">
           <li
             class="story__page"
-            v-for="page, index in story.pages"
+            v-bind:key="page.id"
+            v-for="(page, index) in story.pages"
             @click="switchPage(index)"
             :class="{'story__page--active': index == activePage}"
           >
@@ -36,10 +37,12 @@
 
 <script>
   import debounce from 'debounce';
-  import Story from '@/models/StoryAdmin';
-  import StoryPage from '@/models/StoryPage';
-  import Editor from '@/components/Editor';
-  import PostStatus from '@/components/PostStatus';
+  import Story from 'src/models/StoryAdmin';
+  import StoryPage from 'src/models/StoryPage';
+  import Editor from 'src/components/Editor';
+  import PostStatus from 'src/components/PostStatus';
+  import Post from 'src/models/Post';
+  import router from 'src/config/router';
 
   export default {
     data() {
@@ -68,12 +71,12 @@
         this.story.lastEdited = Date.now();
         this.debouncedSave();
       },
-      debouncedSave: debounce(function () {
+      debouncedSave: debounce(() => {
         this.savePostImmediately();
       }, 1000),
       savePostImmediately() {
         this.post.set().then(() => {
-          if (this.$route.fullPath == '/create') router.replace(`/edit/${this.post.id}`);
+          if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
         });
       },
     },
@@ -87,19 +90,19 @@
     },
 
     watch: {
-      $route (to, from) {
+      $route(to) {
         if (to.params.id) {
           this.getStory(to.params.id);
         } else {
           this.post = new Post();
         }
-      }
+      },
     },
 
     components: {
       Editor,
       PostStatus,
-    }
+    },
   }
 </script>
 

@@ -1,5 +1,5 @@
-import Tipp from '@/models/Tipp';
-import { database } from '@/config/firebase';
+import Tipp from 'src/models/Tipp';
+import { database } from 'src/config/firebase-admin';
 
 const ref = id => database.ref(`/tipps/${id}`);
 

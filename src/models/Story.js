@@ -1,6 +1,6 @@
 import cuid from 'cuid';
-import StoryPage from '@/models/StoryPage';
-import { slugger, liveRootUrl } from '@/config/constants';
+import StoryPage from 'src/models/StoryPage';
+import { slugger, liveRootUrl } from 'src/config/constants';
 
 export default function Story(story = {}) {
   this.id = story.id || cuid();

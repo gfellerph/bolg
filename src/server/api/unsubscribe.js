@@ -1,6 +1,6 @@
-import firebase from '@/config/firebase-admin';
-import { logoURL } from '@/config/constants';
-import { webpackManifest } from '@/server/index';
+import { database } from 'src/config/firebase-admin';
+import { logoURL } from 'src/config/constants';
+import { webpackManifest } from 'src/server/index';
 
 /**
  * Remove a subscriber from firebase
@@ -8,8 +8,7 @@ import { webpackManifest } from '@/server/index';
  * @returns {Promise} Firebase promise
  */
 export default function unsubscribe(req, res) {
-  return firebase
-    .database()
+  return database
     .ref(`/subscribers/${req.params.id}`)
     .remove()
     .then(() => {

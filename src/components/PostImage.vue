@@ -14,8 +14,7 @@
 
 
 <script>
-  import Image from '@/models/Image';
-  import bus from '@/config/bus';
+  import bus from 'src/config/bus';
 
   export default {
     data() {
@@ -31,7 +30,7 @@
       smallestImage() {
         if (!this.image.thumbnails) return this.image.downloadURL;
         return this.image.thumbnails[Math.min.apply(null, Object.keys(this.image.thumbnails))];
-      }
+      },
     },
 
     methods: {
@@ -45,7 +44,7 @@
         const url = this.image.thumbnails[640] ? this.image.thumbnails[640] : this.image.downloadURL;
         this.$emit('activate-image', { id: this.image.id, url });
       },
-    }
+    },
   };
 </script>
 

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import { database } from '@/config/firebase';
+  import { database } from 'src/config/firebase';
 
   export default {
     data() {

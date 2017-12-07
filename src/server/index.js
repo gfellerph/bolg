@@ -1,21 +1,20 @@
 import fs from 'fs';
 import path from 'path';
-import firebase from '@/config/firebase-admin';
-import * as hbsTemplates from '@/config/handlebars';
+import { database } from 'src/config/firebase-admin';
+import * as hbsTemplates from 'src/config/handlebars';
+import Post from 'src/models/Post';
+import { slugger } from 'src/config/constants';
 import writefile from './writefile';
-import Post from '@/models/Post';
 import * as helpers from './helpers';
-import { slugger } from '@/config/constants';
 
 const cssInlineThreshold = 10; // KB
-const logoURL = helpers.logoURL;
-const database = firebase.database();
+const { logoURL } = helpers;
 const publishedRef = database.ref('/published').orderByChild('created');
 
 function inlineCSS(file) {
   if (!file.endsWith('.css')) return '';
 
-  const filePath = path.resolve(process.cwd() + '/public' + file);
+  const filePath = path.resolve(`${process.cwd()}/public${file}`);
   const fileStats = fs.statSync(filePath);
   const devMode = process.env.NODE_ENV === 'development';
   let html = '';
@@ -33,12 +32,10 @@ function inlineCSS(file) {
 
 export function webpackManifest() {
   const manifest = JSON.parse(fs.readFileSync('public/config/front.manifest.json', 'utf8'));
-
-  Object.keys(manifest).map((entry) => {
-    manifest[entry] = entry.endsWith('.css') ? inlineCSS(manifest[entry]) : manifest[entry];
-  });
-
-  return manifest;
+  return Object.keys(manifest).reduce((acc, entry) => {
+    acc[entry] = entry.endsWith('.css') ? inlineCSS(manifest[entry]) : manifest[entry];
+    return acc;
+  }, {});
 }
 
 export function buildGallery() {
@@ -46,15 +43,15 @@ export function buildGallery() {
     publishedRef.once('value', (snapshot) => {
       const val = snapshot.val();
       const postsArray = Object.keys(val).map(key => val[key]).reverse();
-      const postsPerMonth = {};
       const filePath = 'public/galerie.html';
 
-      postsArray.map((post) => {
-        if (!postsPerMonth[post.postTitle]) postsPerMonth[post.postTitle] = [[], []];
+      const postsPerMonth = postsArray.reduce((acc, post) => {
+        acc[post.postTitle] = [[], []];
         for (let i = 0; i < post.images.length; i++) {
-          postsPerMonth[post.postTitle][i % 2].push(post.images[i]);
+          acc[post.postTitle][i % 2].push(post.images[i]);
         }
-      });
+        return acc;
+      }, {});
 
       const html = hbsTemplates.gallery({
         postsPerMonth,
@@ -129,7 +126,8 @@ export function publish(id) {
 
       buildPost(post, nextPost)
         .then(() => {
-          return lastPost ? buildPost(lastPost, post) : true;
+          const action = lastPost ? buildPost(lastPost, post) : Promise.resolve();
+          return action;
         })
         .then(resolve);
     });
@@ -164,7 +162,7 @@ export function unpublish(id) {
         if (!val) return new Error('This post is deleted or something');
         const post = new Post(val);
         const filepath = `public/posts/${slugger(post.title)}.html`;
-        fs.unlink(filepath, (err) => {
+        return fs.unlink(filepath, (err) => {
           if (err && err.code === 'ENOENT') return resolve();
           if (err) reject(err);
           return resolve();
@@ -181,7 +179,7 @@ publishedRef.on('child_added', (snapshot) => {
     .then(buildIndex)
     .then(buildGallery)
     .catch((error) => {
-      console.error(error);
+      throw new Error(error);
     })
 });
 

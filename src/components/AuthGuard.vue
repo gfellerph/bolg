@@ -9,8 +9,8 @@
     import { mapState } from 'vuex';
 
     export default {
-        computed: mapState({
-            authenticated: state => state.auth.authenticated,
-        }),
+      computed: mapState({
+        authenticated: state => state.auth.authenticated,
+      }),
     };
 </script>

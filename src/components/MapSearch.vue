@@ -41,17 +41,19 @@
 </template>
 
 <script>
-  import bus from '@/config/bus';
-  import AddTipp from '@/components/AddTipp';
-  import AddTippSuccess from '@/components/AddTippSuccess';
-  import TippInfo from '@/components/TippInfo';
+  import bus from 'src/config/bus';
+  import AddTipp from 'src/components/AddTipp';
+  import AddTippSuccess from 'src/components/AddTippSuccess';
+  import TippInfo from 'src/components/TippInfo';
+
+  /* global google */
 
   const state = {
     INITIAL: 0,
     SEARCHING: 1,
     LOCATION_SELECTED: 2,
     ADD_TIPP: 3,
-    ADD_TIPP_SUCCESS: 4
+    ADD_TIPP_SUCCESS: 4,
   }
 
   export default {
@@ -70,14 +72,14 @@
         showTippInfo: true,
         location: null,
         marker: new google.maps.Marker({
-					title: 'Reisetipp hie hinzuefüege?',
-					icon: {
-						url: '/img/inuksuk-selected.svg',
-						size: new google.maps.Size(36, 34),
-						origin: new google.maps.Point(0,0),
-						anchor: new google.maps.Point(18, 17),
-					},
-				}),
+          title: 'Reisetipp hie hinzuefüege?',
+          icon: {
+            url: '/img/inuksuk-selected.svg',
+            size: new google.maps.Size(36, 34),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(18, 17),
+          },
+        }),
       };
     },
 
@@ -87,7 +89,6 @@
 
     watch: {
       location(val) {
-
         // Reset marker
         if (!val) {
           this.marker.setMap(null);
@@ -108,7 +109,7 @@
     },
 
     methods: {
-      init(map) {
+      init() {
         this.searchBox = new google.maps.places.SearchBox(this.$refs.searchInput);
         this.searchBox.addListener('places_changed', this.placeChanged);
       },
@@ -128,7 +129,7 @@
           this.map.fitBounds(place.geometry.viewport);
         } else {
           this.map.setCenter(place.geometry.location);
-          this.map.setZoom(17);  // Why 17? Because it looks good.
+          this.map.setZoom(17); // Why 17? Because it looks good.
         }
       },
       reset() {

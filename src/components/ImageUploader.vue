@@ -9,9 +9,8 @@
 
 
 <script>
-  import Image from '@/models/Image';
-  import bus from '@/config/bus';
-  import { database } from '@/config/firebase';
+  import Image from 'src/models/Image';
+  import { database } from 'src/config/firebase';
 
   export default {
     data() {
@@ -32,14 +31,14 @@
       this.URL = img.url();
       const upload = img.put();
       upload.on('state_changed', this.onUploadProgress);
-      upload.then(snapshot => {
+      upload.then((snapshot) => {
         img.file = null;
         this.generatingThumbs = true;
         img.downloadURL = snapshot.downloadURL;
         this.$emit('add-image', img);
-        database.ref(`/images/gallery`).on('child_added', (snapshot) => {
-          if (snapshot.key !== img.id) return;
-          img.thumbnails = snapshot.val().thumbnails;
+        database.ref('/images/gallery').on('child_added', (snap) => {
+          if (snap.key !== img.id) return;
+          img.thumbnails = snap.val().thumbnails;
           this.generatingThumbs = false;
           this.$emit('thumbnails-generated', img);
         });
@@ -51,8 +50,8 @@
         return `width: ${this.progress}%;`;
       },
       uploadComplete() {
-        return this.progress == 100;
-      }
+        return this.progress === 100;
+      },
     },
 
     methods: {
@@ -62,7 +61,7 @@
       removeImage() {
         this.$emit('remove-image', this.image.id);
       },
-    }
+    },
   };
 </script>
 

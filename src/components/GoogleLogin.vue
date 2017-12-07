@@ -6,15 +6,9 @@
 </template>
 
 <script>
-  import { auth, GoogleProvider, FacebookProvider } from '@/config/firebase';
+  import { auth, GoogleProvider, FacebookProvider } from 'src/config/firebase';
 
   export default {
-    data() {
-      return {
-        
-      };
-    },
-
     methods: {
       loginWithGoogle() {
         auth.signInWithPopup(GoogleProvider);
