@@ -4,6 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const backConfig = require('./back.config');
 const paths = require('./paths');
 
+// add hot-reload related code to entry chunks
+Object.keys(backConfig.entry).forEach((name) => {
+  backConfig.entry[name] = ['./config/dev-client'].concat(backConfig.entry[name])
+})
+
 const devConfig = merge(backConfig, {
   output: {
     filename: 'js/[name].js',
