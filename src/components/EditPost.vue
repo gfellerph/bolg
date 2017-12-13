@@ -54,6 +54,7 @@
         post: new Post(),
         cursorPosition: 0,
         postLoaded: false,
+        state: states.LOADING,
         states,
         showCheatSheet: false,
         notificationPending: false,
