@@ -27,16 +27,12 @@
   import dateFormat from 'src/filters/date-format';
   import PostStatus from 'src/components/PostStatus';
   import { description } from 'src/config/markdown';
+  import { database } from 'src/config/firebase';
+  import PostController from 'src/controllers/post-controller';
+
+  const postCtrl = PostController(database);
 
   export default {
-    // mixins: [PostMixin],
-  
-    data() {
-      return {
-        // states,
-      };
-    },
-
     props: {
       post: Object,
     },
@@ -51,7 +47,7 @@
         /* eslint no-restricted-globals: 0 */
         /* eslint no-alert: 0 */
         if (confirm('wosch würk dä Post lösche?')) {
-          this.post.remove();
+          postCtrl.remove(this.post);
         }
       },
       publishPost() {
