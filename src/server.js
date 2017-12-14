@@ -1,9 +1,10 @@
 import express from 'express';
 import path from 'path';
 import compression from 'compression';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
+import multer from 'multer';
 import publishAllApi from 'src/server/api/publish-all';
 import publishApi from 'src/server/api/publish';
 import unpublishApi from 'src/server/api/unpublish';
@@ -12,8 +13,10 @@ import notifySubscribers from 'src/server/api/notify-subscribers';
 import { getTipps, postTipp } from 'src/server/api/tipps';
 import putDrawing from 'src/server/api/put-drawing';
 import { postSubscriber } from 'src/server/api/subscriber';
+import { postImage, deleteImages } from 'src/server/api/images';
 
 const app = express();
+const uploader = multer();
 
 app.set('views', './src/server/views');
 app.set('view engine', 'pug');
@@ -29,9 +32,9 @@ app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.raw());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.raw());
+// app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 app.get('/publish', publishAllApi);
@@ -43,6 +46,8 @@ app.get('/api/tipps', getTipps);
 app.post('/api/tipp', postTipp);
 app.put('/api/drawing', putDrawing);
 app.post('/api/subscriber', postSubscriber);
+app.post('/api/images', uploader.single('image'), postImage);
+app.delete('/api/images/:id', deleteImages);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
