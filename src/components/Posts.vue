@@ -41,8 +41,9 @@
     computed: {
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
 
-      /* TODO: Sort instead of reverse! */
-      reversedPosts() { return this.posts.reverse(); },
+      reversedPosts() {
+        return this.posts.sort((a, b) => b.created - a.created);
+      },
     },
 
     methods: {
