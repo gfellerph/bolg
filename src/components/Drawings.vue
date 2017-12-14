@@ -1,12 +1,12 @@
 <template>
   <div class="drawings">
     <h1>Zeichnige</h1>
-    <div 
+    <div
       class="drawing-collection"
       :key="collection.id"
       v-for="collection in drawingCollection"
     >
-      <h2>{{collection.title}}</h2>
+      <h2>{{collection.title}} ({{Object.keys(collection.drawings).length}})</h2>
       <div class="drawings__list">
         <drawings-detail
           :postid="collection.id"
@@ -37,19 +37,22 @@
     },
 
     created() {
-      this.$bindAsArray('posts', database.ref('/published').orderByChild('created'));
+      this.$bindAsArray('posts', database.ref('/posts'));
     },
 
     computed: {
       drawingCollection() {
-        return this.posts.map((postData) => {
-          const post = new Post(postData);
-          return {
-            id: post.id,
-            title: post.title,
-            drawings: post.drawings,
-          };
-        });
+        return this.posts
+          .filter(post => post.drawings)
+          .sort((a, b) => b.created - a.created)
+          .map((postData) => {
+            const post = new Post(postData);
+            return {
+              id: post.id,
+              title: post.title,
+              drawings: post.drawings,
+            };
+          });
       },
     },
   }
