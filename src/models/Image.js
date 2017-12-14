@@ -15,4 +15,9 @@ export default function Image(img = {}) {
     return url;
   };
 
+  this.getSmallestThumbUrl = () => {
+    if (!this.thumbnails && !this.downloadURL) return false;
+    if (!this.thumbnails) return this.downloadURL;
+    return this.thumbnails[Math.min.apply(null, Object.keys(this.thumbnails))];
+  }
 }

@@ -29,7 +29,9 @@ export const marked = (str, options) => {
   mergedOptions.renderer = renderer;
   return markdownParser(str, mergedOptions);
 }
+
 export const excerpt = str => markdownParser(`${str.split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
+
 export const description = (str) => {
   const md = str
     // Remove headings
