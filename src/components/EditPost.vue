@@ -39,7 +39,6 @@
   import { database } from 'src/config/firebase';
   import router from 'src/config/router';
   import ImageSelector from 'src/components/ImageSelector.vue';
-  import bus from 'src/config/bus';
   import { states } from 'src/config/constants';
   import Editor from 'src/components/Editor';
   import PostStatus from 'src/components/PostStatus';
@@ -84,27 +83,19 @@
         const article = this.$refs.previewArticle;
         this.$refs.previewArticle.scrollTop = (article.scrollHeight - article.clientHeight) * percent;
       },
-      insertImage(url) {
-        const image = `\n![alt text](${url})\n`;
-        const position = document.getElementById('markdown-editor').selectionStart || 0;
-        this.post.markdown = [
-          this.post.markdown.slice(0, position),
-          image,
-          this.post.markdown.slice(position),
-        ].join('');
+      savePostImmediately() {
+        postCtrl.set(this.post).then((data) => {
+          this.post = new Post(data);
+          if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
+        });
       },
+      debouncedSave: debounce(function debounced() {
+        this.savePostImmediately();
+      }, 1000),
       savePost(markdown) {
         this.post.markdown = markdown;
         this.post.lastEdited = Date.now();
         this.debouncedSave();
-      },
-      debouncedSave: debounce(() => {
-        this.savePostImmediately();
-      }, 1000),
-      savePostImmediately() {
-        postCtrl.set(this.post).then(() => {
-          if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
-        });
       },
       getPost(id) {
         database
@@ -156,10 +147,6 @@
       if (this.$route.params && this.$route.params.id) {
         this.getPost(this.$route.params.id);
       }
-    },
-
-    mounted() {
-      bus.$on('insert-image', this.insertImage);
     },
 
     watch: {
