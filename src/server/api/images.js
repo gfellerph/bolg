@@ -18,7 +18,7 @@ export const postImage = (req, res) => {
       return img;
     })
     .catch((err) => {
-      res.error(err);
+      throw new Error(err);
     });
 
   const thumbs = Promise.all(sizes.map(size => source.resize({
@@ -43,7 +43,7 @@ export const postImage = (req, res) => {
       res.send(image);
     })
     .catch((err) => {
-      res.err(err);
+      throw new Error(err);
     })
 };
 
