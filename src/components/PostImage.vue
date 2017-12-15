@@ -1,11 +1,26 @@
 <template>
-  <div class="post-image" :class="{active: active}" @click="activateImage">
-    <img class="post-image--preview" :src="smallestImage">
+  <div
+    class="post-image"
+    :class="{active: active, deleting: deleting}"
+    @click="activateImage"
+  >
+    <img
+      class="post-image--preview"
+      :src="smallestImage"
+    >
     <div class="image-controls">
-      <button @click.stop="insertImage" class="post-image--insert">
+      <button
+        class="post-image--insert"
+        :disabled="deleting"
+        @click.stop="insertImage"
+      >
         <img src="/img/insert.svg" alt="">
       </button>
-      <button @click.stop="removeImage" class="post-image--remove">
+      <button
+        class="post-image--remove"
+        :disabled="deleting"
+        @click.stop="removeImage"
+      >
         <img src="/img/trash.svg" alt="">
       </button>
     </div>
@@ -15,10 +30,15 @@
 
 <script>
   import bus from 'src/config/bus';
+  import ImageController from 'src/controllers/image-controller';
+
+  const imageCtrl = ImageController();
 
   export default {
     data() {
-      return {};
+      return {
+        deleting: false,
+      };
     },
 
     props: {
@@ -28,21 +48,27 @@
 
     computed: {
       smallestImage() {
-        if (!this.image.thumbnails) return this.image.downloadURL;
-        return this.image.thumbnails[Math.min.apply(null, Object.keys(this.image.thumbnails))];
+        return this.image.getSmallestThumbUrl();
       },
     },
 
     methods: {
       removeImage() {
-        this.$emit('remove-image', this.image.id);
+        this.deleting = true;
+        imageCtrl.deleteImages(this.image.id)
+          .then(() => {
+            this.$emit('remove-image', this.image.id);
+          })
+          .catch((err) => {
+            this.deleting = false;
+            throw new Error(err);
+          });
       },
       insertImage() {
         bus.$emit('insert-image', this.image.downloadURL);
       },
       activateImage() {
-        const url = this.image.thumbnails[640] ? this.image.thumbnails[640] : this.image.downloadURL;
-        this.$emit('activate-image', { id: this.image.id, url });
+        this.$emit('activate-image', this.image);
       },
     },
   };
@@ -57,18 +83,27 @@
     background-color: rgba(255, 255, 255, 0.1);
     flex: 0 0 auto;
     margin-right: $golden-em / 2;
-    
+    transition: opacity 2s;
+
     &:hover {
       .image-controls {
         opacity: 0.8;
-      }  
+      }
     }
 
     &.active {
       outline: 5px solid dodgerblue;
     }
+
+    &.deleting {
+      opacity: 0.05;
+
+      .image-controls {
+        display: none;
+      }
+    }
   }
-  
+
   .post-image--preview {
     display: block;
     height: 14vh;
@@ -77,9 +112,8 @@
   .image-controls {
     opacity: 0;
     transition: opacity 200ms;
-
   }
-  
+
   .post-image--insert {
     position: absolute;
     background: seagreen;
