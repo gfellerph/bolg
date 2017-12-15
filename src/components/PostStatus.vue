@@ -61,7 +61,7 @@
         }
 
         // Post is edited when lastEdited is bigger than lastSaved and lastPublished
-        if (this.post.lastEdite
+        if (this.post.lastEdited
           && this.post.lastEdited > this.post.lastSaved
           && this.post.lastEdited > this.post.lastPublished) {
           status = states.EDITING;
@@ -110,7 +110,7 @@
     line-height: $golden-rem;
     display: block;
     padding: $golden-rem / 4 $golden-rem / 2;
-    
+
     &.status-loading {
       background: grey;
     }

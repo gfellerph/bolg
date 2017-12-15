@@ -35,6 +35,8 @@
 </template>
 
 <script>
+  import bus from 'src/config/bus';
+
   let lastValue = '';
 
   export default {
@@ -54,6 +56,17 @@
 
     props: {
       value: String,
+    },
+
+    created() {
+      this.$watch('value', () => {
+        this.markdown = this.value;
+      });
+    },
+
+    mounted() {
+      this.selectionStart = this.$refs.md ? this.$refs.md.selectionStart : 0;
+      bus.$on('insert-image', this.insertImage);
     },
 
     methods: {
@@ -107,6 +120,17 @@
         this.$nextTick(() => {
           md.setSelectionRange(start + 26, start + 26);
           md.focus();
+        });
+      },
+      insertImage(url) {
+        const { md } = this.$refs;
+        const image = `![Bildbeschrieb](${url})`;
+        const start = md.selectionStart;
+        this.markdown = `${this.markdown.slice(0, start)}${image}${this.markdown.slice(start, this.markdown.length)}`;
+        this.change();
+        this.$nextTick(() => {
+          const newPosition = start + image.length;
+          md.setSelectionRange(newPosition, newPosition);
         });
       },
       youtubeInsert() {
@@ -172,16 +196,6 @@
           this.$emit('scroll', percent);
         });
       },
-    },
-
-    created() {
-      this.$watch('value', () => {
-        this.markdown = this.value;
-      });
-    },
-
-    mounted() {
-      this.selectionStart = this.$refs.md ? this.$refs.md.selectionStart : 0;
     },
   };
 </script>

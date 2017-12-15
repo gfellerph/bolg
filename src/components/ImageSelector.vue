@@ -3,9 +3,9 @@
     <div class="images" :class="{dragover: dragover}">
       <post-image
         v-for="image in post.images"
-        :image="image"
+        :image="new Image(image)"
         :key="image.id"
-        :active="image.id === post.titleImage.id"
+        :active="isImageActive"
         @remove-image="removeImage"
         @activate-image="activateImage"
       ></post-image>
@@ -13,11 +13,14 @@
         v-for="image in imagesForUpload"
         :image="image"
         :key="image.id"
-        @thumbnails-generated="addImage"
+        @upload-success="addImage"
+        @remove-image="removeImageForUpload"
       ></image-uploader>
       <div class="image-upload-wrapper">
         <p class="text-align-center">Drop or click for pics</p>
+        <label for="image-uploader"></label>
         <input
+          id="image-uploader"
           type="file"
           multiple
           @change="onFileChange"
@@ -31,12 +34,17 @@
   import ImageUploader from 'src/components/ImageUploader';
   import PostImage from 'src/components/PostImage';
   import Image from 'src/models/Image';
+  import PostController from 'src/controllers/post-controller';
+  import { database } from 'src/config/firebase';
+
+  const postCtrl = PostController(database);
 
   export default {
     data() {
       return {
         imagesForUpload: [],
         dragover: false,
+        Image,
       };
     },
 
@@ -50,15 +58,16 @@
       window.addEventListener('dragleave', this.onDragLeave);
       window.addEventListener('drop', this.onFileChange);
 
+      // Map vertical scrolling to horizontal scroll events
       this.$refs.imageSelector.addEventListener('mousewheel', (event) => {
         this.$refs.imageSelector.scrollLeft += event.deltaY;
       });
     },
 
-    created() {
-      /* bus.$on('remove-image', this.removeImage);
-      bus.$on('activate-image', this.activateImage); */
-      this.$on('thumbnails-generated', this.addImage);
+    computed: {
+      isImageActive(imgId) {
+        return this.post.titleImage ? imgId === this.post.titleImage.id : false;
+      },
     },
 
     methods: {
@@ -75,18 +84,22 @@
           this.imagesForUpload.push(new Image({ file: images[i] }));
         }
       },
-      addImage(image) {
+      addImage(payload) {
+        const image = new Image(payload);
         this.imagesForUpload = this.imagesForUpload.filter(img => image.id !== img.id);
         this.post.images.push(image);
-        this.post.set();
+        postCtrl.set(this.post);
       },
       removeImage(id) {
         this.post.images = this.post.images.filter(image => image.id !== id);
-        this.post.set();
+        postCtrl.set(this.post);
       },
-      activateImage(url) {
-        this.post.titleImage = url;
-        this.post.set();
+      removeImageForUpload(id) {
+        this.imagesForUpload = this.imagesForUpload.filter(img => img.id !== id);
+      },
+      activateImage(image) {
+        this.post.titleImage = image.getSmallestThumbUrl();
+        postCtrl.set(this.post);
       },
     },
 
@@ -108,7 +121,7 @@
     height: 100%;
     overflow: auto;
   }
-  
+
   .image-upload-wrapper {
     position: relative;
     flex: 1 0 auto;
@@ -116,15 +129,24 @@
     align-items: center;
     justify-content: center;
     padding: 0 $golden-em / 2;
+    height: 14vh;
 
     input[type="file"] {
       opacity: 0;
       position: absolute;
       top: 0;
       left: 0;
+      width: 0%;
+      height: 0%;
+    }
+
+    label {
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 0;
       bottom: 0;
       right: 0;
-      width: 100%;
       z-index: 1;
     }
 

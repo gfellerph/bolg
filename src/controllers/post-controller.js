@@ -28,7 +28,7 @@ export default (database) => {
   const set = (post) => {
     const postData = post.normalize();
     postData.lastSaved = Date.now();
-    return postRef(post.id).set(postData);
+    return postRef(post.id).set(postData).then(() => postData);
   };
 
   const remove = post => Promise.all([
