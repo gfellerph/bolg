@@ -1,16 +1,42 @@
 <template>
   <div class="image-upload">
-    <img class="image-upload--preview" :class="{ 'upload-complete': uploadComplete }" :src="URL">
-    <div class="image-upload--progress" v-if="progress" :style="progressStyle">
-      <img :class="{ 'loading-thumbnails': generatingThumbs }" :src="URL">
+    <img
+      class="image-upload--preview"
+      :class="{ 'upload-complete': uploadComplete }"
+      :src="image.url()"
+      :title="error"
+    >
+    <div
+      class="image-upload--progress"
+      v-if="progress"
+      :style="progressStyle"
+    >
+      <img
+        :class="{ 'loading-thumbnails': uploadComplete }"
+        :src="image.url()"
+      >
+    </div>
+    <div
+      class="image-upload__error"
+      v-if="error"
+      :title="error"
+    >
+      <button
+        class="blank"
+        @click="removeImage"
+      >dehaut</button>
+      <button
+        class="blank"
+        @click="upload"
+      >nomau</button>
     </div>
   </div>
 </template>
 
-
 <script>
-  import Image from 'src/models/Image';
-  import { database } from 'src/config/firebase';
+  import ImageController from 'src/controllers/image-controller';
+
+  const imageCtrl = ImageController();
 
   export default {
     data() {
@@ -18,6 +44,7 @@
         progress: 0,
         URL: null,
         generatingThumbs: false,
+        error: false,
       }
     },
 
@@ -27,22 +54,8 @@
 
     mounted() {
       // Upload image if it is a file
-      const img = new Image(this.image);
-      this.URL = img.url();
-      const upload = img.put();
-      upload.on('state_changed', this.onUploadProgress);
-      upload.then((snapshot) => {
-        img.file = null;
-        this.generatingThumbs = true;
-        img.downloadURL = snapshot.downloadURL;
-        this.$emit('add-image', img);
-        database.ref('/images/gallery').on('child_added', (snap) => {
-          if (snap.key !== img.id) return;
-          img.thumbnails = snap.val().thumbnails;
-          this.generatingThumbs = false;
-          this.$emit('thumbnails-generated', img);
-        });
-      });
+      this.URL = this.image.url();
+      this.upload();
     },
 
     computed: {
@@ -55,8 +68,26 @@
     },
 
     methods: {
-      onUploadProgress(snapshot) {
-        this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      upload() {
+        this.error = false;
+        this.progress = 0;
+
+        imageCtrl.upload(this.image, {
+          onUploadProgress: this.onUploadProgress,
+        })
+          .then((res) => {
+            this.error = false;
+            this.progress = 100;
+            const imageWithLinks = Object.assign({}, this.image, res.data);
+            this.$emit('upload-success', imageWithLinks);
+          })
+          .catch((err) => {
+            this.progress = 0;
+            this.error = err.message;
+          });
+      },
+      onUploadProgress(event) {
+        this.progress = (event.loaded / event.total) * 100;
       },
       removeImage() {
         this.$emit('remove-image', this.image.id);
@@ -74,7 +105,7 @@
     background-color: rgba(255, 255, 255, 0.1);
     margin-right: $golden-em / 2;
   }
-  
+
   .image-upload--preview {
     filter: grayscale(1);
     // object-fit: cover;
@@ -87,7 +118,28 @@
       visibility: hidden;
     }
   }
-  
+
+  .image-upload__error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    background: crimson;
+    opacity: 0.66;
+
+    button {
+      color: white;
+      flex: 1 0 auto;
+    }
+
+    svg {
+      max-width: 100%;
+    }
+  }
+
   .image-upload--progress {
     position: absolute;
     top: 0;
@@ -95,7 +147,7 @@
     width: 0%;
     height: 100%;
     will-change: width;
-    transition: width 10ms;
+    transition: width 300ms;
     transform: translate3d(0, 0, 0);
     overflow: hidden;
     img {
