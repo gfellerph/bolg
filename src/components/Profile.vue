@@ -11,7 +11,6 @@
   </div>
 </template>
 
-
 <script>
   import AuthGuard from 'src/components/AuthGuard';
   import { mapState } from 'vuex';
@@ -37,5 +36,5 @@
 
 
 <style lang="scss" scoped>
-  
+
 </style>
