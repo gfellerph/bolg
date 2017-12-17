@@ -13,7 +13,9 @@
         </div>
       </div>
       <div class="post-images">
-        <image-selector :post="post"></image-selector>
+        <image-selector
+          :post="post"
+        ></image-selector>
       </div>
       <div class="post-stats">
         <post-status :post="post"></post-status>
@@ -85,7 +87,7 @@
       },
       savePostImmediately() {
         postCtrl.set(this.post).then((data) => {
-          this.post = new Post(data);
+          this.post.lastSaved = data.lastSaved;
           if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
         });
       },
