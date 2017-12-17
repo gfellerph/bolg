@@ -41,6 +41,19 @@ const uploader = (Body, Key) => new Promise((resolve, reject) => {
 });
 
 export const postImage = (req, res) => {
+  const originalSize = sizeOf(req.file.buffer);
+  if (originalSize.width > 2560) originalSize.height = 2560;
+  if (originalSize.height > 1440) originalSize.width = 1440;
+  const filteredSizes = filterSizes(originalSize);
+  const img = new Image({ id: req.body.id });
+  img.downloadURL = cloudFrontify(`i/${req.body.id}`);
+  img.thumbnails = filteredSizes.reduce((acc, size) => {
+    acc[size.width] = cloudFrontify(`i/${req.body.id}.${size.width}`);
+    return acc;
+  }, {});
+  res.send(img);
+  if (req) throw new Error('wait');
+
   // Tinify and resize to max 2560w or 1440h
   const source = tinify
     .fromBuffer(req.file.buffer)
@@ -61,7 +74,7 @@ export const postImage = (req, res) => {
   const thumbnailUploader = source.toBuffer()
     .then((buffer) => {
       // Get resolution of the image
-      const filteredSizes = filterSizes(sizeOf(buffer));
+
       const sharpBuffer = sharp(buffer);
       return filteredSizes.map(thumbnailSize => resizer(sharpBuffer, thumbnailSize)
         .then(thumbnail => minifier(thumbnail))
@@ -80,15 +93,8 @@ export const postImage = (req, res) => {
     originalUploader,
     thumbnailUploader,
   ])
-    .then((paths) => {
-      const img = new Image({ id: req.body.id });
-      const [downloadUrl, thumbnails] = paths;
-      img.downloadURL = cloudFrontify(downloadUrl);
-      img.thumbnails = thumbnails.reduce((acc, thumbnail) => {
-        acc[thumbnail.width] = cloudFrontify(thumbnail.path);
-        return acc;
-      }, {});
-      res.send(img);
+    .then(() => {
+      // TODO: notify user in some form that his request is done
     })
     .catch((err) => {
       throw new Error(err);
