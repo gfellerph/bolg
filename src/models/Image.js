@@ -1,10 +1,10 @@
-import cuid from 'cuid';
+import shortid from 'shortid';
 
 export default function Image(img = {}) {
   this.file = img.file || null;
   this.downloadURL = img.downloadURL || null;
   this.thumbnails = img.thumbnails || null;
-  this.id = img.id || cuid();
+  this.id = img.id || shortid.generate();
   this.lastModified = img.file ? img.file.lastModified : Date.now();
 
   // Methods
