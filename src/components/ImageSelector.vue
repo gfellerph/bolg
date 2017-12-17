@@ -5,7 +5,7 @@
         v-for="image in post.images"
         :image="new Image(image)"
         :key="image.id"
-        :active="isImageActive"
+        :active="isImageActive(image.id)"
         @remove-image="removeImage"
         @activate-image="activateImage"
       ></post-image>
@@ -64,13 +64,10 @@
       });
     },
 
-    computed: {
+    methods: {
       isImageActive(imgId) {
         return this.post.titleImage ? imgId === this.post.titleImage.id : false;
       },
-    },
-
-    methods: {
       onDragEnter(event) {
         if (event.target === event.currentTarget) this.dragover = true;
       },
@@ -98,8 +95,15 @@
         this.imagesForUpload = this.imagesForUpload.filter(img => img.id !== id);
       },
       activateImage(image) {
-        this.post.titleImage = image.getSmallestThumbUrl();
-        postCtrl.set(this.post);
+        if (this.isImageActive(image.id)) {
+          this.post.titleImage = null;
+        } else {
+          this.post.titleImage = {
+            url: image.thumbnails[640] || image.downloadURL,
+            id: image.id,
+          };
+        }
+        return postCtrl.set(this.post);
       },
     },
 
