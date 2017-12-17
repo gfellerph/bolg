@@ -96,7 +96,7 @@
     }
 
     &.deleting {
-      opacity: 0.05;
+      opacity: 0.1;
 
       .image-controls {
         display: none;

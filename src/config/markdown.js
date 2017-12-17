@@ -6,7 +6,6 @@ const markdownOptions = {
 };
 
 export const marked = (str, options) => {
-  const mergedOptions = Object.assign({}, markdownOptions, options);
   const renderer = new markdownParser.Renderer();
   renderer.image = (href, title, text) => {
     let srcset;
@@ -27,6 +26,7 @@ export const marked = (str, options) => {
     const sizesAttr = srcset ? ' sizes="640px"' : '';
     return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}>`;
   }
+  const mergedOptions = Object.assign({}, markdownOptions, options);
   mergedOptions.renderer = renderer;
   return markdownParser(str, mergedOptions);
 }
