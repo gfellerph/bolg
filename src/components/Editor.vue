@@ -124,13 +124,14 @@
       },
       insertImage(url) {
         const { md } = this.$refs;
-        const image = `![Bildbeschrieb](${url})`;
+        const image = `![Bildbeschrieb](${url})\n`;
         const start = md.selectionStart;
         this.markdown = `${this.markdown.slice(0, start)}${image}${this.markdown.slice(start, this.markdown.length)}`;
         this.change();
         this.$nextTick(() => {
           const newPosition = start + image.length;
           md.setSelectionRange(newPosition, newPosition);
+          md.focus();
         });
       },
       youtubeInsert() {
