@@ -30,6 +30,7 @@
 
 <script>
   import bus from 'src/config/bus';
+  import Image from 'src/models/Image';
   import ImageController from 'src/controllers/image-controller';
 
   const imageCtrl = ImageController();
@@ -42,7 +43,10 @@
     },
 
     props: {
-      image: Object,
+      image: {
+        type: Object,
+        default: () => new Image(),
+      },
       active: Boolean,
     },
 
