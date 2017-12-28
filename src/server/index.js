@@ -3,12 +3,10 @@ import path from 'path';
 import { database } from 'src/config/firebase-admin';
 import * as hbsTemplates from 'src/config/handlebars';
 import Post from 'src/models/Post';
-import { slugger } from 'src/config/constants';
+import { slugger, logoURL } from 'src/config/constants';
 import writefile from './writefile';
-import * as helpers from './helpers';
 
 const cssInlineThreshold = 10; // KB
-const { logoURL } = helpers;
 const publishedRef = database.ref('/published').orderByChild('created');
 
 function inlineCSS(file) {
