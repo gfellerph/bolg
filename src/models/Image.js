@@ -6,6 +6,7 @@ export default function Image(img = {}) {
   this.thumbnails = img.thumbnails || null;
   this.id = img.id || shortid.generate();
   this.lastModified = img.file ? img.file.lastModified : Date.now();
+  this.state = img.state || 0;
 
   // Methods
   this.url = () => {
@@ -17,7 +18,7 @@ export default function Image(img = {}) {
 
   this.getSmallestThumbUrl = () => {
     if (!this.thumbnails && !this.downloadURL) return false;
-    if (!this.thumbnails) return this.downloadURL;
+    if (!Object.keys(this.thumbnails).length) return this.downloadURL;
     return this.thumbnails[Math.min.apply(null, Object.keys(this.thumbnails))];
   }
 }

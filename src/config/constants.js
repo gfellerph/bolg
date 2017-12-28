@@ -32,6 +32,14 @@ export const sizes = [
   },
 ];
 
+export const imageStates = {
+  QUEUED: 0,
+  UPLOADING: 1,
+  PROCESSING: 2,
+  DONE: 3,
+  ERROR: 4,
+}
+
 export const objectToArray = obj => Object.keys(obj).map(key => obj[key]);
 
 export const slugger = str => str

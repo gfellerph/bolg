@@ -1,21 +1,19 @@
 <template>
   <div class="image-selector" ref="imageSelector">
-    <div class="images" :class="{dragover: dragover}">
+    <div class="images">
       <post-image
         v-for="image in post.images"
-        :image="new Image(image)"
         :key="image.id"
-        :active="isImageActive(image.id)"
-        @remove-image="removeImage"
-        @activate-image="activateImage"
-      ></post-image>
-      <image-uploader
-        v-for="image in imagesForUpload"
         :image="image"
+        @activate="activateImage"
+        @remove-image="removeImage"
+      ></post-image>
+      <image-component
+        v-for="image in imageQueue"
         :key="image.id"
-        @upload-success="addImage"
-        @remove-image="removeImageForUpload"
-      ></image-uploader>
+        :image="image"
+        @retry-upload="retryUpload"
+      ></image-component>
       <div class="image-upload-wrapper">
         <p class="text-align-center">Drop or click for pics</p>
         <label for="image-uploader"></label>
@@ -33,18 +31,22 @@
 <script>
   import ImageUploader from 'src/components/ImageUploader';
   import PostImage from 'src/components/PostImage';
+  import QueuedImage from 'src/components/QueuedImage';
+  import ImageComponent from 'src/components/Image';
   import Image from 'src/models/Image';
   import PostController from 'src/controllers/post-controller';
+  import ImageController from 'src/controllers/image-controller';
   import { database } from 'src/config/firebase';
+  import { imageStates } from 'src/config/constants';
+  import io from 'src/config/socket.io-client';
 
   const postCtrl = PostController(database);
+  const imageCtrl = ImageController();
 
   export default {
     data() {
       return {
-        imagesForUpload: [],
-        dragover: false,
-        Image,
+        imageQueue: [],
       };
     },
 
@@ -54,45 +56,72 @@
 
     mounted() {
       window.addEventListener('dragover', (e) => { e.preventDefault(); });
-      window.addEventListener('dragenter', this.onDragEnter);
-      window.addEventListener('dragleave', this.onDragLeave);
       window.addEventListener('drop', this.onFileChange);
 
       // Map vertical scrolling to horizontal scroll events
       this.$refs.imageSelector.addEventListener('mousewheel', (event) => {
         this.$refs.imageSelector.scrollLeft += event.deltaY;
       });
+
+      io.on('server:image-processing-finished', this.addImage);
+      io.on('server:image-processing-error', this.processingError);
     },
 
     methods: {
+      startUpload() {
+        // If queue is empty, exit
+        if (!this.imageQueue) return;
+
+        // Find first waiting image
+        const imageToUpload = this.imageQueue.find(image => image.state === imageStates.QUEUED);
+
+        // No more images to upload
+        if (!imageToUpload) return;
+        imageToUpload.state = imageStates.UPLOADING;
+        imageCtrl.upload(imageToUpload)
+          .then((res) => {
+            // const index = this.imageQueue.findIndex(image => image.id === res.data.id);
+            imageToUpload.downloadURL = res.data.downloadURL;
+            imageToUpload.thumbnails = res.data.thumbnails;
+            imageToUpload.state = res.data.state;
+            // this.$set(this.imageQueue, index, new Image(res.data));
+            this.startUpload();
+          })
+          .catch(() => {
+            imageToUpload.state = imageStates.ERROR;
+          });
+      },
+      retryUpload(id) {
+        const img = this.imageQueue.find(image => id === image.id);
+        if (!img) return;
+        img.state = imageStates.QUEUED;
+        this.startUpload();
+      },
+      processingError(data) {
+        const img = this.imageQueue.find(image => data.id === image.id);
+        img.state = imageStates.ERROR;
+      },
       isImageActive(imgId) {
         return this.post.titleImage ? imgId === this.post.titleImage.id : false;
       },
-      onDragEnter(event) {
-        if (event.target === event.currentTarget) this.dragover = true;
-      },
-      onDragLeave(event) {
-        if (event.target === event.currentTarget) this.dragover = false;
-      },
       onFileChange(event) {
         event.preventDefault();
-        const images = event.target.files || event.dataTransfer.files;
-        for (let i = 0; i < images.length; i++) {
-          this.imagesForUpload.push(new Image({ file: images[i] }));
-        }
+        const files = event.target.files || event.dataTransfer.files;
+        const images = [...files].map(file => new Image({ file }));
+        this.imageQueue = this.imageQueue.concat(images);
+        this.$nextTick(this.startUpload);
       },
-      addImage(payload) {
-        const image = new Image(payload);
-        this.imagesForUpload = this.imagesForUpload.filter(img => image.id !== img.id);
-        this.post.images.push(image);
-        postCtrl.set(this.post);
+      addImage(id) {
+        const img = this.imageQueue.find(image => image.id === id);
+        if (img) {
+          this.imageQueue = this.imageQueue.filter(image => image.id !== id);
+          this.post.images.push(img);
+          postCtrl.set(this.post);
+        }
       },
       removeImage(id) {
         this.post.images = this.post.images.filter(image => image.id !== id);
         postCtrl.set(this.post);
-      },
-      removeImageForUpload(id) {
-        this.imagesForUpload = this.imagesForUpload.filter(img => img.id !== id);
       },
       activateImage(image) {
         if (this.isImageActive(image.id)) {
@@ -110,6 +139,8 @@
     components: {
       ImageUploader,
       PostImage,
+      QueuedImage,
+      ImageComponent,
     },
   };
 </script>
