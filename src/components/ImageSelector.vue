@@ -31,7 +31,6 @@
 <script>
   import ImageUploader from 'src/components/ImageUploader';
   import PostImage from 'src/components/PostImage';
-  import QueuedImage from 'src/components/QueuedImage';
   import ImageComponent from 'src/components/Image';
   import Image from 'src/models/Image';
   import PostController from 'src/controllers/post-controller';
@@ -139,7 +138,6 @@
     components: {
       ImageUploader,
       PostImage,
-      QueuedImage,
       ImageComponent,
     },
   };
