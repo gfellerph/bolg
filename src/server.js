@@ -5,6 +5,7 @@ import compression from 'compression';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import multer from 'multer';
+import io from 'socket.io';
 import publishAllApi from 'src/server/api/publish-all';
 import publishApi from 'src/server/api/publish';
 import unpublishApi from 'src/server/api/unpublish';
@@ -18,6 +19,10 @@ import { postImage, deleteImages } from 'src/server/api/images';
 const app = express();
 const uploader = multer();
 
+// Attach socket io for initialization in bin/www
+app.io = io();
+
+// View engine settings
 app.set('views', './src/server/views');
 app.set('view engine', 'pug');
 

@@ -7,7 +7,8 @@ import imageminPngquant from 'imagemin-pngquant';
 import imageminMozJpeg from 'imagemin-mozjpeg';
 import sizeOf from 'image-size';
 import awsConfig from 'src/config/tinify-aws';
-import { cloudFrontify, sizes } from 'src/config/constants';
+import app from 'src/server';
+import { cloudFrontify, sizes, imageStates } from 'src/config/constants';
 
 // Function to resize an image based on a sharp object and a size
 const resizer = (sharpImage, size) => sharpImage
@@ -41,6 +42,24 @@ const uploader = (Body, Key) => new Promise((resolve, reject) => {
 });
 
 export const postImage = (req, res) => {
+  const originalSize = sizeOf(req.file.buffer);
+  const desiredSize = {
+    width: Math.min(originalSize.width, 2560),
+    height: Math.min(originalSize.height, 1440),
+  };
+  const filteredSizes = filterSizes(desiredSize);
+  const img = new Image({ id: req.body.id });
+
+  img.downloadURL = cloudFrontify(`i/${req.body.id}`);
+  img.thumbnails = filteredSizes.reduce((acc, size) => {
+    acc[size.width] = cloudFrontify(`i/${req.body.id}.${size.width}`);
+    return acc;
+  }, {});
+  img.state = imageStates.PROCESSING;
+
+  // Send an early response to mitigate heroku request timeout limits
+  res.send(img);
+
   // Tinify and resize to max 2560w or 1440h
   const source = tinify
     .fromBuffer(req.file.buffer)
@@ -53,45 +72,31 @@ export const postImage = (req, res) => {
   // Upload original to s3
   const originalUploader = source
     .store(awsConfig(`bolg/i/${req.body.id}`))
-    .meta()
-    .then(() => `i/${req.body.id}`)
-    .catch((err) => { throw err; });
+    .meta();
 
   // Store tinified original as buffer
   const thumbnailUploader = source.toBuffer()
     .then((buffer) => {
-      // Get resolution of the image
-      const filteredSizes = filterSizes(sizeOf(buffer));
       const sharpBuffer = sharp(buffer);
       return filteredSizes.map(thumbnailSize => resizer(sharpBuffer, thumbnailSize)
         .then(thumbnail => minifier(thumbnail))
-        .then(thumbnail => uploader(thumbnail, `i/${req.body.id}.${thumbnailSize.width}`))
-        .then(() => ({
-          width: thumbnailSize.width,
-          path: `i/${req.body.id}.${thumbnailSize.width}`,
-        }))
-        .catch((err) => { throw err; }))
+        .then(thumbnail => uploader(thumbnail, `i/${req.body.id}.${thumbnailSize.width}`)))
     })
     .then(promises => Promise.all(promises))
-    .catch((err) => { throw err; })
 
   // Wait for all uploads to finish
   return Promise.all([
     originalUploader,
     thumbnailUploader,
   ])
-    .then((paths) => {
-      const img = new Image({ id: req.body.id });
-      const [downloadUrl, thumbnails] = paths;
-      img.downloadURL = cloudFrontify(downloadUrl);
-      img.thumbnails = thumbnails.reduce((acc, thumbnail) => {
-        acc[thumbnail.width] = cloudFrontify(thumbnail.path);
-        return acc;
-      }, {});
-      res.send(img);
+    .then(() => {
+      app.io.emit('server:image-processing-finished', req.body.id);
     })
     .catch((err) => {
-      throw new Error(err);
+      app.io.emit('server:image-processing-error', {
+        id: req.body.id,
+        err,
+      });
     });
 };
 

@@ -10,10 +10,10 @@ export const states = {
   PUBLISHED: 6,
 };
 
-// Random logo
-export const logoURL = () => `/img/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`;
-
 export const cloudFrontify = filename => `https://d3ieg3cxah9p4i.cloudfront.net/${filename}`;
+
+// Random logo
+export const logoURL = () => cloudFrontify(`/static/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`);
 
 export const mapsAPIKey = 'AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ';
 
@@ -31,6 +31,14 @@ export const sizes = [
     height: 360,
   },
 ];
+
+export const imageStates = {
+  QUEUED: 0,
+  UPLOADING: 1,
+  PROCESSING: 2,
+  DONE: 3,
+  ERROR: 4,
+}
 
 export const objectToArray = obj => Object.keys(obj).map(key => obj[key]);
 
