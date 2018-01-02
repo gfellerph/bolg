@@ -18,10 +18,10 @@
         ></image-selector>
       </div>
       <div class="post-stats">
-        <post-status :post="post"></post-status>
+        <post-status :post="post" :errorMessage="errorMessage"></post-status>
         <button class="notification-button" @click="sendNotification" :disabled="post.notificationSent || !connected || notificationPending">Notify</button>
-        <button class="unpublish-button" @click="unpublishPost" :disabled="state === states.LOADING || !post.lastPublished">Unpublish</button>
-        <button class="publish-button" @click="publishPost" :disabled="state !== states.SAVED">Publish</button>
+        <button class="unpublish-button" @click="unpublishPost">Unpublish</button>
+        <button class="publish-button" @click="publishPost">Publish</button>
       </div>
     </div>
     <div class="post-preview">
@@ -41,7 +41,6 @@
   import { database } from 'src/config/firebase';
   import router from 'src/config/router';
   import ImageSelector from 'src/components/ImageSelector.vue';
-  import { states } from 'src/config/constants';
   import Editor from 'src/components/Editor';
   import PostStatus from 'src/components/PostStatus';
   import MarkdownCheatsheet from 'src/components/MarkdownCheatsheet';
@@ -55,10 +54,9 @@
         post: new Post(),
         cursorPosition: 0,
         postLoaded: false,
-        state: states.LOADING,
-        states,
         showCheatSheet: false,
         notificationPending: false,
+        error: false,
       };
     },
 
@@ -72,11 +70,10 @@
 
         return marked(this.post.markdown, { images });
       },
-      canPublish() { return this.state === states.SAVED; },
       hasTitle() { return !!this.post.title; },
-      error() {
+      errorMessage() {
         if (!this.post.title) { return 'This post has no title'; }
-        return false;
+        return this.error ? this.error.message : false;
       },
     },
 

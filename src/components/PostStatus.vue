@@ -94,7 +94,7 @@
 
     props: {
       post: Object,
-      errorMessage: String,
+      errorMessage: [Boolean, String],
     },
   };
 </script>
