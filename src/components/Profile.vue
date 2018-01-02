@@ -2,7 +2,7 @@
   <div class="profile">
     <auth-guard>
       <div slot="auth">
-        <h3>{{user.displayName}}</h3>
+        <h3>{{user.email}}</h3>
         <p class="text-align-center">
           <button @click="logout" class="small">Logout</button>
         </p>
