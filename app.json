@@ -1,0 +1,61 @@
+{
+  "name": "bisnaer",
+  "scripts": {
+    "postdeploy": "npm run prod"
+  },
+  "env": {
+    "AWS_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "ENVIRONMENT": {
+      "required": true
+    },
+    "FIREBASE_ADMIN_PRIVATE_KEY": {
+      "required": true
+    },
+    "FIREBASE_ADMIN_PRIVATE_KEY_ID": {
+      "required": true
+    },
+    "FIREBASE_API_KEY": {
+      "required": true
+    },
+    "NODE_MODULES_CACHE": {
+      "required": true
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "required": true
+    },
+    "SENDGRID_API_KEY": {
+      "required": true
+    },
+    "SENDGRID_PASSWORD": {
+      "required": true
+    },
+    "SENDGRID_SENDER": {
+      "required": true
+    },
+    "SENDGRID_USERNAME": {
+      "required": true
+    },
+    "TINYPNG_API_KEY": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "pointdns",
+    "sendgrid"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
