@@ -2,7 +2,10 @@
   <div class="profile">
     <auth-guard>
       <div slot="auth">
-        <button @click="logout" class="small">Logout</button>
+        <h3>{{user.displayName}}</h3>
+        <p class="text-align-center">
+          <button @click="logout" class="small">Logout</button>
+        </p>
       </div>
       <div slot="no-auth">
         <router-link to="/login">Login</router-link>
