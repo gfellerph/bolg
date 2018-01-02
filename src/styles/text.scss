@@ -8,7 +8,8 @@ body {
 
 p,
 dl,
-hr {
+hr,
+figure {
   margin: $golden-em auto;
 }
 
@@ -124,7 +125,8 @@ blockquote em {
 
 img + em,
 video + em,
-.picture-subtitle {
+.picture-subtitle,
+figcaption {
   display: block;
   font-style: italic;
   margin: $golden-rem / 4 0;

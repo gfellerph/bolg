@@ -16,30 +16,6 @@
   }
 }
 
-.picture-grid {
-  columns: 2;
-  column-gap: $golden-rem / 4;
-  margin-bottom: $golden-rem / 4 * -1;
-
-  > * {
-    display: block;
-    width: 100%;
-    padding-bottom: $golden-rem / 4;
-  }
-
-  &.first-hero {
-    *:first-child {
-      column-span: all;
-    }
-  }
-
-  &.last-hero {
-    *:last-child {
-      column-span: all;
-    }
-  }
-}
-
 .blog-divider {
   margin: $golden-rem * 3 auto;
 }

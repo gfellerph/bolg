@@ -15,9 +15,6 @@
         :image="image"
         @retry-upload="retryUpload"
       ></image-component>
-      <!-- <image-component
-        :image="new Image({state:1,downloadURL:'https://d3ieg3cxah9p4i.cloudfront.net/i/BJtbXrMmz.640'})"
-      ></image-component> -->
       <div class="image-upload-wrapper">
         <p class="text-align-center">Drop or click for pics</p>
         <label for="image-uploader"></label>

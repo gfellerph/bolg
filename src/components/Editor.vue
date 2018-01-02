@@ -114,18 +114,22 @@
       insertPictureGrid() {
         const { md } = this.$refs;
         const start = md.selectionStart;
-        const template = '<div class="picture-grid">\n</div>\n\n<p class="picture-subtitle"></p>';
+        const startLB = this.markdown.charAt(start - 1) === '\n';
+        const template = `${startLB ? '' : '\n'}<figure>\n\n<figcaption></figcaption>\n</figure>${this.markdown.charAt(start) === '\n' ? '' : '\n'}`;
         this.markdown = `${this.markdown.slice(0, start)}${template}${this.markdown.slice(start, this.markdown.length)}`;
         this.change();
         this.$nextTick(() => {
-          md.setSelectionRange(start + 26, start + 26);
+          const offset = start + 8 + (startLB ? 1 : 0);
+          md.setSelectionRange(offset, offset);
           md.focus();
         });
       },
       insertImage(url) {
         const { md } = this.$refs;
-        const image = `![Bildbeschrieb](${url})\n`;
         const start = md.selectionStart;
+        const startLB = this.markdown.charAt(start - 1) === '\n';
+        const endLB = this.markdown.charAt(start) === '\n';
+        const image = `${startLB ? '' : '\n'}![Bildbeschrieb](${url})${endLB ? '' : '\n'}`;
         this.markdown = `${this.markdown.slice(0, start)}${image}${this.markdown.slice(start, this.markdown.length)}`;
         this.change();
         this.$nextTick(() => {
