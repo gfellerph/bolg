@@ -21,12 +21,11 @@
         :disabled="deleting"
         @click.stop="removeImage"
       >
-        <img src="/img/trash.svg" alt="">
+        <img src="/img/close.svg" alt="">
       </button>
     </div>
   </div>
 </template>
-
 
 <script>
   import bus from 'src/config/bus';
@@ -52,7 +51,7 @@
 
     computed: {
       smallestImage() {
-        return this.image.getSmallestThumbUrl();
+        return this.image ? this.image.getSmallestThumbUrl() : '';
       },
     },
 
@@ -78,7 +77,6 @@
   };
 </script>
 
-
 <style lang="scss" scoped>
   @import 'src/styles/_variables';
 
@@ -86,17 +84,17 @@
     position: relative;
     background-color: rgba(255, 255, 255, 0.1);
     flex: 0 0 auto;
-    margin-right: $golden-em / 2;
-    transition: opacity 2s;
+    margin-right: $golden-em / 4;
+    transition: opacity 4s;
 
     &:hover {
       .image-controls {
-        opacity: 0.8;
+        opacity: 1;
       }
     }
 
     &.active {
-      outline: 5px solid dodgerblue;
+      outline: 0.402rem solid dodgerblue;
     }
 
     &.deleting {
@@ -121,44 +119,38 @@
   .post-image--insert {
     position: absolute;
     background: seagreen;
+    right: 0;
     bottom: 0;
     left: 0;
     border: none;
-    padding: 10px;
-
-    &:hover {
-      text-shadow: none;
-      animation: none;
-      transform: scale(1.1);
-    }
+    padding: 0.402rem;
+    display: block;
+    width: 100%;
+    opacity: 0.85;
 
     img {
       display: block;
-      width: 32px;
-      height: 32px;
+      width: 18px;
+      height: 18px;
     }
   }
 
   .post-image--remove {
     position: absolute;
-    background: crimson;
-    right: 0px;
-    bottom: 0px;
-    padding: 10px;
+    background: gainsboro;
+    top: -0.402rem;
+    right: -0.402rem;
+    padding: 0.402rem;
     border: none;
     margin: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
     transition: transform 200ms;
-
-    &:hover {
-      text-shadow: none;
-      animation: none;
-      transform: scale(1.1);
-    }
 
     img {
       display: block;
-      width: 32px;
-      height: 32px;
+      width: 12px;
+      height: 12px;
     }
   }
 </style>
