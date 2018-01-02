@@ -41,7 +41,7 @@ export default function enqueueNotifications(post) {
     ref.once('value', (snapshot) => {
       const val = snapshot.val();
       let subscribers = objectToArray(val);
-      if (process.env.ENVIRONMENT === 'LOCAL') {
+      if (process.env.ENVIRONMENT !== 'PRODUCTION') {
         subscribers = [
           new User({ displayName: 'Phippu Test', email: 'tuelsch@gmail.com' }),
         ]
