@@ -122,7 +122,6 @@
       onFileChange(event) {
         event.preventDefault();
         const files = event.target.files || event.dataTransfer.files;
-        console.log(event.type, files.length, this.imageQueue.length);
         const images = [...files].map(file => new Image({ file }));
         this.imageQueue = this.imageQueue.concat(images);
         this.$nextTick(this.startUpload);
