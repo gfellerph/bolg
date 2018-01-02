@@ -4,8 +4,9 @@
       <post-image
         v-for="image in post.images"
         :key="image.id"
-        :image="image"
-        @activate="activateImage"
+        :image="new Image(image)"
+        :class="{active: isImageActive(image.id)}"
+        @activate-image="activateImage"
         @remove-image="removeImage"
       ></post-image>
       <image-component
@@ -14,6 +15,9 @@
         :image="image"
         @retry-upload="retryUpload"
       ></image-component>
+      <!-- <image-component
+        :image="new Image({state:1,downloadURL:'https://d3ieg3cxah9p4i.cloudfront.net/i/BJtbXrMmz.640'})"
+      ></image-component> -->
       <div class="image-upload-wrapper">
         <p class="text-align-center">Drop or click for pics</p>
         <label for="image-uploader"></label>
@@ -38,6 +42,7 @@
   import { database } from 'src/config/firebase';
   import { imageStates } from 'src/config/constants';
   import io from 'src/config/socket.io-client';
+  import bus from 'src/config/bus';
 
   const postCtrl = PostController(database);
   const imageCtrl = ImageController();
@@ -46,6 +51,8 @@
     data() {
       return {
         imageQueue: [],
+        Image,
+        uploading: false,
       };
     },
 
@@ -68,6 +75,8 @@
 
     methods: {
       startUpload() {
+        if (this.uploading) return;
+
         // If queue is empty, exit
         if (!this.imageQueue) return;
 
@@ -76,17 +85,23 @@
 
         // No more images to upload
         if (!imageToUpload) return;
+        this.uploading = true;
         imageToUpload.state = imageStates.UPLOADING;
-        imageCtrl.upload(imageToUpload)
+        imageCtrl.upload(imageToUpload, {
+          onUploadProgress: (event) => {
+            const progress = (event.loaded / event.total) * 100;
+            bus.$emit(`upload-progress:${imageToUpload.id}`, progress);
+          },
+        })
           .then((res) => {
-            // const index = this.imageQueue.findIndex(image => image.id === res.data.id);
             imageToUpload.downloadURL = res.data.downloadURL;
             imageToUpload.thumbnails = res.data.thumbnails;
             imageToUpload.state = res.data.state;
-            // this.$set(this.imageQueue, index, new Image(res.data));
+            this.uploading = false;
             this.startUpload();
           })
           .catch(() => {
+            this.uploading = false;
             imageToUpload.state = imageStates.ERROR;
           });
       },
@@ -99,6 +114,7 @@
       processingError(data) {
         const img = this.imageQueue.find(image => data.id === image.id);
         img.state = imageStates.ERROR;
+        img.progress = 0;
       },
       isImageActive(imgId) {
         return this.post.titleImage ? imgId === this.post.titleImage.id : false;
@@ -106,6 +122,7 @@
       onFileChange(event) {
         event.preventDefault();
         const files = event.target.files || event.dataTransfer.files;
+        console.log(event.type, files.length, this.imageQueue.length);
         const images = [...files].map(file => new Image({ file }));
         this.imageQueue = this.imageQueue.concat(images);
         this.$nextTick(this.startUpload);
@@ -127,7 +144,7 @@
           this.post.titleImage = null;
         } else {
           this.post.titleImage = {
-            url: image.thumbnails[640] || image.downloadURL,
+            url: image.getTitleImageUrl(),
             id: image.id,
           };
         }
@@ -163,6 +180,8 @@
     justify-content: center;
     padding: 0 $golden-em / 2;
     height: 14vh;
+    outline: 4px dashed gainsboro;
+    outline-offset: -4px;
 
     input[type="file"] {
       opacity: 0;
@@ -180,6 +199,7 @@
       left: 0;
       bottom: 0;
       right: 0;
+      margin: 0;
       z-index: 1;
     }
 
@@ -197,13 +217,6 @@
   .images {
     display: flex;
     min-width: 100%;
-    padding: $golden-em / 2;
-    outline: 4px dashed transparent;
-    transition: outline 0.3s;
-
-    &.dragover {
-      outline-offset: -4px;
-      outline-color: slategrey;
-    }
+    padding: $golden-em / 4;
   }
 </style>

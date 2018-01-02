@@ -7,6 +7,7 @@ export default function Image(img = {}) {
   this.id = img.id || shortid.generate();
   this.lastModified = img.file ? img.file.lastModified : Date.now();
   this.state = img.state || 0;
+  this.progress = img.progress || 0;
 
   // Methods
   this.url = () => {
@@ -17,8 +18,21 @@ export default function Image(img = {}) {
   };
 
   this.getSmallestThumbUrl = () => {
-    if (!this.thumbnails && !this.downloadURL) return false;
-    if (!Object.keys(this.thumbnails).length) return this.downloadURL;
-    return this.thumbnails[Math.min.apply(null, Object.keys(this.thumbnails))];
+    if (this.thumbnails && Object.keys(this.thumbnails)) {
+      return this.thumbnails[Math.min.apply(null, Object.keys(this.thumbnails))];
+    }
+    return this.url();
+  }
+
+  this.getBlobOrSmallestThumb = () => {
+    if (this.file) return URL.createObjectURL(this.file);
+    return this.getSmallestThumbUrl();
+  }
+
+  this.getTitleImageUrl = () => {
+    if (this.thumbnails && this.thumbnails[640]) {
+      return this.thumbnails[640];
+    }
+    return this.getSmallestThumbUrl();
   }
 }
