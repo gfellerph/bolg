@@ -15,6 +15,7 @@ import { getTipps, postTipp } from 'src/server/api/tipps';
 import putDrawing from 'src/server/api/put-drawing';
 import { postSubscriber } from 'src/server/api/subscriber';
 import { postImage, deleteImages } from 'src/server/api/images';
+import { postSpamReport } from 'src/server/api/spamreport';
 
 const app = express();
 const uploader = multer();
@@ -52,6 +53,7 @@ app.post('/api/tipp', postTipp);
 app.put('/api/drawing', putDrawing);
 app.post('/api/subscriber', postSubscriber);
 app.post('/api/images', uploader.single('image'), postImage);
+app.post('/api/spamreport', postSpamReport);
 app.delete('/api/images/:id', deleteImages);
 
 // catch 404 and forward to error handler
