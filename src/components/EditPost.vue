@@ -206,7 +206,6 @@
 
   .post-images {
     overflow: auto;
-    border-top: 1px solid black;
     max-width: 50vw;
   }
 
