@@ -1,5 +1,6 @@
-import User from '@/models/User';
+import User from 'src/models/User';
 
+/* eslint no-param-reassign: 0 */
 export default {
   state: {
     authenticated: false,

@@ -14,8 +14,8 @@ export default {
   methods: {
     closeMessage() {
       this.$emit('close-add-tipp-success');
-    }
-  }
+    },
+  },
 }
 </script>
 

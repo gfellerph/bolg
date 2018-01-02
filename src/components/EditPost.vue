@@ -13,13 +13,15 @@
         </div>
       </div>
       <div class="post-images">
-        <image-selector :post="post"></image-selector>
+        <image-selector
+          :post="post"
+        ></image-selector>
       </div>
       <div class="post-stats">
-        <post-status :post="post"></post-status>
+        <post-status :post="post" :errorMessage="errorMessage"></post-status>
         <button class="notification-button" @click="sendNotification" :disabled="post.notificationSent || !connected || notificationPending">Notify</button>
-        <button class="unpublish-button" @click="unpublishPost" :disabled="state === states.LOADING || !post.lastPublished">Unpublish</button>
-        <button class="publish-button" @click="publishPost" :disabled="state !== states.SAVED">Publish</button>
+        <button class="unpublish-button" @click="unpublishPost">Unpublish</button>
+        <button class="publish-button" @click="publishPost">Publish</button>
       </div>
     </div>
     <div class="post-preview">
@@ -34,46 +36,45 @@
 <script>
   import axios from 'axios';
   import debounce from 'debounce';
-  import { marked } from '@/config/markdown';
-  import Post from '@/models/PostAdmin';
-  import { database } from '@/config/firebase';
-  import router from '@/config/router';
-  import ImageSelector from '@/components/ImageSelector';
-  import bus from '@/config/bus';
-  import PostMixin from '@/mixins/post-mixin';
-  import { states, sizes } from '@/config/constants';
-  import Editor from '@/components/Editor';
-  import PostStatus from '@/components/PostStatus';
-  import MarkdownCheatsheet from '@/components/MarkdownCheatsheet';
+  import { marked } from 'src/config/markdown';
+  import Post from 'src/models/Post';
+  import { database } from 'src/config/firebase';
+  import router from 'src/config/router';
+  import ImageSelector from 'src/components/ImageSelector.vue';
+  import Editor from 'src/components/Editor';
+  import PostStatus from 'src/components/PostStatus';
+  import MarkdownCheatsheet from 'src/components/MarkdownCheatsheet';
+  import PostController from 'src/controllers/post-controller';
+
+  const postCtrl = PostController(database);
 
   export default {
-    mixins: [PostMixin],
-
     data() {
       return {
         post: new Post(),
         cursorPosition: 0,
         postLoaded: false,
-        states,
         showCheatSheet: false,
         notificationPending: false,
+        error: false,
       };
     },
 
     computed: {
       connected() { return this.$store.state.connection.connected; },
       compiledContent() {
-        const images = {};
-        this.post.images.map((image) => {
-          images[image.id] = image.thumbnails;
-        });
-        return marked(this.post.markdown, { images }); },
-      canPublish() { return this.state === states.SAVED; },
+        const images = this.post.images.reduce((acc, image) => {
+          acc[image.id] = image.thumbnails;
+          return acc;
+        }, {});
+
+        return marked(this.post.markdown, { images });
+      },
       hasTitle() { return !!this.post.title; },
-      error() {
+      errorMessage() {
         if (!this.post.title) { return 'This post has no title'; }
-        return false;
-      }
+        return this.error ? this.error.message : false;
+      },
     },
 
     methods: {
@@ -81,52 +82,44 @@
         const article = this.$refs.previewArticle;
         this.$refs.previewArticle.scrollTop = (article.scrollHeight - article.clientHeight) * percent;
       },
-      insertImage(url) {
-        const image = `\n![alt text](${url})\n`;
-        const position = document.getElementById('markdown-editor').selectionStart || 0;
-        this.post.markdown = [
-          this.post.markdown.slice(0, position),
-          image,
-          this.post.markdown.slice(position),
-        ].join('');
+      savePostImmediately() {
+        postCtrl.set(this.post).then((data) => {
+          this.post.lastSaved = data.lastSaved;
+          if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
+        });
       },
+      debouncedSave: debounce(function debounced() {
+        this.savePostImmediately();
+      }, 1000),
       savePost(markdown) {
         this.post.markdown = markdown;
         this.post.lastEdited = Date.now();
         this.debouncedSave();
       },
-      debouncedSave: debounce(function () {
-        this.savePostImmediately();
-      }, 1000),
-      savePostImmediately() {
-        this.post.set().then(() => {
-          if (this.$route.fullPath == '/create') router.replace(`/edit/${this.post.id}`);
-        });
-      },
       getPost(id) {
         database
           .ref(`/posts/${id}`)
-          .once('value', snapshot => {
+          .once('value', (snapshot) => {
             this.postLoaded = true;
             const post = snapshot.val();
             if (post) this.post = new Post(post);
           });
       },
       publishPost() {
-        this.post.publish()
+        postCtrl.publish(this.post)
           .then(() => {
             this.error = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.error = err.message;
           });
       },
       unpublishPost() {
-        this.post.unpublish()
+        postCtrl.unpublish(this.post)
           .then(() => {
             this.error = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.error = err.message;
           });
       },
@@ -140,9 +133,9 @@
           .then(() => {
             this.notificationPending = false;
             this.post.notificationSent = true;
-            return this.post.set();
+            return postCtrl.set(this.post);
           })
-          .catch(err => {
+          .catch((err) => {
             this.notificationPending = false;
             this.err = err.message;
           });
@@ -155,18 +148,14 @@
       }
     },
 
-    mounted() {
-      bus.$on('insert-image', this.insertImage);
-    },
-
     watch: {
-      $route (to, from) {
+      $route(to) {
         if (to.params.id) {
           this.getPost(to.params.id);
         } else {
           this.post = new Post();
         }
-      }
+      },
     },
 
     components: {
@@ -174,7 +163,7 @@
       Editor,
       PostStatus,
       MarkdownCheatsheet,
-    }
+    },
   };
 </script>
 
@@ -214,7 +203,6 @@
 
   .post-images {
     overflow: auto;
-    border-top: 1px solid black;
     max-width: 50vw;
   }
 

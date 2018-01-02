@@ -40,8 +40,8 @@ export default function initCanvas() {
    */
   function setPosition(event) {
     const rect = canvas.getBoundingClientRect(); // abs. size of element
-    const scaleX = canvas.width / rect.width;    // relationship bitmap vs. element for X
-    const scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
+    const scaleX = canvas.width / rect.width; // relationship bitmap vs. element for X
+    const scaleY = canvas.height / rect.height; // relationship bitmap vs. element for Y
     const clientX = event.clientX ? event.clientX : event.touches[0].clientX;
     const clientY = event.clientY ? event.clientY : event.touches[0].clientY;
 

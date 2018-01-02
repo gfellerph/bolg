@@ -1,5 +1,5 @@
 import cuid from 'cuid';
-import User from '@/models/User';
+import User from 'src/models/User';
 
 export default function Tipp(tipp = {}) {
   // Properties

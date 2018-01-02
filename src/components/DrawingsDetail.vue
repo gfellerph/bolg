@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import { database } from '@/config/firebase';
+  import { database } from 'src/config/firebase';
 
   export default {
     props: {
@@ -19,6 +19,8 @@
 
     methods: {
       deleteDrawing() {
+        /* eslint no-alert: 0 */
+        /* eslint no-restricted-globals: 0 */
         if (!confirm('Wosch die Zeichnig würk lösche?')) return;
 
         database.ref(`posts/${this.postid}/drawings/${this.drawingkey}`).remove();

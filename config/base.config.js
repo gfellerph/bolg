@@ -1,21 +1,32 @@
 const paths = require('./paths');
-const utils = require('../build/utils');
-const vueLoaderConfig = require('../build/vue-loader.conf');
+const vueLoaderConfig = require('./vue-loader.conf');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const EsLintFriendlyFormatter = require('eslint-friendly-formatter');
 
 module.exports = {
   resolve: {
-    extensions: ['.js', '.vue', '.scss'],
+    extensions: [
+      '.js',
+      '.vue',
+      '.scss',
+      '.json',
+    ],
     alias: {
       vue$: 'vue/dist/vue.esm.js',
-      '@': paths.src,
+      src: paths.src,
     },
-  },
-  externals: {
-    firebase: 'firebase',
   },
   module: {
     rules: [
+      {
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: paths.src,
+        options: {
+          formatter: EsLintFriendlyFormatter,
+        },
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -31,7 +42,15 @@ module.exports = {
         loader: 'url-loader',
         query: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+          name: '/img/[name].[hash:7].[ext]',
+        },
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: '/media/[name].[hash:7].[ext]',
         },
       },
       {
@@ -39,7 +58,7 @@ module.exports = {
         loader: 'url-loader',
         query: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+          name: '/fonts/[name].[hash:7].[ext]',
         },
       },
     ],
@@ -47,4 +66,5 @@ module.exports = {
   plugins: [
     new FriendlyErrorsPlugin(),
   ],
+  bail: true,
 };

@@ -1,54 +1,81 @@
 <template>
-  <div class="post-image" :class="{active: active}" @click="activateImage">
-    <img class="post-image--preview" :src="smallestImage">
+  <div
+    class="post-image"
+    :class="{active: active, deleting: deleting}"
+    @click="activateImage"
+  >
+    <img
+      class="post-image--preview"
+      :src="smallestImage"
+    >
     <div class="image-controls">
-      <button @click.stop="insertImage" class="post-image--insert">
+      <button
+        class="post-image--insert"
+        :disabled="deleting"
+        @click.stop="insertImage"
+      >
         <img src="/img/insert.svg" alt="">
       </button>
-      <button @click.stop="removeImage" class="post-image--remove">
-        <img src="/img/trash.svg" alt="">
+      <button
+        class="post-image--remove"
+        :disabled="deleting"
+        @click.stop="removeImage"
+      >
+        <img src="/img/close.svg" alt="">
       </button>
     </div>
   </div>
 </template>
 
-
 <script>
-  import Image from '@/models/Image';
-  import bus from '@/config/bus';
+  import bus from 'src/config/bus';
+  import Image from 'src/models/Image';
+  import ImageController from 'src/controllers/image-controller';
+
+  const imageCtrl = ImageController();
 
   export default {
     data() {
-      return {};
+      return {
+        deleting: false,
+      };
     },
 
     props: {
-      image: Object,
+      image: {
+        type: Object,
+        default: () => new Image(),
+      },
       active: Boolean,
     },
 
     computed: {
       smallestImage() {
-        if (!this.image.thumbnails) return this.image.downloadURL;
-        return this.image.thumbnails[Math.min.apply(null, Object.keys(this.image.thumbnails))];
-      }
+        return this.image ? this.image.getSmallestThumbUrl() : '';
+      },
     },
 
     methods: {
       removeImage() {
-        this.$emit('remove-image', this.image.id);
+        this.deleting = true;
+        imageCtrl.deleteImages(this.image.id)
+          .then(() => {
+            this.$emit('remove-image', this.image.id);
+          })
+          .catch((err) => {
+            this.deleting = false;
+            throw new Error(err);
+          });
       },
       insertImage() {
         bus.$emit('insert-image', this.image.downloadURL);
       },
       activateImage() {
-        const url = this.image.thumbnails[640] ? this.image.thumbnails[640] : this.image.downloadURL;
-        this.$emit('activate-image', { id: this.image.id, url });
+        this.$emit('activate-image', this.image);
       },
-    }
+    },
   };
 </script>
-
 
 <style lang="scss" scoped>
   @import 'src/styles/_variables';
@@ -57,19 +84,28 @@
     position: relative;
     background-color: rgba(255, 255, 255, 0.1);
     flex: 0 0 auto;
-    margin-right: $golden-em / 2;
-    
+    margin-right: $golden-em / 4;
+    transition: opacity 4s;
+
     &:hover {
       .image-controls {
-        opacity: 0.8;
-      }  
+        opacity: 1;
+      }
     }
 
     &.active {
-      outline: 5px solid dodgerblue;
+      outline: 0.402rem solid dodgerblue;
+    }
+
+    &.deleting {
+      opacity: 0.1;
+
+      .image-controls {
+        display: none;
+      }
     }
   }
-  
+
   .post-image--preview {
     display: block;
     height: 14vh;
@@ -78,50 +114,43 @@
   .image-controls {
     opacity: 0;
     transition: opacity 200ms;
-
   }
-  
+
   .post-image--insert {
     position: absolute;
     background: seagreen;
+    right: 0;
     bottom: 0;
     left: 0;
     border: none;
-    padding: 10px;
-
-    &:hover {
-      text-shadow: none;
-      animation: none;
-      transform: scale(1.1);
-    }
+    padding: 0.402rem;
+    display: block;
+    width: 100%;
+    opacity: 0.85;
 
     img {
       display: block;
-      width: 32px;
-      height: 32px;
+      width: 18px;
+      height: 18px;
     }
   }
 
   .post-image--remove {
     position: absolute;
-    background: crimson;
-    right: 0px;
-    bottom: 0px;
-    padding: 10px;
+    background: gainsboro;
+    top: -0.402rem;
+    right: -0.402rem;
+    padding: 0.402rem;
     border: none;
     margin: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
     transition: transform 200ms;
-
-    &:hover {
-      text-shadow: none;
-      animation: none;
-      transform: scale(1.1);
-    }
 
     img {
       display: block;
-      width: 32px;
-      height: 32px;
+      width: 12px;
+      height: 12px;
     }
   }
 </style>

@@ -1,5 +1,5 @@
 import cuid from 'cuid';
-import { slugger, liveRootUrl } from '@/config/constants';
+import { slugger, liveRootUrl } from 'src/config/constants';
 
 /**
  * A blog post
@@ -24,10 +24,6 @@ export default function Post(post = {}) {
   this.titleImage = post.titleImage || null;
   this.type = 'post';
   this.drawings = post.drawings || [];
-
-  if (!this.titleImage && this.images.length) {
-    this.titleImage = this.images[0].thumbnails[640] ? { id: this.id, url: this.images[0].thumbnails[640] } : null;
-  }
 
   /**
    * Normalize the post object, no functions, ready for setting to firebase
@@ -62,7 +58,9 @@ export default function Post(post = {}) {
 
   Object.defineProperty(this, 'heroImageUrl', {
     get() {
-      const image = this.titleImage ? this.titleImage.url : this.images[0].thumbnails['640'];
+      const image = this.titleImage
+        ? this.titleImage.url
+        : new Image(this.images[0]).getSmallestThumbUrl();
       return image;
     },
   });

@@ -1,23 +1,25 @@
 <template>
   <div class="image-selector" ref="imageSelector">
-    <div class="images" :class="{dragover: dragover}">
+    <div class="images">
       <post-image
         v-for="image in post.images"
-        :image="image"
         :key="image.id"
-        :active="image.id === post.titleImage.id"
-        @remove-image="removeImage"
+        :image="new Image(image)"
+        :class="{active: isImageActive(image.id)}"
         @activate-image="activateImage"
+        @remove-image="removeImage"
       ></post-image>
-      <image-uploader
-        v-for="image in imagesForUpload"
-        :image="image"
+      <image-component
+        v-for="image in imageQueue"
         :key="image.id"
-        @thumbnails-generated="addImage"
-      ></image-uploader>
+        :image="image"
+        @retry-upload="retryUpload"
+      ></image-component>
       <div class="image-upload-wrapper">
         <p class="text-align-center">Drop or click for pics</p>
+        <label for="image-uploader"></label>
         <input
+          id="image-uploader"
           type="file"
           multiple
           @change="onFileChange"
@@ -28,16 +30,26 @@
 </template>
 
 <script>
-  import ImageUploader from '@/components/ImageUploader';
-  import PostImage from '@/components/PostImage';
-  import Image from '@/models/Image';
-  import bus from '@/config/bus';
+  import ImageUploader from 'src/components/ImageUploader';
+  import PostImage from 'src/components/PostImage';
+  import ImageComponent from 'src/components/Image';
+  import Image from 'src/models/Image';
+  import PostController from 'src/controllers/post-controller';
+  import ImageController from 'src/controllers/image-controller';
+  import { database } from 'src/config/firebase';
+  import { imageStates } from 'src/config/constants';
+  import io from 'src/config/socket.io-client';
+  import bus from 'src/config/bus';
+
+  const postCtrl = PostController(database);
+  const imageCtrl = ImageController();
 
   export default {
     data() {
       return {
-        imagesForUpload: [],
-        dragover: false,
+        imageQueue: [],
+        Image,
+        uploading: false,
       };
     },
 
@@ -46,55 +58,101 @@
     },
 
     mounted() {
-      window.addEventListener('dragover', function (e) { e.preventDefault(); });
-      window.addEventListener('dragenter', this.onDragEnter);
-      window.addEventListener('dragleave', this.onDragLeave);
+      window.addEventListener('dragover', (e) => { e.preventDefault(); });
       window.addEventListener('drop', this.onFileChange);
 
+      // Map vertical scrolling to horizontal scroll events
       this.$refs.imageSelector.addEventListener('mousewheel', (event) => {
         this.$refs.imageSelector.scrollLeft += event.deltaY;
       });
-    },
 
-    created() {
-      /* bus.$on('remove-image', this.removeImage);
-      bus.$on('activate-image', this.activateImage); */
-      this.$on('thumbnails-generated', this.addImage);
+      io.on('server:image-processing-finished', this.addImage);
+      io.on('server:image-processing-error', this.processingError);
     },
 
     methods: {
-      onDragEnter(event) {
-        if (event.target === event.currentTarget) this.dragover = true;
+      startUpload() {
+        if (this.uploading) return;
+
+        // If queue is empty, exit
+        if (!this.imageQueue) return;
+
+        // Find first waiting image
+        const imageToUpload = this.imageQueue.find(image => image.state === imageStates.QUEUED);
+
+        // No more images to upload
+        if (!imageToUpload) return;
+        this.uploading = true;
+        imageToUpload.state = imageStates.UPLOADING;
+        imageCtrl.upload(imageToUpload, {
+          onUploadProgress: (event) => {
+            const progress = (event.loaded / event.total) * 100;
+            bus.$emit(`upload-progress:${imageToUpload.id}`, progress);
+          },
+        })
+          .then((res) => {
+            imageToUpload.downloadURL = res.data.downloadURL;
+            imageToUpload.thumbnails = res.data.thumbnails;
+            imageToUpload.state = res.data.state;
+            this.uploading = false;
+            this.startUpload();
+          })
+          .catch(() => {
+            this.uploading = false;
+            imageToUpload.state = imageStates.ERROR;
+          });
       },
-      onDragLeave(event) {
-        if (event.target === event.currentTarget) this.dragover = false;
+      retryUpload(id) {
+        const img = this.imageQueue.find(image => id === image.id);
+        if (!img) return;
+        img.state = imageStates.QUEUED;
+        this.startUpload();
+      },
+      processingError(data) {
+        const img = this.imageQueue.find(image => data.id === image.id);
+        img.state = imageStates.ERROR;
+        img.progress = 0;
+      },
+      isImageActive(imgId) {
+        return this.post.titleImage ? imgId === this.post.titleImage.id : false;
       },
       onFileChange(event) {
         event.preventDefault();
-        var images = event.target.files || event.dataTransfer.files;
-        for (var i = 0; i < images.length; i++) {
-          this.imagesForUpload.push(new Image({file: images[i]}));
-        }
+        const files = event.target.files || event.dataTransfer.files;
+        const images = [...files].map(file => new Image({ file }));
+        this.imageQueue = this.imageQueue.concat(images);
+        this.$nextTick(this.startUpload);
       },
-      addImage(image) {
-        this.imagesForUpload = this.imagesForUpload.filter(img => image.id !== img.id);
-        this.post.images.push(image);
-        this.post.set();
+      addImage(id) {
+        const img = this.imageQueue.find(image => image.id === id);
+        if (img) {
+          this.imageQueue = this.imageQueue.filter(image => image.id !== id);
+          this.post.images.push(img);
+          postCtrl.set(this.post);
+        }
       },
       removeImage(id) {
         this.post.images = this.post.images.filter(image => image.id !== id);
-        this.post.set();
+        postCtrl.set(this.post);
       },
-      activateImage(url) {
-        this.post.titleImage = url;
-        this.post.set();
-      }
+      activateImage(image) {
+        if (this.isImageActive(image.id)) {
+          this.post.titleImage = null;
+        } else {
+          this.post.titleImage = {
+            url: image.getTitleImageUrl(),
+            id: image.id,
+          };
+        }
+        return postCtrl.set(this.post);
+      },
     },
 
     components: {
       ImageUploader,
       PostImage,
-    }
+      ImageComponent,
+    },
   };
 </script>
 
@@ -109,7 +167,7 @@
     height: 100%;
     overflow: auto;
   }
-  
+
   .image-upload-wrapper {
     position: relative;
     flex: 1 0 auto;
@@ -117,15 +175,27 @@
     align-items: center;
     justify-content: center;
     padding: 0 $golden-em / 2;
+    height: 14vh;
+    outline: 4px dashed gainsboro;
+    outline-offset: -4px;
 
     input[type="file"] {
       opacity: 0;
       position: absolute;
       top: 0;
       left: 0;
+      width: 0%;
+      height: 0%;
+    }
+
+    label {
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 0;
       bottom: 0;
       right: 0;
-      width: 100%;
+      margin: 0;
       z-index: 1;
     }
 
@@ -143,13 +213,6 @@
   .images {
     display: flex;
     min-width: 100%;
-    padding: $golden-em / 2;
-    outline: 4px dashed transparent;
-    transition: outline 0.3s;
-
-    &.dragover {
-      outline-offset: -4px;
-      outline-color: slategrey;
-    }
+    padding: $golden-em / 4;
   }
 </style>

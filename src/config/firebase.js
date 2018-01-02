@@ -10,7 +10,6 @@ const config = {
   storageBucket: 'bolg-d1098.appspot.com',
   messagingSenderId: '206693873851',
 };
-
 if (firebase.apps.length === 0) firebase.initializeApp(config);
 
 Vue.use(vuefire);

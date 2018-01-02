@@ -1,10 +1,10 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
-import GoogleMap from '@/components/Map';
-import Subscribe from '@/components/Subscribe';
-import '@/config/validation';
-import { setBookmarkFlag } from '@/modules/bookmark';
+import GoogleMap from 'src/components/Map';
+import Subscribe from 'src/components/Subscribe';
+import 'src/config/validation';
+import { setBookmarkFlag } from 'src/modules/bookmark';
 
 Vue.config.productionTip = false;
 
@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
       components: { GoogleMap },
     });
   }
-  
+
   if (subscribeElement) {
     new Vue({
       el: '#subscribe',

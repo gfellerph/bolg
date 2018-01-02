@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+const dotenv = require('dotenv');
+if (process.env.NODE_ENV === 'development') dotenv.config();
 
 /**
  * Normalize a port into a number, string, or false.
@@ -40,6 +42,7 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+app.io.attach(server);
 
 /**
  * Event listener for HTTP server "error" event.

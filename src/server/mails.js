@@ -1,11 +1,11 @@
 import Sendgrid from 'sendgrid';
-import firebase from '@/config/firebase-admin';
-import { objectToArray } from '@/config/constants';
-import * as hbsTemplates from '@/config/handlebars';
-import { logoURL } from '@/server/helpers';
+import { database } from 'src/config/firebase-admin';
+import { objectToArray, logoURL } from 'src/config/constants';
+import User from 'src/models/User';
+import * as hbsTemplates from 'src/config/handlebars';
 
 const helper = Sendgrid.mail;
-const sender = new helper.Email('tuelsch@gmail.com', 'Philipp Gfeller');
+const sender = new helper.Email(process.env.SENDGRID_SENDER, 'Bis när - Steffi u Phippu');
 const sendgrid = Sendgrid(process.env.SENDGRID_API_KEY);
 
 /**
@@ -18,7 +18,7 @@ function buildNotificationMail(subscriber, post) {
   return hbsTemplates.mail({
     post,
     subscriber,
-    logoUrl: `https://bisnär.ch${logoURL()}`,
+    logoUrl: logoURL(),
   });
 }
 
@@ -36,12 +36,16 @@ const buildAPICall = (post, subscriber) => {
 }
 
 export default function enqueueNotifications(post) {
-  const ref = firebase.database().ref('/subscribers');
+  const ref = database.ref('/subscribers');
   return new Promise((resolve, reject) => {
     ref.once('value', (snapshot) => {
       const val = snapshot.val();
-      const subscribers = objectToArray(val);
-
+      let subscribers = objectToArray(val);
+      if (process.env.ENVIRONMENT !== 'PRODUCTION') {
+        subscribers = [
+          new User({ displayName: 'Phippu Test', email: 'tuelsch@gmail.com' }),
+        ]
+      }
       Promise.all(subscribers.map(subscriber => sendgrid.API(buildAPICall(post, subscriber))))
         .then(resolve)
         .catch(reject);

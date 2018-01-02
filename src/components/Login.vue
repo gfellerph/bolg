@@ -19,10 +19,10 @@
 </template>
 
 <script>
-  import User from '@/models/UserAdmin';
-  import router from '@/config/router';
-  import AuthGuard from '@/components/AuthGuard';
-  import {auth} from '@/config/firebase';
+  import User from 'src/models/UserAdmin';
+  import router from 'src/config/router';
+  import AuthGuard from 'src/components/AuthGuard';
+  import { auth } from 'src/config/firebase';
 
   export default {
     data() {
@@ -35,13 +35,13 @@
     },
 
     created() {
-      auth.onAuthStateChanged(user => {
+      auth.onAuthStateChanged((user) => {
         if (user) {
           if (this.$route.query.redirect) {
-            router.push({path: this.$route.query.redirect});
+            router.push({ path: this.$route.query.redirect });
           }
         } else {
-          router.push({path: '/'})
+          router.push({ path: '/' })
         }
       });
     },
@@ -54,7 +54,7 @@
             this.loading = false;
             this.error = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading = false;
             this.error = err.message;
           });
@@ -62,8 +62,8 @@
     },
 
     components: {
-      AuthGuard
-    }
+      AuthGuard,
+    },
   };
 </script>
 

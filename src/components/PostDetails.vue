@@ -24,19 +24,15 @@
 </template>
 
 <script>
-  import dateFormat from '@/filters/date-format';
-  import PostStatus from '@/components/PostStatus';
-  import { description } from '@/config/markdown';
+  import dateFormat from 'src/filters/date-format';
+  import PostStatus from 'src/components/PostStatus';
+  import { description } from 'src/config/markdown';
+  import { database } from 'src/config/firebase';
+  import PostController from 'src/controllers/post-controller';
+
+  const postCtrl = PostController(database);
 
   export default {
-    // mixins: [PostMixin],
-  
-    data() {
-      return {
-        // states,
-      };
-    },
-
     props: {
       post: Object,
     },
@@ -48,13 +44,15 @@
     methods: {
       dateFormat,
       deletePost() {
+        /* eslint no-restricted-globals: 0 */
+        /* eslint no-alert: 0 */
         if (confirm('wosch würk dä Post lösche?')) {
-          this.post.remove();
+          postCtrl.remove(this.post);
         }
       },
       publishPost() {
         this.post.publish();
-      }
+      },
     },
 
     components: {

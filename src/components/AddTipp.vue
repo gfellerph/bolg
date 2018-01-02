@@ -39,8 +39,10 @@
 </template>
 
 <script>
+  import Tipp from 'src/models/Tipp';
   import axios from 'axios';
-  import Tipp from '@/models/Tipp';
+
+  /* global google */
 
   export default {
     data() {
@@ -57,7 +59,7 @@
     },
 
     methods: {
-      send(event) {
+      send() {
         this.error = false;
         this.loading = true;
         this.tipp.lat = this.location.lat();
@@ -72,27 +74,27 @@
             this.tipp = new Tipp();
             this.$emit('tipp-add-success');
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading = false;
             this.error = err.message;
           });
       },
       addTemporaryTipp() {
-        const tempMarker = new google.maps.Marker({
-          title:  this.tipp.title(),
+        return new google.maps.Marker({
+          title: this.tipp.title(),
           position: this.location,
           map: this.map,
-					icon: {
-						url: '/img/inuksuk-map.svg',
-						size: new google.maps.Size(36, 34),
-						origin: new google.maps.Point(0,0),
-						anchor: new google.maps.Point(18, 17),
-					},
-				});
+          icon: {
+            url: '/img/inuksuk-map.svg',
+            size: new google.maps.Size(36, 34),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(18, 17),
+          },
+        });
       },
       cancel() {
         this.$emit('close-add-tipp');
-      }
+      },
     },
 
     mounted() {
@@ -136,10 +138,4 @@
   .add-tipp__controls {
     display: flex;
   }
-
-  .add-tipp__text {
-
-  }
-
-
 </style>

@@ -6,15 +6,14 @@ const markdownOptions = {
 };
 
 export const marked = (str, options) => {
-  const mergedOptions = Object.assign({}, markdownOptions, options);
   const renderer = new markdownParser.Renderer();
   renderer.image = (href, title, text) => {
     let srcset;
     if (options.images) {
       // Only jpgs and pngs, no gifs
-      const idRegex = /%2F([A-Za-z0-9]+)\.[JPjp]/g;
+      const idRegex = /\/([A-Za-z0-9_]+)$|%2F([A-Za-z0-9]+)\.[JjPp]/g;
       const match = idRegex.exec(href);
-      const id = match ? match[1] : null;
+      const id = match ? match[1] || match[2] : null;
       if (id) {
         const thumbs = options.images[id];
         srcset = thumbs ? Object.keys(thumbs).map(key => `${thumbs[key]} ${key}w`).join(',') : null;
@@ -24,12 +23,16 @@ export const marked = (str, options) => {
     const titleAttr = title ? ` title="${title}"` : '';
     const altAttr = text ? ` alt="${text}"` : '';
     const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
-    return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}>`;
+    const sizesAttr = srcset ? ' sizes="640px"' : '';
+    return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}>`;
   }
+  const mergedOptions = Object.assign({}, markdownOptions, options);
   mergedOptions.renderer = renderer;
   return markdownParser(str, mergedOptions);
 }
+
 export const excerpt = str => markdownParser(`${str.split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
+
 export const description = (str) => {
   const md = str
     // Remove headings

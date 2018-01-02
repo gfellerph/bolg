@@ -1,7 +1,5 @@
-import cuid from 'cuid';
 import Busboy from 'busboy';
 import tinify from 'tinify';
-import { sizes } from '@/config/constants';
 
 tinify.key = process.env.TINYPNG_API_KEY;
 
@@ -14,15 +12,13 @@ export default function putImages(req, res) {
     file.on('end', () => {
       tinify
         .fromBuffer(Buffer.concat(accumulator))
-        .toBuffer((tinifyErr, data) => {
+        .toBuffer((tinifyErr) => {
           if (tinifyErr) throw tinifyErr;
-          console.log(data.length);
         });
     });
   });
 
   busboy.on('finish', () => {
-    console.log('Busboy has finished');
     res.send('ok');
   });
 

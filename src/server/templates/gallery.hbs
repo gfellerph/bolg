@@ -1,6 +1,6 @@
 {{#extend "layout"}}
   {{#content "meta"}}
-    <title>galerie - bis när</title>
+    <title>Biuder - Bis när</title>
   {{/content}}
   {{#content "navigation"}}
     <nav>
@@ -21,9 +21,7 @@
             {{#each this}}
               <div class="gallery__column">
                 {{#each this}}
-                  {{#if this.thumbnails.[320]}}
-                    <img class="gallery__image" src="{{this.thumbnails.[320]}}" alt="Bilder aus dem Blog" data-zoom-target="{{this.thumbnails.[1920]}}">
-                  {{/if}}
+                  <img class="gallery__image" src="{{this.smallestThumb}}" alt="Bilder aus dem Blog" data-zoom-target="{{this.biggestThumb}}">
                 {{/each}}
               </div>
             {{/each}}
