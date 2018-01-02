@@ -1,10 +1,11 @@
 import Sendgrid from 'sendgrid';
 import { database } from 'src/config/firebase-admin';
 import { objectToArray, logoURL } from 'src/config/constants';
+import User from 'src/models/User';
 import * as hbsTemplates from 'src/config/handlebars';
 
 const helper = Sendgrid.mail;
-const sender = new helper.Email('bisnaer@gmail.com', 'Bis när - Steffi u Phippu');
+const sender = new helper.Email(process.env.SENDGRID_SENDER, 'Bis när - Steffi u Phippu');
 const sendgrid = Sendgrid(process.env.SENDGRID_API_KEY);
 
 /**
@@ -39,8 +40,12 @@ export default function enqueueNotifications(post) {
   return new Promise((resolve, reject) => {
     ref.once('value', (snapshot) => {
       const val = snapshot.val();
-      const subscribers = objectToArray(val);
-
+      let subscribers = objectToArray(val);
+      if (process.env.ENVIRONMENT === 'LOCAL') {
+        subscribers = [
+          new User({ displayName: 'Phippu Test', email: 'tuelsch@gmail.com' }),
+        ]
+      }
       Promise.all(subscribers.map(subscriber => sendgrid.API(buildAPICall(post, subscriber))))
         .then(resolve)
         .catch(reject);
