@@ -1,11 +1,10 @@
 import Sendgrid from 'sendgrid';
 import { database } from 'src/config/firebase-admin';
-import { objectToArray } from 'src/config/constants';
+import { objectToArray, logoURL } from 'src/config/constants';
 import * as hbsTemplates from 'src/config/handlebars';
-import { logoURL } from 'src/server/helpers';
 
 const helper = Sendgrid.mail;
-const sender = new helper.Email('tuelsch@gmail.com', 'Philipp Gfeller');
+const sender = new helper.Email('bisnaer@gmail.com', 'Bis när - Steffi u Phippu');
 const sendgrid = Sendgrid(process.env.SENDGRID_API_KEY);
 
 /**
@@ -18,7 +17,7 @@ function buildNotificationMail(subscriber, post) {
   return hbsTemplates.mail({
     post,
     subscriber,
-    logoUrl: `https://bisnär.ch${logoURL()}`,
+    logoUrl: logoURL(),
   });
 }
 
