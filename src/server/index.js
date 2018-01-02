@@ -4,6 +4,7 @@ import { database } from 'src/config/firebase-admin';
 import * as hbsTemplates from 'src/config/handlebars';
 import Post from 'src/models/Post';
 import { slugger, logoURL } from 'src/config/constants';
+import Image from 'src/models/Image';
 import writefile from './writefile';
 
 const cssInlineThreshold = 10; // KB
@@ -46,7 +47,10 @@ export function buildGallery() {
       const postsPerMonth = postsArray.reduce((acc, post) => {
         acc[post.postTitle] = [[], []];
         for (let i = 0; i < post.images.length; i++) {
-          acc[post.postTitle][i % 2].push(post.images[i]);
+          const img = new Image(post.images[i]);
+          img.smallestThumb = img.getSmallestThumbUrl();
+          img.biggestThumb = img.getBiggestThumbUrl();
+          acc[post.postTitle][i % 2].push(img);
         }
         return acc;
       }, {});
