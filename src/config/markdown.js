@@ -11,7 +11,7 @@ export const marked = (str, options) => {
     let srcset;
     if (options.images) {
       // Only jpgs and pngs, no gifs
-      const idRegex = /\/([A-Za-z0-9]+)$|%2F([A-Za-z0-9]+)\.[JjPp]/g;
+      const idRegex = /\/([A-Za-z0-9_]+)$|%2F([A-Za-z0-9]+)\.[JjPp]/g;
       const match = idRegex.exec(href);
       const id = match ? match[1] || match[2] : null;
       if (id) {
