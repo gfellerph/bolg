@@ -50,6 +50,6 @@ export default function putImages(req, res) {
       console.error(err);
       writefile(`temp/${req.body.postid}.${drawingId}.png`, imgBuffer);
       res.status(500);
-      res.send(`Isch leider nid gange, aber dis Biud isch gspicheret. Fähler: ${err.message}`);
+      res.send(`Öppis het nid ta wies söu, aber dis Biud isch gspicheret. Fähler: ${err.message}`);
     });
 }
