@@ -28,7 +28,7 @@
   {{#content "main"}}
     <div class="container">
       <article class="main-post">{{{post.html}}}</article>
-      <div class="drawing" id="zeichne">
+      {{!-- <div class="drawing" id="zeichne">
         <hr class="blog-divider">
         <p class="italic text-align-center">Zeichne dini Meinig zur Gschicht:</p>
         <canvas id="drawing" class="drawing__canvas blank"></canvas>
@@ -41,7 +41,7 @@
           {{#each post.drawings}}
           <img data-no-zoom="" src="{{this}}" alt="Zeichnig"> {{/each}}
         </div>
-      </div>
+      </div> --}}
       {{#if nextPost}}
         <hr class="blog-divider">
         <a class="next-post-link" href="{{nextPost.url}}">
