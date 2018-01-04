@@ -1,6 +1,5 @@
 import cuid from 'cuid';
 import tinify from 'tinify';
-import awsConfig from 'src/config/tinify-aws';
 import { database } from 'src/config/firebase-admin';
 import { cloudFrontify } from 'src/config/constants';
 import writefile from 'src/server/writefile';
