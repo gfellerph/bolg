@@ -108,7 +108,7 @@ export default function initCanvas() {
     // Clear canvas and say thanks
     clear();
     newImg.src = imageData;
-    displayContainer.appendChild(newImg);
+    if (displayContainer) displayContainer.appendChild(newImg);
     errorMessage.classList.remove('show');
     canvas.classList.add('merci');
     sendButton.setAttribute('disabled', 'disabled');

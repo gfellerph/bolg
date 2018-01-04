@@ -15,7 +15,7 @@ export default function putImages(req, res) {
   const imgBuffer = Buffer.from(base64Data, 'base64');
   const ref = database.ref(`/posts/${req.body.postid}/drawings/${drawingId}`);
   const publishedRef = database.ref(`/published/${req.body.postid}/drawings/${drawingId}`);
-  const awsLocation = `drawings/${drawingId}.png`;
+  const awsLocation = req.body.postid ? `drawings/${drawingId}.png` : `temp/${drawingId}.png`;
 
   imagemin.buffer(imgBuffer, {
     pulugins: [
@@ -25,7 +25,7 @@ export default function putImages(req, res) {
     /* eslint arrow-body-style:0 */
     .then((drawing) => {
       return new Promise((resolve, reject) => {
-        s3.putobject({
+        s3.putObject({
           Bucket: 'bolg',
           Key: awsLocation,
           Body: drawing,
@@ -37,30 +37,19 @@ export default function putImages(req, res) {
     })
     .then(() => {
       const cloudFront = cloudFrontify(awsLocation);
-      ref.set(cloudFront);
-      publishedRef.set(cloudFront);
+
+      if (req.body.postid) {
+        ref.set(cloudFront);
+        publishedRef.set(cloudFront);
+      }
 
       res.send('ok');
     })
     .catch((err) => {
+      /* eslint no-console:0 */
+      console.error(err);
       writefile(`temp/${req.body.postid}.${drawingId}.png`, imgBuffer);
       res.status(500);
-      res.send(`Isch leider nid gange: ${err.message}`);
-    })
-
-  /* tinify
-    .fromBuffer(imgBuffer)
-    .store(awsConfig(`bolg/drawings/${drawingId}.png`))
-    .meta()
-    .then((meta) => {
-      const cloudFront = cloudFrontify(meta.location.split('/bolg/')[1]);
-      ref.set(cloudFront);
-      publishedRef.set(cloudFront);
-
-      res.send('ok');
-    })
-    .catch((err) => {
-      writefile(`temp/${req.body.postid}.${drawingId}.png`, imgBuffer);
-      res.error(`Isch leider nid gange: ${err.message}`);
-    }); */
+      res.send(`Isch leider nid gange, aber dis Biud isch gspicheret. Fähler: ${err.message}`);
+    });
 }
