@@ -3,6 +3,7 @@ import tinify from 'tinify';
 import awsConfig from 'src/config/tinify-aws';
 import { database } from 'src/config/firebase-admin';
 import { cloudFrontify } from 'src/config/constants';
+import writefile from 'src/server/writefile';
 
 tinify.key = process.env.TINYPNG_API_KEY;
 
@@ -25,6 +26,7 @@ export default function putImages(req, res) {
       res.send('ok');
     })
     .catch((err) => {
-      res.error(err);
+      writefile(`temp/${req.body.postid}.${drawingId}.png`, imgBuffer);
+      res.error(`Isch leider nid gange: ${err.message}`);
     });
 }
