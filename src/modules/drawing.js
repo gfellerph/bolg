@@ -87,7 +87,8 @@ export default function initCanvas() {
   }, false);
 
   canvas.addEventListener('mouseenter', (event) => {
-    if (event.which !== 1) return;
+    const leftMousePressed = 'buttons' in event ? event.buttons === 1 : event.which === 1;
+    if (!leftMousePressed) return;
     startPath(event);
     canvas.addEventListener('mousemove', paint, false);
   });
