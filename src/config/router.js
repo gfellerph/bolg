@@ -11,6 +11,7 @@ import Tipps from 'src/components/Tipps';
 import Subscribe from 'src/components/Subscribe';
 import Drawings from 'src/components/Drawings';
 import Subscribers from 'src/components/Subscribers';
+import CreateDrawing from 'src/components/CreateDrawing';
 
 Vue.use(Router);
 
@@ -97,6 +98,14 @@ const router = new Router({
       path: '/subscribers',
       name: 'Subscribers',
       component: Subscribers,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/createdrawing',
+      name: 'CreateDrawing',
+      component: CreateDrawing,
       meta: {
         requiresAuth: true,
       },
