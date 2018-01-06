@@ -18,6 +18,7 @@
           <router-link to="/tipps">Tipps</router-link>
           <router-link to="/drawings">Drawings</router-link>
           <router-link to="/subscribers">Subscribers</router-link>
+          <router-link to="/createdrawing">Zeichne</router-link>
           <!-- <router-link to="/createstory">Create story</router-link>-->
         </div>
       </nav>

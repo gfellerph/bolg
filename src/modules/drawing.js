@@ -87,7 +87,8 @@ export default function initCanvas() {
   }, false);
 
   canvas.addEventListener('mouseenter', (event) => {
-    if (event.which !== 1) return;
+    const leftMousePressed = 'buttons' in event ? event.buttons === 1 : event.which === 1;
+    if (!leftMousePressed) return;
     startPath(event);
     canvas.addEventListener('mousemove', paint, false);
   });
@@ -108,7 +109,7 @@ export default function initCanvas() {
     // Clear canvas and say thanks
     clear();
     newImg.src = imageData;
-    displayContainer.appendChild(newImg);
+    if (displayContainer) displayContainer.appendChild(newImg);
     errorMessage.classList.remove('show');
     canvas.classList.add('merci');
     sendButton.setAttribute('disabled', 'disabled');

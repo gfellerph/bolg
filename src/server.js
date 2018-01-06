@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import compression from 'compression';
-// import bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import multer from 'multer';
@@ -40,7 +40,7 @@ app.use(express.static('public', {
 }));
 // app.use(bodyParser.json());
 // app.use(bodyParser.raw());
-// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 app.get('/publish', publishAllApi);
