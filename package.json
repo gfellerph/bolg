@@ -24,7 +24,6 @@
     "postinstall": "npm run prod"
   },
   "dependencies": {
-    "array.from": "^1.0.3",
     "autoprefixer": "^7.1.6",
     "aws-sdk": "^2.170.0",
     "axios": "^0.17.1",
