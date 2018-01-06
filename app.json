@@ -1,6 +1,7 @@
 {
   "name": "bisnaer",
   "scripts": {
+    "postdeploy": "npm run prod"
   },
   "env": {
     "AWS_ACCESS_KEY_ID": {
