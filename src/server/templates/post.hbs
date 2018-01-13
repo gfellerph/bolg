@@ -1,10 +1,12 @@
 {{#extend "layout"}}
+
   {{#content "meta"}}
     <meta property="og:title" content="{{post.title}}">
     <meta property="og:image" content="{{post.heroImageUrl}}">
     <meta property="id" content="{{post.id}}">
     <title>{{post.title}}</title>
   {{/content}}
+
   {{#content "navigation"}}
     <nav>
         <a class="left-link" href="/">
@@ -25,9 +27,13 @@
       <span>&nbsp;&mdash;</span>
     </p>
   {{/content}}
+
   {{#content "main"}}
-    <div class="container">
-      <article class="main-post">{{{post.html}}}</article>
+    <article class="main-post container">{{{post.html}}}</article>
+  {{/content}}
+
+  {{#content "footer"}}
+    <footer class="container">
       <div class="drawing" id="zeichne">
         <hr class="blog-divider">
         <p class="italic text-align-center">Zeichne dini Meinig zur Gschicht:</p>
@@ -57,7 +63,7 @@
         </a>
         <br>
       {{/if}}
-    </div>
+    </footer>
   {{/content}}
   {{#content "scripts"}}
     <script defer="defer" src="{{webpack.[/post.js]}}"></script>
