@@ -31,7 +31,7 @@ export const marked = (str, options) => {
   return markdownParser(str, mergedOptions);
 }
 
-export const excerpt = str => markdownParser(`${str.split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
+export const excerpt = str => markdownParser(`${str.replace(/<s[ct].+>.+<\/s[ct].+>/g, '').split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
 
 export const description = (str) => {
   const md = str
