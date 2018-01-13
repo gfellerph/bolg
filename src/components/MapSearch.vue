@@ -1,7 +1,9 @@
 <template>
   <div class="map-search">
     <div class="map-search__box map__box">
+      <label for="map-search-input" class="sr-only">Sueche</label>
       <input
+        id="map-search-input"
         type="text"
         class="map-search__input"
         placeholder="Sueche"
@@ -15,6 +17,7 @@
         @click="reset"
       >
         <img class="map-search__icon" src="/img/close.svg" alt="">
+        <span class="sr-only">Lösche</span>
       </button>
     </div>
     <button
@@ -215,7 +218,7 @@
       border-radius: 0;
       box-shadow: none;
     }
-    
+
     .map-search__input {
       font-family: 'Roboto', sans-serif;
       border-bottom: none;

@@ -8,7 +8,8 @@
       class="tipp-info__close plain"
       @click="closeTippInfo"
     >
-      <img src="/img/close.svg" alt="">
+      <img src="/img/close.svg" alt="Zuetue">
+      <span class="sr-only">Zuetue</span>
     </button>
   </div>
 </template>
