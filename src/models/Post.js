@@ -1,4 +1,5 @@
 import cuid from 'cuid';
+import Image from 'src/models/Image';
 import { slugger, liveRootUrl } from 'src/config/constants';
 
 /**
