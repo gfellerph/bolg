@@ -19,6 +19,7 @@
 
   .right-link,
   .left-link {
+    flex: 1 0 auto;
     text-align: center;
 
     @include min($xs) {
@@ -41,6 +42,14 @@
     }
   }
 
+  .left-link {
+    text-align: right;
+  }
+
+  .right-link {
+    text-align: left;
+  }
+
   nav {
     margin: 0 auto;
     display: flex;
@@ -58,7 +67,7 @@
       margin: 0 $golden-rem;
       font-style: italic;
       color: black;
-      flex: 1 0 auto;
+      flex: 0 1 auto;
       text-decoration: none;
 
       @include max($xs) {
