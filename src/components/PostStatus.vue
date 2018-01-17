@@ -6,8 +6,7 @@
 
 
 <script>
-  import moment from 'src/config/moment';
-  import { states } from 'src/config/constants';
+  import { states, formatDate } from 'src/config/constants';
 
   const classes = {
     0: 'loading',
@@ -31,7 +30,7 @@
       },
       message() {
         const lastPublished = this.post.lastPublished
-          ? `publiziert am ${moment(this.post.lastPublished).format('DD.MM.YY HH:MM')}`
+          ? `publiziert am ${formatDate(this.post.lastPublished)}`
           : 'nid publiziert';
 
         const messages = {

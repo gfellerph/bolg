@@ -1,6 +1,6 @@
 import Story from 'src/models/Story';
 import { database } from 'src/config/firebase';
-import moment from 'src/config/moment';
+import { formatDate } from 'src/config/constants';
 
 const ref = id => database.ref(`/stories/${id}`);
 const publishRef = id => database.ref(`/publishedstories/${id}`);
@@ -40,10 +40,10 @@ Story.prototype.unpublish = function unpublish() {
 Story.prototype.beautify = function beautify() {
   this.storyUrl = this.url;
   this.storyTitle = this.title;
-  this.created = moment(this.created, 'x').format('DD.MM.YYYY');
-  this.lastEdited = moment(this.lastEdited, 'x').format('DD.MM.YYYY');
-  this.lastSaved = moment(this.lastSaved, 'x').format('DD.MM.YYYY');
-  this.lastPublished = moment(this.lastPublished, 'x').format('DD.MM.YYYY');
+  this.created = formatDate(this.created);
+  this.lastEdited = formatDate(this.lastEdited);
+  this.lastSaved = formatDate(this.lastSaved);
+  this.lastPublished = formatDate(this.lastPublished);
   return this;
 }
 
