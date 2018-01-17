@@ -4,7 +4,7 @@
   margin: 0 auto;
   background-image: url(/img/map-background-desktop.jpg);
   background-size: cover;
-  
+
   @include min($m) {
     height: 56.25vw;
     max-height: calc(100vh - 115px);

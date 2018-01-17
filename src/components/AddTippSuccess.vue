@@ -20,8 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'src/styles/_mixins';
-  @import 'src/styles/_variables';
+  @import 'src/styles/core/_index';
 
   .add-tipp__success {
     padding: $golden-rem/2;

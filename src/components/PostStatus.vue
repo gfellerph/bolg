@@ -101,7 +101,7 @@
 
 
 <style lang="scss" scoped>
-  @import 'src/styles/_variables';
+  @import 'src/styles/core/_index';
 
   span {
     font-size: 0.85em;

@@ -7,6 +7,10 @@
     <title>{{post.title}}</title>
   {{/content}}
 
+  {{#content "styles"}}
+    {{{webpack.[/postCss.css]}}}
+  {{/content}}
+
   {{#content "navigation"}}
     <nav>
         <a class="left-link" href="/">

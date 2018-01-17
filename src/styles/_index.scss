@@ -1,10 +1,3 @@
-@import "_mixins";
-@import "_variables";
-@import "font";
-@import "layout";
-@import "article";
-@import "controls";
-@import "text";
-@import "convenience";
-@import "lists";
-@import "video";
+@import 'core/_index';
+@import 'atoms/_index';
+@import 'molecules/_index';

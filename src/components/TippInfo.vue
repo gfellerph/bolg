@@ -31,9 +31,8 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'src/styles/_mixins';
-  @import 'src/styles/_variables';
-  @import 'src/styles/convenience';
+  @import 'src/styles/core/_index';
+  @import 'src/styles/atoms/convenience';
 
   .tipp-info {
     position: relative;

@@ -8,7 +8,10 @@ const paths = require('./paths');
 const devConfig = merge(baseConfig, {
   entry: {
     map: './src/map.js',
-    bolg: './src/styles/post-index.scss',
+    galleryCss: './src/styles/gallery.scss',
+    postCss: './src/styles/post.scss',
+    overviewCss: './src/styles/overview.scss',
+    indexCss: './src/styles/_index.scss',
     post: './src/post.js',
     gallery: './src/gallery.js',
   },
