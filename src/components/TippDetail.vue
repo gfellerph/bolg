@@ -32,14 +32,12 @@
 
 <script>
   import Tipp from 'src/models/Tipp';
-  import dateFormat from 'src/filters/date-format';
 
   export default {
     data() {
       return {
         editMode: false,
         editTipp: null,
-        dateFormat,
       }
     },
     props: {

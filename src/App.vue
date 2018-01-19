@@ -79,7 +79,7 @@
 </script>
 
 <style lang="scss">
-  @import 'src/styles/post-index';
+  @import 'src/styles/_index';
 
   .app {
     display: grid;
