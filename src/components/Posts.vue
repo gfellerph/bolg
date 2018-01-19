@@ -20,7 +20,6 @@
 
 <script>
   import Post from 'src/models/Post';
-  import Story from 'src/models/StoryAdmin';
   import PostDetails from 'src/components/PostDetails';
   import { database } from 'src/config/firebase';
 
@@ -30,7 +29,6 @@
         currentPost: null,
         posts: [],
         Post,
-        Story,
       };
     },
 
