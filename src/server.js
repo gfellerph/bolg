@@ -5,7 +5,9 @@ import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import multer from 'multer';
+import mongoose from 'mongoose';
 import io from 'socket.io';
+import apiRoutes from 'src/server/routes/api-routes';
 import publishAllApi from 'src/server/api/publish-all';
 import publishApi from 'src/server/api/publish';
 import unpublishApi from 'src/server/api/unpublish';
@@ -23,6 +25,12 @@ const uploader = multer();
 // Attach socket io for initialization in bin/www
 app.io = io();
 
+// Connect to mongoDB
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING, () => {
+  // Drop everything for testing reasons
+  mongoose.connection.db.dropDatabase();
+});
+
 // View engine settings
 app.set('views', './src/server/views');
 app.set('view engine', 'pug');
@@ -38,11 +46,11 @@ app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
 }));
-// app.use(bodyParser.json());
-// app.use(bodyParser.raw());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
+app.use('/api', apiRoutes);
 app.get('/publish', publishAllApi);
 app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
