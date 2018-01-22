@@ -18,6 +18,7 @@ import putDrawing from 'src/server/api/put-drawing';
 import { postSubscriber } from 'src/server/api/subscriber';
 import { postImage, deleteImages } from 'src/server/api/images';
 import { postSpamReport } from 'src/server/api/spamreport';
+import passport from 'src/config/passport';
 
 const app = express();
 const uploader = multer();
@@ -28,8 +29,10 @@ app.io = io();
 // Connect to mongoDB
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING, () => {
   // Drop everything for testing reasons
-  mongoose.connection.db.dropDatabase();
+  // mongoose.connection.db.dropDatabase();
 });
+
+app.use(passport.initialize());
 
 // View engine settings
 app.set('views', './src/server/views');
