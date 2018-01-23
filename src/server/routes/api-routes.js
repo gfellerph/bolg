@@ -12,6 +12,7 @@ import {
   registerUser,
   authenticateUser,
 } from 'src/server/api/user-api';
+import * as Tipps from 'src/server/api/tipp-api';
 
 const router = Router();
 
@@ -23,7 +24,13 @@ router.delete('/subscriber/:id', deleteSubscriber);
 router.get('/unsubscribe/:id', deleteSubscriber);
 
 router.get('/user', passport.authenticate('jwt', { session: false }), getUser);
-router.post('/user/register', registerUser);
+router.post('/user', registerUser);
 router.post('/user/authenticate', authenticateUser);
+
+router.get('/tipps', Tipps.listTipps);
+router.get('/tipp/:id', Tipps.getTipp);
+router.post('/tipp', Tipps.postTipp);
+router.put('/tipp/:id', passport.authenticate('jwt', { session: false }), Tipps.putTipp);
+router.delete('/tipp/:id', passport.authenticate('jwt', { session: false }), Tipps.deleteTipp);
 
 export default router;

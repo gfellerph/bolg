@@ -1,15 +1,32 @@
 import mongoose from 'mongoose';
-import { UserSchema } from 'src/models/UserModel';
 
 const { Schema } = mongoose;
 
 export const TippSchema = new Schema({
-  id: { type: String, unique: true },
-  created: Date,
-  user: UserSchema,
-  text: String,
-  lat: Number,
-  lng: Number,
+  created: {
+    type: Date,
+    default: Date.now(),
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    lowercase: true,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+  lat: {
+    type: Number,
+    required: true,
+  },
+  lng: {
+    type: Number,
+    required: true,
+  },
 });
 
 export default mongoose.model('Tipp', TippSchema);
