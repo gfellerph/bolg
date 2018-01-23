@@ -8,7 +8,7 @@ export const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  displayName: String,
+  name: String,
   email: {
     type: String,
     lowercase: true,
