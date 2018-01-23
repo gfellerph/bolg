@@ -20,6 +20,7 @@ export const authenticateUser = (req, res) => {
   User.findOne({
     email: req.body.email,
   })
+    .select('password')
     .then((user) => {
       if (!user) {
         res.status = 401;
@@ -37,7 +38,7 @@ export const authenticateUser = (req, res) => {
         .catch((err) => {
           console.error('no pw match', err);
           res.status = 401;
-          res.json(err);
+          res.json(err.message);
         })
     })
     .catch((err) => {
