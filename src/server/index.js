@@ -7,7 +7,7 @@ import { slugger, logoURL } from 'src/config/constants';
 import Image from 'src/models/Image';
 import writefile from './writefile';
 
-const cssInlineThreshold = 10; // KB
+const cssInlineThreshold = 15; // KB
 const publishedRef = database.ref('/published').orderByChild('created');
 
 function inlineCSS(file) {
