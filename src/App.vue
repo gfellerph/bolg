@@ -5,6 +5,7 @@
         <input type="checkbox" id="nav">
         <label for="nav"><img src="/img/menu.svg" alt="Menu"></label>
         <label for="nav" class="navigation__closer"></label>
+        <router-link to="/"><img src="/img/grid.svg" alt="Schribe"></router-link>
         <router-link to="/createpost"><img src="/img/add.svg" alt="Schribe"></router-link>
         <div class="offcanvas">
           <label for="nav" class="navigation__mini-closer">
