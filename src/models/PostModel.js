@@ -5,25 +5,51 @@ import { UserSchema } from 'src/models/UserModel';
 const { Schema } = mongoose;
 
 export const PostSchema = new Schema({
-  id: { type: String, unique: true },
-  title: { type: String, unique: true },
-  created: Date,
-  lastEdited: Date,
-  lastSaved: Date,
-  lastPublished: Date,
-  author: UserSchema,
-  markdown: String,
+  title: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  created: {
+    type: Date,
+    default: Date.now,
+  },
+  lastEdited: {
+    type: Date,
+    default: null,
+  },
+  lastSaved: {
+    type: Date,
+    default: null,
+  },
+  lastPublished: {
+    type: Date,
+    default: null,
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  markdown: {
+    type: String,
+    default: '',
+  },
+  notificationSent: {
+    type: Boolean,
+    default: false,
+  },
+  titleImage: {
+    type: String,
+    default: '',
+  },
   images: [ImageSchema],
-  html: String,
-  notificationSent: Boolean,
-  excerpt: String,
-  description: String,
-  titleImage: String,
   drawings: [ImageSchema],
 });
 
-PostSchema.pre('save', function preSave(next) {
-  this.title = 'blah'; // Extract title
+PostSchema.pre('validate', function preSave(next) {
+  const title = this.markdown.match(/^# .+/gm);
+  this.title = title ? title[0].replace('# ', '') : '';
+  console.log(`this: ${this}`)
   next();
 });
 
