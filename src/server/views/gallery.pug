@@ -1,0 +1,30 @@
+extends _layout
+include mixins/gallery-post
+
+block meta
+  title Biuder - bis när
+
+block styles
+  !=webpack['/galleryCss.css']
+
+block navigation
+  nav
+    a.active(href='/')
+      span Reis
+    a(href='/')
+      img.logo(src=logoURL)
+      span.sr-only Gschichte
+    a(href='/galerie')
+      span Bilder
+
+block body
+  div.container
+    each images, title in posts
+      +gallery-post(images, title)
+
+    -if (!images || images.length == 0)
+      p.italic.text-align-center Da si ja no gar keiner Biuder...
+  img.medium-zoom__close-button(src='/img/close.svg' alt="Biud zuetue" title='Biud zuetue')
+
+block scripts
+  script(src=webpack['/gallery.js'])
