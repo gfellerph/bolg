@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import pug from 'pug';
 import { database } from 'src/config/firebase-admin';
 import * as hbsTemplates from 'src/config/handlebars';
 import Post from 'src/models/Post';
@@ -77,7 +78,7 @@ export function buildIndex() {
       const filePath = 'public/index.html';
       const posts = Object.keys(val).map(post => new Post(val[post])).reverse();
       const manifest = webpackManifest();
-      const html = hbsTemplates.index({
+      const html = pug.renderFile(path.join(process.cwd(), 'src/server/views/index.pug'), {
         posts,
         logoURL: logoURL(),
         webpack: manifest,
