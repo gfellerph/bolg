@@ -1,5 +1,6 @@
 extends _layout
 include mixins/post-tile
+include mixins/navigation
 
 block meta
   title bis när
@@ -8,14 +9,7 @@ block styles
   !=webpack['/overviewCss.css']
 
 block navigation
-  nav
-    a.active(href='/')
-      span Reis
-    a(href='/')
-      img.logo(src=logoURL)
-      span.sr-only Gschichte
-    a(href='/galerie')
-      span Bilder
+  +navigation('index')
 
 block body
   div#map.map

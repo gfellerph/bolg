@@ -1,0 +1,9 @@
+mixin navigation(active)
+  nav
+    a(class = (active === 'index' ? 'active' : '') href='/')
+      span Reis
+    a(href='/')
+      img.logo(src=logoURL)
+      span.sr-only Gschichte
+    a(class = (active === 'galerie' ? 'active' : '') href='/galerie')
+      span Bilder

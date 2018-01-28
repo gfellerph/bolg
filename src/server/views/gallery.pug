@@ -1,5 +1,6 @@
 extends _layout
 include mixins/gallery-post
+include mixins/navigation
 
 block meta
   title Biuder - bis när
@@ -8,14 +9,7 @@ block styles
   !=webpack['/galleryCss.css']
 
 block navigation
-  nav
-    a.active(href='/')
-      span Reis
-    a(href='/')
-      img.logo(src=logoURL)
-      span.sr-only Gschichte
-    a(href='/galerie')
-      span Bilder
+  +navigation('galerie')
 
 block body
   div.container
