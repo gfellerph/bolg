@@ -1,6 +1,6 @@
 {
-  "ext": "hbs js",
-  "watch": ["src/server/templates", "server/server.js"],
+  "ext": "hbs js pug",
+  "watch": ["src/server/templates", "server/server.js", "src/server/views"],
   "ignore": ["node_modules/**"],
   "verbose": false,
   "env": {
