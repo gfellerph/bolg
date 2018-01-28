@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import pug from 'pug';
 import { database } from 'src/config/firebase-admin';
-import * as hbsTemplates from 'src/config/handlebars';
 import Post from 'src/models/Post';
 import { slugger, logoURL } from 'src/config/constants';
 import Image from 'src/models/Image';
@@ -98,7 +97,7 @@ export function buildPost(post, nextPost) {
   if (!post) throw new Error(`Post with id ${post} not found, can't touch this.`);
 
   const filePath = `public/posts/${slugger(post.title)}.html`;
-  const html = hbsTemplates.post({
+  const html = pug.renderFile(path.join(process.cwd(), 'src/server/views/post.pug'), {
     post,
     nextPost,
     logoURL: logoURL(),
