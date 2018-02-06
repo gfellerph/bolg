@@ -1,0 +1,7 @@
+mixin post-tile(post)
+  li.post(data-id=post.id)
+    a.post__link(href=post.url)
+      div.post__title-image(style=`background-image:url(${post.heroImageUrl})`)
+      div.post__overlay
+        p.post__published= post.created
+        h2.post__title.h4= post.title

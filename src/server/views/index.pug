@@ -1,0 +1,28 @@
+extends _layout
+include mixins/post-tile
+include mixins/navigation
+
+block meta
+  title bis när
+
+block styles
+  !=webpack['/overviewCss.css']
+
+block navigation
+  +navigation('index')
+
+block body
+  div#map.map
+  div.container
+    h1 Gschichte
+    ul.posts
+      each post in posts
+        +post-tile(post)
+      - if (!posts || posts.length == 0)
+        p.italic.grey-text Da si ja no gar keiner Gschichte...
+
+    div#subscribe
+
+block scripts
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&libraries=places')
+  script(src=webpack['/map.js'])

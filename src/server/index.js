@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import pug from 'pug';
 import { database } from 'src/config/firebase-admin';
-import * as hbsTemplates from 'src/config/handlebars';
 import Post from 'src/models/Post';
 import { slugger, logoURL } from 'src/config/constants';
 import Image from 'src/models/Image';
@@ -38,13 +38,13 @@ export function webpackManifest() {
 }
 
 export function buildGallery() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     publishedRef.once('value', (snapshot) => {
       const val = snapshot.val();
       const postsArray = Object.keys(val).map(key => val[key]).reverse();
       const filePath = 'public/galerie.html';
 
-      const postsPerMonth = postsArray.reduce((acc, post) => {
+      const posts = postsArray.reduce((acc, post) => {
         acc[post.postTitle] = [[], []];
         for (let i = 0; i < post.images.length; i++) {
           const img = new Image(post.images[i]);
@@ -55,13 +55,13 @@ export function buildGallery() {
         return acc;
       }, {});
 
-      const html = hbsTemplates.gallery({
-        postsPerMonth,
+      const html = pug.renderFile(path.join(process.cwd(), 'src/server/views/gallery.pug'), {
+        posts,
         logoURL: logoURL(),
         webpack: webpackManifest(),
       });
 
-      resolve(writefile(filePath, html));
+      writefile(filePath, html).then(resolve).catch(reject);
     });
   });
 }
@@ -77,7 +77,7 @@ export function buildIndex() {
       const filePath = 'public/index.html';
       const posts = Object.keys(val).map(post => new Post(val[post])).reverse();
       const manifest = webpackManifest();
-      const html = hbsTemplates.index({
+      const html = pug.renderFile(path.join(process.cwd(), 'src/server/views/index.pug'), {
         posts,
         logoURL: logoURL(),
         webpack: manifest,
@@ -97,7 +97,7 @@ export function buildPost(post, nextPost) {
   if (!post) throw new Error(`Post with id ${post} not found, can't touch this.`);
 
   const filePath = `public/posts/${slugger(post.title)}.html`;
-  const html = hbsTemplates.post({
+  const html = pug.renderFile(path.join(process.cwd(), 'src/server/views/post.pug'), {
     post,
     nextPost,
     logoURL: logoURL(),

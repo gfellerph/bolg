@@ -1,0 +1,19 @@
+mixin navigation(active)
+  nav
+    a(class = (active === 'index' ? 'active' : '') href='/')
+      span Reis
+    a(href='/')
+      img.logo(src=logoURL)
+      span.sr-only Gschichte
+    a(class = (active === 'galerie' ? 'active' : '') href='/galerie')
+      span Bilder
+
+mixin post-navigation()
+  nav
+    a.left-link(href="/")
+      span.hidden-mobile Reis
+      img.visible-mobile(src="/img/arrow-back.svg" alt="Zrugg")
+    a(href="/")
+      img.logo(src=logoURL alt="Logo")
+    a.right-link(href="/galerie")
+      span.hidden-mobile Bilder
