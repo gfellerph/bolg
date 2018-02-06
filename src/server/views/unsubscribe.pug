@@ -1,17 +1,12 @@
 extends _layout
 
+include mixins/navigation
+
 block meta
-  title Abgmäudet
+  title Sniff - Abgmäudet
 
 block navigation
-  nav
-    a.left-link(href="/")
-      span.hidden-mobile Reis
-      img.visible-mobile(src="/img/arrow-back.svg" alt="Zrugg")
-    a(href="/")
-      img.logo(src=logoURL alt="Logo")
-    a.right-link(href="/galerie")
-      span.hidden-mobile Bilder
+  +post-navigation
 
 block body
   .container

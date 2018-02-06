@@ -6,7 +6,7 @@ block meta
   title bis när
 
 block styles
-  !=webpack['/overviewCss.css']
+  !=webpack['/indexCss.css']
 
 block navigation
   +navigation('index')
@@ -24,5 +24,5 @@ block body
     div#subscribe
 
 block scripts
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&libraries=places')
-  script(src=webpack['/map.js'])
+  script(defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&libraries=places')
+  script(defer src=webpack['/map.js'])
