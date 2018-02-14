@@ -6,13 +6,9 @@ import Tipp from 'src/models/TippModel';
  * @param {Object} res Response object
  * @param {Function} next Callback for next middleware in route
  */
-export const postTipp = (req, res, next) => {
-  const tipp = new Tipp(req.body);
-
-  return tipp.save()
-    .then(res.json)
-    .catch(next);
-};
+export const postTipp = (req, res, next) => new Tipp(req.body).save()
+  .then(data => res.json(data))
+  .catch(err => next(err));
 
 /**
  * Delete a tipp, needs authentication
@@ -20,13 +16,11 @@ export const postTipp = (req, res, next) => {
  * @param {Object} res Response object
  * @param {Function} next Callback for next middleware in route
  */
-export const deleteTipp = (req, res, next) => {
-  return Tipp.remove({
-    _id: req.params.id,
-  })
-    .then(res.json)
-    .catch(next);
-};
+export const deleteTipp = (req, res, next) => Tipp.remove({
+  _id: req.params.id,
+})
+  .then(data => res.json(data))
+  .catch(err => next(err));
 
 /**
  * Update a tipp
@@ -34,13 +28,13 @@ export const deleteTipp = (req, res, next) => {
  * @param {Object} res
  * @param {Function} next Callback for next middleware in route
  */
-export const putTipp = (req, res, next) => {
-  return Tipp.findByIdAndUpdate(req.params.id, {
-    $set: req.body,
-  })
-    .then(res.json)
-    .catch(next);
-};
+export const putTipp = (req, res, next) => Tipp.findByIdAndUpdate(req.params.id, {
+  $set: req.body,
+}, {
+  new: true,
+})
+  .then(data => res.json(data))
+  .catch(err => next(err));
 
 /**
  * Get a list of all tipps
@@ -48,11 +42,9 @@ export const putTipp = (req, res, next) => {
  * @param {Object} res
  * @param {Function} next Callback for next middleware in route
  */
-export const listTipps = (req, res, next) => {
-  return Tipp.find({})
-    .then(res.json)
-    .catch(next);
-};
+export const listTipps = (req, res, next) => Tipp.find({})
+  .then(data => res.json(data))
+  .catch(err => next(err));
 
 /**
  * Get one tipp
@@ -60,10 +52,8 @@ export const listTipps = (req, res, next) => {
  * @param {Object} res
  * @param {Function} next Callback for next middleware in route
  */
-export const getTipp = (req, res, next) => {
-  return Tipp.findOne({
-    _id: req.params.id,
-  })
-    .then(res.json)
-    .catch(next);
-};
+export const getTipp = (req, res, next) => Tipp.findOne({
+  _id: req.params.id,
+})
+  .then(data => res.json(data))
+  .catch(err => next(err));
