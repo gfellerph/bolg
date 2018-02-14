@@ -38,7 +38,7 @@ app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
 }));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 // app.use(bodyParser.raw());
 app.use(bodyParser.urlencoded({ extended: false }));
 
