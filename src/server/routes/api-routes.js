@@ -4,15 +4,8 @@ import * as Subscribers from 'src/server/api/subscriber-api';
 import * as Users from 'src/server/api/user-api';
 import * as Tipps from 'src/server/api/tipp-api';
 import * as Posts from 'src/server/api/post-api';
-import Test from 'src/server/api/test-api';
 
 const router = Router();
-
-router.get('/tests', Test.list);
-router.get('/test/:id', Test.get);
-router.post('/test', Test.post);
-router.put('/test/:id', Test.put);
-router.delete('/test/:id', Test.delete);
 
 router.get('/subscribers', Subscribers.list);
 router.get('/subscriber/:id', Subscribers.get);
@@ -36,5 +29,10 @@ router.get('/post/:id', Posts.getPost);
 router.post('/post', passport.authenticate('jwt', { session: false }), Posts.postPost);
 router.put('/post/:id', passport.authenticate('jwt', { session: false }), Posts.putPost);
 router.delete('/post/:id', passport.authenticate('jwt', { session: false }), Posts.deletePost);
+
+router.use((err, req, res) => {
+  console.log('error============00')
+  res.json(err);
+});
 
 export default router;
