@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { ImageSchema } from 'src/models/ImageModel';
-import { UserSchema } from 'src/models/UserModel';
 
 const { Schema } = mongoose;
 
