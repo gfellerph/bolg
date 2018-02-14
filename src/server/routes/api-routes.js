@@ -1,32 +1,29 @@
 import { Router } from 'express';
 import passport from 'passport';
-import {
-  getSubscribers,
-  getSubscriber,
-  postSubscriber,
-  putSubscriber,
-  deleteSubscriber,
-} from 'src/server/api/subscriber';
-import {
-  getUser,
-  registerUser,
-  authenticateUser,
-} from 'src/server/api/user-api';
+import * as Subscribers from 'src/server/api/subscriber-api';
+import * as Users from 'src/server/api/user-api';
 import * as Tipps from 'src/server/api/tipp-api';
 import * as Posts from 'src/server/api/post-api';
+import Test from 'src/server/api/test-api';
 
 const router = Router();
 
-router.get('/subscribers', getSubscribers);
-router.get('/subscriber/:id', getSubscriber);
-router.post('/subscriber', postSubscriber);
-router.put('/subscriber/:id', putSubscriber);
-router.delete('/subscriber/:id', deleteSubscriber);
-router.get('/unsubscribe/:id', deleteSubscriber);
+router.get('/tests', Test.list);
+router.get('/test/:id', Test.get);
+router.post('/test', Test.post);
+router.put('/test/:id', Test.put);
+router.delete('/test/:id', Test.delete);
 
-router.get('/user', passport.authenticate('jwt', { session: false }), getUser);
-router.post('/user', registerUser);
-router.post('/user/authenticate', authenticateUser);
+router.get('/subscribers', Subscribers.list);
+router.get('/subscriber/:id', Subscribers.get);
+router.post('/subscriber', Subscribers.post);
+router.put('/subscriber/:id', Subscribers.put);
+router.delete('/subscriber/:id', Subscribers.remove);
+router.get('/unsubscribe/:id', Subscribers.remove);
+
+router.get('/user', passport.authenticate('jwt', { session: false }), Users.getUser);
+router.post('/user', Users.registerUser);
+router.post('/user/authenticate', Users.authenticateUser);
 
 router.get('/tipps', Tipps.listTipps);
 router.get('/tipp/:id', Tipps.getTipp);
