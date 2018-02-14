@@ -9,9 +9,9 @@ import Tipp from 'src/models/TippModel';
 export const postTipp = (req, res, next) => {
   const tipp = new Tipp(req.body);
 
-  tipp.save()
-    .then(newTipp => res.json(newTipp))
-    .catch(err => next(err));
+  return tipp.save()
+    .then(res.json)
+    .catch(next);
 };
 
 /**
@@ -21,11 +21,11 @@ export const postTipp = (req, res, next) => {
  * @param {Function} next Callback for next middleware in route
  */
 export const deleteTipp = (req, res, next) => {
-  Tipp.remove({
+  return Tipp.remove({
     _id: req.params.id,
   })
-    .then(() => res.send('OK'))
-    .catch(err => next(err));
+    .then(res.json)
+    .catch(next);
 };
 
 /**
@@ -35,11 +35,11 @@ export const deleteTipp = (req, res, next) => {
  * @param {Function} next Callback for next middleware in route
  */
 export const putTipp = (req, res, next) => {
-  Tipp.findByIdAndUpdate(req.params.id, {
+  return Tipp.findByIdAndUpdate(req.params.id, {
     $set: req.body,
   })
-    .then(() => res.send('OK'))
-    .catch(err => next(err));
+    .then(res.json)
+    .catch(next);
 };
 
 /**
@@ -49,9 +49,9 @@ export const putTipp = (req, res, next) => {
  * @param {Function} next Callback for next middleware in route
  */
 export const listTipps = (req, res, next) => {
-  Tipp.find({})
-    .then(tipps => res.json(tipps))
-    .catch(err => next(err));
+  return Tipp.find({})
+    .then(res.json)
+    .catch(next);
 };
 
 /**
@@ -61,9 +61,9 @@ export const listTipps = (req, res, next) => {
  * @param {Function} next Callback for next middleware in route
  */
 export const getTipp = (req, res, next) => {
-  Tipp.findOne({
+  return Tipp.findOne({
     _id: req.params.id,
   })
-    .then(tipp => res.json(tipp))
-    .catch(err => next(err));
+    .then(res.json)
+    .catch(next);
 };
