@@ -1,4 +1,20 @@
 import mongoose from 'mongoose';
-import { UserSchema } from 'src/models/UserModel';
 
-export default mongoose.model('Subscriber', UserSchema);
+const { Schema } = mongoose;
+
+const SubscriberSchema = new Schema({
+  created: {
+    type: Date,
+    default: Date.now,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+});
+
+export default mongoose.model('Subscriber', SubscriberSchema);
