@@ -31,7 +31,6 @@ router.put('/post/:id', passport.authenticate('jwt', { session: false }), Posts.
 router.delete('/post/:id', passport.authenticate('jwt', { session: false }), Posts.deletePost);
 
 router.use((err, req, res) => {
-  console.log('error============00')
   res.json(err);
 });
 
