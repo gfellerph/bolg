@@ -16,7 +16,7 @@
     "server:start": "nodemon bin/www",
     "dev:front": "webpack --config config/front.dev.config.js",
     "dev:back": "node config/dev-server.js",
-    "dev:server": "npm-run-all -s prod:server -p database server:*",
+    "dev:server": "npm-run-all -s prod:server -p server:*",
     "dev": "npm-run-all -s clean -p dev:*",
     "prod:front": "webpack --config config/front.prod.config.js",
     "prod:back": "webpack --config config/back.prod.config.js",
