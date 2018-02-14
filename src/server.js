@@ -67,7 +67,7 @@ app.post('/api/images', uploader.single('image'), postImage);
 app.post('/api/spamreport', postSpamReport);
 app.delete('/api/images/:id', deleteImages);
 
-app.use('/api', (err, req, res, next) => {
+app.use('/api', (err, req, res) => {
   res.status = err.status || 500;
   res.json(err);
 });
