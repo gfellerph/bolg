@@ -13,7 +13,7 @@
     "clean:server": "rimraf server",
     "clean": "npm-run-all -p clean:*",
     "server:watch": "webpack --config config/server.dev.config.js",
-    "server:start": "nodemon bin/www",
+    "server:start": "nodemon -r dotenv/config bin/www",
     "dev:front": "webpack --config config/front.dev.config.js",
     "dev:back": "node config/dev-server.js",
     "dev:server": "npm-run-all -s prod:server -p server:*",
