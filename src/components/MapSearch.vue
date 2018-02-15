@@ -6,7 +6,7 @@
         id="map-search-input"
         type="text"
         class="map-search__input"
-        placeholder="Sueche"
+        placeholder="Reiseort sueche"
         ref="searchInput"
         v-model="searchTerm"
       >

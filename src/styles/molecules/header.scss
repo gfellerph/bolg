@@ -1,79 +1,32 @@
 .bolg-header {
-  position: relative;
-  padding: 0 $golden-rem;
-  margin: $golden-rem auto;
-
-  @include max($xs) {
-    width: 100%;
-  }
-
   .logo {
-    height: 4rem;
     display: block;
+    max-height: 60px;
 
-    @include max($xs) {
-      height: 2.9rem;
-      max-width: 130px;
+    @include max($m) {
+      max-height: 40px;
     }
-  }
-
-  .right-link,
-  .left-link {
-    flex: 1 0 auto;
-    text-align: center;
-
-    @include min($xs) {
-      min-width: 70px;
-    }
-    @include max($xs) {
-      min-width: 32px;
-      text-decoration: none;
-
-      &:hover,
-      &:active {
-        text-decoration: none;
-      }
-    }
-
-    img {
-      display: block;
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  .left-link {
-    text-align: right;
-  }
-
-  .right-link {
-    text-align: left;
   }
 
   nav {
     margin: 0 auto;
+    padding: $golden-rem 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
 
-    @include max($xs) {
+    @include max($m) {
+      padding: $golden-rem / 2 0;
       justify-content: space-between;
     }
 
     a {
-      @extend .h4;
-      font-family: $text-font;
+      @include ms-respond(font-size, 1.6);
       margin: 0 $golden-rem;
       font-style: italic;
       color: black;
       flex: 0 1 auto;
       text-decoration: none;
-
-      @include max($xs) {
-        margin: 0;
-        flex: 0 0 auto;
-      }
 
       &.active {
         text-decoration: underline;
@@ -81,6 +34,12 @@
 
       &:hover {
         text-decoration: underline;
+      }
+
+      img:not(.logo) {
+        display: block;
+        width: 24px;
+        height: 24px;
       }
     }
   }
