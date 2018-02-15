@@ -11,11 +11,6 @@ const prodConfig = merge(frontConfig, {
     filename: 'js/[name].[chunkhash].js',
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-          'NODE_ENV': `"production"`
-      },
-    }),
     new ExtractTextPlugin({
       filename: 'css/[name].[chunkhash].css',
       allChunks: true,
