@@ -7,15 +7,11 @@
 
   @include min($m) {
     height: 56.25vw;
-    max-height: calc(100vh - 115px);
+    max-height: calc(100vh - 111px);
   }
 
-  @include between($xs, $m) {
-    height: calc(100vh - 98px);
-  }
-
-  @include max($xs) {
-    height: 100vw;
+  @include max($m) {
+    height: calc(100vh - 65px);
     background-image: url(/img/map-background-mobile.jpg);
   }
 
