@@ -30,7 +30,8 @@ router.post('/post', passport.authenticate('jwt', { session: false }), Posts.pos
 router.put('/post/:id', passport.authenticate('jwt', { session: false }), Posts.putPost);
 router.delete('/post/:id', passport.authenticate('jwt', { session: false }), Posts.deletePost);
 
-router.use((err, req, res) => {
+router.use('/*', (err, req, res) => {
+  console.log('error', err);
   res.json(err);
 });
 
