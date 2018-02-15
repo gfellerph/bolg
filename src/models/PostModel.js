@@ -48,7 +48,6 @@ export const PostSchema = new Schema({
 PostSchema.pre('validate', function preSave(next) {
   const title = this.markdown.match(/^# .+/gm);
   this.title = title ? title[0].replace('# ', '') : '';
-  console.log(`this: ${this}`)
   next();
 });
 
