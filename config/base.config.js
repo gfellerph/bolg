@@ -30,7 +30,9 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig,
+        options: {
+          extractCSS: true,
+        },
       },
       {
         test: /\.js$/,
