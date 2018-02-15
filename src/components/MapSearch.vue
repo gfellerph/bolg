@@ -1,10 +1,12 @@
 <template>
   <div class="map-search">
     <div class="map-search__box map__box">
+      <label for="map-search-input" class="sr-only">Sueche</label>
       <input
+        id="map-search-input"
         type="text"
         class="map-search__input"
-        placeholder="Sueche"
+        placeholder="Reiseort sueche"
         ref="searchInput"
         v-model="searchTerm"
       >
@@ -15,6 +17,7 @@
         @click="reset"
       >
         <img class="map-search__icon" src="/img/close.svg" alt="">
+        <span class="sr-only">Lösche</span>
       </button>
     </div>
     <button
@@ -148,8 +151,7 @@
 </script>
 
 <style lang="scss">
-  @import 'src/styles/_mixins';
-  @import 'src/styles/_variables';
+  @import 'src/styles/core/_index';
 
   .pac-container {
     margin-top: 5px;
@@ -215,7 +217,7 @@
       border-radius: 0;
       box-shadow: none;
     }
-    
+
     .map-search__input {
       font-family: 'Roboto', sans-serif;
       border-bottom: none;

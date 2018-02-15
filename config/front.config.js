@@ -8,7 +8,10 @@ const paths = require('./paths');
 const devConfig = merge(baseConfig, {
   entry: {
     map: './src/map.js',
-    bolg: './src/styles/post-index.scss',
+    galleryCss: './src/styles/gallery.scss',
+    postCss: './src/styles/post.scss',
+    overviewCss: './src/styles/overview.scss',
+    indexCss: './src/styles/_index.scss',
     post: './src/post.js',
     gallery: './src/gallery.js',
   },
@@ -45,7 +48,18 @@ const devConfig = merge(baseConfig, {
       basePath: paths.assets,
     }),
   ],
-  target: 'web',
   stats: 'minimal',
+  node: {
+    // prevent webpack from injecting useless setImmediate polyfill because Vue
+    // source contains it (although only uses it if it's native).
+    setImmediate: false,
+    // prevent webpack from injecting mocks to Node native modules
+    // that does not make sense for the client
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty',
+  },
 });
 module.exports = devConfig;

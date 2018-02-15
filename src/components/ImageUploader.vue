@@ -98,7 +98,7 @@
 
 
 <style lang="scss" scoped>
-  @import 'src/styles/_variables';
+  @import 'src/styles/core/_index';
 
   .image-upload {
     position: relative;

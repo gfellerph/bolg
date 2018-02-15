@@ -6,11 +6,11 @@
           <table class="meta-infos">
             <tr>
               <th>Gmacht:</th>
-              <td>{{dateFormat(post.created, 'D. MMM YYYY')}}</td>
+              <td>{{formatDate(post.created)}}</td>
             </tr>
             <tr>
               <th>Zletscht gschribe:</th>
-              <td>{{dateFormat(post.lastEdited, 'D. MMM YYYY')}}</td>
+              <td>{{formatDate(post.lastEdited)}}</td>
             </tr>
           </table>
       </div>
@@ -24,11 +24,11 @@
 </template>
 
 <script>
-  import dateFormat from 'src/filters/date-format';
   import PostStatus from 'src/components/PostStatus';
   import { description } from 'src/config/markdown';
   import { database } from 'src/config/firebase';
   import PostController from 'src/controllers/post-controller';
+  import { formatDate } from 'src/config/constants';
 
   const postCtrl = PostController(database);
 
@@ -42,7 +42,7 @@
     },
 
     methods: {
-      dateFormat,
+      formatDate,
       deletePost() {
         /* eslint no-restricted-globals: 0 */
         /* eslint no-alert: 0 */
@@ -62,7 +62,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import 'src/styles/variables.scss';
+  @import 'src/styles/core/_index.scss';
 
   .post-details {
     position: relative;

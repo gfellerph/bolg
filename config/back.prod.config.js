@@ -41,6 +41,7 @@ const prodConfig = merge(backConfig, {
     }),
     new ExtractTextPlugin({
       filename: 'css/[name].[contenthash].css',
+      allChunks: true,
     }),
     new OptimizeCSSPlugin({
       cssProcessorOptions: {

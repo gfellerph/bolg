@@ -1,10 +1,12 @@
 .main-post {
   @include min($xs) {
-    margin: $golden-rem * 2 0;
+    margin-top: $golden-rem * 2;
+    margin-bottom: $golden-rem * 2;
   }
 
   @include max($xs) {
-    margin: $golden-rem 0;
+    margin-top: $golden-rem;
+    margin-bottom: $golden-rem;
   }
 
   > *:first-child {

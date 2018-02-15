@@ -1,0 +1,46 @@
+.bolg-header {
+  .logo {
+    display: block;
+    max-height: 60px;
+
+    @include max($m) {
+      max-height: 40px;
+    }
+  }
+
+  nav {
+    margin: 0 auto;
+    padding: $golden-rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include max($m) {
+      padding: $golden-rem / 2 0;
+      justify-content: space-between;
+    }
+
+    a {
+      @include ms-respond(font-size, 1.6);
+      margin: 0 $golden-rem;
+      font-style: italic;
+      color: black;
+      flex: 0 1 auto;
+      text-decoration: none;
+
+      &.active {
+        text-decoration: underline;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      img:not(.logo) {
+        display: block;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}

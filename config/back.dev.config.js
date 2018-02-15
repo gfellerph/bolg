@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const backConfig = require('./back.config');
 const paths = require('./paths');
 
@@ -19,6 +20,10 @@ const devConfig = merge(backConfig, {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new ExtractTextPlugin({
+      filename: 'css/[name].css',
+      allChunks: true,
+    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: paths.backIndex,

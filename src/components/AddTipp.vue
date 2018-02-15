@@ -104,9 +104,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @import 'src/styles/_mixins';
-  @import 'src/styles/_variables';
-  @import 'src/styles/convenience';
+  @import 'src/styles/core/_index';
+  @import 'src/styles/atoms/convenience';
 
   .add-tipp {
 

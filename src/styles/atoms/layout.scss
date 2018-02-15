@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0 $golden-rem;
+    max-width: 640px;
+}
