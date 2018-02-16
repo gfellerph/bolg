@@ -10,14 +10,15 @@ import s3 from 'src/config/s3';
 tinify.key = process.env.TINYPNG_API_KEY;
 
 export default function putImages(req, res) {
+  const postId = parseInt(req.body.postid) || false;
   const drawingId = cuid();
   const base64Data = req.body.source.split(',')[1].replace(/\s/g, '+');
   const imgBuffer = Buffer.from(base64Data, 'base64');
-  const ref = typeof req.body.postid === 'number'
+  const ref = postId
     ? database.ref(`/posts/${req.body.postid}/drawings/${drawingId}`)
     : null;
   const publishedRef = database.ref(`/published/${req.body.postid}/drawings/${drawingId}`);
-  const awsLocation = req.body.postid ? `drawings/${drawingId}.png` : `temp/${drawingId}.png`;
+  const awsLocation = postId ? `drawings/${drawingId}.png` : `temp/${drawingId}.png`;
 
   imagemin.buffer(imgBuffer, {
     pulugins: [
