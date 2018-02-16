@@ -13,7 +13,9 @@ export default function putImages(req, res) {
   const drawingId = cuid();
   const base64Data = req.body.source.split(',')[1].replace(/\s/g, '+');
   const imgBuffer = Buffer.from(base64Data, 'base64');
-  const ref = database.ref(`/posts/${req.body.postid}/drawings/${drawingId}`);
+  const ref = typeof req.body.postid === 'number'
+    ? database.ref(`/posts/${req.body.postid}/drawings/${drawingId}`)
+    : null;
   const publishedRef = database.ref(`/published/${req.body.postid}/drawings/${drawingId}`);
   const awsLocation = req.body.postid ? `drawings/${drawingId}.png` : `temp/${drawingId}.png`;
 
@@ -38,7 +40,7 @@ export default function putImages(req, res) {
     .then(() => {
       const cloudFront = cloudFrontify(awsLocation);
 
-      if (req.body.postid) {
+      if (ref) {
         ref.set(cloudFront);
         publishedRef.set(cloudFront);
       }
