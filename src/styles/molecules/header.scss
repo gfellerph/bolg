@@ -43,6 +43,12 @@
         display: block;
         width: $golden-rem*2;
       }
+
+      @include max($xxs) {
+        &.right-link {
+          width: $golden-rem*2;
+        }
+      }
     }
   }
 }
