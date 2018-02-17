@@ -113,7 +113,7 @@
         if (this.formClosed) {
           this.openForm();
         } else {
-          this.closeForm();
+          this.cancel();
         }
       },
     },
