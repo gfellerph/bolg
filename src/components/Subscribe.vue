@@ -103,9 +103,9 @@
       cancel() {
         this.formClosed = true;
         this.subscriber = new User();
-        this.$nextTick(() => { this.errors.clear() });
       },
       openForm() {
+        this.errors.clear();
         this.formClosed = false;
         this.$nextTick(() => this.$refs.name.focus());
       },
