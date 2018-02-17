@@ -6,6 +6,7 @@ import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import multer from 'multer';
 import io from 'socket.io';
+import mime from 'mime-types';
 import publishAllApi from 'src/server/api/publish-all';
 import publishApi from 'src/server/api/publish';
 import unpublishApi from 'src/server/api/unpublish';
@@ -37,6 +38,28 @@ app.use(compression());
 app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
+  setHeaders: (res, reqpath) => {
+    const type = mime.lookup(reqpath);
+    const oneday = 1000 * 60 * 60 * 24;
+    const oneyear = oneday * 365;
+
+    switch (type) {
+      case 'image/png':
+      case 'image/jpeg':
+      case 'image/svg':
+      case 'image/webp':
+      case 'image/gif':
+        res.setHeader('Cache-Control', `public, max-age=${oneday}`);
+        break;
+      case 'text/css':
+      case 'text/javascript':
+      case 'application/javascript':
+        res.setHeader('Cache-Control', `public, max-age=${oneyear}`);
+        break;
+      default:
+        break;
+    }
+  },
 }));
 app.use(bodyParser.json());
 // app.use(bodyParser.raw());
