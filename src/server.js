@@ -40,16 +40,16 @@ app.use(express.static('public', {
   extensions: 'html',
   setHeaders: (res, reqpath) => {
     const type = mime.lookup(reqpath);
-    const oneday = 1000 * 60 * 60 * 24;
-    const oneyear = oneday * 365;
+    const oneweek = 1000 * 60 * 60 * 24 * 7;
+    const oneyear = oneweek * 52;
 
     switch (type) {
       case 'image/png':
       case 'image/jpeg':
-      case 'image/svg':
+      case 'image/svg+xml':
       case 'image/webp':
       case 'image/gif':
-        res.setHeader('Cache-Control', `public, max-age=${oneday}`);
+        res.setHeader('Cache-Control', `public, max-age=${oneweek}`);
         break;
       case 'text/css':
       case 'text/javascript':
