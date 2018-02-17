@@ -1,54 +1,21 @@
 <template>
   <div class="subscribe" @keydown.esc="cancel">
-    <div class="subscribe__frame">
-      <div class="subscribe__form box">
-        <h2 class="h5">Benachrichtigunge</h2>
-        <p>
-          <label for="name">Wie heissisch du?</label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Name"
-            ref="name"
-            v-validate="'required'"
-            v-model="subscriber.displayName"
-          >
-        </p>
-        <p class="error" v-bind:key="error.id" v-for="error in errors.collect('name')">{{error}}</p>
-        <p>
-          <label for="mail">Und wie isch dis Email?</label>
-          <input
-            id="mail"
-            name="mail"
-            type="email"
-            placeholder="Email"
-            ref="email"
-            v-model="subscriber.email"
-            v-validate="'required|email'"
-          >
-        </p>
-        <p class="error" v-bind:key="error.id" v-for="error in errors.collect('mail')">{{error}}</p>
-        <p class="text-align-right">
-          <button :disabled="loading || errors.any()" @click="addSubscriber">Schicke</button>
-        </p>
-      </div>
-      <button class="subscribe__toggler">
-        <img src="" alt="">
-        <img src="" alt="">
-      </button>
-    </div>
-    <h2 class="h3">Benachrichtigunge</h2>
-    <div v-if="step==0">
-      <p>Wosch es Mail becho we mir e nöii Gschicht gschribe hei? De gib üs doch churz di Name und dini Mail Adrässe aa, mir verspräche o dassmer di nid zuespame und dini Adrässe nid de Chinese verchoufe (vilech).</p>
-      <p class="text-align-center">
-        <button @click="stepForward">Ou ja, bitte!</button>
-      </p>
-    </div>
-    <div
-      v-if="step==1"
-      @blur="errors.has('name') || !subscriber.displayName ? null : stepForward()"
+    <button
+      class="subscribe__toggler map__box"
+      :class="{ hidden: togglerHidden }"
+      @click="toggleForm"
     >
+      <img v-show="formClosed" src="/img/brief.png" alt="Brief">
+      <img v-show="!formClosed" src="/img/brief_offe.png" alt="Brief offe">
+    </button>
+    <div
+      class="subscribe__form map__box floating-form"
+      :class="{ closed: formClosed }"
+    >
+      <div class="field">
+        <h2 class="h4 text-align-center">Emails...</h2>
+        <p>jedes mau wes e nöii Gschicht het.<br>Was gits schöners?</p>
+      </div>
       <p>
         <label for="name">Wie heissisch du?</label>
         <input
@@ -74,14 +41,15 @@
           v-validate="'required|email'"
         >
       </p>
-      <p class="error" v-bind:key="error.id" v-for="error in errors.collect('mail')">{{error}}</p>
-      <p class="text-align-right">
+      <p
+        class="error"
+        v-bind:key="error.id" v-for="error in errors.collect('mail')"
+      >{{error}}</p>
+      <p class="error" v-if="error">{{error}}</p>
+      <p class="floating-form__controls">
+        <button @click="cancel">Abbräche</button>
         <button :disabled="loading || errors.any()" @click="addSubscriber">Schicke</button>
       </p>
-    </div>
-    <div v-if="step===2" class="subscribe__slide">
-      <h3>He merci {{subscriber.displayName}}!</h3>
-      <p>Mir schicke dir itz immer es Mail wemer e nöii Gschicht gschribe hei.</p>
     </div>
   </div>
 </template>
@@ -96,34 +64,50 @@
         subscriber: new User(),
         step: 0,
         loading: false,
+        error: false,
+        formClosed: true,
+        togglerHidden: true,
       };
     },
 
+    mounted() {
+      this.showOrHideToggler();
+      document.addEventListener('scroll', this.showOrHideToggler, { passive: true });
+    },
+
     methods: {
+      showOrHideToggler() {
+        const ash = window.screen.availHeight / 2;
+        const dest = document.documentElement.scrollTop;
+        this.togglerHidden = ash > dest;
+      },
       addSubscriber() {
         this.$validator.validateAll()
           .then((result) => {
-            if (!result) throw new Error('Form invalid');
+            if (!result) throw new Error('Öppis isch nid richtig');
             this.loading = true;
             this.error = false;
             return axios.post('/api/subscriber', this.subscriber.normalize());
           })
           .then(() => {
+            this.error = false;
             this.loading = false;
-            this.step = 2;
+            this.subscriber = new User();
+            this.formClosed = true;
           })
-          .catch(() => {
+          .catch((err) => {
+            this.error = err.message;
             this.loading = false;
           });
       },
-      stepBack() { this.step -= 1; },
-      stepForward() {
-        this.step += 1;
-        this.$nextTick(() => this.$refs.name.focus());
-      },
       cancel() {
-        this.step = 0;
+        this.formClosed = true;
         this.subscriber = new User();
+      },
+      toggleForm() {
+        this.formClosed = !this.formClosed;
+        if (!this.formClosed) this.$nextTick(() => this.$refs.name.focus());
+        if (this.formClosed) this.errors.clear();
       },
     },
   }
@@ -132,72 +116,55 @@
 <style lang="scss">
   @import 'src/styles/core/index';
 
-  .subscribe__frame {
-    position: fixed;
-    bottom: $golden-rem * 2;
-    right: $golden-rem * 2;
-
-    border-radius: $golden-rem * 2;
-    overflow: hidden;
-
-    width: $golden-rem * 4;
-    height: $golden-rem * 4;
-
-    background: dodgerblue;
-    transition: all 300ms;
-
-    z-index: 1;
-
-    &:hover {
-      width: 24rem;
-      height: 28rem;
-      border-radius: 3px;
-    }
-  }
-
   .subscribe__form {
     position: fixed;
-    width: 24rem;
-    height: 28rem;
-    right: $golden-rem * 2;
-    bottom: $golden-rem * 2;
-    pointer-events: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: white;
-    font-size: 0.85em;
-    font-family: 'Roboto', sans-serif;
+    right: $golden-rem * 6;
+    bottom: $golden-rem * 1;
+    transform: scale(1);
+    transition:
+      transform 400ms cubic-bezier(.16,.63,.18,1.3),
+      opacity 400ms cubic-bezier(.16,.63,.18,1.3),
+      visibility 0s 0s;
+    will-change: transform, opacity;
+    visibility: visible;
+    z-index: 1;
 
-    .subscribe__frame:hover & {
-      pointer-events: auto;
+    &.closed {
+      opacity: 0;
+      // visibility: hidden;
+      transform: scale(0);
+      transition:
+        transform 200ms ease-in,
+        opacity 200ms ease-in,
+        visibility 0s 200ms;
     }
 
-    label,
     h2 {
-      margin-top: 0;
-    }
-
-    p {
-      margin: $golden-rem / 4 0;
-    }
-
-    input {
-      padding: $golden-rem / 4 0;
-    }
-
-    button,
-    input {
-      border-color: white;
+      margin: $golden-rem/2 auto $golden-rem/4;
     }
   }
 
   .subscribe__toggler {
-    position: absolute;
-    right: $golden-rem;
-    bottom: $golden-rem;
-    width: $golden-rem * 2;
-    height: $golden-rem * 2;
+    position: fixed;
+    bottom: $golden-rem * 2;
+    right: $golden-rem * 2;
+
+    display: flex;
+    width: $golden-rem * 3;
+    height: $golden-rem * 3;
+    padding: $golden-rem/8;
+
+    border-radius: 100%;
+    border: none;
+
+    transition: opacity 500ms, visibility 0s 0s;
+
+    z-index: 2;
+
+    &.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 500ms, visibility 0s 500ms;
+    }
   }
 </style>
