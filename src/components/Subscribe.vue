@@ -93,8 +93,7 @@
             this.error = false;
             this.loading = false;
             this.subscriber = new User();
-            this.errors.clear();
-            this.formClosed = true;
+            this.cancel();
           })
           .catch((err) => {
             this.error = err.message;
@@ -104,11 +103,18 @@
       cancel() {
         this.formClosed = true;
         this.subscriber = new User();
+        this.$nextTick(() => { this.errors.clear() });
+      },
+      openForm() {
+        this.formClosed = false;
+        this.$nextTick(() => this.$refs.name.focus());
       },
       toggleForm() {
-        this.formClosed = !this.formClosed;
-        if (!this.formClosed) this.$nextTick(() => this.$refs.name.focus());
-        if (this.formClosed) this.errors.clear();
+        if (this.formClosed) {
+          this.openForm();
+        } else {
+          this.closeForm();
+        }
       },
     },
   }
