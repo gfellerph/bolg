@@ -10,13 +10,13 @@
         ref="searchInput"
         v-model="searchTerm"
       >
-      <img v-if="status == state.INITIAL" class="map-search__icon" src="/img/search.svg" alt="">
+      <img v-if="status == state.INITIAL" class="map-search__icon" src="/img/sueche.png" alt="">
       <button
         class="plain map-search__reset"
         v-if="status != state.INITIAL"
         @click="reset"
       >
-        <img class="map-search__icon" src="/img/close.svg" alt="">
+        <img class="map-search__icon" src="/img/chrüz.png" alt="">
         <span class="sr-only">Lösche</span>
       </button>
     </div>
@@ -192,7 +192,7 @@
 
   .map-search__cta {
     display: block;
-    background: cornflowerblue;
+    background: dodgerblue;
     color: white;
     width: 100%;
     border: none;
@@ -225,7 +225,6 @@
 
     .map-search__reset {
       font-size: 1em;
-      padding: $golden-em / 2;
 
       .map-search__icon {
         margin: 0;
@@ -233,14 +232,10 @@
     }
   }
 
-
   .map-search__icon {
     display: block;
     max-width: none;
-    width: $golden-em;
-    height: $golden-em;
-    margin: 0 $golden-em / 2;
-    padding: ($golden-em - 1em) / 2;
+    width: $golden-em * 2;
   }
 
 </style>

@@ -8,7 +8,7 @@
       class="tipp-info__close plain"
       @click="closeTippInfo"
     >
-      <img src="/img/close.svg" alt="Zuetue">
+      <img src="/img/chrüz.png" alt="Zuetue">
       <span class="sr-only">Zuetue</span>
     </button>
   </div>
@@ -43,7 +43,6 @@ export default {
     position: absolute;
     top: $golden-rem/2;
     right: $golden-rem/2;
-    width: 24px;
-    height: 24px;
+    width: $golden-rem * 1.5;
   }
 </style>
