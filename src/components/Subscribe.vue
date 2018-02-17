@@ -134,7 +134,13 @@
       visibility 0s 0s;
     will-change: transform, opacity;
     visibility: visible;
-    z-index: 1;
+    z-index: 2;
+
+    @include max($xxs) {
+      right: $golden-rem/2;
+      bottom: $golden-rem/2;
+      left: $golden-rem/2;
+    }
 
     &.closed {
       opacity: 0;
@@ -153,8 +159,8 @@
 
   .subscribe__toggler {
     position: fixed;
-    bottom: $golden-rem * 2;
     right: $golden-rem * 2;
+    bottom: $golden-rem * 2;
 
     display: flex;
     width: $golden-rem * 3;
@@ -166,7 +172,12 @@
 
     transition: opacity 500ms, visibility 0s 0s;
 
-    z-index: 2;
+    z-index: 1;
+
+    @include max($xxs) {
+      right: $golden-rem/2;
+      bottom: $golden-rem/2;
+    }
 
     &.hidden {
       opacity: 0;
