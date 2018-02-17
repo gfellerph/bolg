@@ -93,6 +93,7 @@
             this.error = false;
             this.loading = false;
             this.subscriber = new User();
+            this.errors.clear();
             this.formClosed = true;
           })
           .catch((err) => {
