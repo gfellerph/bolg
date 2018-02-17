@@ -10,7 +10,7 @@ import s3 from 'src/config/s3';
 tinify.key = process.env.TINYPNG_API_KEY;
 
 export default function putImages(req, res) {
-  const postId = parseInt(req.body.postid) || false;
+  const postId = parseInt(req.body.postid, 10) || false;
   const drawingId = cuid();
   const base64Data = req.body.source.split(',')[1].replace(/\s/g, '+');
   const imgBuffer = Buffer.from(base64Data, 'base64');
