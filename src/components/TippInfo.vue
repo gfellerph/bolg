@@ -16,12 +16,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-
-    }
-  },
-
   methods: {
     closeTippInfo() {
       this.$emit('close-tipp-info');
