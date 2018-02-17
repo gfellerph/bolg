@@ -1,5 +1,5 @@
 <template>
-  <div class="add-tipp map__box" @keydown.esc="cancel">
+  <div class="add-tipp floating-form map__box" @keydown.esc="cancel">
     <textarea
       id="tipptext"
       class="add-tipp__text"
@@ -28,7 +28,7 @@
     >
     <p class="error" v-bind:key="error.id" v-for="error in errors.collect('tippemail')">{{error}}</p>
     <p class="error" v-if="error">{{error}}</p>
-    <div class="add-tipp__controls">
+    <div class="floating-form__controls">
       <button @mousedown="cancel" @click="cancel">Abbräche</button>
       <button
         @click="send"
@@ -102,39 +102,3 @@
     },
   }
 </script>
-
-<style lang="scss" scoped>
-  @import 'src/styles/core/_index';
-  @import 'src/styles/atoms/convenience';
-
-  .add-tipp {
-
-    input,
-    textarea {
-      display: block;
-      border-bottom-color: lightgrey;
-    }
-
-    button {
-      border: none;
-      width: 50%;
-      margin: 0;
-
-      & + button {
-        border-left: 1px solid lightgrey;
-      }
-    }
-
-    .error {
-      margin: 0;
-      font-size: 0.8em;
-      padding: $golden-rem/4 $golden-rem/2;
-      background: crimson;
-      color: white;
-    }
-  }
-
-  .add-tipp__controls {
-    display: flex;
-  }
-</style>
