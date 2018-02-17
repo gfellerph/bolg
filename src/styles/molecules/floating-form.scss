@@ -1,0 +1,49 @@
+.floating-form {
+
+  input,
+  textarea {
+    display: block;
+  }
+
+  button {
+    border: none;
+    width: 50%;
+    margin: 0;
+
+    & + button {
+      border-left: 1px solid lightgrey;
+    }
+  }
+
+  p {
+    margin: 0 auto;
+  }
+
+  label {
+    color: gray;
+  }
+
+  .field,
+  label,
+  .error,
+  input {
+    margin: 0;
+    padding: $golden-rem/4 $golden-rem/2;
+  }
+
+  .field,
+  input,
+  textarea {
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .error {
+    font-size: 0.85em;
+    background: crimson;
+    color: white;
+  }
+}
+
+.floating-form__controls {
+  display: flex;
+}
