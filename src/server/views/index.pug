@@ -1,0 +1,32 @@
+extends _layout
+include mixins/post-tile
+include mixins/navigation
+
+block meta
+  title bis när
+
+block styles
+  !=webpack['/indexCss.css']
+  !=webpack['/map.css']
+
+block navigation
+  +navigation('index')
+
+block body
+  div#map.map
+  div.container
+    h1 Gschichte
+    ul.posts
+      each post in posts
+        +post-tile(post)
+      - if (!posts || posts.length == 0)
+        p.italic.grey-text Da si ja no gar keiner Gschichte...
+
+
+block footer
+  div#subscribe
+  p.small.italic.text-align-center Die Site isst Cookies wedse z'nach a Biudschirm steusch
+
+block scripts
+  script(defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&libraries=places')
+  script(defer src=webpack['/map.js'])

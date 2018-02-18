@@ -20,8 +20,10 @@ const prodConfig = merge(frontConfig, {
         warnings: false,
       },
       sourceMap: true,
+      parallel: true,
     }),
     new OptimizeCSSPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // gzip compression
     new CompressionWebpackPlugin({
       asset: '[path].gz[query]',

@@ -1,0 +1,16 @@
+mixin drawing(drawings)
+  div#zeichne.drawing
+    hr.blog-divider
+    p.italic.text-align-center Zeichne dini Meinig zur Gschicht
+    canvas#drawing.drawing__canvas.blank
+    p.drawing__error.error.hide
+    p.text-align-center
+      button.drawing__clear Lösche
+      button.drawing__save Schicke
+    div.drawing__display
+      each drawing in drawings
+        img(
+          src= drawing
+          data-no-zoom
+          alt='Zeichnig'
+        )

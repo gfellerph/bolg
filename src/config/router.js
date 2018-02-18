@@ -6,7 +6,6 @@ import Posts from 'src/components/Posts';
 import EditPost from 'src/components/EditPost';
 import Login from 'src/components/Login';
 import Map from 'src/components/Map';
-import Story from 'src/components/Story';
 import Tipps from 'src/components/Tipps';
 import Subscribe from 'src/components/Subscribe';
 import Drawings from 'src/components/Drawings';
@@ -53,22 +52,6 @@ const router = new Router({
       path: '/map',
       name: 'Map',
       component: Map,
-    },
-    {
-      path: '/createstory',
-      name: 'NewStory',
-      component: Story,
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/editstory/:id',
-      name: 'EditStory',
-      component: Story,
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: '/tipps',

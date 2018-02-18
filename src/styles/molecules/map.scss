@@ -4,18 +4,14 @@
   margin: 0 auto;
   background-image: url(/img/map-background-desktop.jpg);
   background-size: cover;
-  
-  @include min($m) {
-    height: 56.25vw;
-    max-height: calc(100vh - 115px);
-  }
 
-  @include between($xs, $m) {
-    height: calc(100vh - 98px);
+  @include min($xs) {
+    height: 56.25vw;
+    max-height: calc(100vh - 111px);
   }
 
   @include max($xs) {
-    height: 100vw;
+    height: calc(100vh - 65px);
     background-image: url(/img/map-background-mobile.jpg);
   }
 
@@ -37,5 +33,5 @@
 .map__box {
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  box-shadow: 0 0px 60px rgba(109, 33, 33, 0.4);
 }

@@ -18,7 +18,7 @@ module.exports = {
   },
   module: {
     rules: [
-      /* {
+      {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
@@ -26,18 +26,20 @@ module.exports = {
         options: {
           formatter: EsLintFriendlyFormatter,
         },
-      }, */
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig,
+        options: {
+          extractCSS: true,
+        },
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
       },
-      /* {
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         query: {
@@ -60,7 +62,7 @@ module.exports = {
           limit: 10000,
           name: '/fonts/[name].[hash:7].[ext]',
         },
-      }, */
+      },
     ],
   },
   plugins: [

@@ -8,19 +8,14 @@
       class="tipp-info__close plain"
       @click="closeTippInfo"
     >
-      <img src="/img/close.svg" alt="">
+      <img src="/img/chrüz.png" alt="Zuetue">
+      <span class="sr-only">Zuetue</span>
     </button>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-
-    }
-  },
-
   methods: {
     closeTippInfo() {
       this.$emit('close-tipp-info');
@@ -30,9 +25,8 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'src/styles/_mixins';
-  @import 'src/styles/_variables';
-  @import 'src/styles/convenience';
+  @import 'src/styles/core/_index';
+  @import 'src/styles/atoms/convenience';
 
   .tipp-info {
     position: relative;
@@ -43,7 +37,6 @@ export default {
     position: absolute;
     top: $golden-rem/2;
     right: $golden-rem/2;
-    width: 24px;
-    height: 24px;
+    width: $golden-rem * 1.5;
   }
 </style>

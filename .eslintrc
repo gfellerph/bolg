@@ -1,7 +1,6 @@
 {
   "extends": "airbnb",
   "rules": {
-    // Additional, per-project rules...
     "no-multiple-empty-lines": ["error", { "max": 1 }],
     "linebreak-style": 0,
     "semi": 0,

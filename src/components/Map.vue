@@ -88,8 +88,7 @@
 </script>
 
 <style lang="scss">
-  @import 'src/styles/_mixins';
-  @import 'src/styles/_variables';
+  @import 'src/styles/core/_index';
 
   .gm-style {
     font: inherit !important;

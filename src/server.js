@@ -8,6 +8,7 @@ import multer from 'multer';
 import mongoose from 'mongoose';
 import io from 'socket.io';
 import apiRoutes from 'src/server/routes/api-routes';
+import mime from 'mime-types';
 import publishAllApi from 'src/server/api/publish-all';
 import publishApi from 'src/server/api/publish';
 import unpublishApi from 'src/server/api/unpublish';
@@ -50,8 +51,31 @@ app.use(compression());
 app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', {
   extensions: 'html',
+  setHeaders: (res, reqpath) => {
+    const type = mime.lookup(reqpath);
+    const oneweek = 1000 * 60 * 60 * 24 * 7;
+    const oneyear = oneweek * 52;
+
+    switch (type) {
+      case 'image/png':
+      case 'image/jpeg':
+      case 'image/svg+xml':
+      case 'image/webp':
+      case 'image/gif':
+        res.setHeader('Cache-Control', `public, max-age=${oneweek}`);
+        break;
+      case 'text/css':
+      case 'text/javascript':
+      case 'application/javascript':
+        res.setHeader('Cache-Control', `public, max-age=${oneyear}`);
+        break;
+      default:
+        break;
+    }
+  },
 }));
 app.use(bodyParser.json());
+// app.use(bodyParser.raw());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes

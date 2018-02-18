@@ -1,0 +1,30 @@
+extends _layout
+
+include mixins/navigation
+include mixins/drawing
+include mixins/next-post
+
+block meta
+  meta(property='og:title' content=post.title)
+  meta(property='og:image' content=post.heroImageUrl)
+  title= post.title
+
+block styles
+  !=webpack['/postCss.css']
+
+block navigation
+  +post-navigation
+  p.post-date.small.text-align-center
+    span &mdash;&nbsp;
+    span.italic= post.created
+    span &nbsp;&mdash;
+
+block body
+  div.container
+    article.main-post!= post.html
+    +drawing(post.drawings)
+    +next-post(nextPost)
+
+block scripts
+  script(defer src=webpack['/post.js'])
+

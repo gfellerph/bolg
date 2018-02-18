@@ -1,3 +1,5 @@
+import 'src/modules/append-polyfill';
+
 const getBookmark = () => {
   if (!window.localStorage) return false;
 
@@ -17,6 +19,8 @@ export function setBookmark() {
 
 export function setBookmarkFlag() {
   const bookmark = getBookmark();
+  if (!bookmark || !bookmark.postId) return;
+
   const template = '<div class="post__badge">witerläse</div>';
   const div = document.createElement('div');
   div.innerHTML = template;

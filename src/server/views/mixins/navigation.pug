@@ -1,0 +1,20 @@
+mixin navigation(active)
+  nav
+    a(class = (active === 'index' ? 'active' : '') href='/')
+      span Reis
+    a(href='/')
+      img.logo(src=logoURL)
+      span.sr-only Gschichte
+    a(class = (active === 'galerie' ? 'active' : '') href='/galerie')
+      span Bilder
+
+mixin post-navigation(active)
+  nav
+    a.left-link(class = (active === 'index' ? 'active' : '') href="/")
+      span.hidden-xxs Reis
+      img.visible-xxs(src="/img/pfiu_linggs.png" alt="Zrugg")
+    a(href="/")
+      img.logo(src=logoURL alt="Logo")
+      span.sr-only Gschichte
+    a.right-link(class = (active === 'galerie' ? 'active' : '') href="/galerie")
+      span.hidden-xxs Bilder

@@ -1,0 +1,16 @@
+mixin gallery-column(images)
+  div.gallery__column
+    each image in images
+      img.gallery__image(
+        src=image.smallestThumb
+        alt='Biuder usem Blog'
+        data-zoom-target=image.biggestThumb
+      )
+
+mixin gallery-post(images, title)
+  article
+    h1= title
+    div.gallery
+      each imageColumn in images
+        +gallery-column(imageColumn)
+
