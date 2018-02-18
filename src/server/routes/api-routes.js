@@ -4,6 +4,7 @@ import * as Subscribers from 'src/server/api/subscriber-api';
 import * as Users from 'src/server/api/user-api';
 import * as Tipps from 'src/server/api/tipp-api';
 import * as Posts from 'src/server/api/post-api';
+import * as Journeys from 'src/server/api/journey-api';
 
 const router = Router();
 
@@ -30,9 +31,15 @@ router.post('/post', passport.authenticate('jwt', { session: false }), Posts.pos
 router.put('/post/:id', passport.authenticate('jwt', { session: false }), Posts.putPost);
 router.delete('/post/:id', passport.authenticate('jwt', { session: false }), Posts.deletePost);
 
-router.use('/*', (err, req, res) => {
-  console.log('error', err);
-  res.json(err);
+router.get('/journeys', Journeys.list);
+router.get('/journey/:id', Journeys.get);
+router.post('/journey', passport.authenticate('jwt', { session: false }), Journeys.post);
+router.put('/journey/:id', passport.authenticate('jwt', { session: false }), Journeys.put);
+router.delete('/journey/:id', passport.authenticate('jwt', { session: false }), Journeys.remove);
+
+router.use('/*', (err, req, res, next) => {
+  if (err) res.json(err);
+  if (!err) next();
 });
 
 export default router;

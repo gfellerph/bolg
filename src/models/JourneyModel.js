@@ -7,6 +7,14 @@ const JourneySchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  date: {
+    type: Date,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
   lat: {
     type: Number,
     required: true,

@@ -67,10 +67,6 @@ app.post('/api/images', uploader.single('image'), postImage);
 app.post('/api/spamreport', postSpamReport);
 app.delete('/api/images/:id', deleteImages);
 
-app.use('/api/*', (err, req, res) => {
-  res.json(err);
-});
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');

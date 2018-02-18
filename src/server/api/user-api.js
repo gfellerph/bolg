@@ -16,7 +16,7 @@ export const registerUser = (req, res) => {
     });
 }
 
-export const authenticateUser = (req, res) => {
+export const authenticateUser = (req, res, next) => {
   User.findOne({
     email: req.body.email,
   })
@@ -24,7 +24,7 @@ export const authenticateUser = (req, res) => {
     .then((user) => {
       if (!user) {
         res.status = 401;
-        return res.send('You shall not pass');
+        next(new Error('You shall not pass'));
       }
 
       user.comparePassword(req.body.password)
@@ -36,14 +36,12 @@ export const authenticateUser = (req, res) => {
           return res.json({ token });
         })
         .catch((err) => {
-          console.error('no pw match', err);
           res.status = 401;
-          res.json(err.message);
+          next(err);
         })
     })
     .catch((err) => {
-      console.error('no user find');
       res.status = 401;
-      res.json(err);
+      next(err);
     });
 }
