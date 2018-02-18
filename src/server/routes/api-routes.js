@@ -15,9 +15,11 @@ router.put('/subscriber/:id', Subscribers.put);
 router.delete('/subscriber/:id', Subscribers.remove);
 router.get('/unsubscribe/:id', Subscribers.remove);
 
+router.get('/users', passport.authenticate('jwt', { session: false }), Users.list);
 router.get('/user', passport.authenticate('jwt', { session: false }), Users.getUser);
 router.post('/user', Users.registerUser);
 router.post('/user/authenticate', Users.authenticateUser);
+router.delete('/user/:id', passport.authenticate('jwt', { session: false }), Users.remove);
 
 router.get('/tipps', Tipps.listTipps);
 router.get('/tipp/:id', Tipps.getTipp);
@@ -37,9 +39,14 @@ router.post('/journey', passport.authenticate('jwt', { session: false }), Journe
 router.put('/journey/:id', passport.authenticate('jwt', { session: false }), Journeys.put);
 router.delete('/journey/:id', passport.authenticate('jwt', { session: false }), Journeys.remove);
 
-router.use('/*', (err, req, res, next) => {
-  if (err) res.json(err);
-  if (!err) next();
+/**
+ * Error handler for api requests, returns json errors
+ */
+router.use('/*', (err, req, res) => {
+  if (err) return res.json(err);
+
+  res.status = 404;
+  return res.json(new Error('Not found'));
 });
 
 export default router;

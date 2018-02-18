@@ -27,10 +27,12 @@ const uploader = multer();
 app.io = io();
 
 // Connect to mongoDB
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING, () => {
-  // Drop everything for testing reasons
-  // mongoose.connection.db.dropDatabase();
-});
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+  // useMongoClient: true,
+})
+  .then(() => {
+
+  });
 
 app.use(passport.initialize());
 

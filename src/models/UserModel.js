@@ -47,7 +47,7 @@ UserSchema.methods.comparePassword = function comparePassword(password) {
       if (err) return reject(err);
       if (!match) return reject(new Error('You shall not pass'));
 
-      return resolve();
+      return resolve(this);
     })
   });
 }
