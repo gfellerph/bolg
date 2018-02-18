@@ -5,7 +5,9 @@ import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import multer from 'multer';
+import mongoose from 'mongoose';
 import io from 'socket.io';
+import apiRoutes from 'src/server/routes/api-routes';
 import mime from 'mime-types';
 import publishAllApi from 'src/server/api/publish-all';
 import publishApi from 'src/server/api/publish';
@@ -17,12 +19,23 @@ import putDrawing from 'src/server/api/put-drawing';
 import { postSubscriber } from 'src/server/api/subscriber';
 import { postImage, deleteImages } from 'src/server/api/images';
 import { postSpamReport } from 'src/server/api/spamreport';
+import passport from 'src/config/passport';
 
 const app = express();
 const uploader = multer();
 
 // Attach socket io for initialization in bin/www
 app.io = io();
+
+// Connect to mongoDB
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+  // useMongoClient: true,
+})
+  .then(() => {
+
+  });
+
+app.use(passport.initialize());
 
 // View engine settings
 app.set('views', './src/server/views');
@@ -66,6 +79,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
+app.use('/api', apiRoutes);
 app.get('/publish', publishAllApi);
 app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
