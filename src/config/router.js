@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import { auth } from 'src/config/firebase';
+import store from 'src/config/store';
 
 import Posts from 'src/components/Posts';
 import EditPost from 'src/components/EditPost';
@@ -11,6 +12,8 @@ import Subscribe from 'src/components/Subscribe';
 import Drawings from 'src/components/Drawings';
 import Subscribers from 'src/components/Subscribers';
 import CreateDrawing from 'src/components/CreateDrawing';
+import JourneyEditor from 'src/components/JourneyEditor';
+import MongoLogin from 'src/components/MongoLogin';
 
 Vue.use(Router);
 
@@ -44,6 +47,14 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login,
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
+      path: '/mongologin',
+      name: 'MongoLogin',
+      component: MongoLogin,
       meta: {
         requiresAuth: false,
       },
@@ -93,22 +104,39 @@ const router = new Router({
         requiresAuth: true,
       },
     },
+    {
+      path: '/journey',
+      name: 'Journey',
+      component: JourneyEditor,
+      meta: {
+        requiresMongoAuth: true,
+      },
+    },
   ],
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresMongoAuth)) {
+    if (!store.state.auth.mongoUser) {
+      return next({
+        path: '/mongologin',
+        query: { redirect: to.fullPath },
+      });
+    }
+  }
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!auth.currentUser) {
-      next({
+      return next({
         path: '/login',
         query: { redirect: to.fullPath },
       });
     }
   }
 
-  next();
+  return next();
 });
 
 export default router;

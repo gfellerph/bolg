@@ -3,13 +3,13 @@
     <header class="header">
       <nav class="navigation">
         <input type="checkbox" id="nav">
-        <label for="nav"><img src="/img/menu.svg" alt="Menu"></label>
+        <label for="nav"><img src="/img/menu.png" alt="Menu"></label>
         <label for="nav" class="navigation__closer"></label>
-        <router-link to="/"><img src="/img/grid.svg" alt="Schribe"></router-link>
-        <router-link to="/createpost"><img src="/img/add.svg" alt="Schribe"></router-link>
+        <router-link to="/"><img src="/img/chachle.png" alt="Schribe"></router-link>
+        <router-link to="/createpost"><img src="/img/plus.png" alt="Schribe"></router-link>
         <div class="offcanvas">
           <label for="nav" class="navigation__mini-closer">
-            <img style="width: 24px;" src="/img/close.svg" alt="">
+            <img style="width: 32px;" src="/img/chrüz.png" alt="">
           </label>
           <profile></profile>
           <hr>
@@ -20,6 +20,7 @@
           <router-link to="/drawings">Drawings</router-link>
           <router-link to="/subscribers">Subscribers</router-link>
           <router-link to="/createdrawing">Zeichne</router-link>
+          <router-link to="/journey">Reiseroute</router-link>
           <!-- <router-link to="/createstory">Create story</router-link>-->
         </div>
       </nav>
