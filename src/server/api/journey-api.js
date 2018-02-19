@@ -1,6 +1,8 @@
 import Journey from 'src/models/JourneyModel';
 
-export const list = (req, res, next) => Journey.find({}, 'lat lng description')
+export const list = (req, res, next) => Journey
+  .find({})
+  .sort('date')
   .then(data => res.json(data))
   .catch(err => next(err));
 
