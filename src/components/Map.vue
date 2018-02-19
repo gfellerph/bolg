@@ -15,6 +15,7 @@
   import Tipp from 'src/models/Tipp';
   import AddTipp from 'src/components/AddTipp';
   import MapSearch from 'src/components/MapSearch';
+  import { mapConfig } from 'src/config/map';
 
   /* global google */
 
@@ -27,16 +28,7 @@
     },
 
     mounted() {
-      this.map = new google.maps.Map(document.getElementById('google-map'), {
-        zoom: 2,
-        center: new google.maps.LatLng(27, 6),
-        streetViewControl: false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: false,
-        fullscreenControl: false,
-        draggableCursor: null,
-        draggingCursor: null,
-      });
+      this.map = new google.maps.Map(document.getElementById('google-map'), mapConfig);
 
       this.$refs.mapSearch.init(this.map);
 
