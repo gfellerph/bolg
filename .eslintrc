@@ -2,10 +2,14 @@
   "extends": "airbnb",
   "rules": {
     "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-param-reassign": ["error", {
+      "props": false
+    }],
     "linebreak-style": 0,
     "semi": 0,
     "no-extra-semi": 2,
     "no-plusplus": 0,
+    "no-underscore-dangle": 0,
     "import/no-extraneous-dependencies": [
       "error",
       {
