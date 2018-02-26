@@ -15,7 +15,8 @@
   import Tipp from 'src/models/Tipp';
   import AddTipp from 'src/components/AddTipp';
   import MapSearch from 'src/components/MapSearch';
-  import { mapConfig } from 'src/config/map';
+  import { mapConfig, polylineConfig, lineMarkerConfig } from 'src/config/map';
+  import { unique } from 'src/modules/group-by';
 
   /* global google */
 
@@ -23,6 +24,7 @@
     data() {
       return {
         markers: [],
+        polyline: null,
         map: null,
       };
     },
@@ -33,6 +35,38 @@
       this.$refs.mapSearch.init(this.map);
 
       if (window.outerWidth >= 768) this.map.addListener('click', this.addTipp);
+
+      axios.get('/api/journeys')
+        .then((res) => {
+          const journey = res.data;
+
+          const path = journey.map(location => ({ lat: location.lat, lng: location.lng }));
+          this.polyline = new google.maps.Polyline(Object.assign(
+            {},
+            polylineConfig,
+            {
+              path,
+              map: this.map,
+            },
+          ));
+
+          const groupedMarkers = unique(journey, marker => [
+            marker.description,
+            marker.lat,
+            marker.lng,
+          ]);
+
+          groupedMarkers.map(location => new google.maps.Marker(Object.assign(
+            {},
+            lineMarkerConfig,
+            {
+              position: new google.maps.LatLng(location.lat, location.lng),
+              map: this.map,
+              title: location.description,
+            },
+          )));
+        })
+        .catch(err => console.error(err));
 
       axios.get('/api/tipps')
         .then((res) => {
