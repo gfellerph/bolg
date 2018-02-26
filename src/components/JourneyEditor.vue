@@ -51,7 +51,8 @@
 import axios from 'axios';
 import Journey from 'src/models/Journey';
 import JourneyPointEditor from 'src/components/JourneyPointEditor';
-import { mapConfig, polylineConfig } from 'src/config/map';
+import { mapConfig, polylineConfig, lineMarkerConfig } from 'src/config/map';
+import { unique } from 'src/modules/group-by';
 
 /* global google */
 
@@ -67,7 +68,7 @@ export default {
       marker: null,
       map: null,
       polyline: null,
-      markers: null,
+      markers: [],
     };
   },
 
@@ -105,17 +106,22 @@ export default {
       this.polyline = new google.maps.Polyline(Object.assign(polylineConfig, {
         path,
       }));
-      this.markers = val.map(location => new google.maps.Marker({
-        position: new google.maps.LatLng(location.lat, location.lng),
-        map: this.map,
-        icon: {
-          url: '/img/dot.png',
-          size: new google.maps.Size(11, 11),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(5.5, 5.5),
+
+      const groupedMarkers = unique(val, marker => [
+        marker.description,
+        marker.lat,
+        marker.lng,
+      ]);
+
+      this.markers = groupedMarkers.map(location => new google.maps.Marker(Object.assign(
+        {},
+        lineMarkerConfig,
+        {
+          position: new google.maps.LatLng(location.lat, location.lng),
+          map: this.map,
+          title: location.description,
         },
-        title: `${location.shortDate} - ${location.description}`,
-      }));
+      )));
 
       this.polyline.setMap(this.map);
     },
