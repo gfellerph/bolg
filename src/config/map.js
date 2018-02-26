@@ -20,3 +20,12 @@ export const polylineConfig = {
   strokeOpacity: 1.0,
   strokeWeight: 1.5,
 }
+
+export const lineMarkerConfig = {
+  icon: {
+    url: '/img/dot.png',
+    size: new google.maps.Size(11, 11),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(5.5, 5.5),
+  },
+}
