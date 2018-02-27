@@ -4,20 +4,19 @@ env:
   - TRAVIS_CI=true
 node_js:
 - 9.3.0
-before_deploy:
-- npm run build
 cache: yarn
 branches:
   only:
     - develop
+before_deploy:
+- aws s3 sync YOUR_FILES s3://bolg/public --delete
+- npm run build
 deploy:
   provider: s3
   access_key_id: "AKIAIM5UEWEFS5BSAMWQ"
   bucket: bolg
   skip_cleanup: true
   local_dir: public
-  upload_dir: public
-  upload-dir: public2
   region: eu-central-1
   on:
     branch: develop
