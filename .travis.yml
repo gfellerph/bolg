@@ -9,7 +9,6 @@ branches:
   only:
     - develop
 before_deploy:
-- aws s3 sync YOUR_FILES s3://bolg/public --delete
 - npm run build
 deploy:
   provider: s3
