@@ -25,6 +25,7 @@ deploy:
     app:
       develop: bisnaer-stage
     local_dir: server
+    skip_cleanup: true
     run:
       - restart
     api_key:
