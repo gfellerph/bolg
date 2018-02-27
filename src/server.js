@@ -8,6 +8,7 @@ import multer from 'multer';
 import mongoose from 'mongoose';
 import io from 'socket.io';
 import apiRoutes from 'src/server/routes/api-routes';
+import migrationRoutes from 'src/server/routes/migration-routes';
 import mime from 'mime-types';
 import publishAllApi from 'src/server/api/publish-all';
 import publishApi from 'src/server/api/publish';
@@ -79,6 +80,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 app.use('/api', apiRoutes);
+app.use('/migrate', migrationRoutes);
 app.get('/publish', publishAllApi);
 app.get('/publish/:id', publishApi);
 app.get('/unpublish/:id', unpublishApi);
