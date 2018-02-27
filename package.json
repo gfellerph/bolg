@@ -23,7 +23,7 @@
     "prod:back": "webpack --config config/back.prod.config.js",
     "prod:server": "webpack --config config/server.prod.config.js",
     "prod": "npm-run-all -s clean -p prod:*",
-    "postinstall": "npm run prod"
+    "test": "echo \"no test specified\""
   },
   "dependencies": {
     "autoprefixer": "^7.1.6",
