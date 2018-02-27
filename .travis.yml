@@ -3,7 +3,7 @@ env:
   matrix:
   - TRAVIS_CI=true
 node_js:
-- 7.8.0
+- 9.3.0
 before_deploy:
 - npm run build
 cache: yarn
