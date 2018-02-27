@@ -25,7 +25,7 @@ export const authenticateUser = (req, res, next) => {
     .then((user) => {
       if (!user) {
         res.status = 401;
-        throw new Error('You shall not pass');
+        return next(new Error('You shall not pass'));
       }
 
       return user.comparePassword(req.body.password);
