@@ -2,7 +2,6 @@ import cuid from 'cuid';
 import tinify from 'tinify';
 import { database } from 'src/config/firebase-admin';
 import { cloudFrontify } from 'src/config/constants';
-import writefile from 'src/server/writefile';
 import imagemin from 'imagemin';
 import imageminPngquant from 'imagemin-pngquant';
 import s3 from 'src/config/s3';
@@ -21,7 +20,7 @@ export default function putImages(req, res) {
 
   imagemin.buffer(imgBuffer, {
     pulugins: [
-      imageminPngquant({ quality: '65-80' }),
+      imageminPngquant({ quality: '30-50' }),
     ],
   })
     /* eslint arrow-body-style:0 */
@@ -50,8 +49,13 @@ export default function putImages(req, res) {
     .catch((err) => {
       /* eslint no-console:0 */
       console.error(err);
-      writefile(`temp/${req.body.postid}.${drawingId}.png`, imgBuffer);
+      // writefile(`temp/${req.body.postid}.${drawingId}.png`, imgBuffer);
       res.status(500);
       res.send(`Öppis het nid ta wies söu, aber dis Biud isch gspicheret. Fähler: ${err.message}`);
+      s3.putObject({
+        Bucket: 'bolg',
+        Key: `faileddrawings/${req.body.postid}.${drawingId}.png`,
+        Body: imgBuffer,
+      });
     });
 }
