@@ -66,7 +66,6 @@
             },
           )));
         })
-        .catch(err => console.error(err));
 
       axios.get('/api/tipps')
         .then((res) => {
