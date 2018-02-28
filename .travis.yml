@@ -13,7 +13,7 @@ before_deploy:
 deploy:
 - provider: s3
   access_key_id: AKIAIM5UEWEFS5BSAMWQ
-  bucket: bolg
+  bucket: adie.bisnaer.ch
   skip_cleanup: true
   local_dir: public
   region: eu-central-1
