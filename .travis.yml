@@ -16,6 +16,7 @@ deploy:
   bucket: adie.bisnaer.ch
   skip_cleanup: true
   local_dir: public
+  upload-dir: s
   region: eu-central-1
   on:
     branch: develop
