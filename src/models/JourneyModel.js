@@ -41,7 +41,6 @@ JourneySchema.virtual('inputDate')
     return dateformat(this.date, 'yyyy-mm-dd');
   })
   .set(function setInputDate(value) {
-    console.log('setting input date');
     this.date = value;
   });
 
