@@ -38,7 +38,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
 app.use(passport.initialize());
 
 // View engine settings
-app.set('views', './src/server/views');
+app.set('views', './server/views');
 app.set('view engine', 'pug');
 
 // Redirect to https

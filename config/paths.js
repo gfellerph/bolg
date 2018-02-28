@@ -9,6 +9,8 @@ module.exports = {
   public: path.resolve(root, 'public'),
   server: path.resolve(root, 'server'),
   static: path.resolve(root, 'src/static'),
+  views: path.resolve(root, 'src/server/views'),
+  viewsDestination: path.resolve(root, 'server/views'),
   frontManifest: 'config/front.manifest.json',
   backIndex: path.resolve(root, 'src/server/templates/bolg.html'),
   serviceWorkerDev: path.resolve(root, 'config/service-worker-dev.js'),
