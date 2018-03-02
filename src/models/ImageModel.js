@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 export const ImageSchema = new Schema({
   id: { type: String, unique: true },
   url: String,
-  thumbnails: [String],
+  thumbnails: [Object],
 });
 
 ImageSchema.pre('save').set(function setId(next) {
