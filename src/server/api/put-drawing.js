@@ -12,11 +12,12 @@ export default function putImages(req, res) {
   const drawingId = cuid();
   const base64Data = req.body.source.split(',')[1].replace(/\s/g, '+');
   const imgBuffer = Buffer.from(base64Data, 'base64');
-  const ref = typeof req.body.postid === 'number'
-    ? database.ref(`/posts/${req.body.postid}/drawings/${drawingId}`)
+  const postId = req.body.postid ? req.body.postid : false;
+  const ref = postId
+    ? database.ref(`/posts/${postId}/drawings/${drawingId}`)
     : null;
-  const publishedRef = database.ref(`/published/${req.body.postid}/drawings/${drawingId}`);
-  const awsLocation = req.body.postid ? `drawings/${drawingId}.png` : `temp/${drawingId}.png`;
+  const publishedRef = database.ref(`/published/${postId}/drawings/${drawingId}`);
+  const awsLocation = postId ? `drawings/${drawingId}.png` : `temp/${drawingId}.png`;
 
   imagemin.buffer(imgBuffer, {
     pulugins: [
@@ -49,12 +50,12 @@ export default function putImages(req, res) {
     .catch((err) => {
       /* eslint no-console:0 */
       console.error(err);
-      // writefile(`temp/${req.body.postid}.${drawingId}.png`, imgBuffer);
+      // writefile(`temp/${postId}.${drawingId}.png`, imgBuffer);
       res.status(500);
       res.send(`Öppis het nid ta wies söu, aber dis Biud isch gspicheret. Fähler: ${err.message}`);
       s3.putObject({
         Bucket: 'bolg',
-        Key: `faileddrawings/${req.body.postid}.${drawingId}.png`,
+        Key: `faileddrawings/${postId}.${drawingId}.png`,
         Body: imgBuffer,
       });
     });

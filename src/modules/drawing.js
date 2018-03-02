@@ -115,7 +115,9 @@ export default function initCanvas() {
     sendButton.setAttribute('disabled', 'disabled');
 
     // Put the drawing
-    axios.put('/api/drawing', `source=${imageData}&postid=${postId}`)
+    const formData = [`source=${imageData}`];
+    if (postId) formData.push(`postid=${postId}`);
+    axios.put('/api/drawing', formData.join('&'))
       .then(() => {
         canvas.classList.remove('merci');
         sendButton.removeAttribute('disabled');
