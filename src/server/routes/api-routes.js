@@ -8,11 +8,11 @@ import * as Journeys from 'src/server/api/journey-api';
 
 const router = Router();
 
-router.get('/subscribers', Subscribers.list);
-router.get('/subscriber/:id', Subscribers.get);
+router.get('/subscribers', passport.authenticate('jwt', { session: false }), Subscribers.list);
+router.get('/subscriber/:id', passport.authenticate('jwt', { session: false }), Subscribers.get);
 router.post('/subscriber', Subscribers.post);
-router.put('/subscriber/:id', Subscribers.put);
-router.delete('/subscriber/:id', Subscribers.remove);
+router.put('/subscriber/:id', passport.authenticate('jwt', { session: false }), Subscribers.put);
+router.delete('/subscriber/:id', passport.authenticate('jwt', { session: false }), Subscribers.remove);
 router.get('/unsubscribe/:id', Subscribers.remove);
 
 router.get('/users', passport.authenticate('jwt', { session: false }), Users.list);

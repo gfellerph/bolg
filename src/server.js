@@ -33,7 +33,6 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
   .then(() => {
     /* eslint no-console: 0 */
     console.log('Connected to mongodb server');
-    // mongoose.connection.db.dropCollection('posts');
   })
   .catch((err) => { console.error(err); });
 
