@@ -1,15 +1,18 @@
 import mongoose from 'mongoose';
 import shortid from 'shortid';
-import { ThumbnailSchema } from 'src/models/ThumbnailModel';
 
 const { Schema } = mongoose;
 
-export const ImageSchema = new Schema({
-  name: {
-    type: String,
+export const ThumbnailSchema = new Schema({
+  size: {
+    type: Number,
     required: true,
   },
   url: {
+    type: String,
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
@@ -17,7 +20,6 @@ export const ImageSchema = new Schema({
     type: String,
     default: shortid.generate,
   },
-  thumbnails: [ThumbnailSchema],
 });
 
-export default mongoose.model('Image', ImageSchema);
+export default mongoose.model('Thumbnail', ThumbnailSchema);

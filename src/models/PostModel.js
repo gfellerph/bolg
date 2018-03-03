@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { ImageSchema } from 'src/models/ImageModel';
+import { ThumbnailSchema } from 'src/models/ThumbnailModel';
 
 const { Schema } = mongoose;
 
@@ -25,9 +26,9 @@ export const PostSchema = new Schema({
     type: Date,
     default: null,
   },
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+  postDate: {
+    type: Date,
+    default: Date.now,
   },
   markdown: {
     type: String,
@@ -37,10 +38,7 @@ export const PostSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  titleImage: {
-    type: String,
-    default: '',
-  },
+  titleImage: ThumbnailSchema,
   images: [ImageSchema],
   drawings: [ImageSchema],
 });
