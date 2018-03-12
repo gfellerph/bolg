@@ -8,7 +8,6 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./bin/www",
-    "build": "npm run prod",
     "database": "mongod",
     "local": "node -r dotenv/config ./bin/www",
     "clean:public": "rimraf public",
