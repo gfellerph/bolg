@@ -49,9 +49,38 @@ function putImage(body, name, contenttype) {
   return s3.putObject({
     Body: body,
     Bucket: 'adie.bisnaer.ch',
-    Key: `google/${name}`,
+    Key: `googleoriginals/${name}`,
     ContentType: contenttype,
   }).promise();
+}
+
+export const migrateorigs = (req, res, next) => {
+  getAllImages()
+    .then((images) => {
+      let uploadCount = 0;
+      let totalCount = 0;
+      if (!images) {
+        return next(new Error('Kener Biuder'));
+      }
+      const imgFns = images
+        .filter(image => image.url.indexOf('googleapis.com/v0/b/bolg') >= 0)
+        .map((image) => {
+          return async () => {
+            console.log('Starting download of ', image.url);
+            const { body, headers } = await getImage(image.url);
+            console.log('Download complete, starting upload');
+            const putResult = await putImage(body, `${image.shortid}.${types[headers['content-type']]}`, headers['content-type']);
+            uploadCount++;
+            console.log(`Upload complete, ${totalCount - uploadCount} remaining`);
+          }
+        });
+
+      totalCount = imgFns.length;
+      console.log(`Starting upload of ${imgFns.length} images`);
+      queue(imgFns)
+        .then(() => console.log('All images uploaded'))
+        .catch(err => console.log(err));
+    })
 }
 
 export const migratethumbs = (req, res, next) => {

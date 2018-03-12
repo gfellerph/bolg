@@ -12,5 +12,6 @@ router.get('/tipps', tipps.get);
 router.get('/posts', posts.get);
 router.get('/subscribers', subscribers.get);
 router.get('/images/thumbs', images.migratethumbs);
+router.get('/images/origs', images.migrateorigs);
 
 export default router;
