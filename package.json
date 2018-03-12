@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./bin/www",
-    "build": "npm-run-all -s clean:public -p prod:front prod:back",
+    "build": "npm run prod",
     "database": "mongod",
     "local": "node -r dotenv/config ./bin/www",
     "clean:public": "rimraf public",
@@ -25,7 +25,7 @@
     "prod:server": "webpack --config config/server.prod.config.js",
     "prod": "npm-run-all -s clean -p prod:*",
     "test": "echo \"no test specified\"",
-    "heroku-postbuild": "npm-run-all -s clean:server prod:server"
+    "heroku-postbuild": "npm run prod"
   },
   "dependencies": {
     "autoprefixer": "^7.1.6",
