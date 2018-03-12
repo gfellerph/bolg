@@ -22,7 +22,7 @@
     "prod:front": "webpack --env production --config config/front.prod.config.js",
     "prod:back": "webpack --config config/back.prod.config.js",
     "prod:server": "webpack --config config/server.prod.config.js",
-    "prod": "npm-run-all -s clean -p prod:*",
+    "prodd": "npm-run-all -s clean -p prod:*",
     "test": "echo \"no test specified\""
   },
   "dependencies": {
