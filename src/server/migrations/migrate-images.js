@@ -94,9 +94,9 @@ export const renameImagesOnS3 = async (req, res, next) => {
         const extension = types[contentType];
         const newKey = `i/${image.shortid}.${extension}`;
         const newUrl = `https://adie.bisnaer.ch/${newKey}`;
-        console.log(newKey, image.url);
+        console.log(newKey);
         image.url = newUrl;
-        const newImg = image.save().then(x => console.log(x));
+        const newImg = image.save();
         const copyPromise = s3.copyObject({
           Bucket: 'adie.bisnaer.ch',
           CopySource: `adie.bisnaer.ch/googleoriginals/${image.shortid}.${extension}`,
