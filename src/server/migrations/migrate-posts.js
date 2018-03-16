@@ -31,7 +31,6 @@ export const get = (req, res, next) => {
         const idRegex = /\.([0-9]+)$|\.([0-9]+)\.[JjPp]|\.([0-9]+)x/g;
         const match = idRegex.exec(post.titleImage.url);
         const size = match ? match[1] || match[2] || match[3] : null;
-        if (!size) console.log('No size: ', post.titleImage);
         post.titleImage = {
           size,
           name: post.titleImage.id,
