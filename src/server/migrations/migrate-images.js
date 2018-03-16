@@ -9,12 +9,19 @@ String.prototype.replaceAll = function replaceAll(search, replacement) {
   return target.split(search).join(replacement);
 };
 
-const types = {
+export const replaceAll = (str, search, repl) => str.split(search).join(repl);
+
+export const types = {
   'image/gif': 'gif',
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/png': 'png',
   'image/svg+xml': 'svg',
+  gif: 'image/gif',
+  jpg: 'image/jpg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  svg: 'image/svg+xml',
 }
 
 async function queue(functions) {
@@ -39,7 +46,7 @@ async function getAllThumbnails() {
   return images.reduce((thumbnails, image) => [...thumbnails, ...image.thumbnails]);
 }
 
-function getImage(url) {
+export function getImage(url) {
   return new Promise((resolve, reject) => {
     request({ uri: url, encoding: null }, (err, imgres, body) => {
       if (err) return reject(err);
@@ -49,6 +56,20 @@ function getImage(url) {
       });
     });
   });
+}
+
+export function getHeaders(url) {
+  return new Promise((resolve, reject) => {
+    request.head(url, (err, res) => {
+      if (err) return reject(err);
+      return resolve(res.headers);
+    })
+  })
+}
+
+export async function getExtension(url) {
+  const headers = await getHeaders(url);
+  return types[headers['content-type']];
 }
 
 function putImage(body, name, contenttype) {
@@ -63,48 +84,21 @@ function putImage(body, name, contenttype) {
 export const renameImagesOnS3 = async (req, res, next) => {
   const images = await getAllImages();
   const copyFns = images
-    .filter(image => image.url.indexOf('googleapis') >= 0)
+    // .filter(image => image.url.indexOf('googleapis') >= 0)
     .map((image) => {
       const fns = image.thumbnails
         .filter(thumb => thumb.url.indexOf('googleapis') >= 0)
         .map((thumbnail) => {
           const fn = async () => {
-            const { headers } = await getImage(image.url);
-            const contentType = headers['content-type'];
-            const extension = types[contentType];
+            const extension = /\.([a-zA-Z]{3})\?/g.exec(thumbnail.url)[1].toLowerCase();
             const newKey = `i/${image.shortid}.${thumbnail.size}.${extension}`;
             const newUrl = `https://adie.bisnaer.ch/${newKey}`;
             console.log(newKey);
-            thumbnail.url = newUrl;
-            const newThumb = thumbnail.save();
-            const copyPromise = s3.copyObject({
-              Bucket: 'adie.bisnaer.ch',
-              CopySource: `adie.bisnaer.ch/google/${thumbnail.shortid}.${thumbnail.size}.${extension}`,
-              Key: newKey,
-            }).promise();
-
-            return Promise.all([newThumb, copyPromise]);
+            thumbnail.cdnUrl = newUrl;
+            return thumbnail.save();
           }
           return fn;
         })
-
-      fns.push(async () => {
-        const { headers } = await getImage(image.url);
-        const contentType = headers['content-type'];
-        const extension = types[contentType];
-        const newKey = `i/${image.shortid}.${extension}`;
-        const newUrl = `https://adie.bisnaer.ch/${newKey}`;
-        console.log(newKey);
-        image.url = newUrl;
-        const newImg = image.save();
-        const copyPromise = s3.copyObject({
-          Bucket: 'adie.bisnaer.ch',
-          CopySource: `adie.bisnaer.ch/googleoriginals/${image.shortid}.${extension}`,
-          Key: newKey,
-        }).promise();
-
-        return Promise.all([newImg, copyPromise]);
-      });
       return fns;
     })
     .reduce((acc, curr) => [...acc, ...curr], []);
