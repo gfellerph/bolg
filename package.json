@@ -69,6 +69,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "pug": "^2.0.0-rc.3",
+    "request": "^2.85.0",
     "sendgrid": "^5.2.3",
     "serve-favicon": "^2.4.5",
     "sharp": "^0.18.4",
