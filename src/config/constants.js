@@ -10,10 +10,10 @@ export const states = {
   PUBLISHED: 6,
 };
 
-export const cloudFrontify = filename => `https://d3ieg3cxah9p4i.cloudfront.net/${filename}`;
+export const cloudFrontify = filename => `https://adie.bisnaer.ch/${filename}`;
 
 // Random logo
-export const logoURL = () => cloudFrontify(`static/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`);
+export const logoURL = () => cloudFrontify(`s/img/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`);
 
 export const mapsAPIKey = 'AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ';
 
