@@ -10,7 +10,7 @@ mixin drawing(drawings)
     div.drawing__display
       each drawing in drawings
         img(
-          src= drawing
+          src= drawing.url
           data-no-zoom
           alt='Zeichnig'
         )
