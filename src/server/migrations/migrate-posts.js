@@ -11,7 +11,8 @@ export const get = (req, res, next) => {
     await Post.collection.drop();
 
     // Loop through posts
-    const posts = Object.values(val.val()).slice(1, 2);
+    const posts = Object.values(val.val()).slice(1, 4);
+    console.log(`Starting to migrate ${posts.length} posts`);
     const newPosts = await Promise.all(posts.map(async (post) => {
       delete post.id;
       delete post.author;
@@ -95,7 +96,7 @@ export const get = (req, res, next) => {
       return new Post(post);
     }));
 
-    Promise.all(newPosts.map(post => post.save()))
+    Promise.all(newPosts.map(post => post.save().then(() => console.log(`Post ${post.title} migrated`))))
       .then(() => res.json(newPosts))
       .catch(err => next(err));
   });
