@@ -17,6 +17,11 @@ export const get = (req, res, next) => {
       delete post.id;
       delete post.author;
 
+      // If post was published, set published markdown
+      if (typeof new Date(post.lastPublished) === 'object') {
+        post.publishedMarkdown = post.markdown;
+      }
+
       // Convert images
       post.images = await Promise.all(post.images.map(async (image) => {
         delete image.thumbnails;

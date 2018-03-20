@@ -6,7 +6,7 @@ include mixins/next-post
 
 block meta
   meta(property='og:title' content=post.title)
-  meta(property='og:image' content=post.heroImageUrl)
+  meta(property='og:image' content=post.titleImage.url)
   title= post.title
 
 block styles
@@ -16,12 +16,15 @@ block navigation
   +post-navigation
   p.post-date.small.text-align-center
     span &mdash;&nbsp;
-    span.italic= post.created
+    span.italic= post.formattedPostDate
     span &nbsp;&mdash;
 
 block body
   div.container
     article.main-post!= post.html
+
+block footer
+  footer.container
     +drawing(post.drawings)
     +next-post(nextPost)
 
