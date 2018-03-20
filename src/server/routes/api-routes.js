@@ -32,7 +32,7 @@ router.get('/post/:id', Posts.getPost);
 router.post('/post', passport.authenticate('jwt', { session: false }), Posts.postPost);
 router.put('/post/:id', passport.authenticate('jwt', { session: false }), Posts.putPost);
 router.delete('/post/:id', passport.authenticate('jwt', { session: false }), Posts.deletePost);
-router.get('/post/build/:id', Posts.build);
+router.get('/buildpost/:id', Posts.build);
 
 router.get('/journeys', Journeys.list);
 router.get('/journey/:id', Journeys.get);
