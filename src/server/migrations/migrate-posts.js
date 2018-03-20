@@ -9,6 +9,11 @@ export const get = (req, res, next) => {
       delete post.id;
       delete post.author;
 
+      // If post was published, set published markdown
+      if (typeof new Date(post.lastPublished) === 'object') {
+        post.publishedMarkdown = post.markdown;
+      }
+
       // Convert images
       post.images = post.images.map((image) => {
         if (image.downloadURL) image.url = image.downloadURL.replace(/d3ieg3cxah9p4i\.cloudfront\.net/g, 'adie.bisnaer.ch');
