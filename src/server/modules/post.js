@@ -10,7 +10,7 @@ import webpackManifest from 'src/server/modules/webpack-manifest';
  * @param {Post} nextPost - Next post in line for the preview
  * @returns {Promise} Resolves when the file is written to disk
  */
-export default function buildPost(post, nextPost) {
+export const buildPost = (post, nextPost) => {
   if (!post) throw new Error(`Post with id ${post} not found, can't touch this.`);
 
   const filePath = `public/gschichte/${slugger(post.title)}.html`;
@@ -22,4 +22,20 @@ export default function buildPost(post, nextPost) {
   });
 
   return writefile(filePath, html);
+}
+
+/**
+ * Buils all posts and saves them to disk
+ *
+ * @param {array<Post>} posts Array of posts
+ * @returns {Promise} Resolves when all posts are written
+ */
+export const buildPosts = (posts) => {
+  if (!posts || posts.length === 0) return Promise.reject(Error(`buildAllPosts failed, parameter was ${posts}`));
+  const fns = [];
+  posts.reduce((post, nextPost) => {
+    fns.push(buildPost(post, nextPost));
+    return nextPost;
+  });
+  return Promise.all(fns);
 }
