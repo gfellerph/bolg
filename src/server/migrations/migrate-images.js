@@ -4,6 +4,7 @@ import s3 from 'src/config/s3';
 import Post from 'src/models/PostModel';
 
 /* eslint no-extend-native:0 */
+/* eslint no-console:0 */
 String.prototype.replaceAll = function replaceAll(search, replacement) {
   const target = this;
   return target.split(search).join(replacement);
