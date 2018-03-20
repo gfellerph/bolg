@@ -5,6 +5,7 @@ import * as Users from 'src/server/api/user-api';
 import * as Tipps from 'src/server/api/tipp-api';
 import * as Posts from 'src/server/api/post-api';
 import * as Journeys from 'src/server/api/journey-api';
+import * as Builds from 'src/server/api/build-api';
 
 const router = Router();
 
@@ -32,8 +33,10 @@ router.get('/post/:id', Posts.getPost);
 router.post('/post', passport.authenticate('jwt', { session: false }), Posts.postPost);
 router.put('/post/:id', passport.authenticate('jwt', { session: false }), Posts.putPost);
 router.delete('/post/:id', passport.authenticate('jwt', { session: false }), Posts.deletePost);
-router.get('/buildpost/:id', Posts.build);
-router.get('/buildposts', Posts.buildAll);
+
+router.get('/build/post/:id', Builds.buildPost);
+router.get('/build/posts', Builds.buildPosts);
+router.get('/build/index', Builds.buildIndex)
 
 router.get('/journeys', Journeys.list);
 router.get('/journey/:id', Journeys.get);

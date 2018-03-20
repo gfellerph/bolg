@@ -1,5 +1,4 @@
 import Post from 'src/models/PostModel';
-import { buildPost, buildPosts } from 'src/server/modules/post';
 
 export const getPost = (req, res, next) => Post.findOne({
   _id: req.params.id,
@@ -26,28 +25,3 @@ export const deletePost = (req, res, next) => Post.remove({
 export const getPosts = (req, res, next) => Post.find({})
   .then(posts => res.json(posts))
   .catch(err => next(err));
-
-// Build a single post
-export const build = async (req, res, next) => {
-  const post = await Post.findOne({ _id: req.params.id })
-    .catch(err => next(err));
-  const nextPost = await Post.findOne({ postDate: { $gt: post.postDate } }).sort('postDate');
-
-  return buildPost(post, nextPost)
-    .then(() => res.send('OK'))
-    .catch(err => next(err));
-}
-
-// Build all posts
-export const buildAll = async (req, res, next) => {
-  // Find all published posts
-  const posts = await Post.find({
-    lastPublished: { $ne: null },
-    publishedMarkdown: { $ne: '' },
-  })
-    .sort('postDate');
-
-  return buildPosts(posts)
-    .then(() => res.send('OK'))
-    .catch(err => next(err));
-}
