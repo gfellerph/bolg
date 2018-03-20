@@ -42,7 +42,7 @@ export const build = async (req, res, next) => {
 export const buildAll = async (req, res, next) => {
   // Find all published posts
   const posts = await Post.find({
-    publishedDate: { $ne: null },
+    lastPublished: { $ne: null },
     publishedMarkdown: { $ne: '' },
   })
     .sort('postDate');

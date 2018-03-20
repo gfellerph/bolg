@@ -2,7 +2,7 @@ mixin next-post(nextPost)
   hr.blog-divider
   if nextPost
     a.next-post-link(href=nextPost.url)
-      article.next-post= nextPost.excerpt
+      article.next-post!= nextPost.excerpt
   else
     a.next-post-link(href='/galerie')
       div.next-post
