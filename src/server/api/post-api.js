@@ -27,10 +27,38 @@ export const getPosts = (req, res, next) => Post.find({})
   .then(posts => res.json(posts))
   .catch(err => next(err));
 
+/**
+ * Build a single post
+ *
+ * @param {any} req Request object
+ * @param {any} res Response object
+ * @param {function} next Next function
+ */
 export const build = async (req, res, next) => {
   const post = await Post.findOne({ _id: req.params.id })
     .catch(err => next(err));
   const nextPost = await Post.findOne({ postDate: { $gt: post.postDate } }).sort('postDate');
-  await buildPost(post, nextPost);
+  await buildPost(post, nextPost).catch(err => next(err));
+  res.send('OK');
+}
+
+export const buildallpublished = async (req, res, next) => {
+  // Find all published posts
+  const posts = await Post.findOne({
+    publishedDate: { $ne: null },
+    publishedMarkdown: { $ne: '' },
+  })
+    .sort('postDate');
+
+  // Wait for all posts to be biult
+  const fns = [];
+  posts.reduce((post, nextPost) => {
+    fns.push(buildPost(post, nextPost));
+    return nextPost;
+  });
+
+  await Promise.all(fns)
+    .catch(err => next(err));
+
   res.send('OK');
 }
