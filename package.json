@@ -24,7 +24,8 @@
     "prod:back": "webpack --config config/back.prod.config.js",
     "prod:server": "webpack --config config/server.prod.config.js",
     "prod": "npm-run-all -s clean -p prod:*",
-    "test": "echo \"no test specified\""
+    "test": "echo \"no test specified\"",
+    "heroku-postbuild": "npm run prod"
   },
   "dependencies": {
     "autoprefixer": "^7.1.6",
@@ -68,6 +69,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "pug": "^2.0.0-rc.3",
+    "request": "^2.85.0",
     "sendgrid": "^5.2.3",
     "serve-favicon": "^2.4.5",
     "sharp": "^0.18.4",
@@ -147,8 +149,7 @@
     "write-file-webpack-plugin": "^4.2.0"
   },
   "engines": {
-    "node": ">= 9.3.0",
-    "npm": ">= 5.6.0"
+    "node": ">= 9.3.0"
   },
   "browserslist": [
     "> 5%",
