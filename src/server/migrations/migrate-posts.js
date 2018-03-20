@@ -4,6 +4,7 @@ import s3 from 'src/config/s3';
 import { database } from 'src/config/firebase-admin';
 import { getExtension, replaceAll, getImage, types } from 'src/server/migrations/migrate-images';
 
+/* eslint no-console:0 */
 export const get = (req, res, next) => {
   const ref = database.ref('/posts');
   ref.once('value', async (val) => {
