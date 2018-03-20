@@ -1,13 +1,9 @@
-import Post from 'src/models/PostModel';
 import * as Builder from 'src/server/modules/build';
+import * as Queries from 'src/server/modules/queries';
 
 // Build the index page
 export const buildIndex = async (req, res, next) => {
-  const posts = await Post.find({
-    lastPublished: { $ne: null },
-    publishedMarkdown: { $ne: '' },
-  })
-    .sort('postDate');
+  const posts = await Queries.publishedPosts();
 
   return Builder.buildIndex(posts)
     .then(() => res.send('OK'))
@@ -16,9 +12,8 @@ export const buildIndex = async (req, res, next) => {
 
 // Build a single post
 export const buildPost = async (req, res, next) => {
-  const post = await Post.findOne({ _id: req.params.id })
-    .catch(err => next(err));
-  const nextPost = await Post.findOne({ postDate: { $gt: post.postDate } }).sort('postDate');
+  const post = await Queries.post(req.params.id);
+  const nextPost = await Queries.nextPost(post.postDate);
 
   return Builder.buildPost(post, nextPost)
     .then(() => res.send('OK'))
@@ -28,11 +23,7 @@ export const buildPost = async (req, res, next) => {
 // Build all posts
 export const buildPosts = async (req, res, next) => {
   // Find all published posts
-  const posts = await Post.find({
-    lastPublished: { $ne: null },
-    publishedMarkdown: { $ne: '' },
-  })
-    .sort('postDate');
+  const posts = await Queries.publishedPosts();
 
   return Builder.buildPosts(posts)
     .then(() => res.send('OK'))
