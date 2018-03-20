@@ -1,4 +1,6 @@
-import { unpublish, buildIndex } from '../index';
+import { buildIndex } from 'src/server/modules/build';
+import { publishedPosts } from 'src/server/modules/queries';
+import { unpublish } from '../index';
 
 /**
  * Unpublish a previously published blog post, so
@@ -10,7 +12,8 @@ export default function unpublishApi(req, res) {
   res.setHeader('Acces-Control-Allow-Origin', 'localhost');
 
   unpublish(req.params.id)
-    .then(buildIndex)
+    .then(publishedPosts)
+    .then(p => buildIndex(p))
     .then(() => res.send({ message: 'Unpublish complete.' }))
     .catch(err => res.status(500).send(err));
 }
