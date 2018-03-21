@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <div v-if="user">
-      <h3 class="h6">{{user.email}}</h3>
+      <h3 class="h5 text-align-center">{{user.email}}</h3>
       <p class="text-align-center">
         <button @click="logout" class="small">Logout</button>
       </p>

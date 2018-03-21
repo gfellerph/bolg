@@ -1,18 +1,15 @@
 <template>
-  <div class="login">
-    <router-link v-if="$store.state.auth.mongoUser" to="/">Home</router-link>
-    <div v-if="!$store.state.auth.mongoUser" @keyup.enter="login">
-      <p>
-        <label for="email">Email</label>
-        <input id="email" v-model="email" type="text">
-      </p>
-      <p>
-        <label for="password">Password</label>
-        <input id="password" v-model="password" type="password">
-      </p>
-      <p class="error" v-if="error">{{error}}</p>
-      <p><button :disabled="loading" @click="login">Login</button></p>
-    </div>
+  <div class="login" @keyup.enter="login">
+    <p>
+      <label for="email">Email</label>
+      <input id="email" v-model="email" type="text">
+    </p>
+    <p>
+      <label for="password">Password</label>
+      <input id="password" v-model="password" type="password">
+    </p>
+    <p class="error" v-if="error">{{error}}</p>
+    <p><button :disabled="loading" @click="login">Login</button></p>
   </div>
 </template>
 
