@@ -4,7 +4,7 @@
       <ul class="post-list">
         <li
           v-bind:key="post.id"
-          v-for="post in reversedPosts"
+          v-for="post in posts"
           @mouseenter="changeCurrentPost(post)"
         >
           <post-details :post="new Post(post)" />
@@ -21,27 +21,25 @@
 <script>
   import Post from 'src/models/Post';
   import PostDetails from 'src/components/PostDetails';
-  import { database } from 'src/config/firebase';
+  import { mapState } from 'vuex';
 
   export default {
     data() {
       return {
         currentPost: null,
-        posts: [],
         Post,
       };
     },
 
     created() {
-      this.$bindAsArray('posts', database.ref('/posts').orderByChild('created'));
+      this.$store.dispatch('GETPOSTS');
     },
 
     computed: {
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
-
-      reversedPosts() {
-        return this.posts.sort((a, b) => b.created - a.created);
-      },
+      ...mapState({
+        posts: state => state.posts.posts,
+      }),
     },
 
     methods: {
