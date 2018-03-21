@@ -6,6 +6,7 @@ import * as Tipps from 'src/server/api/tipp-api';
 import * as Posts from 'src/server/api/post-api';
 import * as Journeys from 'src/server/api/journey-api';
 import * as Builds from 'src/server/api/build-api';
+import * as Publisher from 'src/server/api/publish-api';
 
 const router = Router();
 
@@ -34,9 +35,16 @@ router.post('/post', passport.authenticate('jwt', { session: false }), Posts.pos
 router.put('/post/:id', passport.authenticate('jwt', { session: false }), Posts.putPost);
 router.delete('/post/:id', passport.authenticate('jwt', { session: false }), Posts.deletePost);
 
+router.get('/build', passport.authenticate('jwt', { session: false }));
+router.get('/unbuild', passport.authenticate('jwt', { session: false }));
 router.get('/build/post/:id', Builds.buildPost);
 router.get('/build/posts', Builds.buildPosts);
-router.get('/build/index', Builds.buildIndex)
+router.get('/build/index', Builds.buildIndex);
+router.get('/build/gallery', Builds.buildGallery);
+router.get('/unbuild/post/:id', Builds.unbuildPost);
+
+router.get('/publish/:id', passport.authenticate('jwt', { session: false }), Publisher.publish);
+router.get('/unpublish/:id', passport.authenticate('jwt', { session: false }), Publisher.unpublish);
 
 router.get('/journeys', Journeys.list);
 router.get('/journey/:id', Journeys.get);
