@@ -4,6 +4,23 @@ import { slugger, logoURL } from 'src/config/constants';
 import writefile from 'src/server/modules/writefile';
 import webpackManifest from 'src/server/modules/webpack-manifest';
 
+const views = path.join(process.cwd(), 'src/server/views');
+
+/**
+ * Build the index page
+ * @param {array<Post>} posts Array of posts to be rendered
+ * @returns {Promise} Resolves when index was written to disk
+ */
+export const buildIndex = (posts) => {
+  const filePath = 'public/index.html';
+  const html = pug.renderFile(`${views}/index.pug`, {
+    posts,
+    logoURL: logoURL(),
+    webpack: webpackManifest(),
+  });
+  return writefile(filePath, html);
+}
+
 /**
  * Build a single post based on a post object
  * @param {Post} post - The current post
@@ -11,10 +28,10 @@ import webpackManifest from 'src/server/modules/webpack-manifest';
  * @returns {Promise} Resolves when the file is written to disk
  */
 export const buildPost = (post, nextPost) => {
-  if (!post) throw new Error(`Post with id ${post} not found, can't touch this.`);
+  if (!post) return Promise.reject(Error('buildPost failed, no post to build.'));
 
   const filePath = `public/gschichte/${slugger(post.title)}.html`;
-  const html = pug.renderFile(path.join(process.cwd(), 'src/server/views/post.pug'), {
+  const html = pug.renderFile(`${views}/post.pug`, {
     post,
     nextPost,
     logoURL: logoURL(),
@@ -26,7 +43,6 @@ export const buildPost = (post, nextPost) => {
 
 /**
  * Buils all posts and saves them to disk
- *
  * @param {array<Post>} posts Array of posts
  * @returns {Promise} Resolves when all posts are written
  */

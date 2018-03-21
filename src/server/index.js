@@ -5,7 +5,9 @@ import { database } from 'src/config/firebase-admin';
 import Post from 'src/models/Post';
 import { slugger, logoURL } from 'src/config/constants';
 import Image from 'src/models/Image';
-import writefile from './writefile';
+import { buildIndex } from 'src/server/modules/build';
+import { publishedPosts } from 'src/server/modules/queries';
+import writefile from 'src/server/modules/writefile';
 
 const cssInlineThreshold = 15; // KB
 const publishedRef = database.ref('/published').orderByChild('created');
@@ -61,27 +63,6 @@ export function buildGallery() {
         webpack: webpackManifest(),
       });
 
-      writefile(filePath, html).then(resolve).catch(reject);
-    });
-  });
-}
-
-/**
- * Build the index page
- * @returns {Promise} Promise resolved when the file is written to disk
- */
-export function buildIndex() {
-  return new Promise((resolve, reject) => {
-    publishedRef.once('value', (snapshot) => {
-      const val = snapshot.val();
-      const filePath = 'public/index.html';
-      const posts = Object.keys(val).map(post => new Post(val[post])).reverse();
-      const manifest = webpackManifest();
-      const html = pug.renderFile(path.join(process.cwd(), 'src/server/views/index.pug'), {
-        posts,
-        logoURL: logoURL(),
-        webpack: manifest,
-      });
       writefile(filePath, html).then(resolve).catch(reject);
     });
   });
@@ -178,7 +159,8 @@ export function unpublish(id) {
 publishedRef.on('child_added', (snapshot) => {
   const post = new Post(snapshot.val());
   publish(post.id)
-    .then(buildIndex)
+    .then(publishedPosts)
+    .then(p => buildIndex(p))
     .then(buildGallery)
     .catch((error) => {
       throw new Error(error);
@@ -191,10 +173,16 @@ publishedRef.on('value', (snapshot) => {
 
 publishedRef.on('child_removed', (snapshot) => {
   const post = snapshot.val();
-  unpublish(post.id).then(buildIndex).then(buildGallery);
+  unpublish(post.id)
+    .then(publishedPosts)
+    .then(p => buildIndex(p))
+    .then(buildGallery);
 });
 
 publishedRef.on('child_changed', (snapshot) => {
   const post = snapshot.val();
-  publish(post.id).then(buildIndex).then(buildGallery);
+  publish(post.id)
+    .then(publishedPosts)
+    .then(p => buildIndex(p))
+    .then(buildGallery);
 });
