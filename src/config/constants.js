@@ -10,21 +10,29 @@ export const states = {
   PUBLISHED: 6,
 };
 
-export const cloudFrontify = filename => `https://adie.bisnaer.ch/${filename}`;
+export const cdnPrefix = filename => `https://adie.bisnaer.ch/${filename}`;
 
 // Random logo
-export const logoURL = () => cloudFrontify(`s/img/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`);
+export const logoURL = () => cdnPrefix(`s/img/bisnaer${Math.ceil(Math.random() * 30, 10) + 1}.PNG`);
 
 export const mapsAPIKey = 'AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ';
 
 export const sizes = [
   {
     width: 1920,
-    height: 1080,
+    height: 1440,
+  },
+  {
+    width: 1600,
+    height: 1200,
   },
   {
     width: 1366,
     height: 768,
+  },
+  {
+    width: 1080,
+    height: 810,
   },
   {
     width: 640,

@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import tinify from 'tinify';
 import { database } from 'src/config/firebase-admin';
-import { cloudFrontify } from 'src/config/constants';
+import { cdnPrefix } from 'src/config/constants';
 import imagemin from 'imagemin';
 import imageminPngquant from 'imagemin-pngquant';
 import s3 from 'src/config/s3';
@@ -38,7 +38,7 @@ export default function putImages(req, res) {
       });
     })
     .then(() => {
-      const cloudFront = cloudFrontify(awsLocation);
+      const cloudFront = cdnPrefix(awsLocation);
 
       if (ref) {
         ref.set(cloudFront);

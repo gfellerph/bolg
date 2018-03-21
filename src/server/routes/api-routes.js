@@ -7,6 +7,7 @@ import * as Posts from 'src/server/api/post-api';
 import * as Journeys from 'src/server/api/journey-api';
 import * as Builds from 'src/server/api/build-api';
 import * as Publisher from 'src/server/api/publish-api';
+import notify from 'src/server/api/notify-api';
 
 const router = Router();
 
@@ -16,6 +17,8 @@ router.post('/subscriber', Subscribers.post);
 router.put('/subscriber/:id', passport.authenticate('jwt', { session: false }), Subscribers.put);
 router.delete('/subscriber/:id', passport.authenticate('jwt', { session: false }), Subscribers.remove);
 router.get('/unsubscribe/:id', Subscribers.remove);
+
+router.get('/notify/:id', passport.authenticate('jwt', { session: false }), notify);
 
 router.get('/users', passport.authenticate('jwt', { session: false }), Users.list);
 router.get('/user', passport.authenticate('jwt', { session: false }), Users.getUser);

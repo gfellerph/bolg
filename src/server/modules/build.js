@@ -87,6 +87,22 @@ export const buildPosts = (posts) => {
   return Promise.all(fns);
 }
 
+/**
+ * Build a single personalized email, ready to be sent
+ * @param {Post} post The post to notify the subscriber about
+ * @param {Subscriber} subscriber The subscriber object
+ * @returns {String} Compiled HTML mail template
+ */
+export const buildNotificationMail = (post, subscriber) => {
+  const html = pug.renderFile(`${views}/notification-mail.pug`, {
+    post,
+    subscriber,
+    logoURL: logoURL(),
+    webpack: webpackManifest(),
+  });
+  return html;
+}
+
 export const cleanAll = () => Promise.all([
   () => new Promise(resolve => rimraf('public/gschichte', resolve)),
   deleteFile('public/index.html'),
