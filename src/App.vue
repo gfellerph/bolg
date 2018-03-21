@@ -34,7 +34,7 @@
 <script>
   import Profile from 'src/components/Profile';
   import store from 'src/config/store';
-  import { auth, database } from 'src/config/firebase';
+  import { database } from 'src/config/firebase';
 
   export default {
     name: 'app',
@@ -45,24 +45,7 @@
       },
     },
 
-    computed: {
-      logoURL() {
-        return `/img/bisnaer${parseInt(Math.random() * 31, 10)}.PNG`;
-      },
-    },
-
     created() {
-      // Listen to auth changes at firebase
-      auth
-        .onAuthStateChanged((user) => {
-          // Dispatch according to auth state
-          if (user) {
-            store.commit('LOGIN', { user });
-          } else {
-            store.commit('LOGOUT');
-          }
-        });
-
       database
         .ref('.info/connected')
         .on('value', (snapshot) => {
