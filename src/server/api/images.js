@@ -8,7 +8,7 @@ import imageminMozJpeg from 'imagemin-mozjpeg';
 import sizeOf from 'image-size';
 import awsConfig from 'src/config/tinify-aws';
 import app from 'src/server';
-import { cloudFrontify, sizes, imageStates } from 'src/config/constants';
+import { cdnPrefix, sizes, imageStates } from 'src/config/constants';
 
 // Function to resize an image based on a sharp object and a size
 const resizer = (sharpImage, size) => sharpImage
@@ -50,9 +50,9 @@ export const postImage = (req, res) => {
   const filteredSizes = filterSizes(desiredSize);
   const img = new Image({ id: req.body.id });
 
-  img.downloadURL = cloudFrontify(`i/${req.body.id}`);
+  img.downloadURL = cdnPrefix(`i/${req.body.id}`);
   img.thumbnails = filteredSizes.reduce((acc, size) => {
-    acc[size.width] = cloudFrontify(`i/${req.body.id}.${size.width}`);
+    acc[size.width] = cdnPrefix(`i/${req.body.id}.${size.width}`);
     return acc;
   }, {});
   img.state = imageStates.PROCESSING;
