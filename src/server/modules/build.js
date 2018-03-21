@@ -1,5 +1,6 @@
 import pug from 'pug';
 import path from 'path';
+import rimraf from 'rimraf';
 import { slugger, logoURL } from 'src/config/constants';
 import writefile from 'src/server/modules/writefile';
 import deleteFile from 'src/server/modules/deleteFile';
@@ -86,8 +87,15 @@ export const buildPosts = (posts) => {
   return Promise.all(fns);
 }
 
-export const rebuild = posts => Promise.all([
-  buildGallery(posts),
-  buildIndex(posts),
-  buildPosts(posts),
+export const cleanAll = () => Promise.all([
+  () => new Promise(resolve => rimraf('public/gschichte', resolve)),
+  deleteFile('public/index.html'),
+  deleteFile('public/biuder.html'),
 ]);
+
+export const rebuild = posts => cleanAll()
+  .then(() => Promise.all([
+    buildGallery(posts),
+    buildIndex(posts),
+    buildPosts(posts),
+  ]));
