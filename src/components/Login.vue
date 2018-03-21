@@ -69,10 +69,15 @@
 </script>
 
 <style lang="scss" scoped>
+  p {
+    margin: 0.402rem auto;
+  }
+
   .login {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     width: 100%;
     height: 100%;
   }
