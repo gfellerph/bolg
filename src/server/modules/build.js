@@ -2,9 +2,31 @@ import pug from 'pug';
 import path from 'path';
 import { slugger, logoURL } from 'src/config/constants';
 import writefile from 'src/server/modules/writefile';
+import deleteFile from 'src/server/modules/deleteFile';
 import webpackManifest from 'src/server/modules/webpack-manifest';
 
 const views = path.join(process.cwd(), 'src/server/views');
+
+export const buildGallery = (posts) => {
+  const filePath = 'public/biuder.html';
+
+  // Split images in each post into two columns
+  const orderedPosts = posts.map((post) => {
+    post.images = post.images.reduce((images, image, index) => {
+      images[index % 2].push(image);
+      return images;
+    }, [[], []]);
+    return post;
+  }, {});
+
+  const html = pug.renderFile(`${views}/gallery.pug`, {
+    orderedPosts,
+    logoURL: logoURL(),
+    webpack: webpackManifest(),
+  });
+
+  return writefile(filePath, html);
+}
 
 /**
  * Build the index page
@@ -42,6 +64,14 @@ export const buildPost = (post, nextPost) => {
 }
 
 /**
+ * Delete post from published folder
+ */
+export const unbuildPost = (post) => {
+  const filepath = `public/gschichte/${slugger(post.title)}.html`;
+  return deleteFile(filepath);
+}
+
+/**
  * Buils all posts and saves them to disk
  * @param {array<Post>} posts Array of posts
  * @returns {Promise} Resolves when all posts are written
@@ -55,3 +85,9 @@ export const buildPosts = (posts) => {
   });
   return Promise.all(fns);
 }
+
+export const rebuild = posts => Promise.all([
+  buildGallery(posts),
+  buildIndex(posts),
+  buildPosts(posts),
+]);
