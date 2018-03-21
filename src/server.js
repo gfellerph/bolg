@@ -9,7 +9,6 @@ import mongoose from 'mongoose';
 import io from 'socket.io';
 import apiRoutes from 'src/server/routes/api-routes';
 import migrationRoutes from 'src/server/routes/migration-routes';
-import notifySubscribers from 'src/server/api/notify-subscribers';
 import { postImage, deleteImages } from 'src/server/api/images';
 import { postSpamReport } from 'src/server/api/spamreport';
 import passport from 'src/config/passport';
@@ -50,7 +49,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Routes
 app.use('/api', apiRoutes);
 app.use('/migrate', migrationRoutes);
-app.get('/notifysubscribers/:id', notifySubscribers);
 app.post('/api/images', uploader.single('image'), postImage);
 app.post('/api/spamreport', postSpamReport);
 app.delete('/api/images/:id', deleteImages);
