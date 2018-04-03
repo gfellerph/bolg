@@ -7,9 +7,9 @@ const markdownOptions = {
 
 export const marked = (str, options) => {
   const renderer = new markdownParser.Renderer();
-  renderer.image = (href, title, text) => {
+  /* renderer.image = (href, title, text) => {
     let srcset;
-    if (options.images) {
+    if (options && options.images) {
       // Only jpgs and pngs, no gifs
       const idRegex = /\/([A-Za-z0-9_]+)$|%2F([A-Za-z0-9]+)\.[JjPp]/g;
       const match = idRegex.exec(href);
@@ -25,7 +25,7 @@ export const marked = (str, options) => {
     const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
     const sizesAttr = srcset ? ' sizes="640px"' : '';
     return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}>`;
-  }
+  } */
   const mergedOptions = Object.assign({}, markdownOptions, options);
   mergedOptions.renderer = renderer;
   return markdownParser(str, mergedOptions);
