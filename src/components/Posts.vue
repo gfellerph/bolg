@@ -7,7 +7,7 @@
           v-for="post in posts"
           @mouseenter="changeCurrentPost(post)"
         >
-          <post-details :post="new Post(post)" />
+          <post-details :post="post" />
         </li>
       </ul>
     </div>
