@@ -9,7 +9,7 @@
         <router-link to="/createpost"><img src="/img/plus.png" alt="Schribe"></router-link>
         <div class="offcanvas">
           <label for="nav" class="navigation__mini-closer">
-            <img style="width: 32px;" src="/img/chrüz.png" alt="">
+            <img src="/img/chrüz.png" alt="">
           </label>
           <profile></profile>
           <hr>
@@ -34,7 +34,6 @@
 <script>
   import Profile from 'src/components/Profile';
   import store from 'src/config/store';
-  import { auth, database } from 'src/config/firebase';
 
   export default {
     name: 'app',
@@ -45,33 +44,9 @@
       },
     },
 
-    computed: {
-      logoURL() {
-        return `/img/bisnaer${parseInt(Math.random() * 31, 10)}.PNG`;
-      },
-    },
-
     created() {
-      // Listen to auth changes at firebase
-      auth
-        .onAuthStateChanged((user) => {
-          // Dispatch according to auth state
-          if (user) {
-            store.commit('LOGIN', { user });
-          } else {
-            store.commit('LOGOUT');
-          }
-        });
-
-      database
-        .ref('.info/connected')
-        .on('value', (snapshot) => {
-          if (snapshot.val()) {
-            store.commit('ONLINE');
-          } else {
-            store.commit('OFFLINE');
-          }
-        });
+      window.addEventListener('online', () => store.commit('ONLINE'));
+      window.addEventListener('offline', () => store.commit('OFFLINE'));
     },
 
     components: {
@@ -105,6 +80,8 @@
     left: 0;
     bottom: 0;
     min-width: 250px;
+    max-height: 100vh;
+    overflow: auto;
     visibility: hidden;
     opacity: 0;
     padding: $golden-rem / 2 0;
@@ -168,8 +145,8 @@
   .navigation__mini-closer {
     position: absolute;
     margin: 0;
-    top: $golden-rem / 4;
-    right: $golden-rem / 4;
+    top: $golden-rem / 2;
+    right: $golden-rem / 2;
 
     img {
       display: block;

@@ -1,6 +1,6 @@
 <template>
   <div class="post-details">
-    <router-link class="edit-post-link" :to="post.editUrl">
+    <router-link class="edit-post-link" :to="editUrl">
       <div class="post-infos">
           <h1 class="h4">{{post.title}}</h1>
           <table class="meta-infos">
@@ -39,6 +39,7 @@
 
     computed: {
       shortText() { return description(this.post.markdown); },
+      editUrl() { return `/editpost/${this.post._id}` },
     },
 
     methods: {

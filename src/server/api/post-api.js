@@ -12,7 +12,7 @@ export const postPost = (req, res, next) => new Post(req.body).save()
 
 export const putPost = (req, res, next) => Post.findByIdAndUpdate(req.params.id, {
   $set: req.body,
-})
+}, { new: true })
   .then(newPost => res.json(newPost))
   .catch(err => next(err));
 

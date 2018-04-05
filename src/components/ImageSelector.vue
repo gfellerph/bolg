@@ -1,11 +1,11 @@
 <template>
   <div class="image-selector" ref="imageSelector">
-    <div class="images">
+    <div v-if="post" class="images">
       <post-image
         v-for="image in post.images"
         :key="image.id"
         :image="new Image(image)"
-        :class="{active: isImageActive(image.id)}"
+        :class="{active: isImageActive(image._id)}"
         @activate-image="activateImage"
         @remove-image="removeImage"
       ></post-image>
@@ -114,7 +114,7 @@
         img.progress = 0;
       },
       isImageActive(imgId) {
-        return this.post.titleImage ? imgId === this.post.titleImage.id : false;
+        return this.post.titleImage ? imgId === this.post.titleImage._id : false;
       },
       onFileChange(event) {
         event.preventDefault();
@@ -132,19 +132,16 @@
         }
       },
       removeImage(id) {
-        this.post.images = this.post.images.filter(image => image.id !== id);
+        this.post.images = this.post.images.filter(image => image._id !== id);
         postCtrl.set(this.post);
       },
       activateImage(image) {
-        if (this.isImageActive(image.id)) {
-          this.post.titleImage = null;
+        if (this.isImageActive(image._id)) {
+          this.$store.commit('POST_SET_TITLE_IMAGE', { image: null });
         } else {
-          this.post.titleImage = {
-            url: image.getTitleImageUrl(),
-            id: image.id,
-          };
+          this.$store.commit('POST_SET_TITLE_IMAGE', { image });
         }
-        return postCtrl.set(this.post);
+        this.$store.dispatch('POST_POST');
       },
     },
 

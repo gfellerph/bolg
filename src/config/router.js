@@ -5,7 +5,6 @@ import store from 'src/config/store';
 
 import Posts from 'src/components/Posts';
 import EditPost from 'src/components/EditPost';
-import Login from 'src/components/Login';
 import Map from 'src/components/Map';
 import Tipps from 'src/components/Tipps';
 import Subscribe from 'src/components/Subscribe';
@@ -13,7 +12,7 @@ import Drawings from 'src/components/Drawings';
 import Subscribers from 'src/components/Subscribers';
 import CreateDrawing from 'src/components/CreateDrawing';
 import JourneyEditor from 'src/components/JourneyEditor';
-import MongoLogin from 'src/components/MongoLogin';
+import Login from 'src/components/Login';
 
 Vue.use(Router);
 
@@ -47,14 +46,6 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login,
-      meta: {
-        requiresAuth: false,
-      },
-    },
-    {
-      path: '/mongologin',
-      name: 'MongoLogin',
-      component: MongoLogin,
       meta: {
         requiresAuth: false,
       },
@@ -119,7 +110,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresMongoAuth)) {
     if (!store.state.auth.mongoUser) {
       return next({
-        path: '/mongologin',
+        path: '/login',
         query: { redirect: to.fullPath },
       });
     }

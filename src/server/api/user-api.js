@@ -21,7 +21,7 @@ export const authenticateUser = (req, res, next) => {
   User.findOne({
     email: req.body.email,
   })
-    .select('password')
+    .select('email password')
     .then((user) => {
       if (!user) {
         res.status = 401;
@@ -35,7 +35,11 @@ export const authenticateUser = (req, res, next) => {
         expiresIn: '7 days',
       });
 
-      return res.json({ token });
+      // Don't transmit password to frontend...
+      const returnUser = user.toJSON();
+      delete returnUser.password;
+
+      return res.json({ token, user: returnUser });
     })
     .catch((err) => {
       res.status = 401;

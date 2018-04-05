@@ -1,12 +1,10 @@
 <template>
   <div class="post-edit">
-    <div class="post-form">
+    <div v-if="post" class="post-form">
       <div class="post-text">
         <div class="post-markdown">
           <editor
-            v-model="post.markdown"
-            @scroll="trackScrollposition"
-            @input="savePost"
+            @input="writePost"
             @save="savePostImmediately"
             @help="toggleCheatsheet"
           ></editor>
@@ -34,24 +32,18 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  import debounce from 'debounce';
   import { marked } from 'src/config/markdown';
   import Post from 'src/models/Post';
-  import { database } from 'src/config/firebase';
   import router from 'src/config/router';
   import ImageSelector from 'src/components/ImageSelector.vue';
   import Editor from 'src/components/Editor';
   import PostStatus from 'src/components/PostStatus';
   import MarkdownCheatsheet from 'src/components/MarkdownCheatsheet';
-  import PostController from 'src/controllers/post-controller';
-
-  const postCtrl = PostController(database);
+  import { mapState, mapActions } from 'vuex';
 
   export default {
     data() {
       return {
-        post: new Post(),
         cursorPosition: 0,
         postLoaded: false,
         showCheatSheet: false,
@@ -61,85 +53,46 @@
     },
 
     computed: {
-      connected() { return this.$store.state.connection.connected; },
       compiledContent() {
-        const images = this.post.images.reduce((acc, image) => {
-          acc[image.id] = image.thumbnails;
-          return acc;
-        }, {});
-
-        return marked(this.post.markdown, { images });
+        if (!this.post || !this.post.markdown) return '';
+        return marked(this.post.markdown);
       },
       hasTitle() { return !!this.post.title; },
       errorMessage() {
         if (!this.post.title) { return 'This post has no title'; }
         return this.error ? this.error.message : false;
       },
+      ...mapState({
+        connected: state => state.connection.connected,
+        post: state => state.post.post,
+      }),
     },
 
     methods: {
-      trackScrollposition(percent) {
-        const article = this.$refs.previewArticle;
-        this.$refs.previewArticle.scrollTop = (article.scrollHeight - article.clientHeight) * percent;
-      },
       savePostImmediately() {
-        postCtrl.set(this.post).then((data) => {
-          this.post.lastSaved = data.lastSaved;
-          if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
-        });
-      },
-      debouncedSave: debounce(function debounced() {
-        this.savePostImmediately();
-      }, 1000),
-      savePost(markdown) {
-        this.post.markdown = markdown;
-        this.post.lastEdited = Date.now();
-        this.debouncedSave();
-      },
-      getPost(id) {
-        database
-          .ref(`/posts/${id}`)
-          .once('value', (snapshot) => {
-            this.postLoaded = true;
-            const post = snapshot.val();
-            if (post) this.post = new Post(post);
+        const firstSave = this.$route.fullPath === '/create';
+        const method = firstSave ? 'POST_POST' : 'POST_PUT';
+        this.$store.dispatch(method)
+          .then(() => {
+            if (firstSave) {
+              // Update the route to editing once the post id is known
+              router.replace(`/edit/${this.post._id}`);
+            }
           });
       },
       publishPost() {
-        postCtrl.publish(this.post)
-          .then(() => {
-            this.error = false;
-          })
-          .catch((err) => {
-            this.error = err.message;
-          });
       },
       unpublishPost() {
-        postCtrl.unpublish(this.post)
-          .then(() => {
-            this.error = false;
-          })
-          .catch((err) => {
-            this.error = err.message;
-          });
       },
       toggleCheatsheet() {
         this.showCheatSheet = !this.showCheatSheet;
       },
       sendNotification() {
-        this.notificationPending = true;
-        axios
-          .get(`/notifysubscribers/${this.post.id}`)
-          .then(() => {
-            this.notificationPending = false;
-            this.post.notificationSent = true;
-            return postCtrl.set(this.post);
-          })
-          .catch((err) => {
-            this.notificationPending = false;
-            this.err = err.message;
-          });
       },
+      ...mapActions({
+        getPost: 'POST_GET',
+        writePost: 'POST_WRITE',
+      }),
     },
 
     created() {

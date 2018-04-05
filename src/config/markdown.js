@@ -1,20 +1,21 @@
 import markdownParser from 'marked';
+// import { sizes } from 'src/config/constants';
 
 const markdownOptions = {
   gfm: true,
   smartypants: true,
 };
 
+// const extensionRegex = /\.(jpe?g|png)$/i;
+
 export const marked = (str, options) => {
   const renderer = new markdownParser.Renderer();
-  renderer.image = (href, title, text) => {
-    let srcset;
-    if (options.images) {
-      // Only jpgs and pngs, no gifs
-      const idRegex = /\/([A-Za-z0-9_]+)$|%2F([A-Za-z0-9]+)\.[JjPp]/g;
-      const match = idRegex.exec(href);
-      const id = match ? match[1] || match[2] : null;
-      if (id) {
+  /* renderer.image = (href, title, text) => {
+    // let srcset = false;
+    // Filter jpgs and pngs, no gifs
+    if (options && options.srcset && extensionRegex.test(href)) {
+      // srcset = sizes.map(size => )
+      /* if (id) {
         const thumbs = options.images[id];
         srcset = thumbs ? Object.keys(thumbs).map(key => `${thumbs[key]} ${key}w`).join(',') : null;
       }
@@ -22,10 +23,10 @@ export const marked = (str, options) => {
     const hrefAttr = href ? ` src="${href}"` : '';
     const titleAttr = title ? ` title="${title}"` : '';
     const altAttr = text ? ` alt="${text}"` : '';
-    const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
-    const sizesAttr = srcset ? ' sizes="640px"' : '';
+    // const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
+    // const sizesAttr = srcset ? ' sizes="640px"' : '';
     return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}>`;
-  }
+  } */
   const mergedOptions = Object.assign({}, markdownOptions, options);
   mergedOptions.renderer = renderer;
   return markdownParser(str, mergedOptions);
