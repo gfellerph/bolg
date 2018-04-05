@@ -68,7 +68,7 @@
           });
       },
       insertImage() {
-        bus.$emit('insert-image', this.image.downloadURL);
+        bus.$emit('insert-image', this.image.url);
       },
       activateImage() {
         this.$emit('activate-image', this.image);

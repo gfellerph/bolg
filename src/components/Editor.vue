@@ -85,9 +85,9 @@
         const { md } = this.$refs;
         const start = md.selectionStart;
         const end = md.selectionEnd;
-        const newMarkdown = this.toggle(this.markdown, '**', '**', start, end);
-        const modifier = this.markdown.length < newMarkdown.length ? 4 : -4;
-        this.markdown = newMarkdown;
+        const newMarkdown = this.toggle(this.post.markdown, '**', '**', start, end);
+        const modifier = this.post.markdown.length < newMarkdown.length ? 4 : -4;
+        this.$store.dispatch('POST_WRITE', newMarkdown);
         this.change();
         this.$nextTick(() => {
           md.setSelectionRange(start, end + modifier);
@@ -98,9 +98,9 @@
         const { md } = this.$refs;
         const start = md.selectionStart;
         const end = md.selectionEnd;
-        const newMarkdown = this.toggle(this.markdown, '_', '_', start, end);
-        const modifier = this.markdown.length < newMarkdown.length ? 2 : -2;
-        this.markdown = newMarkdown;
+        const newMarkdown = this.toggle(this.post.markdown, '_', '_', start, end);
+        const modifier = this.post.markdown.length < newMarkdown.length ? 2 : -2;
+        this.$store.dispatch('POST_WRITE', newMarkdown);
         this.change();
         this.$nextTick(() => {
           md.setSelectionRange(start, end + modifier);
@@ -110,10 +110,10 @@
       insertPictureGrid() {
         const { md } = this.$refs;
         const start = md.selectionStart;
-        const startLB = this.markdown.charAt(start - 1) === '\n';
-        const template = `${startLB ? '' : '\n'}<figure>\n\n<figcaption></figcaption>\n</figure>${this.markdown.charAt(start) === '\n' ? '' : '\n'}`;
-        this.markdown = `${this.markdown.slice(0, start)}${template}${this.markdown.slice(start, this.markdown.length)}`;
-        this.change();
+        const startLB = this.post.markdown.charAt(start - 1) === '\n';
+        const template = `${startLB ? '' : '\n'}<figure>\n\n<figcaption></figcaption>\n</figure>${this.post.markdown.charAt(start) === '\n' ? '' : '\n'}`;
+        const newMarkdown = `${this.post.markdown.slice(0, start)}${template}${this.post.markdown.slice(start, this.post.markdown.length)}`;
+        this.$store.dispatch('POST_WRITE', newMarkdown);
         this.$nextTick(() => {
           const offset = start + 8 + (startLB ? 1 : 0);
           md.setSelectionRange(offset, offset);
@@ -123,11 +123,11 @@
       insertImage(url) {
         const { md } = this.$refs;
         const start = md.selectionStart;
-        const startLB = this.markdown.charAt(start - 1) === '\n';
-        const endLB = this.markdown.charAt(start) === '\n';
+        const startLB = this.post.markdown.charAt(start - 1) === '\n';
+        const endLB = this.post.markdown.charAt(start) === '\n';
         const image = `${startLB ? '' : '\n'}![Bildbeschrieb](${url})${endLB ? '' : '\n'}`;
-        this.markdown = `${this.markdown.slice(0, start)}${image}${this.markdown.slice(start, this.markdown.length)}`;
-        this.change();
+        const newMarkdown = `${this.post.markdown.slice(0, start)}${image}${this.post.markdown.slice(start, this.post.markdown.length)}`;
+        this.$store.dispatch('POST_WRITE', newMarkdown);
         this.$nextTick(() => {
           const newPosition = start + image.length;
           md.setSelectionRange(newPosition, newPosition);
@@ -138,10 +138,10 @@
         const { md } = this.$refs;
         const start = md.selectionStart;
         const stringToInsert = `\n<div class="video-wrapper">${this.youtubeEmbed}</div>\n`;
-        this.markdown = [this.markdown.slice(0, start), stringToInsert, this.markdown.slice(start)].join('');
+        const newMarkdown = [this.post.markdown.slice(0, start), stringToInsert, this.post.markdown.slice(start)].join('');
         this.youtubeEmbed = '';
         this.toggleYoutubeEmbed();
-        this.change();
+        this.$store.dispatch('POST_WRITE', newMarkdown);
         this.$nextTick(() => {
           md.setSelectionRange(start + 1, start + stringToInsert.length);
           md.focus();
@@ -173,7 +173,7 @@
         this.$emit('help');
       },
       setPostDate(event) {
-        this.$store.commit('POST_SET_DATE', event.target.value);
+        this.$store.dispatch('POST_SET_DATE', event.target.value);
       },
     },
   };
