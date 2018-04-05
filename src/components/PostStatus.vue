@@ -25,6 +25,7 @@
 
     computed: {
       connected() { return this.$store.state.connection.connected; },
+      post() { return this.$store.state.post.post; },
       stateClass() {
         return `status-${classes[this.state]}`;
       },
@@ -50,12 +51,6 @@
 
         // Return loading if post is falsy
         if (!this.post) {
-          return status;
-        }
-
-        // Catch post errors
-        if (this.post.title === '') {
-          status = states.ERROR;
           return status;
         }
 
@@ -92,7 +87,6 @@
     },
 
     props: {
-      post: Object,
       errorMessage: [Boolean, String],
     },
   };

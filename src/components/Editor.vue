@@ -6,7 +6,11 @@
         <button class="italic small" @click="pizzaparty" title="Italic">I</button>
         <button class="small" @click="toggleYoutubeEmbed" title="YouTube">YT</button>
         <button class="small" @click="insertPictureGrid" title="Picture Grid">PG</button>
-        <label><input type="checkbox" v-model="autoscroll">autoscroll</label>
+        <input
+          type="date"
+          :value="post.postDate"
+          @change="setPostDate"
+        />
       </div>
       <div class="right-controls">
         <button class="help bold small" @click="toggleClippy">?</button>
@@ -15,14 +19,11 @@
     <textarea
       id="markdown-editor"
       name="markdown-editor"
-      v-model="markdown"
+      :value="post.markdown"
       @input="change"
       ref="md"
       @keydown="keydown"
-      @scroll="scroll"
     ></textarea>
-    <div class="mirror" ref="mirror" v-html="startToCursor"></div>
-    <div class="mirror" ref="mirrorRef" v-html="entireText"></div>
     <div class="youtube-embed box" :class="{show: showYoutubeEmbed}">
       <h4>Tue dr iFrame Embed Code hie drii:</h4>
       <input type="text" v-model="youtubeEmbed" id="youtube-embed" >
@@ -36,13 +37,13 @@
 
 <script>
   import bus from 'src/config/bus';
+  import { mapState } from 'vuex';
 
   let lastValue = '';
 
   export default {
     data() {
       return {
-        markdown: this.value,
         cursorPositionPercent: 0,
         cursorLine: 0,
         selectionStart: 0,
@@ -50,18 +51,13 @@
         entireText: '',
         showYoutubeEmbed: false,
         youtubeEmbed: '',
-        autoscroll: false,
       };
     },
 
-    props: {
-      value: String,
-    },
-
-    created() {
-      this.$watch('value', () => {
-        this.markdown = this.value;
-      });
+    computed: {
+      ...mapState({
+        post: state => state.post.post,
+      }),
     },
 
     mounted() {
@@ -154,10 +150,10 @@
       toggleYoutubeEmbed() {
         this.showYoutubeEmbed = !this.showYoutubeEmbed;
       },
-      change() {
-        if (this.markdown !== lastValue) {
-          lastValue = this.markdown;
-          this.$emit('input', this.markdown);
+      change(event) {
+        if (event.target.value !== lastValue) {
+          lastValue = event.target.value;
+          this.$emit('input', event.target.value);
         }
       },
       keydown(event) {
@@ -173,33 +169,11 @@
           this.bolden();
         }
       },
-      scroll(event) {
-        if (!this.autoscroll) return;
-        const { target } = event;
-        const percent = target.scrollTop / (target.scrollHeight - target.clientHeight);
-        this.$emit('scroll', percent);
-      },
       toggleClippy() {
         this.$emit('help');
       },
-      cursorPositionChanged() {
-        this.startToCursor = this.markdown.substring(0, this.$refs.md.selectionStart)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/\n/g, '<br>');
-        this.entireText = this.markdown
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/\n/g, '<br>');
-        this.$nextTick(() => {
-          const textareaHeight = this.$refs.mirrorRef.scrollHeight;
-          const mirrorHeight = this.$refs.mirror.scrollHeight;
-          let percent = mirrorHeight / textareaHeight;
-          if (percent > 0.95) percent = 1;
-          this.$emit('scroll', percent);
-        });
+      setPostDate(event) {
+        this.$store.commit('POST_SET_DATE', event.target.value);
       },
     },
   };
@@ -208,19 +182,6 @@
 <style lang="scss" scoped>
   @import 'src/styles/core/_index';
 
-  .mirror {
-    position: absolute;
-    top: 37.31px;
-    left: 0;
-    right: 0;
-    height: auto;
-    width: 100%;
-    padding: 0 $golden-rem / 2;
-    z-index: -1;
-    visibility: hidden;
-  }
-
-  .mirror,
   textarea {
     font-family: monospace;
     font-size: 12px;

@@ -4,7 +4,6 @@
       <div class="post-text">
         <div class="post-markdown">
           <editor
-            :value="post.markdown"
             @input="writePost"
             @save="savePostImmediately"
             @help="toggleCheatsheet"
