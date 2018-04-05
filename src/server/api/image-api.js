@@ -1,11 +1,6 @@
 import tinify from 'tinify';
-// import sharp from 'sharp';
 import Image from 'src/models/Image';
 import s3 from 'src/config/s3';
-// import imagemin from 'imagemin';
-// import imageminPngquant from 'imagemin-pngquant';
-// import imageminMozJpeg from 'imagemin-mozjpeg';
-// import sizeOf from 'image-size';
 import awsConfig from 'src/config/tinify-aws';
 import app from 'src/server';
 import { cdnPrefix, sizes, imageStates } from 'src/config/constants';
