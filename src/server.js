@@ -4,18 +4,15 @@ import compression from 'compression';
 import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
-import multer from 'multer';
 import mongoose from 'mongoose';
 import io from 'socket.io';
 import apiRoutes from 'src/server/routes/api-routes';
 import migrationRoutes from 'src/server/routes/migration-routes';
-import { postImage, deleteImages } from 'src/server/api/images';
 import { postSpamReport } from 'src/server/api/spamreport';
 import passport from 'src/config/passport';
 import expressStatic from 'src/config/express-static';
 
 const app = express();
-const uploader = multer();
 
 // Attach socket io for initialization in bin/www
 app.io = io();
@@ -49,9 +46,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Routes
 app.use('/api', apiRoutes);
 app.use('/migrate', migrationRoutes);
-app.post('/api/images', uploader.single('image'), postImage);
 app.post('/api/spamreport', postSpamReport);
-app.delete('/api/images/:id', deleteImages);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
