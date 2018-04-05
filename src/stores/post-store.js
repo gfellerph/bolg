@@ -7,7 +7,10 @@ export default {
   },
   mutations: {
     POST_SET_TITLE_IMAGE: (state, action) => { state.post.titleImage = action.image },
-    POST_EDIT: (state, post) => { state.post = { ...state.post, ...post } },
+    POST_EDIT: (state, post) => {
+      state.post = { ...state.post, ...post };
+    },
+    POST_SET_DATE: (state, date) => { state.post.postDate = date; },
   },
   actions: {
     POST_GET: async ({ commit }, id) => {
@@ -21,7 +24,10 @@ export default {
     },
     POST_DEBOUNCED_SAVE: debounce(({ dispatch }) => dispatch('POST_PUT'), 2000),
     POST_PUT: async ({ commit, state }) => {
-      const res = await axios.put(`/api/post/${state.post._id}`, state.post);
+      const res = await axios.put(`/api/post/${state.post._id}`, {
+        ...state.post,
+        lastSaved: Date.now(),
+      });
       // Only update the last saved date, other properties might have been
       // changed during the save
       commit('POST_EDIT', { lastSaved: res.data.lastSaved });
