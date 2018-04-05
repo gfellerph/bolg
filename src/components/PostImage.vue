@@ -58,9 +58,9 @@
     methods: {
       removeImage() {
         this.deleting = true;
-        imageCtrl.deleteImages(this.image.id)
+        imageCtrl.deleteImages(this.image._id)
           .then(() => {
-            this.$emit('remove-image', this.image.id);
+            this.$emit('remove-image', this.image._id);
           })
           .catch((err) => {
             this.deleting = false;
@@ -68,7 +68,7 @@
           });
       },
       insertImage() {
-        bus.$emit('insert-image', this.image.downloadURL);
+        bus.$emit('insert-image', this.image.url);
       },
       activateImage() {
         this.$emit('activate-image', this.image);

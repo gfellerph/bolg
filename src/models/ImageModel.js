@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 export const ImageSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    default: '',
   },
   url: {
     type: String,
