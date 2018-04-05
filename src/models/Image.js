@@ -1,7 +1,7 @@
 import shortid from 'shortid';
 
 export default function Image(img = {}) {
-  this._id = img._id || null;
+  this.name = img.name || '';
   this.file = img.file || null;
   this.url = img.url || null;
   this.shortid = img.shortid || shortid.generate();

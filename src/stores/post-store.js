@@ -11,6 +11,10 @@ export default {
       state.post = { ...state.post, ...post };
     },
     POST_SET_DATE: (state, date) => { state.post.postDate = date; },
+    POST_ADD_IMAGE: (state, image) => { state.post.images.push(image); },
+    POST_REMOVE_IMAGE: (state, imageId) => {
+      state.post.images = state.post.images.filter(image => image._id !== imageId);
+    },
   },
   actions: {
     POST_GET: async ({ commit }, id) => {
