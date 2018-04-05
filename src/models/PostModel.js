@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import dateformat from 'dateformat';
 import { ImageSchema } from 'src/models/ImageModel';
 import { slugger, formatDate } from 'src/config/constants';
 import { marked, excerpt, description } from 'src/config/markdown';
@@ -16,20 +17,20 @@ export const PostSchema = new Schema({
     default: Date.now,
   },
   lastEdited: {
-    type: Date,
+    type: Number,
     default: null,
   },
   lastSaved: {
-    type: Date,
+    type: Number,
     default: null,
   },
   lastPublished: {
-    type: Date,
+    type: Number,
     default: null,
   },
   postDate: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    default: () => dateformat(Date.now(), 'yyyy-mm-dd'),
   },
   markdown: {
     type: String,
