@@ -13,12 +13,12 @@ export const buildGallery = (posts) => {
 
   // Split images in each post into two columns
   const orderedPosts = posts.map((post) => {
-    post.images = post.images.reduce((images, image, index) => {
+    const orderedImages = post.images.reduce((images, image, index) => {
       images[index % 2].push(image);
       return images;
     }, [[], []]);
-    return post;
-  }, {});
+    return { ...post.toObject(), images: orderedImages };
+  });
 
   const html = pug.renderFile(`${views}/gallery.pug`, {
     orderedPosts,
