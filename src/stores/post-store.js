@@ -1,9 +1,13 @@
 import axios from 'axios';
 import debounce from 'debounce';
 
+const emptyPost = () => ({
+  markdown: '# No kei Titu',
+});
+
 export default {
   state: {
-    post: null,
+    post: emptyPost(),
   },
   mutations: {
     POST_SET_TITLE_IMAGE: (state, action) => { state.post.titleImage = action.image },
@@ -15,6 +19,7 @@ export default {
     POST_REMOVE_IMAGE: (state, imageId) => {
       state.post.images = state.post.images.filter(image => image._id !== imageId);
     },
+    POST_DESTROY: (state) => { state.post = null; },
   },
   actions: {
     POST_GET: async ({ commit }, id) => {
@@ -40,6 +45,27 @@ export default {
     POST_POST: async ({ commit, state }) => {
       const res = await axios.post('/api/post', state.post);
       commit('POST_EDIT', res.data);
+      return res;
+    },
+    POST_PUBLISH: async ({ commit, state }) => {
+      const res = await axios.get(`/api/publish/${state.post._id}`);
+      commit('POST_EDIT', {
+        lastPublished: res.data.lastPublished,
+        publishedMarkdown: res.data.publishedMarkdown,
+      });
+      return res;
+    },
+    POST_UNPUBLISH: async ({ commit, state }) => {
+      const res = await axios.get(`/api/unpublish/${state.post._id}`);
+      commit('POST_EDIT', {
+        lastPublished: res.data.lastPublished,
+        publishedMarkdown: res.data.publishedMarkdown,
+      });
+      return res;
+    },
+    POST_SENDNOTIFICATION: async ({ commit, state }) => {
+      const res = await axios.get(`/api/notify/${state.post._id}`);
+      commit('POST_EDIT', { notificationSent: res.data.notificationSent });
       return res;
     },
   },
