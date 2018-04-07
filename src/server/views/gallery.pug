@@ -13,11 +13,11 @@ block navigation
 
 block body
   div.container
-    each images, title in posts
-      +gallery-post(images, title)
+    each post in orderedPosts
+      +gallery-post(post.images, post.title)
 
-    -if (!images || images.length == 0)
-      p.italic.text-align-center Da si ja no gar keiner Biuder...
+      -if (!post.images || post.images.length == 0)
+        p.italic.text-align-center Da si ja no gar keiner Biuder...
   img.medium-zoom__close-button(src='/img/close.svg' alt="Biud zuetue" title='Biud zuetue')
 
 block scripts

@@ -1,7 +1,8 @@
 mixin post-tile(post)
   li.post(data-id=post.id)
     a.post__link(href=post.url)
-      img.post__title-image(src=post.titleImage.url alt="Titelbild")
+      - if (post.titleImage)
+        img.post__title-image(src=post.titleImage.url alt="Titelbild")
       div.post__overlay
         p.post__published= post.formattedPostDate
         h2.post__title.h4= post.title

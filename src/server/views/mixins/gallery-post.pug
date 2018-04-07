@@ -2,9 +2,9 @@ mixin gallery-column(images)
   div.gallery__column
     each image in images
       img.gallery__image(
-        src=image.smallestThumb
+        src=image.url
         alt='Biuder usem Blog'
-        data-zoom-target=image.biggestThumb
+        data-zoom-target=image.url
       )
 
 mixin gallery-post(images, title)
