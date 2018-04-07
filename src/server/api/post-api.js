@@ -23,5 +23,6 @@ export const deletePost = (req, res, next) => Post.remove({
   .catch(err => next(err));
 
 export const getPosts = (req, res, next) => Post.find({})
+  .sort('-postDate')
   .then(posts => res.json(posts))
   .catch(err => next(err));

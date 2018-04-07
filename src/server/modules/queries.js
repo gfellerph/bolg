@@ -5,7 +5,7 @@ export const publishedPosts = () => Post.find({
   lastPublished: { $ne: null },
   publishedMarkdown: { $ne: '' },
 })
-  .sort('postDate');
+  .sort('-postDate');
 
 export const post = id => Post.findOne({
   _id: id,
