@@ -3,15 +3,15 @@
     <div v-if="post" class="images">
       <post-image
         v-for="image in post.images"
-        :key="image.id"
+        :key="image.shortid"
         :image="new Image(image)"
-        :class="{active: isImageActive(image._id)}"
+        :class="{active: isImageActive(image.shortid)}"
         @activate-image="activateImage"
         @remove-image="removeImage"
       ></post-image>
       <image-component
         v-for="image in imageQueue"
-        :key="image.id"
+        :key="image.shortid"
         :image="image"
         @retry-upload="retryUpload"
       ></image-component>
@@ -110,7 +110,7 @@
         img.progress = 0;
       },
       isImageActive(imgId) {
-        return this.post.titleImage ? imgId === this.post.titleImage._id : false;
+        return this.post.titleImage ? imgId === this.post.titleImage.shortid : false;
       },
       onFileChange(event) {
         event.preventDefault();
@@ -132,7 +132,7 @@
         this.$store.dispatch('POST_PUT');
       },
       activateImage(image) {
-        if (this.isImageActive(image._id)) {
+        if (this.isImageActive(image.shortid)) {
           this.$store.commit('POST_SET_TITLE_IMAGE', { image: null });
         } else {
           this.$store.commit('POST_SET_TITLE_IMAGE', { image });
