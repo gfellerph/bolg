@@ -5,7 +5,7 @@
         <div class="post-markdown">
           <editor
             @input="writePost"
-            @save="savePostImmediately"
+            @save="savePost"
             @help="toggleCheatsheet"
           ></editor>
         </div>
@@ -16,7 +16,7 @@
         ></image-selector>
       </div>
       <div class="post-stats">
-        <post-status :post="post" :errorMessage="errorMessage"></post-status>
+        <post-status :post="post"></post-status>
         <button class="notification-button" @click="sendNotification" :disabled="post.notificationSent || !connected || notificationPending">Notify</button>
         <button class="unpublish-button" @click="unpublishPost">Unpublish</button>
         <button class="publish-button" @click="publishPost">Publish</button>
@@ -69,21 +69,6 @@
     },
 
     methods: {
-      savePostImmediately() {
-        const firstSave = this.$route.fullPath === '/create';
-        const method = firstSave ? 'POST_POST' : 'POST_PUT';
-        this.$store.dispatch(method)
-          .then(() => {
-            if (firstSave) {
-              // Update the route to editing once the post id is known
-              router.replace(`/edit/${this.post._id}`);
-            }
-          });
-      },
-      publishPost() {
-      },
-      unpublishPost() {
-      },
       toggleCheatsheet() {
         this.showCheatSheet = !this.showCheatSheet;
       },
@@ -91,7 +76,12 @@
       },
       ...mapActions({
         getPost: 'POST_GET',
+        savePost: 'POST_PUT',
+        createPost: 'POST_POST',
         writePost: 'POST_WRITE',
+        publishPost: 'POST_PUBLISH',
+        unpublishPost: 'POST_UNPUBLISH',
+        sendNotification: 'POST_SENDNOTIFICATION',
       }),
     },
 
@@ -99,6 +89,17 @@
       if (this.$route.params && this.$route.params.id) {
         this.getPost(this.$route.params.id);
       }
+      if (this.$route.fullPath === '/createpost') {
+        this.createPost()
+          .then(() => {
+            router.replace(`/editpost/${this.post._id}`);
+            this.getPost(this.$route.params.id);
+          });
+      }
+    },
+
+    beforeDestroy() {
+      this.$store.commit('POST_DESTROY');
     },
 
     watch: {
