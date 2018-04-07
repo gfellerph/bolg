@@ -14,7 +14,6 @@ export const post = async (req, res) => {
   img.state = imageStates.PROCESSING;
 
   // Send an early response to mitigate heroku request timeout limits
-  console.log('sending img');
   res.send(img);
 
   // Tinify and resize to max 2560w or 1440h
@@ -31,14 +30,12 @@ export const post = async (req, res) => {
     .store(awsConfig(`adie.bisnaer.ch/i/${req.body.id}`))
     .meta()
     .catch((err) => {
-      console.log(err);
       app.io.emit('server:image-processing-error', {
         id: req.body.id,
         err,
       });
     });
 
-  console.log('tinify finished');
   app.io.emit('server:image-processing-finished', req.body.id);
 };
 
