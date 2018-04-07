@@ -173,7 +173,8 @@
         this.$emit('help');
       },
       setPostDate(event) {
-        this.$store.dispatch('POST_SET_DATE', event.target.value);
+        this.$store.commit('POST_SET_DATE', event.target.value);
+        this.$store.dispatch('POST_PUT');
       },
     },
   };
