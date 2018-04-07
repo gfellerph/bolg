@@ -47,7 +47,10 @@ export const PostSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  titleImage: ImageSchema,
+  titleImage: {
+    type: ImageSchema,
+    default: { url: 'https://picsum.photos/640', shortid: '', name: '' },
+  },
   images: [ImageSchema],
   drawings: [ImageSchema],
 });
