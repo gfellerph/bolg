@@ -23,9 +23,12 @@
       return {};
     },
 
+    props: {
+      post: Object,
+    },
+
     computed: {
       connected() { return this.$store.state.connection.connected; },
-      post() { return this.$store.state.post.post; },
       stateClass() {
         return `status-${classes[this.state]}`;
       },
@@ -84,10 +87,6 @@
 
         return status;
       },
-    },
-
-    props: {
-      errorMessage: [Boolean, String],
     },
   };
 </script>
