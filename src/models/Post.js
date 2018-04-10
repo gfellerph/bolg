@@ -39,7 +39,7 @@ export default function Post(post = {}) {
   Object.defineProperty(this, 'title', {
     get() {
       const title = this.markdown.match(/^# .+/gm);
-      return title ? title[0].replace('# ', '') : '';
+      return title ? title[0].replace('# ', '').replace(/\*.+\*/g, '') : '';
     },
   });
 
