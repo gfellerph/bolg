@@ -31,6 +31,7 @@
   import bus from 'src/config/bus';
   import Image from 'src/models/Image';
   import ImageController from 'src/controllers/image-controller';
+  import { getThumbUrl } from 'src/config/constants';
 
   const imageCtrl = ImageController();
 
@@ -51,7 +52,7 @@
 
     computed: {
       smallestImage() {
-        return this.image ? this.image.getSmallestThumbUrl() : '';
+        return this.image ? getThumbUrl(this.image.url, 160) : '';
       },
     },
 
