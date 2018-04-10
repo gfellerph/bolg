@@ -11,6 +11,7 @@ import * as Publisher from 'src/server/api/publish-api';
 import notify from 'src/server/api/notify-api';
 import * as Images from 'src/server/api/image-api';
 import { postSpamReport } from 'src/server/api/spamreport';
+import * as Drawings from 'src/server/api/drawing-api';
 
 const router = Router();
 const uploader = multer();
@@ -47,6 +48,9 @@ router.get('/post/:id', Posts.getPost);
 router.post('/post', authenticate, Posts.postPost);
 router.put('/post/:id', authenticate, Posts.putPost);
 router.delete('/post/:id', authenticate, Posts.deletePost);
+
+router.post('/drawing', uploader.single('drawing'), Drawings.post);
+router.delete('/post/:postid/drawing/:drawingshortid', authenticate, Drawings.remove);
 
 router.get('/build/*', authenticate);
 router.get('/unbuild/*', authenticate);
