@@ -108,6 +108,7 @@
         const img = this.imageQueue.find(image => data.shortid === image.shortid);
         img.state = imageStates.ERROR;
         img.progress = 0;
+        this.startUpload();
       },
       isImageActive(imgId) {
         return this.post.titleImage ? imgId === this.post.titleImage.shortid : false;
