@@ -1,32 +1,28 @@
 import markdownParser from 'marked';
-// import { sizes } from 'src/config/constants';
+import { sizes, getThumbUrl } from 'src/config/constants';
 
 const markdownOptions = {
   gfm: true,
   smartypants: true,
 };
 
-// const extensionRegex = /\.(jpe?g|png)$/i;
-
 export const marked = (str, options) => {
   const renderer = new markdownParser.Renderer();
-  /* renderer.image = (href, title, text) => {
-    // let srcset = false;
-    // Filter jpgs and pngs, no gifs
-    if (options && options.srcset && extensionRegex.test(href)) {
-      // srcset = sizes.map(size => )
-      /* if (id) {
-        const thumbs = options.images[id];
-        srcset = thumbs ? Object.keys(thumbs).map(key => `${thumbs[key]} ${key}w`).join(',') : null;
-      }
+  renderer.image = (href, title, text) => {
+    let srcset = false;
+    // Filter self hosted images as well as jpgs and pngs, no gifs
+    if (href.indexOf('//adie.bisnaer.ch/') >= 0) {
+      srcset = sizes
+        .map(size => `${getThumbUrl(href, size.width)} ${size.width}w`)
+        .join(',');
     }
     const hrefAttr = href ? ` src="${href}"` : '';
     const titleAttr = title ? ` title="${title}"` : '';
     const altAttr = text ? ` alt="${text}"` : '';
-    // const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
-    // const sizesAttr = srcset ? ' sizes="640px"' : '';
+    const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
+    const sizesAttr = srcset ? ' sizes="(max-width: 640px) 100vw, 640px"' : '';
     return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}>`;
-  } */
+  }
   const mergedOptions = Object.assign({}, markdownOptions, options);
   mergedOptions.renderer = renderer;
   return markdownParser(str, mergedOptions);
