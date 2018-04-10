@@ -45,13 +45,14 @@ router.post('/post', authenticate, Posts.postPost);
 router.put('/post/:id', authenticate, Posts.putPost);
 router.delete('/post/:id', authenticate, Posts.deletePost);
 
-router.get('/build', authenticate);
-router.get('/unbuild', authenticate);
+router.get('/build/*', authenticate);
+router.get('/unbuild/*', authenticate);
 router.get('/build/post/:id', Builds.buildPost);
 router.get('/build/posts', Builds.buildPosts);
 router.get('/build/index', Builds.buildIndex);
 router.get('/build/gallery', Builds.buildGallery);
 router.get('/unbuild/post/:id', Builds.unbuildPost);
+router.get('/build/rebuild', Builds.rebuild);
 
 router.get('/publish/:id', authenticate, Publisher.publish);
 router.get('/unpublish/:id', authenticate, Publisher.unpublish);
