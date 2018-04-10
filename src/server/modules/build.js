@@ -9,7 +9,7 @@ import webpackManifest from 'src/server/modules/webpack-manifest';
 const views = path.join(process.cwd(), 'src/server/views');
 
 export const buildGallery = (posts) => {
-  const filePath = 'public/biuder.html';
+  const filePath = 'public/bilder.html';
 
   // Split images in each post into two columns
   const orderedPosts = posts.map((post) => {
@@ -106,7 +106,7 @@ export const buildNotificationMail = (post, subscriber) => {
 export const cleanAll = () => Promise.all([
   () => new Promise(resolve => rimraf('public/gschichte', resolve)),
   deleteFile('public/index.html'),
-  deleteFile('public/biuder.html'),
+  deleteFile('public/bilder.html'),
 ]);
 
 export const rebuild = posts => cleanAll()
