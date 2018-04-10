@@ -4,10 +4,12 @@
     <ul class="tipps__list">
       <li
         class="tipps__item"
-        v-bind:key="tipp.id"
+        v-bind:key="tipp._id"
         v-for="tipp in filteredTipps"
+        @deletetipp="deleteTipp"
+        @updatetipp="updateTipp"
       >
-        <tipp-detail :tipp="new Tipp(tipp)"></tipp-detail>
+        <tipp-detail :tipp="tipp"></tipp-detail>
       </li>
     </ul>
   </div>
@@ -15,8 +17,8 @@
 
 <script>
   import Tipp from 'src/models/Tipp';
-  import { database } from 'src/config/firebase';
   import TippDetail from 'src/components/TippDetail';
+  import axios from 'axios';
 
   export default {
     data() {
@@ -27,15 +29,25 @@
       };
     },
     created() {
-      this.$bindAsArray('tipps', database.ref('/tipps').orderByChild('created'));
+      axios.get('/api/tipps')
+        .then((res) => { this.tipps = res.data; })
+        .catch((err) => { throw err; });
     },
     computed: {
       filteredTipps() {
         const filterString = this.search.toLowerCase();
         return this.tipps.filter((tipp) => {
-          const searchString = `${tipp.text}${tipp.user.displayName}`.toLowerCase();
+          const searchString = `${tipp.text}${tipp.name}`.toLowerCase();
           return searchString.includes(filterString)
-        }).reverse();
+        });
+      },
+    },
+    methods: {
+      updateTipp(newTipp) {
+        this.tipps = this.tipps.map(tipp => tipp._id === newTipp._id ? newTipp : tipp);
+      },
+      deleteTipp(id) {
+        this.tipps = this.tipps.filter(tipp => tipp._id !== id);
       },
     },
     components: {

@@ -2,10 +2,10 @@
   <div class="tipp">
     <div class="tipp__summary box" v-if="!editMode">
       <h2 class="h5">
-        <span>{{tipp.user.displayName}}</span>
-        <span v-if="tipp.user.email">(<a :href="`mailto:${tipp.user.email}`">{{tipp.user.email}}</a>)</span>
+        <span>{{tipp.name}}</span>
+        <span v-if="tipp.email">(<a :href="`mailto:${tipp.email}`">{{tipp.email}}</a>)</span>
         <br>
-        <time class="tipp__created">{{dateFormat(tipp.created)}}</time>
+        <time class="tipp__created">{{dateFormat(tipp.created, 'dd.mm.yy')}}</time>
       </h2>
       <p>{{tipp.text}}</p>
       <p>
@@ -16,7 +16,7 @@
     <div class="tipp__edit-form box" v-if="editMode">
       <p>
         <label for="">Name</label>
-        <input type="text" v-model="editTipp.user.displayName">
+        <input type="text" v-model="editTipp.name">
       </p>
       <p>
         <label for="">Tipp Text</label>
@@ -31,7 +31,9 @@
 </template>
 
 <script>
+  import axios from 'axios';
   import Tipp from 'src/models/Tipp';
+  import dateFormat from 'dateformat';
 
   export default {
     data() {
@@ -51,12 +53,17 @@
       deleteTipp() {
         /* eslint no-alert: 0 */
         /* eslint no-restricted-globals: 0 */
-        return confirm('Wosch würk lösche?') ? this.tipp.remove() : false;
+        if (confirm('Wosch würk lösche?')) {
+          axios.delete(`/api/tipp/${this.tipp._id}`)
+            .then(() => this.$emit('deletetipp', this.tipp._id));
+        }
       },
       saveTipp() {
         this.editMode = false;
-        return this.editTipp.set();
+        axios.put(`/api/tipp/${this.tipp._id}`)
+          .then((newTipp) => { this.$emit('updatetipp', newTipp); });
       },
+      dateFormat,
     },
   };
 </script>
