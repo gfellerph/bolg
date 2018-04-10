@@ -62,6 +62,7 @@ export const get = (req, res, next) => {
           }).promise();
           image.url = Url;
           image.shortid = image.id;
+          image.name = image.id;
         } else if (image.downloadURL.indexOf('adie.bisnaer.ch') >= 0) {
           // Already right?
           console.log(`WIERD: ${image.downloadURL}`);

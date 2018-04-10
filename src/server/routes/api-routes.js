@@ -45,13 +45,14 @@ router.post('/post', authenticate, Posts.postPost);
 router.put('/post/:id', authenticate, Posts.putPost);
 router.delete('/post/:id', authenticate, Posts.deletePost);
 
-router.get('/build', authenticate);
-router.get('/unbuild', authenticate);
+router.get('/build/*', authenticate);
+router.get('/unbuild/*', authenticate);
 router.get('/build/post/:id', Builds.buildPost);
 router.get('/build/posts', Builds.buildPosts);
 router.get('/build/index', Builds.buildIndex);
 router.get('/build/gallery', Builds.buildGallery);
 router.get('/unbuild/post/:id', Builds.unbuildPost);
+router.get('/build/rebuild', Builds.rebuild);
 
 router.get('/publish/:id', authenticate, Publisher.publish);
 router.get('/unpublish/:id', authenticate, Publisher.unpublish);
@@ -65,11 +66,14 @@ router.delete('/journey/:id', authenticate, Journeys.remove);
 /**
  * Error handler for api requests, returns json errors
  */
-router.use('/*', (err, req, res) => {
-  if (err) return res.json(err);
+/* eslint no-unused-vars: 0 */
+router.use('/*', (err, req, res, next) => {
+  /* eslint no-console: 0 */
+  console.log(err);
+  if (err && err instanceof Error) return res.json(JSON.stringify(err));
 
   res.status = 404;
-  return res.json(new Error('Not found'));
+  return res.send(`Not found: ${req.url}`);
 });
 
 export default router;

@@ -46,3 +46,15 @@ export const buildPosts = async (req, res, next) => {
     .then(() => res.send('OK'))
     .catch(err => next(err));
 }
+
+export const unbuildPosts = async (req, res, next) => Builder.cleanAll()
+  .then(() => res.send('OK'))
+  .catch(err => next(err));
+
+export const rebuild = async (req, res, next) => {
+  const posts = await Queries.publishedPosts();
+
+  return Builder.rebuild(posts)
+    .then(() => res.send('OK'))
+    .catch(err => next(err));
+}

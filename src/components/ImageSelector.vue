@@ -108,6 +108,7 @@
         const img = this.imageQueue.find(image => data.shortid === image.shortid);
         img.state = imageStates.ERROR;
         img.progress = 0;
+        this.startUpload();
       },
       isImageActive(imgId) {
         return this.post.titleImage ? imgId === this.post.titleImage.shortid : false;
@@ -127,8 +128,8 @@
           this.$store.dispatch('POST_PUT');
         }
       },
-      removeImage(id) {
-        this.$store.commit('POST_REMOVE_IMAGE', id);
+      removeImage(shortid) {
+        this.$store.commit('POST_REMOVE_IMAGE', shortid);
         this.$store.dispatch('POST_PUT');
       },
       activateImage(image) {
