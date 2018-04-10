@@ -11,6 +11,8 @@ import migrationRoutes from 'src/server/routes/migration-routes';
 import { postSpamReport } from 'src/server/api/spamreport';
 import passport from 'src/config/passport';
 import expressStatic from 'src/config/express-static';
+import { rebuild } from 'src/server/modules/build';
+import { publishedPosts } from 'src/server/modules/queries';
 
 const app = express();
 
@@ -19,10 +21,10 @@ app.io = io();
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
-  .then(() => {
-    /* eslint no-console: 0 */
-    console.log('Connected to mongodb server');
-  })
+  /* eslint no-console: 0 */
+  .then(() => console.log('Connected to mongodb server'))
+  .then(publishedPosts)
+  .then(rebuild)
   .catch((err) => { console.error(err); });
 
 app.use(passport.initialize());
