@@ -63,6 +63,17 @@ export const slugger = str => str
   .trim()
   .replace(/ +/g, '-');
 
+const imageExtDetector = /\.(jpe?g|png)$/i;
+
+export const getThumbUrl = (url, size) => {
+  const insertIndex = url.indexOf('/i/');
+  // Filter self hosted images as well as jpgs and pngs, no gifs
+  if (insertIndex < 0 && !imageExtDetector.test(url)) return url;
+  const prependix = url.substring(0, insertIndex);
+  const appendix = url.substring(insertIndex);
+  return `${prependix}/${size}x${appendix}`;
+}
+
 export const formatDate = (dateInput = Date.now()) => {
   const date = new Date(dateInput);
   let days = date.getDate();
