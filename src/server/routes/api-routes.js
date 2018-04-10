@@ -10,6 +10,8 @@ import * as Builds from 'src/server/api/build-api';
 import * as Publisher from 'src/server/api/publish-api';
 import notify from 'src/server/api/notify-api';
 import * as Images from 'src/server/api/image-api';
+import { postSpamReport } from 'src/server/api/spamreport';
+import * as Drawings from 'src/server/api/drawing-api';
 
 const router = Router();
 const uploader = multer();
@@ -26,6 +28,8 @@ router.delete('/subscriber/:id', authenticate, Subscribers.remove);
 router.get('/unsubscribe/:id', Subscribers.remove);
 
 router.get('/notify/:id', authenticate, notify);
+
+router.post('/spamreport', postSpamReport);
 
 router.get('/users', authenticate, Users.list);
 router.get('/user', authenticate, Users.getUser);
@@ -45,6 +49,9 @@ router.post('/post', authenticate, Posts.postPost);
 router.put('/post/:id', authenticate, Posts.putPost);
 router.delete('/post/:id', authenticate, Posts.deletePost);
 
+router.post('/drawing', uploader.single('drawing'), Drawings.post);
+router.delete('/post/:postid/drawing/:drawingshortid', authenticate, Drawings.remove);
+
 router.get('/build/*', authenticate);
 router.get('/unbuild/*', authenticate);
 router.get('/build/post/:id', Builds.buildPost);
@@ -62,18 +69,5 @@ router.get('/journey/:id', Journeys.get);
 router.post('/journey', authenticate, Journeys.post);
 router.put('/journey/:id', authenticate, Journeys.put);
 router.delete('/journey/:id', authenticate, Journeys.remove);
-
-/**
- * Error handler for api requests, returns json errors
- */
-/* eslint no-unused-vars: 0 */
-router.use('/*', (err, req, res, next) => {
-  /* eslint no-console: 0 */
-  console.log(err);
-  if (err && err instanceof Error) return res.json(JSON.stringify(err));
-
-  res.status = 404;
-  return res.send(`Not found: ${req.url}`);
-});
 
 export default router;

@@ -8,9 +8,11 @@ import mongoose from 'mongoose';
 import io from 'socket.io';
 import apiRoutes from 'src/server/routes/api-routes';
 import migrationRoutes from 'src/server/routes/migration-routes';
-import { postSpamReport } from 'src/server/api/spamreport';
+import errorRoutes from 'src/server/routes/error-routes';
 import passport from 'src/config/passport';
 import expressStatic from 'src/config/express-static';
+import { rebuild } from 'src/server/modules/build';
+import { publishedPosts } from 'src/server/modules/queries';
 
 const app = express();
 
@@ -19,10 +21,10 @@ app.io = io();
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
-  .then(() => {
-    /* eslint no-console: 0 */
-    console.log('Connected to mongodb server');
-  })
+  /* eslint no-console: 0 */
+  .then(() => console.log('Connected to mongodb server'))
+  .then(publishedPosts)
+  .then(rebuild)
   .catch((err) => { console.error(err); });
 
 app.use(passport.initialize());
@@ -46,24 +48,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Routes
 app.use('/api', apiRoutes);
 app.use('/migrate', migrationRoutes);
-app.post('/api/spamreport', postSpamReport);
-
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handler
-app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.use(errorRoutes);
 
 export default app;

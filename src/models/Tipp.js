@@ -1,11 +1,11 @@
 import cuid from 'cuid';
-import User from 'src/models/User';
 
 export default function Tipp(tipp = {}) {
   // Properties
   this.id = tipp.id || cuid();
   this.created = tipp.created || Date.now();
-  this.user = tipp.user || new User();
+  this.name = tipp.name || '';
+  this.email = tipp.email || '';
   this.text = tipp.text || '';
   this.lat = tipp.lat || null;
   this.lng = tipp.lng || null;
@@ -16,5 +16,5 @@ export default function Tipp(tipp = {}) {
    */
   this.normalize = () => JSON.parse(JSON.stringify(this));
 
-  this.title = () => `${this.user.displayName}s Tipp: ${this.text.substring(0, 22)}${this.text.length > 22 ? '...' : ''}`;
+  this.title = () => `${this.name}s Tipp: ${this.text.substring(0, 22)}${this.text.length > 22 ? '...' : ''}`;
 }

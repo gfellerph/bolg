@@ -10,6 +10,7 @@
     "no-extra-semi": 2,
     "no-plusplus": 0,
     "no-underscore-dangle": 0,
+    "no-confusing-arrow": 0,
     "import/no-extraneous-dependencies": [
       "error",
       {

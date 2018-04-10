@@ -9,7 +9,7 @@ import webpackManifest from 'src/server/modules/webpack-manifest';
 const views = path.join(process.cwd(), 'src/server/views');
 
 export const buildGallery = (posts) => {
-  const filePath = 'public/biuder.html';
+  const filePath = 'public/bilder.html';
 
   // Split images in each post into two columns
   const orderedPosts = posts.map((post) => {
@@ -73,17 +73,17 @@ export const unbuildPost = (post) => {
 }
 
 /**
- * Buils all posts and saves them to disk
+ * Builds all posts and saves them to disk
  * @param {array<Post>} posts Array of posts
  * @returns {Promise} Resolves when all posts are written
  */
 export const buildPosts = (posts) => {
   if (!posts || posts.length === 0) return Promise.reject(Error(`buildAllPosts failed, parameter was ${posts}`));
   const fns = [];
-  posts.reduce((post, nextPost) => {
+  posts.reduce((nextPost, post) => {
     fns.push(buildPost(post, nextPost));
-    return nextPost;
-  });
+    return post;
+  }, null);
   return Promise.all(fns);
 }
 
@@ -106,7 +106,7 @@ export const buildNotificationMail = (post, subscriber) => {
 export const cleanAll = () => Promise.all([
   () => new Promise(resolve => rimraf('public/gschichte', resolve)),
   deleteFile('public/index.html'),
-  deleteFile('public/biuder.html'),
+  deleteFile('public/bilder.html'),
 ]);
 
 export const rebuild = posts => cleanAll()

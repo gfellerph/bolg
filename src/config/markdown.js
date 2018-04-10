@@ -1,5 +1,5 @@
 import markdownParser from 'marked';
-import { sizes, getThumbUrl } from 'src/config/constants';
+import { getSrcset } from 'src/config/constants';
 
 const markdownOptions = {
   gfm: true,
@@ -12,9 +12,7 @@ export const marked = (str, options) => {
     let srcset = false;
     // Filter self hosted images as well as jpgs and pngs, no gifs
     if (href.indexOf('//adie.bisnaer.ch/') >= 0) {
-      srcset = sizes
-        .map(size => `${getThumbUrl(href, size.width)} ${size.width}w`)
-        .join(',');
+      srcset = getSrcset(href);
     }
     const hrefAttr = href ? ` src="${href}"` : '';
     const titleAttr = title ? ` title="${title}"` : '';

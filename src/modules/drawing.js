@@ -1,4 +1,5 @@
 import axios from 'axios';
+import dataUrlToBlob from 'src/modules/dataUrlToBlob';
 
 export default function initCanvas() {
   const canvas = document.querySelector('#drawing');
@@ -115,9 +116,10 @@ export default function initCanvas() {
     sendButton.setAttribute('disabled', 'disabled');
 
     // Put the drawing
-    const formData = [`source=${imageData}`];
-    if (postId) formData.push(`postid=${postId}`);
-    axios.put('/api/drawing', formData.join('&'))
+    const formData = new FormData();
+    if (postId) formData.append('postid', postId);
+    formData.append('drawing', dataUrlToBlob(imageData));
+    axios.post('/api/drawing', formData)
       .then(() => {
         canvas.classList.remove('merci');
         sendButton.removeAttribute('disabled');

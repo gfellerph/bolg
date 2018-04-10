@@ -14,7 +14,7 @@
       name="tippname"
       type="text"
       placeholder="Name"
-      v-model="tipp.user.displayName"
+      v-model="tipp.name"
       v-validate="'required'"
     >
     <p class="error" v-bind:key="error.id" v-for="error in errors.collect('tippname')">{{error}}</p>
@@ -22,7 +22,7 @@
       name="tippemail"
       type="email"
       placeholder="Email (optional)"
-      v-model="tipp.user.email"
+      v-model="tipp.email"
       v-validate="'email'"
       data-vv-validate-on="blur"
     >

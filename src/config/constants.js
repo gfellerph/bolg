@@ -74,6 +74,10 @@ export const getThumbUrl = (url, size) => {
   return `${prependix}/${size}x${appendix}`;
 }
 
+export const getSrcset = url => sizes
+  .map(size => `${getThumbUrl(url, size.width)} ${size.width}w`)
+  .join(',');
+
 export const formatDate = (dateInput = Date.now()) => {
   const date = new Date(dateInput);
   let days = date.getDate();

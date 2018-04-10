@@ -4,12 +4,12 @@ mixin next-post(nextPost)
     a.next-post-link(href=nextPost.url)
       article.next-post!= nextPost.excerpt
   else
-    a.next-post-link(href='/galerie')
+    a.next-post-link(href='/bilder')
       div.next-post
         img(
           src='/img/grid.png'
           alt='Bildergalerie'
           data-no-zoom
         )
-        h3.next-post__title No chli Biuder luege?
+        h3.next-post__title No chli Bilder luege?
     br
