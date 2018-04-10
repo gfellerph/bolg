@@ -3,17 +3,17 @@
     <h1>Zeichnige</h1>
     <div
       class="drawing-collection"
-      :key="collection.id"
+      :key="collection._id"
       v-for="collection in drawingCollection"
     >
       <h2>{{collection.title}} ({{Object.keys(collection.drawings).length}})</h2>
       <div class="drawings__list">
         <drawings-detail
-          :postid="collection.id"
+          :postid="collection._id"
           :drawing="drawing"
-          :drawingkey="key"
-          :key="key"
-          v-for="(drawing, key) in collection.drawings"
+          :key="drawing.shortid"
+          v-for="drawing in collection.drawings"
+          @updatepost="updatePost"
         ></drawings-detail>
       </div>
     </div>
@@ -21,9 +21,8 @@
 </template>
 
 <script>
-  import Post from 'src/models/Post';
   import DrawingsDetail from 'src/components/DrawingsDetail';
-  import { database } from 'src/config/firebase';
+  import axios from 'axios';
 
   export default {
     components: {
@@ -37,22 +36,21 @@
     },
 
     created() {
-      this.$bindAsArray('posts', database.ref('/posts'));
+      axios.get('/api/posts')
+        .then((res) => { this.posts = res.data; })
     },
 
     computed: {
       drawingCollection() {
         return this.posts
-          .filter(post => post.drawings)
-          .sort((a, b) => b.created - a.created)
-          .map((postData) => {
-            const post = new Post(postData);
-            return {
-              id: post.id,
-              title: post.title,
-              drawings: post.drawings,
-            };
-          });
+          .filter(post => post.drawings);
+      },
+    },
+
+    methods: {
+      updatePost(newPost) {
+        /* eslint no-confusing-arrow: 0 */
+        this.posts = this.posts.map(post => post._id === newPost._id ? newPost : post);
       },
     },
   }
