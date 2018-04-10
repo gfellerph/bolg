@@ -86,7 +86,7 @@
             });
             const infowindow = new google.maps.InfoWindow({
               content: `
-                <h5>${tipp.user.displayName}</h5>
+                <h5>${tipp.name}</h5>
                 <p>${tipp.text}</p>
               `,
             });

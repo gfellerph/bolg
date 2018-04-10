@@ -32,7 +32,6 @@
 
 <script>
   import axios from 'axios';
-  import Tipp from 'src/models/Tipp';
   import dateFormat from 'dateformat';
 
   export default {
@@ -47,7 +46,7 @@
     },
     methods: {
       toggleEditMode() {
-        this.editTipp = new Tipp(this.tipp);
+        this.editTipp = this.tipp;
         this.editMode = !this.editMode;
       },
       deleteTipp() {
@@ -60,7 +59,7 @@
       },
       saveTipp() {
         this.editMode = false;
-        axios.put(`/api/tipp/${this.tipp._id}`)
+        axios.put(`/api/tipp/${this.tipp._id}`, this.editTipp)
           .then((newTipp) => { this.$emit('updatetipp', newTipp); });
       },
       dateFormat,

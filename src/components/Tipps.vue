@@ -6,10 +6,12 @@
         class="tipps__item"
         v-bind:key="tipp._id"
         v-for="tipp in filteredTipps"
-        @deletetipp="deleteTipp"
-        @updatetipp="updateTipp"
       >
-        <tipp-detail :tipp="tipp"></tipp-detail>
+        <tipp-detail
+          :tipp="tipp"
+          @deletetipp="deleteTipp"
+
+        ></tipp-detail>
       </li>
     </ul>
   </div>
