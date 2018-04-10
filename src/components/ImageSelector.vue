@@ -128,8 +128,8 @@
           this.$store.dispatch('POST_PUT');
         }
       },
-      removeImage(id) {
-        this.$store.commit('POST_REMOVE_IMAGE', id);
+      removeImage(shortid) {
+        this.$store.commit('POST_REMOVE_IMAGE', shortid);
         this.$store.dispatch('POST_PUT');
       },
       activateImage(image) {
