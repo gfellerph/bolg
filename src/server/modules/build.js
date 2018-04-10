@@ -73,17 +73,17 @@ export const unbuildPost = (post) => {
 }
 
 /**
- * Buils all posts and saves them to disk
+ * Builds all posts and saves them to disk
  * @param {array<Post>} posts Array of posts
  * @returns {Promise} Resolves when all posts are written
  */
 export const buildPosts = (posts) => {
   if (!posts || posts.length === 0) return Promise.reject(Error(`buildAllPosts failed, parameter was ${posts}`));
   const fns = [];
-  posts.reduce((post, nextPost) => {
+  posts.reduce((nextPost, post) => {
     fns.push(buildPost(post, nextPost));
-    return nextPost;
-  });
+    return post;
+  }, null);
   return Promise.all(fns);
 }
 
