@@ -13,7 +13,7 @@ export const get = (req, res, next) => {
     await Post.collection.drop();
 
     // Loop through posts
-    const posts = Object.values(val.val()).slice(1, 10);
+    const posts = Object.values(val.val());
     console.log(`Starting to migrate ${posts.length} posts`);
     const newPosts = await Promise.all(posts.map(async (post) => {
       delete post.id;
