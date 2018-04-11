@@ -1,6 +1,7 @@
 import shortid from 'shortid';
 import Post from 'src/models/PostModel';
 import s3 from 'src/config/s3';
+import dateformat from 'dateformat';
 import { database } from 'src/config/firebase-admin';
 import { getExtension, replaceAll, getImage, types } from 'src/server/migrations/migrate-images';
 
@@ -18,13 +19,6 @@ export const get = (req, res, next) => {
       delete post.id;
       delete post.author;
 
-      post.postDate = post.created;
-
-      // If post was published, set published markdown
-      if (typeof new Date(post.lastPublished) === 'object') {
-        post.publishedMarkdown = post.markdown;
-      }
-
       // Convert images
       post.images = await Promise.all(post.images.map(async (image) => {
         delete image.thumbnails;
@@ -32,7 +26,10 @@ export const get = (req, res, next) => {
         // Keep track of the original id
         image.name = image.id;
 
-        if (!image.downloadURL) return image;
+        if (!image.downloadURL) {
+          console.log('Faulty image: ', image);
+          return image;
+        }
 
         // Where does the image come from?
         if (image.downloadURL.indexOf('googleapis') >= 0) {
@@ -72,6 +69,12 @@ export const get = (req, res, next) => {
         }
 
         post.markdown = replaceAll(post.markdown, image.downloadURL, image.url);
+        post.postDate = dateformat(parseInt(post.created, 10), 'yyyy-mm-dd');
+
+        // If post was published, set published markdown
+        if (typeof new Date(post.lastPublished) === 'object') {
+          post.publishedMarkdown = post.markdown;
+        }
         return image;
       }));
 

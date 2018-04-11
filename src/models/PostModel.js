@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import dateformat from 'dateformat';
 import { ImageSchema } from 'src/models/ImageModel';
-import { slugger, formatDate } from 'src/config/constants';
+import { slugger } from 'src/config/constants';
 import { marked, excerpt, description } from 'src/config/markdown';
 
 const { Schema } = mongoose;
@@ -83,7 +83,7 @@ PostSchema.virtual('description').get(function getDescription() {
 });
 
 PostSchema.virtual('formattedPostDate').get(function getFormattedPostDate() {
-  return formatDate(this.postDate);
+  return dateformat(this.postDate, 'dd.mm.yyyy');
 });
 
 /**
