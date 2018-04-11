@@ -12,11 +12,13 @@ export const get = (req, res, next) => {
     await Post.collection.drop();
 
     // Loop through posts
-    const posts = Object.values(val.val()).slice(1, 4);
+    const posts = Object.values(val.val()).slice(1, 10);
     console.log(`Starting to migrate ${posts.length} posts`);
     const newPosts = await Promise.all(posts.map(async (post) => {
       delete post.id;
       delete post.author;
+
+      post.postDate = post.created;
 
       // If post was published, set published markdown
       if (typeof new Date(post.lastPublished) === 'object') {
