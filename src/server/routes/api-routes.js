@@ -10,7 +10,6 @@ import * as Builds from 'src/server/api/build-api';
 import * as Publisher from 'src/server/api/publish-api';
 import notify from 'src/server/api/notify-api';
 import * as Images from 'src/server/api/image-api';
-import { postSpamReport } from 'src/server/api/spamreport';
 import * as Drawings from 'src/server/api/drawing-api';
 
 const router = Router();
@@ -28,8 +27,6 @@ router.delete('/subscriber/:id', authenticate, Subscribers.remove);
 router.get('/unsubscribe/:id', Subscribers.remove);
 
 router.get('/notify/:id', authenticate, notify);
-
-router.post('/spamreport', postSpamReport);
 
 router.get('/users', authenticate, Users.list);
 router.get('/user', authenticate, Users.getUser);

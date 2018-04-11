@@ -25,7 +25,7 @@
           placeholder="Name"
           ref="name"
           v-validate="'required'"
-          v-model="subscriber.displayName"
+          v-model="subscriber.name"
         >
       </p>
       <p class="error" v-bind:key="error.id" v-for="error in errors.collect('name')">{{error}}</p>

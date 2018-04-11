@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { auth } from 'src/config/firebase';
 import store from 'src/config/store';
 
 import Posts from 'src/components/Posts';
@@ -100,26 +99,15 @@ const router = new Router({
       name: 'Journey',
       component: JourneyEditor,
       meta: {
-        requiresMongoAuth: true,
+        requiresAuth: true,
       },
     },
   ],
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresMongoAuth)) {
-    if (!store.state.auth.mongoUser) {
-      return next({
-        path: '/login',
-        query: { redirect: to.fullPath },
-      });
-    }
-  }
-
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    if (!auth.currentUser) {
+    if (!store.state.auth.user) {
       return next({
         path: '/login',
         query: { redirect: to.fullPath },
