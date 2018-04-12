@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import dateformat from 'dateformat';
 import { ImageSchema } from 'src/models/ImageModel';
-import { slugger } from 'src/config/constants';
+import { slugger, removeAllHtml } from 'src/config/constants';
 import { marked, excerpt, description } from 'src/config/markdown';
 
 const { Schema } = mongoose;
@@ -93,9 +93,17 @@ PostSchema.virtual('formattedPostDate').get(function getFormattedPostDate() {
  * @param {function} next Next middleware callback
  * @returns {void}
  */
-PostSchema.pre('validate', function preSave(next) {
+PostSchema.pre('validate', function preValidate(next) {
   const title = this.markdown.match(/^# .+/gm);
-  this.title = title ? title[0].replace('# ', '') : '';
+  this.title = title
+    ? removeAllHtml(title[0].replace('# ', '').replace(/\*.+\*/g, ''))
+    : '';
+  next();
+});
+
+PostSchema.pre('findOneAndUpdate', function preSave(next) {
+  const { title } = this._update.$set;
+  this._update.$set.title = removeAllHtml(title.replace(/\*.+\*/g, ''));
   next();
 });
 
