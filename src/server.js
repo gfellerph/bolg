@@ -6,6 +6,7 @@ import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import mongoose from 'mongoose';
 import io from 'socket.io';
+import redirectRoutes from 'src/server/routes/redirect-routes';
 import apiRoutes from 'src/server/routes/api-routes';
 import migrationRoutes from 'src/server/routes/migration-routes';
 import errorRoutes from 'src/server/routes/error-routes';
@@ -46,6 +47,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
+app.use(redirectRoutes);
 app.use('/api', apiRoutes);
 app.use('/migrate', migrationRoutes);
 app.use(errorRoutes);

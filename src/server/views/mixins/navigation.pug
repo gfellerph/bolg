@@ -5,7 +5,7 @@ mixin navigation(active)
     a(href='/')
       img.logo(src=logoURL)
       span.sr-only Gschichte
-    a(class = (active === 'galerie' ? 'active' : '') href='/galerie')
+    a(class = (active === 'galerie' ? 'active' : '') href='/bilder')
       span Bilder
 
 mixin post-navigation(active)
@@ -16,5 +16,5 @@ mixin post-navigation(active)
     a(href="/")
       img.logo(src=logoURL alt="Logo")
       span.sr-only Gschichte
-    a.right-link(class = (active === 'galerie' ? 'active' : '') href="/galerie")
+    a.right-link(class = (active === 'galerie' ? 'active' : '') href="/bilder")
       span.hidden-xxs Bilder
