@@ -2,8 +2,10 @@ mixin gallery-column(images)
   div.gallery__column
     each image in images
       img.gallery__image(
-        src=image.url
         alt='Bilder usem Blog'
+        src=image.url
+        srcset=image.srcset
+        sizes='320px'
         data-zoom-target=image.url
       )
 
