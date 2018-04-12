@@ -89,3 +89,6 @@ export const formatDate = (dateInput = Date.now()) => {
 
   return `${days}.${month}.${year}`;
 }
+
+// Removes all html tags with content from a string
+export const removeAllHtml = source => source.replace(/<.* (>[\s\S]*?<\/.*>|\/>)/gi, '');

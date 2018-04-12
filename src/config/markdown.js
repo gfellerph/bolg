@@ -26,10 +26,20 @@ export const marked = (str, options) => {
   return markdownParser(str, mergedOptions);
 }
 
-export const excerpt = str => markdownParser(`${str.replace(/<s[ct].+>.+<\/s[ct].+>/g, '').split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
+const scriptAndStyleRemover = /<(style|script).*(>[\s\S]*?<\/(style|script)>?|\/>)/gi;
+
+export const excerpt = str => markdownParser(`${str
+  .replace(scriptAndStyleRemover, '')
+  .trim()
+  .split(' ')
+  .slice(0, 40)
+  .join(' ')}...`, markdownOptions);
 
 export const description = (str) => {
   const md = str
+    // Remove all script and style tags
+    .replace(scriptAndStyleRemover, '')
+    .trim()
     // Remove headings
     .replace(/#+.+\n/gm, '')
     // Remove images
