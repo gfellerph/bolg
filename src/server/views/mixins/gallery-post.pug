@@ -3,8 +3,8 @@ mixin gallery-column(images)
     each image in images
       img.gallery__image(
         alt='Bilder usem Blog'
-        src=image.url
-        srcset=image.srcset
+        src=image.getThumborUrl({ width: 100, blur: 10 })
+        data-lqip=image.srcset
         sizes='320px'
         data-zoom-target=image.url
       )
