@@ -39,6 +39,8 @@
       axios.get('/api/journeys')
         .then((res) => {
           const journey = res.data;
+          const { lat, lng } = res.data[res.data.length - 1];
+          this.map.setCenter(new google.maps.LatLng(lat, lng))
 
           const path = journey.map(location => ({ lat: location.lat, lng: location.lng }));
           this.polyline = new google.maps.Polyline(Object.assign(
