@@ -1,8 +1,10 @@
 import mediumZoom from 'medium-zoom';
 
 export default function () {
-  return mediumZoom('.container img:not([data-no-zoom])', {
-    margin: 24,
-    scrollOffset: 120,
+  const zoom = mediumZoom('.container img:not([data-no-zoom])', {
+    margin: 0,
+    scrollOffset: 48,
   });
+
+  return zoom;
 }
