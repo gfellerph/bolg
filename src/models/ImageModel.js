@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import shortid from 'shortid';
-import { getThumbUrl, getSrcset } from 'src/config/constants';
+import { getThumbUrl, getSrcset, constructThumborUrl } from 'src/config/constants';
 
 const { Schema } = mongoose;
 
@@ -19,12 +19,16 @@ export const ImageSchema = new Schema({
   },
 });
 
-ImageSchema.virtual('thumbUrl').get(function thumbUrl() {
-  return getThumbUrl(this.url, 640);
-});
-
 ImageSchema.virtual('srcset').get(function srcset() {
   return getSrcset(this.url);
 });
+
+ImageSchema.methods.getThumbnail = function getThumbnail(size) {
+  return getThumbUrl(this.url, size);
+}
+
+ImageSchema.methods.getThumborUrl = function getThumborUrl(options) {
+  return constructThumborUrl(this.url, options);
+}
 
 export default mongoose.model('Image', ImageSchema);
