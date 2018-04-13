@@ -1,7 +1,7 @@
 /* global google */
 export const mapConfig = {
-  zoom: 2,
-  center: new google.maps.LatLng(27, 6),
+  zoom: 4,
+  center: new google.maps.LatLng(27.895005435034555, 105.63281035423279),
   streetViewControl: false,
   mapTypeId: google.maps.MapTypeId.ROADMAP,
   mapTypeControl: false,
