@@ -4,6 +4,7 @@ import store from 'src/config/store';
 
 import Posts from 'src/components/Posts';
 import EditPost from 'src/components/EditPost';
+import CreatePost from 'src/components/CreatePost';
 import Map from 'src/components/Map';
 import Tipps from 'src/components/Tipps';
 import Subscribe from 'src/components/Subscribe';
@@ -27,8 +28,8 @@ const router = new Router({
     },
     {
       path: '/createpost',
-      name: 'NewPost',
-      component: EditPost,
+      name: 'CreatePost',
+      component: CreatePost,
       meta: {
         requiresAuth: true,
       },

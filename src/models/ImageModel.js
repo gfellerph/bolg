@@ -38,10 +38,12 @@ ImageSchema.virtual('blurryThumb').get(function blurryThumb() {
 });
 
 ImageSchema.methods.getThumbnail = function getThumbnail(size) {
+  if (this.url.indexOf('adie.bisnaer.ch/') < 0) return this.url;
   return getThumbUrl(this.url, size);
 }
 
 ImageSchema.methods.getThumborUrl = function getThumborUrl(options) {
+  if (this.url.indexOf('adie.bisnaer.ch/') < 0) return this.url;
   return constructThumborUrl(this.url, options);
 }
 
@@ -59,7 +61,7 @@ ImageSchema.methods.getRatio = async function getRatio() {
   return ratio;
 }
 
-ImageSchema.pre('save', function preSave(next) {
+ImageSchema.pre('validate', function preSave(next) {
   this.ratio = this.getRatio()
     .then(() => next())
     .catch(console.err);

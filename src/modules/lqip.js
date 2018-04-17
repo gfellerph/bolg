@@ -36,6 +36,41 @@ document.head.appendChild(style);
 
 let observer;
 
+const onload = (event) => {
+  const { target } = event;
+  window.setTimeout(() => {
+    target.classList.add('lqip__loaded');
+  }, 1);
+}
+
+const replacePlaceholder = (placeholder, options) => {
+  const transitionend = (event) => {
+    event.target.classList.remove('lqip__loading');
+    event.target.removeEventListener('transitionend', transitionend);
+    options.afterReplace(event.target.previousElementSibling, event.target);
+  }
+
+  const img = document.createElement('img');
+  if (options && typeof options.afterReplace === 'function') {
+    img.addEventListener('transitionend', transitionend, false);
+  }
+  const srcset = placeholder.getAttribute('data-lqip-srcset');
+  const src = placeholder.getAttribute('data-lqip-src');
+  img.classList.add('lqip__original', 'lqip__loading');
+  img.alt = placeholder.alt;
+  if (src) {
+    img.removeAttribute('data-lqip-src');
+    img.src = src;
+  }
+  if (srcset) {
+    img.removeAttribute('data-lqip-srcset');
+    img.setAttribute('srcset', srcset);
+    img.setAttribute('sizes', placeholder.getAttribute('sizes'));
+  }
+  placeholder.parentNode.appendChild(img);
+  img.addEventListener('load', onload, false);
+}
+
 const lqip = (userOptions = defaults) => {
   // Compatability check
   if (
@@ -45,47 +80,33 @@ const lqip = (userOptions = defaults) => {
   ) {
     /* eslint no-console: 0 */
     console.log('The lqip module is not compatible with this browser.');
+
+    // Just replace all images instantly
+    const images = document.getElementsByTagName('img');
+    const lqipImages = Array.prototype.filter.call(images, (img) => {
+      const isLQIP = img.hasAttribute('data-lqip-src') || img.hasAttribute('data-lqip-srcset');
+      return isLQIP;
+    });
+
+    lqipImages.forEach((img) => {
+      if (img.hasAttribute('data-lqip-src')) img.src = img.getAttribute('data-lqip-src');
+      if (img.hasAttribute('data-lqip-srcset')) img.setAttribute('srcset', img.getAttribute('data-lqip-srcset'));
+      if (typeof userOptions.afterReplace === 'function') {
+        userOptions.afterReplace(null, img);
+      }
+    });
+
+    // Give up, there is no use in trying
     return false;
   }
 
   const options = Object.assign({}, defaults, userOptions);
 
-  const transitionend = (event) => {
-    event.target.classList.remove('lqip__loading');
-    event.target.removeEventListener('transitionend', transitionend);
-    options.afterReplace(event.target.previousElementSibling, event.target);
-  }
-
-  const onload = (event) => {
-    const { target } = event;
-    window.setTimeout(() => {
-      target.classList.add('lqip__loaded');
-    }, 1);
-  }
-
   const loader = (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        const img = document.createElement('img');
-        if (options && typeof options.afterReplace === 'function') {
-          img.addEventListener('transitionend', transitionend, false);
-        }
-        const srcset = entry.target.getAttribute('data-lqip-srcset');
-        const src = entry.target.getAttribute('data-lqip-src');
-        img.classList.add('lqip__original', 'lqip__loading');
-        img.alt = entry.target.alt;
-        if (src) {
-          img.removeAttribute('data-lqip-src');
-          img.src = src;
-        }
-        if (srcset) {
-          img.removeAttribute('data-lqip-srcset');
-          img.setAttribute('srcset', srcset);
-          img.setAttribute('sizes', entry.target.getAttribute('sizes'));
-        }
-        entry.target.parentNode.appendChild(img);
+        replacePlaceholder(entry.target, options);
         observer.unobserve(entry.target);
-        img.addEventListener('load', onload, false);
       }
     });
   }
@@ -108,12 +129,10 @@ const lqip = (userOptions = defaults) => {
     observer.observe(image);
 
     // Prepare markup
-    if (image.parentElement.children.length > 1) {
+    if (!image.parentElement.classList.contains('lqip__wrapper')) {
       const wrapper = wrapperDiv.cloneNode();
       image.parentNode.insertBefore(wrapper, image);
       wrapper.appendChild(image);
-    } else if (!image.parentElement.classList.contains('lqip__wrapper')) {
-      image.parentElement.classList.add('lqip__wrapper');
     }
   }
 

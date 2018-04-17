@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // mediumZoom();
   lqip({
     afterReplace: (lqipImage, originalImage) => {
-      lqipImage.remove();
+      if (lqipImage) lqipImage.remove();
       mediumZoom(originalImage);
     },
   });

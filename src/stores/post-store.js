@@ -1,13 +1,10 @@
 import axios from 'axios';
 import debounce from 'debounce';
-
-const emptyPost = () => ({
-  markdown: '# No kei Titu',
-});
+import Post from 'src/models/Post';
 
 export default {
   state: {
-    post: emptyPost(),
+    post: new Post(),
   },
   mutations: {
     POST_SET_TITLE_IMAGE: (state, action) => { state.post.titleImage = action.image },
@@ -42,8 +39,8 @@ export default {
       commit('POST_EDIT', { lastSaved: res.data.lastSaved });
       return res;
     },
-    POST_POST: async ({ commit, state }) => {
-      const res = await axios.post('/api/post', state.post);
+    POST_POST: async ({ commit }) => {
+      const res = await axios.post('/api/post', new Post());
       commit('POST_EDIT', res.data);
       return res;
     },
