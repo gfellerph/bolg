@@ -78,7 +78,11 @@ export const constructThumborUrl = (imageUrl, options) => {
   const segments = new URL(imageUrl);
   let settings = '';
   if (options.width || options.height) settings += `/${options.width || ''}x${options.height || ''}`;
-  if (options.blur) settings += `/filters:blur(${options.blur})`
+  if (options.filters) {
+    settings += '/filters';
+    if (options.filters.blur) settings += `:blur(${options.filters.blur})`;
+    if (options.filters.quality) settings += `:quality(${options.filters.quality})`
+  }
   return `${segments.origin}${settings}${segments.pathname}`;
 }
 
