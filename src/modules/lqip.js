@@ -47,7 +47,7 @@ const replacePlaceholder = (placeholder, options) => {
   const transitionend = (event) => {
     event.target.classList.remove('lqip__loading');
     event.target.removeEventListener('transitionend', transitionend);
-    options.afterReplace(event.target.previousElementSibling, event.target);
+    options.afterReplace(placeholder, event.target);
   }
 
   const img = document.createElement('img');
