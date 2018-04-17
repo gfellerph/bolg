@@ -129,12 +129,10 @@ const lqip = (userOptions = defaults) => {
     observer.observe(image);
 
     // Prepare markup
-    if (image.parentElement.children.length > 1) {
+    if (!image.parentElement.classList.contains('lqip__wrapper')) {
       const wrapper = wrapperDiv.cloneNode();
       image.parentNode.insertBefore(wrapper, image);
       wrapper.appendChild(image);
-    } else if (!image.parentElement.classList.contains('lqip__wrapper')) {
-      image.parentElement.classList.add('lqip__wrapper');
     }
   }
 
