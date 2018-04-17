@@ -1,43 +1,40 @@
 const defaults = {
-  selector: '[data-lqip]',
+  selector: '[data-lqip-src],[data-lqip-srcset]',
   root: null,
   rootMargin: '0px',
   treshold: 0.1,
+  afterReplace: null,
 }
 
-const styles = `.lqip__wrapper {
+const styles = `
+.lqip__wrapper {
   position: relative;
+  overflow: hidden;
 }
 
 .lqip__original {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   opacity: 0;
   will-change: opacity;
+}
+.lqip__loading {
   transition: opacity 0.7s;
-}`;
+}
+.lqip__loaded {
+  opacity: 1;
+}
+`;
+
 const style = document.createElement('style');
 style.type = 'text/css';
 style.innerHTML = styles;
 document.head.appendChild(style);
 
 let observer;
-
-const loader = (entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      const img = entry.target.cloneNode();
-      img.setAttribute('srcset', entry.target.getAttribute('data-lqip'));
-      img.classList.add('lqip__original');
-      img.addEventListener('load', () => {
-        img.style.opacity = 1;
-      });
-      entry.target.parentNode.insertBefore(img, entry.target);
-      observer.unobserve(entry.target);
-    }
-  });
-}
 
 const lqip = (userOptions = defaults) => {
   // Compatability check
@@ -51,10 +48,47 @@ const lqip = (userOptions = defaults) => {
     return false;
   }
 
-  /* eslint no-console: 0 */
-  console.log('The lqip module is compatible');
-
   const options = Object.assign({}, defaults, userOptions);
+
+  const transitionend = (event) => {
+    event.target.classList.remove('lqip__loading');
+    event.target.removeEventListener('transitionend', transitionend);
+    options.afterReplace(event.target.previousElementSibling, event.target);
+  }
+
+  const onload = (event) => {
+    const { target } = event;
+    window.setTimeout(() => {
+      target.classList.add('lqip__loaded');
+    }, 1);
+  }
+
+  const loader = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const img = document.createElement('img');
+        if (options && typeof options.afterReplace === 'function') {
+          img.addEventListener('transitionend', transitionend, false);
+        }
+        const srcset = entry.target.getAttribute('data-lqip-srcset');
+        const src = entry.target.getAttribute('data-lqip-src');
+        img.classList.add('lqip__original', 'lqip__loading');
+        img.alt = entry.target.alt;
+        if (src) {
+          img.removeAttribute('data-lqip-src');
+          img.src = src;
+        }
+        if (srcset) {
+          img.removeAttribute('data-lqip-srcset');
+          img.setAttribute('srcset', srcset);
+          img.setAttribute('sizes', entry.target.getAttribute('sizes'));
+        }
+        entry.target.parentNode.appendChild(img);
+        observer.unobserve(entry.target);
+        img.addEventListener('load', onload, false);
+      }
+    });
+  }
 
   const images = document.querySelectorAll(options.selector);
   observer = new IntersectionObserver(loader, {
@@ -72,15 +106,15 @@ const lqip = (userOptions = defaults) => {
     const image = images[i];
 
     observer.observe(image);
-    /* if (image.complete) {
-    } else {
-      image.addEventListener('load', observe);
-    } */
 
     // Prepare markup
-    const wrapper = wrapperDiv.cloneNode();
-    image.parentNode.insertBefore(wrapper, image);
-    wrapper.appendChild(image);
+    if (image.parentElement.children.length > 1) {
+      const wrapper = wrapperDiv.cloneNode();
+      image.parentNode.insertBefore(wrapper, image);
+      wrapper.appendChild(image);
+    } else if (!image.parentElement.classList.contains('lqip__wrapper')) {
+      image.parentElement.classList.add('lqip__wrapper');
+    }
   }
 
   return observer;
