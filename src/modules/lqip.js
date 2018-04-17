@@ -121,8 +121,6 @@ const lqip = (userOptions = defaults) => {
   const wrapperDiv = document.createElement('div');
   wrapperDiv.classList.add('lqip__wrapper');
 
-  // const observe = event => observer.observe(event.target);
-
   for (let i = 0; i < images.length; i++) {
     const image = images[i];
 
