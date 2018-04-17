@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import shortid from 'shortid';
+import sizeOf from 'image-size';
+import request from 'request-promise-native';
 import { getThumbUrl, getSrcset, constructThumborUrl } from 'src/config/constants';
 
 const { Schema } = mongoose;
@@ -15,12 +16,25 @@ export const ImageSchema = new Schema({
   },
   shortid: {
     type: String,
-    default: shortid.generate,
+    required: true,
+  },
+  ratio: {
+    type: Number,
+    required: true,
   },
 });
 
 ImageSchema.virtual('srcset').get(function srcset() {
   return getSrcset(this.url);
+});
+
+ImageSchema.virtual('blurryThumb').get(function blurryThumb() {
+  return constructThumborUrl(this.url, {
+    width: 20,
+    filters: {
+      blur: 2,
+    },
+  });
 });
 
 ImageSchema.methods.getThumbnail = function getThumbnail(size) {
@@ -30,5 +44,25 @@ ImageSchema.methods.getThumbnail = function getThumbnail(size) {
 ImageSchema.methods.getThumborUrl = function getThumborUrl(options) {
   return constructThumborUrl(this.url, options);
 }
+
+ImageSchema.methods.getBuffer = function getBuffer() {
+  return request({
+    url: this.blurryThumb,
+    encoding: null,
+  }).catch(console.log);
+}
+
+ImageSchema.methods.getRatio = async function getRatio() {
+  if (this.ratio) return this.ratio;
+  const { width, height } = sizeOf(await this.getBuffer());
+  const ratio = height / width;
+  return ratio;
+}
+
+ImageSchema.pre('save', function preSave(next) {
+  this.ratio = this.getRatio()
+    .then(() => next())
+    .catch(console.err);
+});
 
 export default mongoose.model('Image', ImageSchema);
