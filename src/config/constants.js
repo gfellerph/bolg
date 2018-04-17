@@ -1,4 +1,4 @@
-import { URL } from 'url';
+import URL from 'url-parse';
 
 export const liveRootUrl = 'https://bolg-app.herokuapp.com/posts/';
 
