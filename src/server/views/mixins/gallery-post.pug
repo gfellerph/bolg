@@ -1,13 +1,13 @@
 mixin gallery-column(images)
   div.gallery__column
     each image in images
-      img.gallery__image(
-        alt='Bilder usem Blog'
-        src=image.getThumborUrl({ width: 100, blur: 10 })
-        data-lqip=image.srcset
-        sizes='320px'
-        data-zoom-target=image.url
-      )
+      div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
+        img.gallery__image(
+          alt='Bilder usem Blog'
+          src=image.blurryThumb
+          data-lqip-srcset=image.srcset
+          sizes='320px'
+        )
 
 mixin gallery-post(images, title)
   article
@@ -15,4 +15,3 @@ mixin gallery-post(images, title)
     div.gallery
       each imageColumn in images
         +gallery-column(imageColumn)
-
