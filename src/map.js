@@ -5,6 +5,7 @@ import GoogleMap from 'src/components/Map';
 import Subscribe from 'src/components/Subscribe';
 import 'src/config/validation';
 import { setBookmarkFlag } from 'src/modules/bookmark';
+import lqip from 'src/modules/lqip';
 
 Vue.config.productionTip = false;
 
@@ -30,4 +31,5 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   setBookmarkFlag();
+  lqip();
 });

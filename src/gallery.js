@@ -3,6 +3,11 @@ import lqip from 'src/modules/lqip';
 
 window.addEventListener('DOMContentLoaded', () => {
   // Run medium zoom
-  mediumZoom();
-  lqip();
+  // mediumZoom();
+  lqip({
+    afterReplace: (lqipImage, originalImage) => {
+      lqipImage.remove();
+      mediumZoom(originalImage);
+    },
+  });
 });
