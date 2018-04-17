@@ -3,7 +3,7 @@ mixin navigation(active)
     a(class = (active === 'index' ? 'active' : '') href='/')
       span Reis
     a(href='/')
-      img.logo(src=logoURL)
+      img.logo(src=logoURL alt="Logo")
       span.sr-only Gschichte
     a(class = (active === 'galerie' ? 'active' : '') href='/bilder')
       span Bilder

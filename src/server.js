@@ -26,6 +26,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
   .then(() => console.log('Connected to mongodb server'))
   .then(publishedPosts)
   .then(rebuild)
+  .then(() => console.log('Blog built'))
   .catch((err) => { console.error(err); });
 
 app.use(passport.initialize());

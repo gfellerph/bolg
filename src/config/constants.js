@@ -1,3 +1,5 @@
+import { URL } from 'url';
+
 export const liveRootUrl = 'https://bolg-app.herokuapp.com/posts/';
 
 export const states = {
@@ -52,8 +54,6 @@ export const imageStates = {
   ERROR: 4,
 }
 
-export const objectToArray = obj => Object.keys(obj).map(key => obj[key]);
-
 export const slugger = str => str
   .toLowerCase()
   .replace(/ä/g, 'ae')
@@ -65,17 +65,29 @@ export const slugger = str => str
 
 const imageExtDetector = /\.(jpe?g|png)$/i;
 
-export const getThumbUrl = (url, size) => {
-  const insertIndex = url.indexOf('/i/');
+export const getThumbUrl = (imgUrl, size) => {
+  const insertIndex = imgUrl.indexOf('/i/');
   // Filter self hosted images as well as jpgs and pngs, no gifs
-  if (insertIndex < 0 && !imageExtDetector.test(url)) return url;
-  const prependix = url.substring(0, insertIndex);
-  const appendix = url.substring(insertIndex);
+  if (insertIndex < 0 && !imageExtDetector.test(imgUrl)) return imgUrl;
+  const prependix = imgUrl.substring(0, insertIndex);
+  const appendix = imgUrl.substring(insertIndex);
   return `${prependix}/${size}x${appendix}`;
 }
 
-export const getSrcset = url => sizes
-  .map(size => `${getThumbUrl(url, size.width)} ${size.width}w`)
+export const constructThumborUrl = (imageUrl, options) => {
+  const segments = new URL(imageUrl);
+  let settings = '';
+  if (options.width || options.height) settings += `/${options.width || ''}x${options.height || ''}`;
+  if (options.filters) {
+    settings += '/filters';
+    if (options.filters.blur) settings += `:blur(${options.filters.blur})`;
+    if (options.filters.quality) settings += `:quality(${options.filters.quality})`
+  }
+  return `${segments.origin}${settings}${segments.pathname}`;
+}
+
+export const getSrcset = imgUrl => sizes
+  .map(size => `${getThumbUrl(imgUrl, size.width)} ${size.width}w`)
   .join(',');
 
 export const formatDate = (dateInput = Date.now()) => {

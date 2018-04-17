@@ -2,12 +2,13 @@ mixin post-tile(post)
   li.post(data-id=post.id)
     a.post__link(href=post.url)
       - if (post.titleImage)
-        img.post__title-image(
-          alt="Titelbild"
-          src=post.titleImage.thumbUrl
-          srcset=post.titleImage.srcset
-          sizes="640px"
-        )
+        div.progressive-image.lqip__wrapper(style=`padding-bottom: ${post.titleImage.ratio * 100}%`)
+          img.post__title-image(
+            alt="Titelbild"
+            src=post.titleImage.blurryThumb
+            data-lqip-srcset=post.titleImage.srcset
+            sizes="(max-width: 640px) 100vw, 640px"
+          )
       div.post__overlay
         p.post__published= post.formattedPostDate
         h2.post__title.h4= post.title
