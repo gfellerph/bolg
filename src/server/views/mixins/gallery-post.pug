@@ -5,8 +5,8 @@ mixin gallery-column(images)
         img.gallery__image(
           alt='Bilder usem Blog'
           src=image.blurryThumb
+          data-lqip-src=image.url
           data-lqip-srcset=image.srcset
-          sizes='320px'
         )
 
 mixin gallery-post(images, title)
