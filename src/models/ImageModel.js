@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import sizeOf from 'image-size';
+import shortid from 'shortid';
 import request from 'request-promise-native';
 import { getThumbUrl, getSrcset, constructThumborUrl } from 'src/config/constants';
 
@@ -16,7 +17,7 @@ export const ImageSchema = new Schema({
   },
   shortid: {
     type: String,
-    required: true,
+    default: shortid.generate(),
   },
   ratio: {
     type: Number,
