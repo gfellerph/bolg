@@ -67,4 +67,4 @@ ImageSchema.pre('validate', function preSave(next) {
     .catch(console.err);
 });
 
-export const ImageModel = mongoose.model('Image', ImageSchema);
+export default mongoose.model('Image', ImageSchema);
