@@ -8,6 +8,12 @@ mixin gallery-column(images)
           data-lqip-src=image.url
           data-lqip-srcset=image.srcset
         )
+        noscript
+          img.gallery__image(
+            alt='Bilder usem Blog'
+            src=image.url
+            srcset=image.srcset
+          )
 
 mixin gallery-post(images, title)
   article
