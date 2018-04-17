@@ -131,7 +131,8 @@ blockquote em {
 img + em,
 video + em,
 .picture-subtitle,
-figcaption {
+figcaption,
+.lqip__wrapper + em {
   display: block;
   font-style: italic;
   margin: $golden-rem / 4 0;

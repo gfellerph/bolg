@@ -5,26 +5,26 @@ figure {
   columns: 2;
   column-gap: $golden-rem / 4;
 
-  >* {
+  > * {
     display: block;
     width: 100%;
     margin-bottom: $golden-rem / 4;
   }
 
   &.first-hero {
-    *:first-child {
+    > *:first-child {
       column-span: all;
     }
   }
 
   &.last-hero {
-    *:last-child {
+    > *:last-child {
       column-span: all;
     }
   }
 
   &.second-last-hero {
-    *:nth-last-child(2) {
+    > *:nth-last-child(2) {
       column-span: all;
     }
   }
