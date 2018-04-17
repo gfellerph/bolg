@@ -7,6 +7,7 @@ export default function Image(img = {}) {
   this.shortid = img.shortid || shortid.generate();
   this.state = img.state || 0;
   this.progress = img.progress || 0;
+  this.ratio = img.ratio || 0.75;
 
   // Methods
   this.getUrl = () => {
