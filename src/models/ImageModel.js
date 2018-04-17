@@ -52,7 +52,9 @@ ImageSchema.methods.getBuffer = function getBuffer() {
   return request({
     url: this.blurryThumb,
     encoding: null,
-  }).catch(console.log);
+  })
+    /* eslint no-console: 0 */
+    .catch(console.error);
 }
 
 ImageSchema.methods.getRatio = async function getRatio() {
@@ -65,6 +67,7 @@ ImageSchema.methods.getRatio = async function getRatio() {
 ImageSchema.pre('validate', function preSave(next) {
   this.ratio = this.getRatio()
     .then(() => next())
+    /* eslint no-console: 0 */
     .catch(console.err);
 });
 

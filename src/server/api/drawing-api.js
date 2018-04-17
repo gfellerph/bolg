@@ -50,6 +50,7 @@ export const post = async (req, res, next) => {
 
   // Rebuild post after sending response
   buildPost(updatedPost, await nextPost(updatedPost.postDate))
+    /* eslint no-console: 0 */
     .catch(err => console.log(`buildPost err: ${err}`))
 }
 
