@@ -106,6 +106,12 @@ export default function initCanvas() {
     const sendButton = document.querySelector('.drawing__save');
     const imageData = canvas.toDataURL();
     const newImg = document.createElement('img');
+    const blob = dataUrlToBlob(imageData);
+
+    // Empty image, don't save this
+    if (blob.size <= 1727) {
+      return false;
+    }
 
     // Clear canvas and say thanks
     clear();
@@ -119,7 +125,7 @@ export default function initCanvas() {
     const formData = new FormData();
     if (postId) formData.append('postid', postId);
     formData.append('drawing', dataUrlToBlob(imageData));
-    axios.post('/api/drawing', formData)
+    return axios.post('/api/drawing', formData)
       .then(() => {
         canvas.classList.remove('merci');
         sendButton.removeAttribute('disabled');
