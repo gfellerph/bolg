@@ -8,6 +8,7 @@ export default async function fixTitleImages(req, res) {
     const firePosts = result.val();
     Object.values(firePosts).map(async (firePost) => {
       if (!firePost.titleImage) {
+        /* eslint no-console: 0 */
         console.log(firePost);
         return false;
       }
@@ -24,6 +25,7 @@ export default async function fixTitleImages(req, res) {
                 },
               },
             })
+              /* eslint no-console: 0 */
               .catch(console.log);
           }
           return mongoPostImage;

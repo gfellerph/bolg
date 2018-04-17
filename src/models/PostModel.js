@@ -100,10 +100,4 @@ PostSchema.pre('validate', function preValidate(next) {
   next();
 });
 
-PostSchema.pre('findOneAndUpdate', function preSave(next) {
-  const { title } = this._update.$set;
-  this._update.$set.title = removeAllHtml(title.replace(/\*.+\*/g, ''));
-  next();
-});
-
 export default mongoose.model('Post', PostSchema);
