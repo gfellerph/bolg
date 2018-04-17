@@ -72,8 +72,6 @@
       toggleCheatsheet() {
         this.showCheatSheet = !this.showCheatSheet;
       },
-      sendNotification() {
-      },
       ...mapActions({
         getPost: 'POST_GET',
         savePost: 'POST_PUT',

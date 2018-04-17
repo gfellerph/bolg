@@ -18,11 +18,11 @@ export const PostSchema = new Schema({
   },
   lastEdited: {
     type: Number,
-    default: null,
+    default: Date.now,
   },
   lastSaved: {
     type: Number,
-    default: null,
+    default: Date.now,
   },
   lastPublished: {
     type: Number,
@@ -49,7 +49,6 @@ export const PostSchema = new Schema({
   },
   titleImage: {
     type: ImageSchema,
-    default: { url: 'https://picsum.photos/640', shortid: '', name: '' },
   },
   images: [ImageSchema],
   drawings: [ImageSchema],
