@@ -2,7 +2,7 @@
 /* eslint no-param-reassign: 0 */
 export default {
   state: {
-    connected: true,
+    connected: navigator.onLine,
   },
   mutations: {
     ONLINE(state) {

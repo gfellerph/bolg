@@ -1,0 +1,24 @@
+extends _layout
+include mixins/gallery-post
+include mixins/navigation
+
+block meta
+  title Bilder - bis när
+
+block styles
+  !=webpack['/galleryCss.css']
+
+block navigation
+  +post-navigation('galerie')
+
+block body
+  div.container
+    each post in orderedPosts
+      +gallery-post(post.images, post.title)
+
+      -if (!post.images || post.images.length == 0)
+        p.italic.text-align-center Da si ja no gar keiner Bilder...
+  img.medium-zoom__close-button(src='/img/close.svg' alt="Biud zuetue" title='Biud zuetue')
+
+block scripts
+  script(defer src=webpack['/gallery.js'])

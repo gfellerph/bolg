@@ -1,4 +1,5 @@
 import axios from 'axios';
+import dataUrlToBlob from 'src/modules/dataUrlToBlob';
 
 export default function initCanvas() {
   const canvas = document.querySelector('#drawing');
@@ -105,6 +106,12 @@ export default function initCanvas() {
     const sendButton = document.querySelector('.drawing__save');
     const imageData = canvas.toDataURL();
     const newImg = document.createElement('img');
+    const blob = dataUrlToBlob(imageData);
+
+    // Empty image, don't save this
+    if (blob.size <= 1727) {
+      return false;
+    }
 
     // Clear canvas and say thanks
     clear();
@@ -115,9 +122,10 @@ export default function initCanvas() {
     sendButton.setAttribute('disabled', 'disabled');
 
     // Put the drawing
-    const formData = [`source=${imageData}`];
-    if (postId) formData.push(`postid=${postId}`);
-    axios.put('/api/drawing', formData.join('&'))
+    const formData = new FormData();
+    if (postId) formData.append('postid', postId);
+    formData.append('drawing', dataUrlToBlob(imageData));
+    return axios.post('/api/drawing', formData)
       .then(() => {
         canvas.classList.remove('merci');
         sendButton.removeAttribute('disabled');

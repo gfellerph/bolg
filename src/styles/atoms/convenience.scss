@@ -29,14 +29,14 @@ p.error { color: red; }
   }
 }
 
-.visible-mobile {
-  @include min($xs) {
+.visible-xxs {
+  @include min($xxs) {
     display: none !important;
   }
 }
 
-.hidden-mobile {
-  @include max($xs) {
+.hidden-xxs {
+  @include max($xxs) {
     display: none !important;
   }
 }

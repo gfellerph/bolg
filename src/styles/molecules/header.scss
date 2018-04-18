@@ -3,7 +3,7 @@
     display: block;
     max-height: 60px;
 
-    @include max($m) {
+    @include max($xs) {
       max-height: 40px;
     }
   }
@@ -15,8 +15,11 @@
     align-items: center;
     justify-content: center;
 
-    @include max($m) {
+    @include max($xs) {
       padding: $golden-rem / 2 0;
+    }
+
+    @include max($xxs) {
       justify-content: space-between;
     }
 
@@ -38,8 +41,13 @@
 
       img:not(.logo) {
         display: block;
-        width: 24px;
-        height: 24px;
+        width: $golden-rem*2;
+      }
+
+      @include max($xxs) {
+        &.right-link {
+          width: $golden-rem*2;
+        }
       }
     }
   }

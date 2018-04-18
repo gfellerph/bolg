@@ -10,13 +10,13 @@
         ref="searchInput"
         v-model="searchTerm"
       >
-      <img v-if="status == state.INITIAL" class="map-search__icon" src="/img/search.svg" alt="">
+      <img v-if="status == state.INITIAL" class="map-search__icon" src="/img/sueche.png" alt="">
       <button
         class="plain map-search__reset"
         v-if="status != state.INITIAL"
         @click="reset"
       >
-        <img class="map-search__icon" src="/img/close.svg" alt="">
+        <img class="map-search__icon" src="/img/chrüz.png" alt="">
         <span class="sr-only">Lösche</span>
       </button>
     </div>
@@ -27,7 +27,7 @@
     >Reisetipp zu däm Ort gä?</button>
     <tipp-info
       v-if="status == state.INITIAL && showTippInfo"
-      v-on:close-tipp-info="toggleTippInfo"
+      v-on:close-tipp-info="closeTippInfo"
     ></tipp-info>
     <add-tipp
       v-if="status == state.ADD_TIPP"
@@ -72,7 +72,7 @@
         status: state.INITIAL,
         searchTerm: '',
         searchBox: null,
-        showTippInfo: true,
+        showTippInfo: false,
         location: null,
         marker: new google.maps.Marker({
           title: 'Reisetipp hie hinzuefüege?',
@@ -109,6 +109,10 @@
         this.location = latLng;
         this.status = state.LOCATION_SELECTED;
       });
+
+      if (window.sessionStorage) {
+        this.showTippInfo = !window.sessionStorage.getItem('tippInfo');
+      }
     },
 
     methods: {
@@ -143,9 +147,14 @@
           this.$refs.searchInput.focus();
         });
       },
-      toggleTippInfo() { this.showTippInfo = !this.showTippInfo; },
       addTipp() { this.status = state.ADD_TIPP; },
       addTippSuccess() { this.status = state.ADD_TIPP_SUCCESS; },
+      closeTippInfo() {
+        if (window.sessionStorage) {
+          window.sessionStorage.setItem('tippInfo', JSON.stringify(true));
+        }
+        this.showTippInfo = false;
+      },
     },
   }
 </script>
@@ -192,7 +201,7 @@
 
   .map-search__cta {
     display: block;
-    background: cornflowerblue;
+    background: dodgerblue;
     color: white;
     width: 100%;
     border: none;
@@ -225,7 +234,6 @@
 
     .map-search__reset {
       font-size: 1em;
-      padding: $golden-em / 2;
 
       .map-search__icon {
         margin: 0;
@@ -233,14 +241,10 @@
     }
   }
 
-
   .map-search__icon {
     display: block;
     max-width: none;
-    width: $golden-em;
-    height: $golden-em;
-    margin: 0 $golden-em / 2;
-    padding: ($golden-em - 1em) / 2;
+    width: $golden-em * 2;
   }
 
 </style>

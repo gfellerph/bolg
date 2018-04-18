@@ -7,4 +7,8 @@
   float: left;
   width: 50%;
   padding: 0 $golden-rem / 8;
+
+  .progressive-image {
+    margin: $golden-rem / 4 0;
+  }
 }

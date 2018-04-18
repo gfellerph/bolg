@@ -1,17 +1,17 @@
 <template>
   <div class="image-selector" ref="imageSelector">
-    <div class="images">
+    <div v-if="post" class="images">
       <post-image
         v-for="image in post.images"
-        :key="image.id"
+        :key="image.shortid"
         :image="new Image(image)"
-        :class="{active: isImageActive(image.id)}"
+        :class="{active: isImageActive(image.shortid)}"
         @activate-image="activateImage"
         @remove-image="removeImage"
       ></post-image>
       <image-component
         v-for="image in imageQueue"
-        :key="image.id"
+        :key="image.shortid"
         :image="image"
         @retry-upload="retryUpload"
       ></image-component>
@@ -34,14 +34,11 @@
   import PostImage from 'src/components/PostImage';
   import ImageComponent from 'src/components/Image';
   import Image from 'src/models/Image';
-  import PostController from 'src/controllers/post-controller';
   import ImageController from 'src/controllers/image-controller';
-  import { database } from 'src/config/firebase';
   import { imageStates } from 'src/config/constants';
   import io from 'src/config/socket.io-client';
   import bus from 'src/config/bus';
 
-  const postCtrl = PostController(database);
   const imageCtrl = ImageController();
 
   export default {
@@ -51,10 +48,6 @@
         Image,
         uploading: false,
       };
-    },
-
-    props: {
-      post: Object,
     },
 
     mounted() {
@@ -68,6 +61,10 @@
 
       io.on('server:image-processing-finished', this.addImage);
       io.on('server:image-processing-error', this.processingError);
+    },
+
+    computed: {
+      post() { return this.$store.state.post.post; },
     },
 
     methods: {
@@ -87,12 +84,11 @@
         imageCtrl.upload(imageToUpload, {
           onUploadProgress: (event) => {
             const progress = (event.loaded / event.total) * 100;
-            bus.$emit(`upload-progress:${imageToUpload.id}`, progress);
+            bus.$emit(`upload-progress:${imageToUpload.shortid}`, progress);
           },
         })
           .then((res) => {
-            imageToUpload.downloadURL = res.data.downloadURL;
-            imageToUpload.thumbnails = res.data.thumbnails;
+            imageToUpload.url = res.data.url;
             imageToUpload.state = res.data.state;
             this.uploading = false;
             this.startUpload();
@@ -102,19 +98,20 @@
             imageToUpload.state = imageStates.ERROR;
           });
       },
-      retryUpload(id) {
-        const img = this.imageQueue.find(image => id === image.id);
+      retryUpload(shortid) {
+        const img = this.imageQueue.find(image => shortid === image.shortid);
         if (!img) return;
         img.state = imageStates.QUEUED;
         this.startUpload();
       },
       processingError(data) {
-        const img = this.imageQueue.find(image => data.id === image.id);
+        const img = this.imageQueue.find(image => data.shortid === image.shortid);
         img.state = imageStates.ERROR;
         img.progress = 0;
+        this.startUpload();
       },
       isImageActive(imgId) {
-        return this.post.titleImage ? imgId === this.post.titleImage.id : false;
+        return this.post.titleImage ? imgId === this.post.titleImage.shortid : false;
       },
       onFileChange(event) {
         event.preventDefault();
@@ -123,28 +120,25 @@
         this.imageQueue = this.imageQueue.concat(images);
         this.$nextTick(this.startUpload);
       },
-      addImage(id) {
-        const img = this.imageQueue.find(image => image.id === id);
+      addImage(shortid) {
+        const img = this.imageQueue.find(image => image.shortid === shortid);
         if (img) {
-          this.imageQueue = this.imageQueue.filter(image => image.id !== id);
-          this.post.images.push(img);
-          postCtrl.set(this.post);
+          this.imageQueue = this.imageQueue.filter(image => image.shortid !== shortid);
+          this.$store.commit('POST_ADD_IMAGE', img);
+          this.$store.dispatch('POST_PUT');
         }
       },
-      removeImage(id) {
-        this.post.images = this.post.images.filter(image => image.id !== id);
-        postCtrl.set(this.post);
+      removeImage(shortid) {
+        this.$store.commit('POST_REMOVE_IMAGE', shortid);
+        this.$store.dispatch('POST_PUT');
       },
       activateImage(image) {
-        if (this.isImageActive(image.id)) {
-          this.post.titleImage = null;
+        if (this.isImageActive(image.shortid)) {
+          this.$store.commit('POST_SET_TITLE_IMAGE', { image: null });
         } else {
-          this.post.titleImage = {
-            url: image.getTitleImageUrl(),
-            id: image.id,
-          };
+          this.$store.commit('POST_SET_TITLE_IMAGE', { image });
         }
-        return postCtrl.set(this.post);
+        this.$store.dispatch('POST_PUT');
       },
     },
 

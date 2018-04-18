@@ -6,11 +6,11 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-      computed: mapState({
-        authenticated: state => state.auth.authenticated,
-      }),
+      computed: {
+        ...mapGetters(['authenticated']),
+      },
     };
 </script>

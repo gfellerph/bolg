@@ -1,0 +1,16 @@
+extends _layout
+
+include mixins/navigation
+include mixins/next-post
+
+block styles
+  !=webpack['/postCss.css']
+
+block navigation
+  +post-navigation
+
+block body
+  .container
+    h1 Ups, nid gfunge
+    p Vo wo ou immer du dä Link hesch, är geit nid.
+    +next-post

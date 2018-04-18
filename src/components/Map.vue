@@ -15,6 +15,8 @@
   import Tipp from 'src/models/Tipp';
   import AddTipp from 'src/components/AddTipp';
   import MapSearch from 'src/components/MapSearch';
+  import { mapConfig, polylineConfig, lineMarkerConfig } from 'src/config/map';
+  import { unique } from 'src/modules/group-by';
 
   /* global google */
 
@@ -22,25 +24,50 @@
     data() {
       return {
         markers: [],
+        polyline: null,
         map: null,
       };
     },
 
     mounted() {
-      this.map = new google.maps.Map(document.getElementById('google-map'), {
-        zoom: 2,
-        center: new google.maps.LatLng(27, 6),
-        streetViewControl: false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: false,
-        fullscreenControl: false,
-        draggableCursor: null,
-        draggingCursor: null,
-      });
+      this.map = new google.maps.Map(document.getElementById('google-map'), mapConfig);
 
       this.$refs.mapSearch.init(this.map);
 
       if (window.outerWidth >= 768) this.map.addListener('click', this.addTipp);
+
+      axios.get('/api/journeys')
+        .then((res) => {
+          const journey = res.data;
+          const { lat, lng } = res.data[res.data.length - 1];
+          this.map.setCenter(new google.maps.LatLng(lat, lng))
+
+          const path = journey.map(location => ({ lat: location.lat, lng: location.lng }));
+          this.polyline = new google.maps.Polyline(Object.assign(
+            {},
+            polylineConfig,
+            {
+              path,
+              map: this.map,
+            },
+          ));
+
+          const groupedMarkers = unique(journey, marker => [
+            marker.description,
+            marker.lat,
+            marker.lng,
+          ]);
+
+          groupedMarkers.map(location => new google.maps.Marker(Object.assign(
+            {},
+            lineMarkerConfig,
+            {
+              position: new google.maps.LatLng(location.lat, location.lng),
+              map: this.map,
+              title: location.description,
+            },
+          )));
+        })
 
       axios.get('/api/tipps')
         .then((res) => {
@@ -61,7 +88,7 @@
             });
             const infowindow = new google.maps.InfoWindow({
               content: `
-                <h5>${tipp.user.displayName}</h5>
+                <h5>${tipp.name}</h5>
                 <p>${tipp.text}</p>
               `,
             });

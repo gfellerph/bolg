@@ -1,6 +1,6 @@
 <template>
   <div class="post-details">
-    <router-link class="edit-post-link" :to="post.editUrl">
+    <router-link class="edit-post-link" :to="editUrl">
       <div class="post-infos">
           <h1 class="h4">{{post.title}}</h1>
           <table class="meta-infos">
@@ -17,20 +17,17 @@
     </router-link>
     <div class="post-controls">
       <post-status :post="post"></post-status>
-      <button class="edit-button" @click="deletePost">Lösche</button>
-      <button class="edit-button" @click="publishPost">Publiziere</button>
+      <button class="edit-button" @click="deletePost(post._id)">Lösche</button>
+      <button class="edit-button" @click="publishPost(post._id)">Publiziere</button>
     </div>
   </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
   import PostStatus from 'src/components/PostStatus';
   import { description } from 'src/config/markdown';
-  import { database } from 'src/config/firebase';
-  import PostController from 'src/controllers/post-controller';
   import { formatDate } from 'src/config/constants';
-
-  const postCtrl = PostController(database);
 
   export default {
     props: {
@@ -39,6 +36,7 @@
 
     computed: {
       shortText() { return description(this.post.markdown); },
+      editUrl() { return `/editpost/${this.post._id}` },
     },
 
     methods: {
@@ -47,12 +45,13 @@
         /* eslint no-restricted-globals: 0 */
         /* eslint no-alert: 0 */
         if (confirm('wosch würk dä Post lösche?')) {
-          postCtrl.remove(this.post);
+          this.postsDeleteOne(this.post._id);
         }
       },
-      publishPost() {
-        this.post.publish();
-      },
+      ...mapActions({
+        publishPost: 'POSTS_PUBLISH',
+        postsDeleteOne: 'POSTS_DELETE_ONE',
+      }),
     },
 
     components: {

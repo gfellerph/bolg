@@ -1,6 +1,5 @@
-# bolg
-
-> A Vue.js blog
+# bisnär
+[![Build Status](https://travis-ci.org/tuelsch/bolg.svg?branch=develop)](https://travis-ci.org/tuelsch/bolg)
 
 Blog/Backend/Server hosted on heroku
 
@@ -20,12 +19,13 @@ Features:
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve backend with hot reload at localhost:8080
+# serve frontend and start blog at localhost:3000
 npm run dev
 
 # build for production with minification
-npm run build
+npm run prod
 
 # build for production and view the bundle analyzer report
-npm run build --report
+npm run prod --report
 ```

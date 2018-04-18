@@ -1,4 +1,5 @@
 const merge = require('webpack-merge');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const baseConfig = require('./base.config.js');
 const paths = require('./paths');
@@ -16,6 +17,13 @@ const serverConfig = merge(baseConfig, {
   },
   externals: [nodeExternals()],
   plugins: [
+    new CopyWebpackPlugin([
+      {
+        from: paths.views,
+        to: paths.viewsDestination,
+        ignore: ['.*'],
+      },
+    ]),
   ],
   target: 'node',
   stats: 'minimal',

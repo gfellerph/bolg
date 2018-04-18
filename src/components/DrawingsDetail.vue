@@ -1,6 +1,6 @@
 <template>
   <div class="drawings-detail">
-    <img :src="drawing" alt="">
+    <img :src="drawing.url" alt="">
     <button
       @click="deleteDrawing"
     >Lösche</button>
@@ -8,23 +8,21 @@
 </template>
 
 <script>
-  import { database } from 'src/config/firebase';
+  import axios from 'axios';
 
   export default {
     props: {
-      drawing: String,
+      drawing: Object,
       postid: String,
-      drawingkey: String,
     },
 
     methods: {
-      deleteDrawing() {
+      async deleteDrawing() {
         /* eslint no-alert: 0 */
         /* eslint no-restricted-globals: 0 */
         if (!confirm('Wosch die Zeichnig würk lösche?')) return;
-
-        database.ref(`posts/${this.postid}/drawings/${this.drawingkey}`).remove();
-        database.ref(`published/${this.postid}/drawings/${this.drawingkey}`).remove();
+        const res = await axios.delete(`/api/post/${this.postid}/drawing/${this.drawing.shortid}`);
+        this.$emit('updatepost', res.data);
       },
     },
   }

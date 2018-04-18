@@ -1,13 +1,11 @@
 <template>
   <div class="post-edit">
-    <div class="post-form">
+    <div v-if="post" class="post-form">
       <div class="post-text">
         <div class="post-markdown">
           <editor
-            v-model="post.markdown"
-            @scroll="trackScrollposition"
-            @input="savePost"
-            @save="savePostImmediately"
+            @input="writePost"
+            @save="savePost"
             @help="toggleCheatsheet"
           ></editor>
         </div>
@@ -18,7 +16,7 @@
         ></image-selector>
       </div>
       <div class="post-stats">
-        <post-status :post="post" :errorMessage="errorMessage"></post-status>
+        <post-status :post="post"></post-status>
         <button class="notification-button" @click="sendNotification" :disabled="post.notificationSent || !connected || notificationPending">Notify</button>
         <button class="unpublish-button" @click="unpublishPost">Unpublish</button>
         <button class="publish-button" @click="publishPost">Publish</button>
@@ -34,24 +32,18 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  import debounce from 'debounce';
   import { marked } from 'src/config/markdown';
   import Post from 'src/models/Post';
-  import { database } from 'src/config/firebase';
   import router from 'src/config/router';
   import ImageSelector from 'src/components/ImageSelector.vue';
   import Editor from 'src/components/Editor';
   import PostStatus from 'src/components/PostStatus';
   import MarkdownCheatsheet from 'src/components/MarkdownCheatsheet';
-  import PostController from 'src/controllers/post-controller';
-
-  const postCtrl = PostController(database);
+  import { mapState, mapActions } from 'vuex';
 
   export default {
     data() {
       return {
-        post: new Post(),
         cursorPosition: 0,
         postLoaded: false,
         showCheatSheet: false,
@@ -61,91 +53,51 @@
     },
 
     computed: {
-      connected() { return this.$store.state.connection.connected; },
       compiledContent() {
-        const images = this.post.images.reduce((acc, image) => {
-          acc[image.id] = image.thumbnails;
-          return acc;
-        }, {});
-
-        return marked(this.post.markdown, { images });
+        if (!this.post || !this.post.markdown) return '';
+        return marked(this.post.markdown);
       },
       hasTitle() { return !!this.post.title; },
       errorMessage() {
         if (!this.post.title) { return 'This post has no title'; }
         return this.error ? this.error.message : false;
       },
+      ...mapState({
+        connected: state => state.connection.connected,
+        post: state => state.post.post,
+      }),
     },
 
     methods: {
-      trackScrollposition(percent) {
-        const article = this.$refs.previewArticle;
-        this.$refs.previewArticle.scrollTop = (article.scrollHeight - article.clientHeight) * percent;
-      },
-      savePostImmediately() {
-        postCtrl.set(this.post).then((data) => {
-          this.post.lastSaved = data.lastSaved;
-          if (this.$route.fullPath === '/create') router.replace(`/edit/${this.post.id}`);
-        });
-      },
-      debouncedSave: debounce(function debounced() {
-        this.savePostImmediately();
-      }, 1000),
-      savePost(markdown) {
-        this.post.markdown = markdown;
-        this.post.lastEdited = Date.now();
-        this.debouncedSave();
-      },
-      getPost(id) {
-        database
-          .ref(`/posts/${id}`)
-          .once('value', (snapshot) => {
-            this.postLoaded = true;
-            const post = snapshot.val();
-            if (post) this.post = new Post(post);
-          });
-      },
-      publishPost() {
-        postCtrl.publish(this.post)
-          .then(() => {
-            this.error = false;
-          })
-          .catch((err) => {
-            this.error = err.message;
-          });
-      },
-      unpublishPost() {
-        postCtrl.unpublish(this.post)
-          .then(() => {
-            this.error = false;
-          })
-          .catch((err) => {
-            this.error = err.message;
-          });
-      },
       toggleCheatsheet() {
         this.showCheatSheet = !this.showCheatSheet;
       },
-      sendNotification() {
-        this.notificationPending = true;
-        axios
-          .get(`/notifysubscribers/${this.post.id}`)
-          .then(() => {
-            this.notificationPending = false;
-            this.post.notificationSent = true;
-            return postCtrl.set(this.post);
-          })
-          .catch((err) => {
-            this.notificationPending = false;
-            this.err = err.message;
-          });
-      },
+      ...mapActions({
+        getPost: 'POST_GET',
+        savePost: 'POST_PUT',
+        createPost: 'POST_POST',
+        writePost: 'POST_WRITE',
+        publishPost: 'POST_PUBLISH',
+        unpublishPost: 'POST_UNPUBLISH',
+        sendNotification: 'POST_SENDNOTIFICATION',
+      }),
     },
 
     created() {
       if (this.$route.params && this.$route.params.id) {
         this.getPost(this.$route.params.id);
       }
+      if (this.$route.fullPath === '/createpost') {
+        this.createPost()
+          .then(() => {
+            router.replace(`/editpost/${this.post._id}`);
+            this.getPost(this.$route.params.id);
+          });
+      }
+    },
+
+    beforeDestroy() {
+      this.$store.commit('POST_DESTROY');
     },
 
     watch: {

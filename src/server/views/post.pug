@@ -1,0 +1,34 @@
+extends _layout
+
+include mixins/navigation
+include mixins/drawing
+include mixins/next-post
+
+block meta
+  meta(property='og:title' content=post.title)
+  meta(property='og:image' content=post.titleImage.url)
+  meta(property='id' content=post._id)
+  title= post.title
+
+block styles
+  !=webpack['/postCss.css']
+
+block navigation
+  +post-navigation
+  p.post-date.small.text-align-center
+    span &mdash;&nbsp;
+    span.italic= post.formattedPostDate
+    span &nbsp;&mdash;
+
+block body
+  div.container
+    article.main-post!= post.html
+
+block footer
+  footer.container
+    +drawing(post.drawings)
+    +next-post(nextPost)
+
+block scripts
+  script(defer src=webpack['/post.js'])
+

@@ -1,8 +1,5 @@
 {
   "name": "bisnaer",
-  "scripts": {
-    "postdeploy": "npm run prod"
-  },
   "env": {
     "AWS_ACCESS_KEY_ID": {
       "required": true
@@ -22,11 +19,20 @@
     "FIREBASE_API_KEY": {
       "required": true
     },
-    "NODE_MODULES_CACHE": {
+    "JWT_SECRET": {
       "required": true
     },
-    "NPM_CONFIG_PRODUCTION": {
+    "MONGODB_CONNECTION_STRING": {
       "required": true
+    },
+    "MONGODB_PASSWORD": {
+      "required": true
+    },
+    "NODE_MODULES_CACHE": {
+      "default": true
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "default": true
     },
     "SENDGRID_API_KEY": {
       "required": true

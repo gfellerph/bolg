@@ -1,7 +1,6 @@
 import mediumZoom from 'src/config/medium-zoom';
 import drawing from 'src/modules/drawing';
-// TODO: Remove babel-polyfill as soon as #34 on medium-zoom gets resolved!
-import 'babel-polyfill';
+import lqip from 'src/modules/lqip';
 import { setBookmark } from 'src/modules/bookmark';
 
 window.addEventListener('unload', () => {
@@ -9,6 +8,13 @@ window.addEventListener('unload', () => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
+  // Zoom every image but lqips
   mediumZoom();
   drawing();
+  lqip({
+    afterReplace: (placeholder, original) => {
+      // Add zoom to original lqips
+      mediumZoom(original);
+    },
+  })
 });

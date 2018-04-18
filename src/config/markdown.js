@@ -1,4 +1,5 @@
 import markdownParser from 'marked';
+import { getSrcset, constructThumborUrl } from 'src/config/constants';
 
 const markdownOptions = {
   gfm: true,
@@ -8,33 +9,59 @@ const markdownOptions = {
 export const marked = (str, options) => {
   const renderer = new markdownParser.Renderer();
   renderer.image = (href, title, text) => {
-    let srcset;
-    if (options.images) {
-      // Only jpgs and pngs, no gifs
-      const idRegex = /\/([A-Za-z0-9_]+)$|%2F([A-Za-z0-9]+)\.[JjPp]/g;
-      const match = idRegex.exec(href);
-      const id = match ? match[1] || match[2] : null;
-      if (id) {
-        const thumbs = options.images[id];
-        srcset = thumbs ? Object.keys(thumbs).map(key => `${thumbs[key]} ${key}w`).join(',') : null;
-      }
+    let srcset = false;
+    let lqipSrc = false;
+    let noZoom = false;
+    let src = href;
+    // Filter self hosted images as well as jpgs and pngs, no gifs
+    if (href.indexOf('//adie.bisnaer.ch/') >= 0) {
+      /* eslint no-param-reassign: 0 */
+      lqipSrc = href;
+      noZoom = true;
+      src = constructThumborUrl(href, {
+        width: 20,
+        filters: {
+          blur: 2,
+        },
+      });
+      srcset = getSrcset(href);
     }
-    const hrefAttr = href ? ` src="${href}"` : '';
+    const srcAttr = href ? ` src="${src}"` : '';
     const titleAttr = title ? ` title="${title}"` : '';
     const altAttr = text ? ` alt="${text}"` : '';
     const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
-    const sizesAttr = srcset ? ' sizes="640px"' : '';
-    return `<img${hrefAttr}${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}>`;
+    const lqipSrcsetAttr = srcset ? ` data-lqip-srcset="${srcset}"` : '';
+    const lqipSrcAttr = lqipSrc ? ` data-lqip-src="${lqipSrc}"` : '';
+    // const sizesAttr = srcset ? ' sizes="(max-width: 640px) 100vw, 640px"' : '';
+    const noZoomAttr = noZoom ? ' data-no-zoom' : '';
+    return `
+      <div class="lqip__wrapper">
+        <img${srcAttr}${titleAttr}${altAttr}${lqipSrcsetAttr}${lqipSrcAttr}${noZoomAttr}>
+        <noscript>
+          <img src="${href}"${titleAttr}${altAttr}${srcsetAttr}${lqipSrcAttr}>
+        </noscript>
+      </div>
+    `;
   }
   const mergedOptions = Object.assign({}, markdownOptions, options);
   mergedOptions.renderer = renderer;
   return markdownParser(str, mergedOptions);
 }
 
-export const excerpt = str => markdownParser(`${str.replace(/<s[ct].+>.+<\/s[ct].+>/g, '').split(' ').slice(0, 40).join(' ')}...`, markdownOptions);
+const scriptAndStyleRemover = /<(style|script).*(>[\s\S]*?<\/(style|script)>?|\/>)/gi;
+
+export const excerpt = str => markdownParser(`${str
+  .replace(scriptAndStyleRemover, '')
+  .trim()
+  .split(' ')
+  .slice(0, 40)
+  .join(' ')}...`, markdownOptions);
 
 export const description = (str) => {
   const md = str
+    // Remove all script and style tags
+    .replace(scriptAndStyleRemover, '')
+    .trim()
     // Remove headings
     .replace(/#+.+\n/gm, '')
     // Remove images

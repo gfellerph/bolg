@@ -31,6 +31,7 @@
   import bus from 'src/config/bus';
   import Image from 'src/models/Image';
   import ImageController from 'src/controllers/image-controller';
+  import { getThumbUrl } from 'src/config/constants';
 
   const imageCtrl = ImageController();
 
@@ -51,16 +52,16 @@
 
     computed: {
       smallestImage() {
-        return this.image ? this.image.getSmallestThumbUrl() : '';
+        return this.image ? getThumbUrl(this.image.url, 160) : '';
       },
     },
 
     methods: {
       removeImage() {
         this.deleting = true;
-        imageCtrl.deleteImages(this.image.id)
+        imageCtrl.deleteImages(this.image.shortid, this.image.url)
           .then(() => {
-            this.$emit('remove-image', this.image.id);
+            this.$emit('remove-image', this.image._id);
           })
           .catch((err) => {
             this.deleting = false;
@@ -68,7 +69,7 @@
           });
       },
       insertImage() {
-        bus.$emit('insert-image', this.image.downloadURL);
+        bus.$emit('insert-image', this.image.url);
       },
       activateImage() {
         this.$emit('activate-image', this.image);

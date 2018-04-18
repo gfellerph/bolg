@@ -1,19 +1,19 @@
 import shortid from 'shortid';
 
 export default function Image(img = {}) {
+  this.name = img.name || '';
   this.file = img.file || null;
-  this.downloadURL = img.downloadURL || null;
-  this.thumbnails = img.thumbnails || null;
-  this.id = img.id || shortid.generate();
-  this.lastModified = img.file ? img.file.lastModified : Date.now();
+  this.url = img.url || null;
+  this.shortid = img.shortid || shortid.generate();
   this.state = img.state || 0;
   this.progress = img.progress || 0;
+  this.ratio = img.ratio || 0.75;
 
   // Methods
-  this.url = () => {
+  this.getUrl = () => {
     const url = this.file
       ? window.URL.createObjectURL(this.file)
-      : this.downloadURL || null;
+      : this.url || null;
     return url;
   };
 
@@ -21,14 +21,14 @@ export default function Image(img = {}) {
     if (this.thumbnails && Object.keys(this.thumbnails)) {
       return this.thumbnails[Math.min.apply(null, Object.keys(this.thumbnails))];
     }
-    return this.url();
+    return this.getUrl();
   }
 
   this.getBiggestThumbUrl = () => {
     if (this.thumbnails && Object.keys(this.thumbnails)) {
       return this.thumbnails[Math.max.apply(null, Object.keys(this.thumbnails))];
     }
-    return this.url();
+    return this.getUrl();
   }
 
   this.getSrcSetString = () => {
