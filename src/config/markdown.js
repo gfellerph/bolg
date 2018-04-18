@@ -32,13 +32,13 @@ export const marked = (str, options) => {
     const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
     const lqipSrcsetAttr = srcset ? ` data-lqip-srcset="${srcset}"` : '';
     const lqipSrcAttr = lqipSrc ? ` data-lqip-src="${lqipSrc}"` : '';
-    const sizesAttr = srcset ? ' sizes="(max-width: 640px) 100vw, 640px"' : '';
+    // const sizesAttr = srcset ? ' sizes="(max-width: 640px) 100vw, 640px"' : '';
     const noZoomAttr = noZoom ? ' data-no-zoom' : '';
     return `
       <div class="lqip__wrapper">
-        <img${srcAttr}${titleAttr}${altAttr}${lqipSrcsetAttr}${sizesAttr}${lqipSrcAttr}${noZoomAttr}>
+        <img${srcAttr}${titleAttr}${altAttr}${lqipSrcsetAttr}${lqipSrcAttr}${noZoomAttr}>
         <noscript>
-          <img src="${href}"${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}${lqipSrcAttr}>
+          <img src="${href}"${titleAttr}${altAttr}${srcsetAttr}${lqipSrcAttr}>
         </noscript>
       </div>
     `;
