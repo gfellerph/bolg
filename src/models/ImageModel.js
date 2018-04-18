@@ -64,11 +64,11 @@ ImageSchema.methods.getRatio = async function getRatio() {
   return ratio;
 }
 
-ImageSchema.pre('validate', function preSave(next) {
-  this.ratio = this.getRatio()
-    .then(() => next())
+ImageSchema.pre('validate', async function preSave(next) {
+  this.ratio = await this.getRatio()
     /* eslint no-console: 0 */
     .catch(console.err);
+  next();
 });
 
 export default mongoose.model('Image', ImageSchema);
