@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import dateformat from 'dateformat';
 import { ImageSchema } from 'src/models/ImageModel';
-import { slugger, removeAllHtml } from 'src/config/constants';
+import { slugger } from 'src/config/constants';
 import { marked, excerpt, description } from 'src/config/markdown';
 
 const { Schema } = mongoose;
@@ -64,13 +64,7 @@ PostSchema.virtual('url').get(function getUrl() {
 
 PostSchema.virtual('html').get(function getHtml() {
   if (!this.isPublished) return '';
-
-  const images = this.images.reduce((acc, image) => {
-    acc[image.id] = image.thumbnails;
-    return acc;
-  }, {});
-
-  return marked(this.publishedMarkdown, { images });
+  return marked(this.publishedMarkdown, { lqip: true });
 });
 
 PostSchema.virtual('excerpt').get(function getExcerpt() {
@@ -83,21 +77,6 @@ PostSchema.virtual('description').get(function getDescription() {
 
 PostSchema.virtual('formattedPostDate').get(function getFormattedPostDate() {
   return dateformat(this.postDate, 'dd.mm.yyyy');
-});
-
-/**
- * Set the post title, extracted from markdown befor the post is saved.
- * The regex is looking for "# title" patterns
- *
- * @param {function} next Next middleware callback
- * @returns {void}
- */
-PostSchema.pre('validate', function preValidate(next) {
-  const title = this.markdown.match(/^# .+/gm);
-  this.title = title
-    ? removeAllHtml(title[0].replace('# ', '').replace(/\*.+\*/g, ''))
-    : '';
-  next();
 });
 
 export default mongoose.model('Post', PostSchema);
