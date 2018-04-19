@@ -14,7 +14,7 @@ export default {
     POST_SET_DATE: (state, date) => { state.post.postDate = date; },
     POST_ADD_IMAGE: (state, image) => { state.post.images.push(image); },
     POST_REMOVE_IMAGE: (state, imageId) => {
-      state.post.images = state.post.images.filter(image => image._id !== imageId);
+      state.post.images = state.post.images.filter(image => image.shortid !== imageId);
     },
     POST_DESTROY: (state) => { state.post = null; },
   },
