@@ -1,8 +1,8 @@
-import cuid from 'cuid';
+import shortid from 'shortid';
 
 export default function Tipp(tipp = {}) {
   // Properties
-  this.id = tipp.id || cuid();
+  this.id = tipp.id || shortid.generate();
   this.created = tipp.created || Date.now();
   this.name = tipp.name || '';
   this.email = tipp.email || '';
