@@ -61,7 +61,7 @@
         this.deleting = true;
         imageCtrl.deleteImages(this.image.shortid, this.image.url)
           .then(() => {
-            this.$emit('remove-image', this.image._id);
+            this.$emit('remove-image', this.image.shortid);
           })
           .catch((err) => {
             this.deleting = false;

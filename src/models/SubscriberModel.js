@@ -18,4 +18,12 @@ const SubscriberSchema = new Schema({
   },
 });
 
+SubscriberSchema.post('save', (error, doc, next) => {
+  if (error.code === 11000) {
+    next(new Error('Das Email isch scho registriert'));
+  } else {
+    next(error);
+  }
+});
+
 export default mongoose.model('Subscriber', SubscriberSchema);

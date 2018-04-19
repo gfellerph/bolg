@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex';
   import { marked } from 'src/config/markdown';
   import Post from 'src/models/Post';
   import router from 'src/config/router';
@@ -39,7 +40,6 @@
   import Editor from 'src/components/Editor';
   import PostStatus from 'src/components/PostStatus';
   import MarkdownCheatsheet from 'src/components/MarkdownCheatsheet';
-  import { mapState, mapActions } from 'vuex';
 
   export default {
     data() {
@@ -55,7 +55,7 @@
     computed: {
       compiledContent() {
         if (!this.post || !this.post.markdown) return '';
-        return marked(this.post.markdown);
+        return marked(this.post.markdown, { lqip: false });
       },
       hasTitle() { return !!this.post.title; },
       errorMessage() {

@@ -8,7 +8,6 @@ import mongoose from 'mongoose';
 import io from 'socket.io';
 import redirectRoutes from 'src/server/routes/redirect-routes';
 import apiRoutes from 'src/server/routes/api-routes';
-import migrationRoutes from 'src/server/routes/migration-routes';
 import errorRoutes from 'src/server/routes/error-routes';
 import passport from 'src/config/passport';
 import expressStatic from 'src/config/express-static';
@@ -50,7 +49,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Routes
 app.use(redirectRoutes);
 app.use('/api', apiRoutes);
-app.use('/migrate', migrationRoutes);
 app.use(errorRoutes);
+
+/* eslint no-unused-vars: 0 */
+// error handler
+app.use((err, req, res, next) => {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') !== 'production' ? err : { message: err.message };
+  res.status(err.status || 500);
+
+  if (req.accepts('json')) {
+    res.json({ message: err.message });
+    return;
+  }
+
+  // render the error page
+  res.render('error');
+});
 
 export default app;
