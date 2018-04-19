@@ -10,15 +10,6 @@
     "ENVIRONMENT": {
       "required": true
     },
-    "FIREBASE_ADMIN_PRIVATE_KEY": {
-      "required": true
-    },
-    "FIREBASE_ADMIN_PRIVATE_KEY_ID": {
-      "required": true
-    },
-    "FIREBASE_API_KEY": {
-      "required": true
-    },
     "JWT_SECRET": {
       "required": true
     },
@@ -56,7 +47,6 @@
     }
   },
   "addons": [
-    "pointdns",
     "sendgrid"
   ],
   "buildpacks": [

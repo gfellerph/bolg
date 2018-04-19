@@ -1,7 +1,7 @@
-import cuid from 'cuid';
+import shortid from 'shortid';
 
 export default function User(user = {}) {
-  this.uid = user.uid || cuid();
+  this.uid = user.uid || shortid.generate();
   this.name = user.name || '';
   this.email = user.email || '';
 
