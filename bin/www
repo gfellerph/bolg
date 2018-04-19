@@ -66,6 +66,7 @@ function onError(error) {
       process.exit(1);
       break;
     default:
+      console.log('generic server error');
       throw error;
   }
 }
