@@ -1,4 +1,4 @@
-import cuid from 'cuid';
+import shortid from 'shortid';
 
 /**
  * A blog post
@@ -8,5 +8,5 @@ import cuid from 'cuid';
  */
 export default function Post(post = {}) {
   // Properties
-  this.markdown = post.markdown || `# Post ${cuid()}`;
+  this.markdown = post.markdown || `# Post ${shortid.generate()}`;
 }
