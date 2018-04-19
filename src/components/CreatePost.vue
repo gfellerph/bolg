@@ -14,7 +14,6 @@
           this.editPost(res.data);
           this.$router.push(`/editpost/${res.data._id}`);
         })
-        .catch(err => console.log(err));
     },
 
     methods: {

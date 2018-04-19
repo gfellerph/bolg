@@ -96,7 +96,7 @@
             this.cancel();
           })
           .catch((err) => {
-            this.error = err.message;
+            this.error = err.response.data.message;
             this.loading = false;
           });
       },
