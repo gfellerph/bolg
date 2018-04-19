@@ -49,6 +49,6 @@ export const remove = (req, res, next) => {
     Bucket: 'adie.bisnaer.ch',
     Key,
   }).promise()
-    .then(data => res.json(data))
+    .then(() => res.send('OK'))
     .catch(err => next(err));
 }
