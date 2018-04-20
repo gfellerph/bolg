@@ -24,6 +24,7 @@ export const postPost = (req, res, next) => {
 
 export const putPost = (req, res, next) => {
   if (req.body.title && req.body.markdown) req.body.title = extractTitle(req.body.markdown);
+
   Post
     .findByIdAndUpdate(req.params.id, {
       $set: req.body,

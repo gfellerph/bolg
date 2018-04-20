@@ -3,6 +3,10 @@ extends _layout-mail
 block meta
   title Hey #{subscriber.displayName}, es git e nöii Gschicht uf bisnär.ch
 
+block styles
+  style
+    include ../../styles/molecules/notification-mail.scss
+
 block preheader
   span.preheader Gönn dir e Pouse und lis d'Gschicht "#{post.title}" uf bisnär.ch
 
@@ -15,13 +19,13 @@ block body
 
   tr
     td
-      a(href=post.url)
-        img(src=post.heroImageUrl)
+      a(href=post.liveUrl)
+        img(src=post.titleImage.getThumbnail(640))
         h1= post.title
 
   tr
     td
-      a.cta(href=post.url) Itze läse
+      a.cta(href=post.liveUrl) Itze läse
 
   tr
     td.footer

@@ -62,6 +62,10 @@ PostSchema.virtual('url').get(function getUrl() {
   return `/gschichte/${slugger(this.title)}`;
 });
 
+PostSchema.virtual('liveUrl').get(function liveUrl() {
+  return `https://bisnär.ch${this.url}`;
+})
+
 PostSchema.virtual('html').get(function getHtml() {
   if (!this.isPublished) return '';
   return marked(this.publishedMarkdown, { lqip: true });
