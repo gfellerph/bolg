@@ -17,7 +17,7 @@ export const ImageSchema = new Schema({
   },
   shortid: {
     type: String,
-    default: shortid.generate(),
+    default: shortid.generate,
   },
   ratio: {
     type: Number,
