@@ -16,14 +16,14 @@ export const getPost = (req, res, next) => Post.findOne({
   .catch(err => next(err));
 
 export const postPost = (req, res, next) => {
-  if (req.body.title && req.body.markdown) req.body.title = extractTitle(req.body.markdown);
+  if (req.body.markdown) req.body.title = extractTitle(req.body.markdown);
   new Post(req.body).save()
     .then(newPost => res.json(newPost))
     .catch(err => next(err));
 }
 
 export const putPost = (req, res, next) => {
-  if (req.body.title && req.body.markdown) req.body.title = extractTitle(req.body.markdown);
+  if (req.body.markdown) req.body.title = extractTitle(req.body.markdown);
 
   Post
     .findByIdAndUpdate(req.params.id, {
