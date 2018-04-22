@@ -6,7 +6,8 @@
 
 
 <script>
-  import { states, formatDate } from 'src/config/constants';
+  import dateformat from 'dateformat';
+  import { states } from 'src/config/constants';
 
   const classes = {
     0: 'loading',
@@ -34,16 +35,16 @@
       },
       message() {
         const lastPublished = this.post.lastPublished
-          ? `publiziert am ${formatDate(this.post.lastPublished)}`
-          : 'nid publiziert';
+          ? `${dateformat(this.post.lastPublished, 'd.m.yy')}`
+          : 'nid publ.';
 
         const messages = {
           0: 'i bi am lade...',
-          1: 'du schribsch öppis',
-          2: `gschpicheret (${lastPublished})`,
+          1: 'schribe',
+          2: `sicher (${lastPublished})`,
           3: 'fähler o.O:',
-          4: 'du schribsch öppis (ke netz)',
-          5: 'gschpicheret (ke netz)',
+          4: 'schribe (ke netz)',
+          5: 'sicher (ke netz)',
           6: lastPublished,
         }
 
