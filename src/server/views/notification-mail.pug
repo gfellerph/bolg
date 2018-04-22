@@ -8,25 +8,48 @@ block styles
     include ../../styles/molecules/notification-mail.scss
 
 block preheader
-  span.preheader Gönn dir e Pouse und lis d'Gschicht "#{post.title}" uf bisnär.ch
+  span.preheader(style="display:none;") Gönn dir e Pouse und lis d'Gschicht "#{post.title}" uf bisnär.ch
 
 block body
- table.content
+ table.content(
+   style="font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 18px;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;width: 600px;
+  margin: 0 auto;"
+ )
   tr
-    td.logo
+    td.logo(
+      style="padding: 25px 0;"
+    )
       a(href='https://bisnär.ch')
-        img(src=logoUrl)
+        img(
+          src=logoUrl
+          style="display: block;
+  max-width: 100%;"
+        )
 
   tr
-    td
+    td.cta__container(
+      style="padding: 25px 0;"
+    )
       a(href=post.liveUrl)
         img(src=post.titleImage.getThumbnail(640))
         h1= post.title
 
   tr
     td
-      a.cta(href=post.liveUrl) Itze läse
+      a.cta(
+        href=post.liveUrl
+        style="display: inline-block;
+  padding: 10px 25px;
+  border: 1px solid black;
+  text-decoration: none;
+  color: rgb(0, 0, 1);"
+      ) Itze läse
 
   tr
-    td.footer
+    td.footer(style="padding: 25px 0;")
       p Ugh, ig wott mi vo däm Zügs <a href="https/bisnär.ch/api/unsubscribe/#{subscriber.id}">abmäude</a>. Süsch scho gnue Spam.
