@@ -8,6 +8,10 @@ html {
 
 body {
     margin: 0;
+
+    @include max($xxs) {
+      overflow-x: hidden;
+    }
 }
 
 .container {
