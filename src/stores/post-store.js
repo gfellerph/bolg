@@ -29,10 +29,10 @@ export default {
       dispatch('POST_DEBOUNCED_SAVE');
     },
     POST_DEBOUNCED_SAVE: debounce(({ dispatch }) => dispatch('POST_PUT'), 2000),
-    POST_PUT: async ({ commit, state }) => {
+    POST_PUT: async ({ commit, state }, shadow = false) => {
       const res = await axios.put(`/api/post/${state.post._id}`, {
         ...state.post,
-        lastSaved: Date.now(),
+        lastSaved: shadow ? state.post.lastSaved : Date.now(),
       });
       // Only update the last saved date, other properties might have been
       // changed during the save
@@ -60,10 +60,10 @@ export default {
       });
       return res;
     },
-    POST_SENDNOTIFICATION: async ({ commit, state }) => {
-      const res = await axios.get(`/api/notify/${state.post._id}`);
-      commit('POST_EDIT', { notificationSent: res.data.notificationSent });
-      return res;
+    POST_SENDNOTIFICATION: async ({ commit, dispatch, state }) => {
+      await axios.get(`/api/notify/${state.post._id}`);
+      commit('POST_EDIT', { notificationSent: true });
+      return dispatch('POST_PUT', true);
     },
   },
 }
