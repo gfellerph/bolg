@@ -39,8 +39,8 @@ export default {
       commit('POST_EDIT', { lastSaved: res.data.lastSaved });
       return res;
     },
-    POST_POST: async ({ commit }) => {
-      const res = await axios.post('/api/post', new Post());
+    POST_POST: async ({ commit }, initialData) => {
+      const res = await axios.post('/api/post', new Post(initialData));
       commit('POST_EDIT', res.data);
       return res;
     },
