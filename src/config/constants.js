@@ -1,7 +1,5 @@
 import URL from 'url-parse';
 
-export const liveRootUrl = 'https://bolg-app.herokuapp.com/posts/';
-
 export const states = {
   LOADING: 0,
   EDITING: 1,

@@ -1,6 +1,16 @@
 <template>
   <div class="create-post">
-    <h1>Creating Post...</h1>
+    <h1>Gib däm Post e Titu</h1>
+    <input
+      type="text"
+      v-model="title"
+    >
+    <p v-if="error">{{error}}</p>
+    <button
+      @click="create"
+    >
+      Guet
+    </button>
   </div>
 </template>
 
@@ -8,15 +18,26 @@
   import { mapActions, mapMutations } from 'vuex';
 
   export default {
-    created() {
-      this.createPost()
-        .then((res) => {
-          this.editPost(res.data);
-          this.$router.push(`/editpost/${res.data._id}`);
-        })
+    data() {
+      return {
+        title: '',
+        error: false,
+      };
     },
 
     methods: {
+      create() {
+        this.createPost({
+          markdown: `# ${this.title}`,
+        })
+          .then((res) => {
+            this.editPost(res.data);
+            this.$router.push(`/editpost/${res.data._id}`);
+          })
+          .catch((err) => {
+            this.error = err.message;
+          });
+      },
       ...mapMutations({
         editPost: 'POST_EDIT',
       }),
