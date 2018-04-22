@@ -35,7 +35,7 @@
       },
       message() {
         const lastPublished = this.post.lastPublished
-          ? `${dateformat(this.post.lastPublished, 'd.m.yy')}`
+          ? `${dateformat(this.post.lastPublished, 'dd.mm.yy')}`
           : 'nid publ.';
 
         const messages = {

@@ -2,15 +2,20 @@
   <div class="post-details">
     <router-link class="edit-post-link" :to="editUrl">
       <div class="post-infos">
+          <img
+            class="post-details__title-image"
+            :src="titleImageUrl"
+            alt=""
+          >
           <h1 class="h4">{{post.title}}</h1>
           <table class="meta-infos">
             <tr>
               <th>Gmacht:</th>
-              <td>{{formatDate(post.created)}}</td>
+              <td>{{dateformat(post.created, 'dd.mm.yy')}}</td>
             </tr>
             <tr>
               <th>Zletscht gschribe:</th>
-              <td>{{formatDate(post.lastEdited)}}</td>
+              <td>{{dateformat(post.lastEdited, 'dd.mm.yy')}}</td>
             </tr>
           </table>
       </div>
