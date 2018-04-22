@@ -45,7 +45,7 @@
     methods: {
       changeCurrentPost(post) {
         if (post.lastPublished) {
-          this.currentPost = new Post(post);
+          this.currentPost = post;
         } else {
           this.currentPost = null;
         }
