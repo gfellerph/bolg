@@ -29,7 +29,6 @@
       create() {
         this.createPost({
           markdown: `# ${this.title}`,
-          title: this.title,
         })
           .then((res) => {
             this.editPost(res.data);
