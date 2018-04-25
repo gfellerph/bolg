@@ -35,19 +35,19 @@ export const marked = (str, options = {
     const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
     const lqipSrcsetAttr = srcset ? ` data-lqip-srcset="${srcset}"` : '';
     const lqipSrcAttr = lqipSrc ? ` data-lqip-src="${lqipSrc}"` : '';
-    // const sizesAttr = srcset ? ' sizes="(max-width: 640px) 100vw, 640px"' : '';
+    const sizesAttr = srcset ? ' sizes="(max-width: 640px) 100vw, 640px"' : '';
     const noZoomAttr = noZoom ? ' data-no-zoom' : '';
     if (useLqip) {
       return `
         <div class="lqip__wrapper">
-          <img${srcAttr}${titleAttr}${altAttr}${lqipSrcsetAttr}${lqipSrcAttr}${noZoomAttr}>
+          <img${srcAttr}${titleAttr}${altAttr}${lqipSrcsetAttr}${sizesAttr}${lqipSrcAttr}${noZoomAttr}>
           <noscript>
-            <img src="${href}"${titleAttr}${altAttr}${srcsetAttr}${lqipSrcAttr}>
+            <img src="${href}"${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}${lqipSrcAttr}>
           </noscript>
         </div>
       `;
     }
-    return `<img src="${href}"${titleAttr}${altAttr}${srcsetAttr}${lqipSrcAttr}>`;
+    return `<img src="${href}"${titleAttr}${altAttr}${srcsetAttr}${sizesAttr}${lqipSrcAttr}>`;
   }
   const mergedOptions = Object.assign({}, markdownOptions, options);
   mergedOptions.renderer = renderer;
