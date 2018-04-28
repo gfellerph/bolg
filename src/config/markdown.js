@@ -11,7 +11,7 @@ export const marked = (str, options = {
 }) => {
   const renderer = new markdownParser.Renderer();
   renderer.image = (href, title, text) => {
-    const useLqip = href.indexOf('//adie.bisnaer.ch/') >= 0 && options.lqip;
+    const useLqip = href.indexOf('//adie.bisnaer.ch/i/') >= 0 && options.lqip;
     let srcset = false;
     let lqipSrc = false;
     let noZoom = false;
