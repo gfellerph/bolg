@@ -25,11 +25,20 @@ export const publish = async (req, res, next) => {
   res.json(newPost);
 }
 
-export const unpublish = async (req, res, next) => {
-  const post = await Queries.post(req.params.id);
-  post.lastPublished = null;
-  post.publishedMarkdown = '';
-  post.save()
+export const unpublish = (req, res, next) => {
+  Post.update(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: {
+        lastPublished: null,
+        publishedMarkdown: '',
+      },
+    }, {
+      runValidators: true,
+    },
+  )
     .then(Queries.publishedPosts)
     .then(Builder.rebuild)
     .then(() => res.send('OK'))
