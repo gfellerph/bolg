@@ -1,11 +1,21 @@
 import * as Builder from 'src/server/modules/build';
+import Post from 'src/models/PostModel';
 import * as Queries from 'src/server/modules/queries';
 
 export const publish = async (req, res, next) => {
   const post = await Queries.post(req.params.id);
-  post.lastPublished = Date.now();
-  post.publishedMarkdown = post.markdown;
-  const newPost = await post.save()
+  const newPost = await Post
+    .findOneAndUpdate({
+      _id: req.params.id,
+    }, {
+      $set: {
+        lastPublished: Date.now(),
+        publishedMarkdown: post.markdown,
+      },
+    }, {
+      new: true,
+      runValidators: true,
+    })
     .catch(err => next(err));
 
   await Queries.publishedPosts()
