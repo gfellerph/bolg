@@ -5,6 +5,11 @@ figure {
   columns: 2;
   column-gap: $golden-rem / 4;
 
+  @include max($xxs) {
+    margin-right: -$golden-rem;
+    margin-left: -$golden-rem;
+  }
+
   > * {
     display: block;
     width: 100%;
@@ -31,5 +36,9 @@ figure {
 
   figcaption {
     column-span: all;
+
+    @include max($xxs) {
+      padding: 0 $golden-rem;
+    }
   }
 }

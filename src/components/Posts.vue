@@ -45,7 +45,7 @@
     methods: {
       changeCurrentPost(post) {
         if (post.lastPublished) {
-          this.currentPost = new Post(post);
+          this.currentPost = post;
         } else {
           this.currentPost = null;
         }
@@ -72,6 +72,10 @@
 
   .post-preview {
     width: 100%;
+
+    @include max($xs) {
+      display: none;
+    }
   }
 
   .posts {
@@ -83,7 +87,7 @@
   }
 
   .post-list-container {
-    flex: 0 0 50%;
+    flex: 1 0 50%;
     border-right: 1px solid black;
     overflow: auto;
     height: 100%;

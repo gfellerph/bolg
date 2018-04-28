@@ -16,12 +16,25 @@
   > *:last-child {
     margin-bottom: 0;
   }
+
+  > .lqip__wrapper,
+  > p > img {
+    @include max($xxs) {
+      margin-right: -$golden-rem;
+      margin-left: -$golden-rem;
+    }
+  }
 }
 
 .lqip__wrapper {
   img {
     display: block;
     width: 100%;
+
+    @include max($xxs) {
+      margin-right: 0;
+      margin-left: 0;
+    }
   }
 }
 

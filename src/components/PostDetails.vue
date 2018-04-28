@@ -2,15 +2,20 @@
   <div class="post-details">
     <router-link class="edit-post-link" :to="editUrl">
       <div class="post-infos">
+          <img
+            class="post-details__title-image"
+            :src="titleImageUrl"
+            alt=""
+          >
           <h1 class="h4">{{post.title}}</h1>
           <table class="meta-infos">
             <tr>
               <th>Gmacht:</th>
-              <td>{{formatDate(post.created)}}</td>
+              <td>{{dateformat(post.created, 'dd.mm.yy')}}</td>
             </tr>
             <tr>
               <th>Zletscht gschribe:</th>
-              <td>{{formatDate(post.lastEdited)}}</td>
+              <td>{{dateformat(post.lastEdited, 'dd.mm.yy')}}</td>
             </tr>
           </table>
       </div>
@@ -25,9 +30,9 @@
 
 <script>
   import { mapActions } from 'vuex';
+  import dateformat from 'dateformat';
   import PostStatus from 'src/components/PostStatus';
-  import { description } from 'src/config/markdown';
-  import { formatDate } from 'src/config/constants';
+  import { constructThumborUrl } from 'src/config/constants';
 
   export default {
     props: {
@@ -35,12 +40,16 @@
     },
 
     computed: {
-      shortText() { return description(this.post.markdown); },
       editUrl() { return `/editpost/${this.post._id}` },
+      titleImageUrl() {
+        return constructThumborUrl(this.post.titleImage.url, {
+          width: 640,
+        })
+      },
     },
 
     methods: {
-      formatDate,
+      dateformat,
       deletePost() {
         /* eslint no-restricted-globals: 0 */
         /* eslint no-alert: 0 */
@@ -73,6 +82,7 @@
 
   .post-infos {
     padding: $golden-rem;
+    color: white;
   }
 
   .short-text,
@@ -82,7 +92,6 @@
 
   .meta-infos {
     font-family: $sans-serif;
-    color: grey;
     font-size: 0.75em;
 
     th {
@@ -102,6 +111,17 @@
   .edit-post-link {
     color: black;
     text-decoration: none;
+  }
+
+  .post-details__title-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5);
+    z-index: -1;
   }
 
   .edit-button {

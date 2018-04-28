@@ -155,12 +155,15 @@
 
   .post-images {
     overflow: auto;
-    max-width: 50vw;
   }
 
   .post-preview {
     position: relative;
     border-left: 1px solid black;
+
+    @include max($xs) {
+      display: none;
+    }
 
     &:before {
       content: '';
