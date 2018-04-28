@@ -52,6 +52,13 @@ export const PostSchema = new Schema({
   },
   images: [ImageSchema],
   drawings: [ImageSchema],
+}, {
+  toObject: {
+    virtuals: true,
+  },
+  toJSON: {
+    virtuals: true,
+  },
 });
 
 PostSchema.virtual('isPublished').get(function isPublished() {

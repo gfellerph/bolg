@@ -218,6 +218,11 @@
       margin: 0 $golden-rem / 4;
     }
 
+    input[type="date"] {
+      padding: 0 $golden-rem / 2;
+      border-bottom: none;
+    }
+
     .left-controls {
       button {
         border-right: 1px solid black;

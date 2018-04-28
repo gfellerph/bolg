@@ -1,8 +1,8 @@
 const defaults = {
   selector: '[data-lqip-src],[data-lqip-srcset]',
   root: null,
-  rootMargin: '0px',
-  treshold: 0.1,
+  rootMargin: '100% 0px 100% 0px',
+  treshold: 0,
   afterReplace: null,
 }
 
