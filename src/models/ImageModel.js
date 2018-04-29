@@ -64,13 +64,8 @@ ImageSchema.methods.getRatio = async function getRatio() {
   return ratio;
 }
 
-ImageSchema.pre('validate', async function preSave(next) {
-  this.getRatio()
-    .then((ratio) => {
-      this.ratio = ratio;
-      next();
-    })
-    /* eslint no-console: 0 */
+ImageSchema.pre('validate', async function preSave() {
+  this.ratio = await this.getRatio()
     .catch(console.err);
 });
 
