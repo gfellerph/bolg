@@ -1,11 +1,25 @@
 <template>
   <div class="map">
-    <map-search
-      ref="mapSearch"
-      :map="map"
-      :test="'test'"
-    ></map-search>
+    <transition
+      name="slide-in-top"
+    >
+      <map-search
+        v-if="!selectedTipp"
+        ref="mapSearch"
+        :map="map"
+        :test="'test'"
+      ></map-search>
+    </transition>
     <div id="google-map"></div>
+    <transition
+      name="slide-in"
+    >
+      <map-tipp-detail
+        v-if="selectedTipp"
+        :tipp="selectedTipp"
+        @close="closeTippDetail"
+      />
+    </transition>
   </div>
 </template>
 
@@ -15,6 +29,7 @@
   import Tipp from 'src/models/Tipp';
   import AddTipp from 'src/components/AddTipp';
   import MapSearch from 'src/components/MapSearch';
+  import MapTippDetail from 'src/components/MapTippDetail';
   import { mapConfig, polylineConfig, lineMarkerConfig } from 'src/config/map';
   import { unique } from 'src/modules/group-by';
 
@@ -26,6 +41,7 @@
         markers: [],
         polyline: null,
         map: null,
+        selectedTipp: null,
       };
     },
 
@@ -35,6 +51,9 @@
       this.$refs.mapSearch.init(this.map);
 
       if (window.outerWidth >= 768) this.map.addListener('click', this.addTipp);
+
+      // Close tipp
+      this.map.addListener('click', this.closeTippDetail);
 
       axios.get('/api/journeys')
         .then((res) => {
@@ -79,6 +98,7 @@
               position: new google.maps.LatLng(tipp.lat, tipp.lng),
               map: this.map,
               title: tipp.title(),
+              tipp,
               icon: {
                 url: '/img/inuksuk-map.svg',
                 size: new google.maps.Size(36, 34),
@@ -86,14 +106,9 @@
                 anchor: new google.maps.Point(18, 17),
               },
             });
-            const infowindow = new google.maps.InfoWindow({
-              content: `
-                <h5>${tipp.name}</h5>
-                <p>${tipp.text}</p>
-              `,
-            });
-            marker.addListener('click', () => {
-              infowindow.open(this.map, marker);
+            marker.addListener('click', (event) => {
+              this.selectedTipp = tipp;
+              console.log(event, tipp);
             });
 
             return marker;
@@ -105,11 +120,15 @@
       addTipp(event) {
         bus.$emit('map-click', event.latLng);
       },
+      closeTippDetail() {
+        this.selectedTipp = null;
+      },
     },
 
     components: {
       AddTipp,
       MapSearch,
+      MapTippDetail,
     },
   };
 </script>
@@ -136,8 +155,31 @@
   }
 
   .map {
+    overflow: hidden;
     @include max($xxs) {
       padding-top: 51px;
     }
+  }
+
+  .slide-in-enter-active,
+  .slide-in-leave-active,
+  .slide-in-top-enter-active,
+  .slide-in-top-leave-active {
+    transition: transform .5s, opacity .5s;
+  }
+  .slide-in-enter,
+  .slide-in-leave-to {
+    opacity: 0;
+    @include max($xs) {
+      transform: translate3d(0, 100vh, 0);
+    }
+    @include min($xs) {
+      transform: translate3d(-40vw, 0, 0);
+    }
+  }
+  .slide-in-top-enter,
+  .slide-in-top-leave-to {
+    transform: translate3d(0, -200%, 0);
+    opacity: 0;
   }
 </style>
