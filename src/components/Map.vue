@@ -4,7 +4,7 @@
       name="slide-in-top"
     >
       <map-search
-        v-if="!selectedTipp"
+        v-if="!selectedTipp.tipp"
         ref="mapSearch"
         :map="map"
       ></map-search>
@@ -14,8 +14,8 @@
       name="slide-in"
     >
       <map-tipp-detail
-        v-if="selectedTipp"
-        :tipp="selectedTipp"
+        v-if="selectedTipp.tipp"
+        :tipp="selectedTipp.tipp"
         @close="closeTippDetail"
       />
     </transition>
@@ -40,7 +40,10 @@
         markers: [],
         polyline: null,
         map: null,
-        selectedTipp: null,
+        selectedTipp: {
+          marker: null,
+          tipp: null,
+        },
       };
     },
 
@@ -106,7 +109,16 @@
               },
             });
             marker.addListener('click', () => {
-              this.selectedTipp = tipp;
+              this.selectedTipp = {
+                tipp,
+                marker,
+              };
+              /* marker.setIcon({
+                url: '/img/inuksuk-inverted.svg',
+                size: new google.maps.Size(36, 34),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(18, 17),
+              }); */
             });
 
             return marker;
@@ -114,12 +126,37 @@
         });
     },
 
+    watch: {
+      selectedTipp(newTipp, oldTipp) {
+        if (oldTipp && oldTipp.marker) {
+          oldTipp.marker.setIcon({
+            url: '/img/inuksuk-map.svg',
+            size: new google.maps.Size(36, 34),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(18, 17),
+          });
+        }
+        if (newTipp && newTipp.marker) {
+          newTipp.marker.setIcon({
+            url: '/img/inuksuk-inverted.svg',
+            size: new google.maps.Size(36, 34),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(18, 17),
+          });
+          this.map.panTo(newTipp.marker.position);
+        }
+      },
+    },
+
     methods: {
       addTipp(event) {
         bus.$emit('map-click', event.latLng);
       },
       closeTippDetail() {
-        this.selectedTipp = null;
+        this.selectedTipp = {
+          tipp: null,
+          marker: null,
+        };
       },
     },
 
