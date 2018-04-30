@@ -42,6 +42,9 @@
     computed: {
       editUrl() { return `/editpost/${this.post._id}` },
       titleImageUrl() {
+        if (!this.post.titleImage) {
+          return '//placehold.it/300x200?text=Keis_Titubiud';
+        }
         return constructThumborUrl(this.post.titleImage.url, {
           width: 640,
         })
