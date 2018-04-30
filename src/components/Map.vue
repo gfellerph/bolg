@@ -7,7 +7,6 @@
         v-if="!selectedTipp"
         ref="mapSearch"
         :map="map"
-        :test="'test'"
       ></map-search>
     </transition>
     <div id="google-map"></div>
@@ -106,9 +105,8 @@
                 anchor: new google.maps.Point(18, 17),
               },
             });
-            marker.addListener('click', (event) => {
+            marker.addListener('click', () => {
               this.selectedTipp = tipp;
-              console.log(event, tipp);
             });
 
             return marker;
@@ -156,9 +154,6 @@
 
   .map {
     overflow: hidden;
-    @include max($xxs) {
-      padding-top: 51px;
-    }
   }
 
   .slide-in-enter-active,
