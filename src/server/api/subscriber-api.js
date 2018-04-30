@@ -1,6 +1,6 @@
 import SubscriberModel from 'src/models/SubscriberModel';
 
-export const list = (req, res, next) => SubscriberModel.find({}, 'id name email')
+export const list = (req, res, next) => SubscriberModel.find({}, 'id name')
   .then(data => res.json(data))
   .catch(err => next(err));
 
