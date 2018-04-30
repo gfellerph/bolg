@@ -1,6 +1,6 @@
 <template>
-  <div class="map-search">
-    <div class="map-search__box map__box">
+  <div class="map-search map__box">
+    <div class="map-search__box">
       <label for="map-search-input" class="sr-only">Sueche</label>
       <input
         id="map-search-input"
@@ -183,6 +183,8 @@
     top: $golden-rem;
     left: $golden-rem;
     z-index: 1;
+    overflow: auto;
+    max-height: calc(100% - #{$golden-rem * 2});
 
     @include min($s) {
       width: 33%;
@@ -193,9 +195,10 @@
     }
 
     @include max($xxs) {
-      top: 0;
-      left: $golden-rem;
-      right: $golden-rem;
+      top: $golden-rem / 4;
+      left: $golden-rem / 4;
+      right: $golden-rem / 4;
+      max-height: calc(100% - #{$golden-rem / 2});
     }
   }
 
@@ -205,8 +208,6 @@
     color: white;
     width: 100%;
     border: none;
-    border-radius: 3px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     padding: $golden-rem/2;
 
     &:focus {
@@ -217,15 +218,6 @@
   .map-search__box {
     display: flex;
     align-items: center;
-    margin-bottom: $golden-rem/2;
-
-    @include max($xxs) {
-      margin-right: $golden-rem * -1;
-      margin-left: $golden-rem * -1;
-      border-top: 1px solid lightgrey;
-      border-radius: 0;
-      box-shadow: none;
-    }
 
     .map-search__input {
       font-family: 'Roboto', sans-serif;
