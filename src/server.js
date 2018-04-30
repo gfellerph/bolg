@@ -17,7 +17,11 @@ import { publishedPosts } from 'src/server/modules/queries';
 const app = express();
 
 // Attach socket io for initialization in bin/www
-app.io = io();
+app.io = io({
+  pingInterval: 15000,
+  pingTimeout: 30000,
+  transports: ['websocket'],
+});
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
