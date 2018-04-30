@@ -56,13 +56,14 @@ button,
     margin-left: $golden-em / 2;
   }
 
-  &.plain,
-  &.blank {
-    border: none;
-    padding: 0;
-    margin: 0;
-    background: none;
-  }
+}
+
+.plain,
+.blank {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: none;
 }
 
 label {
