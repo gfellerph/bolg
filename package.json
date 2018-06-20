@@ -32,7 +32,7 @@
     "aws-sdk": "^2.170.0",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.26.0",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
     "dateformat": "^3.0.3",
@@ -139,8 +139,8 @@
     "write-file-webpack-plugin": "^4.2.0"
   },
   "engines": {
-    "node": "9.3.0",
-    "npm": "5.6.0"
+    "node": ">=9.3.0",
+    "npm": ">=5.6.0"
   },
   "browserslist": [
     "> 5%",
