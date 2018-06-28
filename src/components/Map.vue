@@ -34,6 +34,29 @@
 
   /* global google */
 
+  function offsetCenter(latlng, offsetx, offsety, map) {
+    // https://stackoverflow.com/questions/10656743/how-to-offset-the-center-point-in-google-maps-api-v3
+    // latlng is the apparent centre-point
+    // offsetx is the distance you want that point to move to the right, in pixels
+    // offsety is the distance you want that point to move upwards, in pixels
+    // offset can be negative
+    // offsetx and offsety are both optional
+
+    const scale = map.getZoom() ** 2;
+
+    const worldCoordinateCenter = map.getProjection().fromLatLngToPoint(latlng);
+    const pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
+
+    const worldCoordinateNewCenter = new google.maps.Point(
+      worldCoordinateCenter.x - pixelOffset.x,
+      worldCoordinateCenter.y + pixelOffset.y,
+    );
+
+    const newCenter = map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
+
+    return newCenter;
+}
+
   export default {
     data() {
       return {
@@ -61,7 +84,7 @@
         .then((res) => {
           const journey = res.data;
           const { lat, lng } = res.data[res.data.length - 1];
-          this.map.setCenter(new google.maps.LatLng(lat, lng))
+          this.map.panTo(new google.maps.LatLng(lat, lng))
 
           const path = journey.map(location => ({ lat: location.lat, lng: location.lng }));
           this.polyline = new google.maps.Polyline(Object.assign(
@@ -113,12 +136,12 @@
                 tipp,
                 marker,
               };
-              /* marker.setIcon({
+              marker.setIcon({
                 url: '/img/inuksuk-inverted.svg',
                 size: new google.maps.Size(36, 34),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(18, 17),
-              }); */
+              });
             });
 
             return marker;
@@ -143,7 +166,16 @@
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(18, 17),
           });
-          this.map.panTo(newTipp.marker.position);
+          let newPosition = null;
+          const markerPosition = newTipp.marker.position;
+          const screenWidth = window.screen.width;
+          const screenHeight = window.screen.height;
+          if (screenWidth > 768) {
+            newPosition = offsetCenter(markerPosition, screenWidth / 6, 0, this.map);
+          } else {
+            newPosition = offsetCenter(markerPosition, 0, screenHeight / 4, this.map);
+          }
+          this.map.panTo(newPosition);
         }
       },
     },
