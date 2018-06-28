@@ -43,7 +43,7 @@ export default {
 
     @include min($xs) {
       top: 0;
-      max-width: 33vw;
+      width: 33vw;
       margin: $golden-rem;
     }
 
