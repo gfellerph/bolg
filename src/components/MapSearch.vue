@@ -163,7 +163,10 @@
   @import 'src/styles/core/_index';
 
   .pac-container {
-    margin-top: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: lightgrey;
+    border-width: 0 1px 1px 1px;
 
     &:after {
       content: none;
