@@ -4,6 +4,9 @@ include mixins/navigation
 
 block meta
   title Bilder - bis när
+  meta(property="og:url" content="https://bisnär.ch/bilder")
+  meta(property="og:title" content="bis när")
+  meta(property="og:image" content=logoURL)
 
 block styles
   !=webpack['/galleryCss.css']
