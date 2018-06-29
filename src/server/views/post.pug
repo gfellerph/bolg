@@ -5,9 +5,10 @@ include mixins/drawing
 include mixins/next-post
 
 block meta
+  meta(property='id' content=post._id)
   meta(property='og:title' content=post.title)
   meta(property='og:image' content=post.titleImage.url)
-  meta(property='id' content=post._id)
+  meta(property="og:url" content= 'https://bisnär.ch' + post.url)
   title= post.title
 
 block styles

@@ -43,7 +43,7 @@ export const putTipp = (req, res, next) => Tipp.findByIdAndUpdate(req.params.id,
  * @param {Function} next Callback for next middleware in route
  */
 export const listTipps = (req, res, next) => Tipp
-  .find()
+  .find({}, '-email')
   .sort('-created')
   .then(data => res.json(data))
   .catch(err => next(err));

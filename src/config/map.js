@@ -23,7 +23,7 @@ export const polylineConfig = {
 
 export const lineMarkerConfig = {
   icon: {
-    url: '/img/dot.png',
+    url: '/img/dot.svg',
     size: new google.maps.Size(11, 11),
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(5.5, 5.5),

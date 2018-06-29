@@ -1,5 +1,5 @@
 <template>
-  <div class="add-tipp floating-form map__box" @keydown.esc="cancel">
+  <div class="add-tipp floating-form" @keydown.esc="cancel">
     <textarea
       id="tipptext"
       class="add-tipp__text"
@@ -102,3 +102,10 @@
     },
   }
 </script>
+
+<style lang="scss">
+  .add-tipp__text {
+    border-top: 1px solid lightgrey;
+  }
+</style>
+

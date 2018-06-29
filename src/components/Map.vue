@@ -1,11 +1,24 @@
 <template>
   <div class="map">
-    <map-search
-      ref="mapSearch"
-      :map="map"
-      :test="'test'"
-    ></map-search>
+    <transition
+      name="slide-in-top"
+    >
+      <map-search
+        v-if="!selectedTipp.tipp"
+        ref="mapSearch"
+        :map="map"
+      ></map-search>
+    </transition>
     <div id="google-map"></div>
+    <transition
+      name="slide-in"
+    >
+      <map-tipp-detail
+        v-if="selectedTipp.tipp"
+        :tipp="selectedTipp.tipp"
+        @close="closeTippDetail"
+      />
+    </transition>
   </div>
 </template>
 
@@ -15,10 +28,34 @@
   import Tipp from 'src/models/Tipp';
   import AddTipp from 'src/components/AddTipp';
   import MapSearch from 'src/components/MapSearch';
+  import MapTippDetail from 'src/components/MapTippDetail';
   import { mapConfig, polylineConfig, lineMarkerConfig } from 'src/config/map';
   import { unique } from 'src/modules/group-by';
 
   /* global google */
+
+  function offsetCenter(latlng, offsetx, offsety, map) {
+    // https://stackoverflow.com/questions/10656743/how-to-offset-the-center-point-in-google-maps-api-v3
+    // latlng is the apparent centre-point
+    // offsetx is the distance you want that point to move to the right, in pixels
+    // offsety is the distance you want that point to move upwards, in pixels
+    // offset can be negative
+    // offsetx and offsety are both optional
+
+    const scale = map.getZoom() ** 2;
+
+    const worldCoordinateCenter = map.getProjection().fromLatLngToPoint(latlng);
+    const pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
+
+    const worldCoordinateNewCenter = new google.maps.Point(
+      worldCoordinateCenter.x - pixelOffset.x,
+      worldCoordinateCenter.y + pixelOffset.y,
+    );
+
+    const newCenter = map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
+
+    return newCenter;
+}
 
   export default {
     data() {
@@ -26,6 +63,10 @@
         markers: [],
         polyline: null,
         map: null,
+        selectedTipp: {
+          marker: null,
+          tipp: null,
+        },
       };
     },
 
@@ -36,11 +77,14 @@
 
       if (window.outerWidth >= 768) this.map.addListener('click', this.addTipp);
 
+      // Close tipp
+      this.map.addListener('click', this.closeTippDetail);
+
       axios.get('/api/journeys')
         .then((res) => {
           const journey = res.data;
           const { lat, lng } = res.data[res.data.length - 1];
-          this.map.setCenter(new google.maps.LatLng(lat, lng))
+          this.map.panTo(new google.maps.LatLng(lat, lng))
 
           const path = journey.map(location => ({ lat: location.lat, lng: location.lng }));
           this.polyline = new google.maps.Polyline(Object.assign(
@@ -79,6 +123,7 @@
               position: new google.maps.LatLng(tipp.lat, tipp.lng),
               map: this.map,
               title: tipp.title(),
+              tipp,
               icon: {
                 url: '/img/inuksuk-map.svg',
                 size: new google.maps.Size(36, 34),
@@ -86,14 +131,17 @@
                 anchor: new google.maps.Point(18, 17),
               },
             });
-            const infowindow = new google.maps.InfoWindow({
-              content: `
-                <h5>${tipp.name}</h5>
-                <p>${tipp.text}</p>
-              `,
-            });
             marker.addListener('click', () => {
-              infowindow.open(this.map, marker);
+              this.selectedTipp = {
+                tipp,
+                marker,
+              };
+              marker.setIcon({
+                url: '/img/inuksuk-inverted.svg',
+                size: new google.maps.Size(36, 34),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(18, 17),
+              });
             });
 
             return marker;
@@ -101,15 +149,53 @@
         });
     },
 
+    watch: {
+      selectedTipp(newTipp, oldTipp) {
+        if (oldTipp && oldTipp.marker) {
+          oldTipp.marker.setIcon({
+            url: '/img/inuksuk-map.svg',
+            size: new google.maps.Size(36, 34),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(18, 17),
+          });
+        }
+        if (newTipp && newTipp.marker) {
+          newTipp.marker.setIcon({
+            url: '/img/inuksuk-inverted.svg',
+            size: new google.maps.Size(36, 34),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(18, 17),
+          });
+          let newPosition = null;
+          const markerPosition = newTipp.marker.position;
+          const screenWidth = window.screen.width;
+          const screenHeight = window.screen.height;
+          if (screenWidth > 768) {
+            newPosition = offsetCenter(markerPosition, screenWidth / 6, 0, this.map);
+          } else {
+            newPosition = offsetCenter(markerPosition, 0, screenHeight / 4, this.map);
+          }
+          this.map.panTo(newPosition);
+        }
+      },
+    },
+
     methods: {
       addTipp(event) {
         bus.$emit('map-click', event.latLng);
+      },
+      closeTippDetail() {
+        this.selectedTipp = {
+          tipp: null,
+          marker: null,
+        };
       },
     },
 
     components: {
       AddTipp,
       MapSearch,
+      MapTippDetail,
     },
   };
 </script>
@@ -136,8 +222,28 @@
   }
 
   .map {
-    @include max($xxs) {
-      padding-top: 51px;
+    overflow: hidden;
+  }
+
+  .slide-in-enter-active,
+  .slide-in-leave-active,
+  .slide-in-top-enter-active,
+  .slide-in-top-leave-active {
+    transition: transform .5s, opacity .5s;
+  }
+  .slide-in-enter,
+  .slide-in-leave-to {
+    opacity: 0;
+    @include max($xs) {
+      transform: translate3d(0, 100vh, 0);
     }
+    @include min($xs) {
+      transform: translate3d(-40vw, 0, 0);
+    }
+  }
+  .slide-in-top-enter,
+  .slide-in-top-leave-to {
+    transform: translate3d(0, -200%, 0);
+    opacity: 0;
   }
 </style>
