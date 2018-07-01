@@ -5,6 +5,7 @@ import { slugger, logoURL } from 'src/config/constants';
 import writefile from 'src/server/modules/writefile';
 import deleteFile from 'src/server/modules/deleteFile';
 import webpackManifest from 'src/server/modules/webpack-manifest';
+import splitItems from 'src/modules/split-items';
 
 const views = path.join(process.cwd(), 'src/server/views');
 
@@ -13,10 +14,7 @@ export const buildGallery = (posts) => {
 
   // Split images in each post into two columns
   const orderedPosts = posts.map((post) => {
-    const orderedImages = post.images.reduce((images, image, index) => {
-      images[index % 2].push(image);
-      return images;
-    }, [[], []]);
+    const orderedImages = splitItems(post.images);
     return { ...post.toObject(), images: orderedImages };
   });
 
