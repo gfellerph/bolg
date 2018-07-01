@@ -247,6 +247,12 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+argparse@^1.0.9:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
+  dependencies:
+    sprintf-js "~1.0.2"
+
 aria-query@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-0.7.0.tgz#4af10a1e61573ddea0cf3b99b51c52c05b424d24"
@@ -1243,6 +1249,10 @@ block-stream@*:
   resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
   dependencies:
     inherits "~2.0.0"
+
+bluebird@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.0.5.tgz#2ff9d07c9b3edb29d6d280fe07528365e7ecd392"
 
 bluebird@3.5.0:
   version "3.5.0"
@@ -3041,6 +3051,16 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
+express-jsonschema@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/express-jsonschema/-/express-jsonschema-1.1.6.tgz#fd9d0667ecbb51430e326e9f620372a23136faef"
+  dependencies:
+    jsonschema "^1.0.0"
+
+express-query-int@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/express-query-int/-/express-query-int-3.0.0.tgz#acae1921d376f170cf5d2f31b10e2f62bb2dc7bd"
+
 express@^4.15.2, express@^4.16.2:
   version "4.16.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.2.tgz#e35c6dfe2d64b7dca0a5cd4f21781be3299e076c"
@@ -4605,6 +4625,12 @@ json-parse-better-errors@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.1.tgz#50183cd1b2d25275de069e9e71b467ac9eab973a"
 
+json-schema-defaults@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/json-schema-defaults/-/json-schema-defaults-0.4.0.tgz#b63ee7e7aa83f29b54cb31d31ecddeb056c3306c"
+  dependencies:
+    argparse "^1.0.9"
+
 json-schema-traverse@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/json-schema-traverse/-/json-schema-traverse-0.3.1.tgz#349a6d44c53a51de89b40805c5d5e59b417d3340"
@@ -4644,6 +4670,10 @@ jsonify@~0.0.0:
 jsonpointer@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-4.0.1.tgz#4fd92cb34e0e9db3c89c8622ecf51f9b978c6cb9"
+
+jsonschema@^1.0.0:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/jsonschema/-/jsonschema-1.2.4.tgz#a46bac5d3506a254465bc548876e267c6d0d6464"
 
 jsonwebtoken@^7.0.0:
   version "7.4.3"
@@ -5416,6 +5446,12 @@ mongodb@3.0.1:
 mongoose-legacy-pluralize@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.1.tgz#31ae25db45c30f1448c0f93f52769e903367c701"
+
+mongoose-paginate@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/mongoose-paginate/-/mongoose-paginate-5.0.3.tgz#d7ae49ed5bf64f1f7af7620ea865b67058c55371"
+  dependencies:
+    bluebird "3.0.5"
 
 mongoose@^5.0.0:
   version "5.0.0"
