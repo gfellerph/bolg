@@ -64,9 +64,14 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') !== 'production' ? err : { message: err.message };
   res.status(err.status || 500);
+  let details = '';
+
+  if (err.name === 'JsonSchemaValidation') {
+    details = err.validations;
+  }
 
   if (req.accepts('json')) {
-    res.json({ message: err.message });
+    res.json({ message: err.message, details });
     return;
   }
 
