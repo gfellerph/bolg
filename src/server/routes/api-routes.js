@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import multer from 'multer';
+import { validate } from 'express-jsonschema';
 import * as Subscribers from 'src/server/api/subscriber-api';
 import * as Users from 'src/server/api/user-api';
 import * as Tipps from 'src/server/api/tipp-api';
