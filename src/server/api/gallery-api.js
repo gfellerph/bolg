@@ -1,7 +1,7 @@
 import Post from 'src/models/PostModel';
+import { buildGalleryPost } from 'src/server/modules/build';
 
 export default (req, res, next) => {
-  console.log(req.query);
   Post.paginate({}, {
     page: req.query.page,
     limit: req.query.limit,
@@ -9,7 +9,8 @@ export default (req, res, next) => {
     select: 'title images postDate',
   })
     .then((data) => {
-      res.json(data.docs);
+      const posts = data.docs.map(post => buildGalleryPost(post));
+      res.send(posts.join());
     })
     .catch(err => next(err));
 }
