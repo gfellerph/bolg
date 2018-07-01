@@ -10,7 +10,7 @@
     >
     <image-upload-progress
       v-if="image.state === imageStates.UPLOADING"
-      :imageId="image.id"
+      :image-id="image.shortid"
       :src="blobOrUrl"
     ></image-upload-progress>
     <div
