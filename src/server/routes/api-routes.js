@@ -11,10 +11,13 @@ import * as Publisher from 'src/server/api/publish-api';
 import notify from 'src/server/api/notify-api';
 import * as Images from 'src/server/api/image-api';
 import * as Drawings from 'src/server/api/drawing-api';
+import fixRatio from 'src/server/migration/fix-ratio';
 
 const router = Router();
 const uploader = multer();
 const authenticate = passport.authenticate('jwt', { session: false });
+
+router.get('/migration/fix-ratio', fixRatio);
 
 router.post('/image', authenticate, uploader.single('image'), Images.post);
 router.delete('/image/:id', authenticate, Images.remove);
