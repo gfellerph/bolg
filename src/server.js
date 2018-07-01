@@ -6,6 +6,7 @@ import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import mongoose from 'mongoose';
 import io from 'socket.io';
+import queryParser from 'express-query-int';
 import redirectRoutes from 'src/server/routes/redirect-routes';
 import apiRoutes from 'src/server/routes/api-routes';
 import errorRoutes from 'src/server/routes/error-routes';
@@ -49,6 +50,7 @@ app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', expressStatic));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(queryParser());
 
 // Routes
 app.use(redirectRoutes);

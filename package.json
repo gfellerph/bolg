@@ -40,6 +40,7 @@
     "debug": "^3.1.0",
     "es6-promise": "^4.1.1",
     "express": "^4.16.2",
+    "express-query-int": "^3.0.0",
     "heroku-ssl-redirect": "^0.0.4",
     "image-data-uri": "^1.0.1",
     "image-size": "^0.6.2",
