@@ -9,6 +9,18 @@ import splitItems from 'src/modules/split-items';
 
 const views = path.join(process.cwd(), 'src/server/views');
 
+/**
+ * Build a partial gallery post and return the compiled html
+ * @param {Object} post A post object
+ */
+export const buildGalleryPost = (post) => {
+  const images = splitItems(post.images);
+  return pug.renderFile(`${views}/partials/gallery-post.pug`, {
+    post,
+    images,
+  });
+}
+
 export const buildGallery = (posts) => {
   const filePath = 'public/bilder.html';
 
