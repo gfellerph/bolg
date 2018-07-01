@@ -19,7 +19,7 @@ export default function Image(img = {}) {
   };
 
   this.getBlobOrSmallestThumb = () => {
-    if (this.file) return URL.createObjectURL(this.file);
+    if (this.file) return window.URL.createObjectURL(this.file);
     return this.getThumbnail(160);
   }
 

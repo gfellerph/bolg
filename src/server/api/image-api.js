@@ -5,12 +5,15 @@ import awsConfig from 'src/config/tinify-aws';
 import app from 'src/server';
 import { cdnPrefix, imageStates } from 'src/config/constants';
 import mime from 'mime-types';
+import sizeOf from 'image-size';
 
 tinify.key = process.env.TINYPNG_API_KEY;
 
 export const post = async (req, res) => {
   const img = new Image({ shortid: req.body.shortid });
   const key = `i/${req.body.shortid}.${mime.extension(req.file.mimetype)}`;
+  const { width, height } = sizeOf(req.file.buffer);
+  img.ratio = height / width;
   img.url = cdnPrefix(key);
   img.state = imageStates.PROCESSING;
 

@@ -21,6 +21,7 @@
         <input
           id="image-uploader"
           type="file"
+          accept=".jpg,.jpeg,.png"
           multiple
           @change="onFileChange"
         />
