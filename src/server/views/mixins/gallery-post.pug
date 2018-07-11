@@ -7,18 +7,18 @@ mixin gallery-column(images)
           src=image.blurryThumb
           data-lqip-src=image.url
           data-lqip-srcset=image.srcset
-          sizes="320px"
+          sizes="(min-width: 768px) 320px, 50vw"
         )
         noscript
           img.gallery__image(
             alt='Bilder usem Blog'
             src=image.url
             srcset=image.srcset
-            sizes="320px"
+            sizes="(min-width: 768px) 320px, 50vw"
           )
 
 mixin gallery-post(images, title)
-  article
+  article.gallery-post
     h1= title
     div.gallery
       each imageColumn in images

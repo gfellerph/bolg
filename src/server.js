@@ -6,6 +6,7 @@ import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import mongoose from 'mongoose';
 import io from 'socket.io';
+import queryParser from 'express-query-int';
 import redirectRoutes from 'src/server/routes/redirect-routes';
 import apiRoutes from 'src/server/routes/api-routes';
 import errorRoutes from 'src/server/routes/error-routes';
@@ -49,6 +50,7 @@ app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', expressStatic));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(queryParser());
 
 // Routes
 app.use(redirectRoutes);
@@ -62,9 +64,14 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') !== 'production' ? err : { message: err.message };
   res.status(err.status || 500);
+  let details = '';
+
+  if (err.name === 'JsonSchemaValidation') {
+    details = err.validations;
+  }
 
   if (req.accepts('json')) {
-    res.json({ message: err.message });
+    res.json({ message: err.message, details });
     return;
   }
 

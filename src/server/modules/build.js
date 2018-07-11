@@ -5,20 +5,32 @@ import { slugger, logoURL } from 'src/config/constants';
 import writefile from 'src/server/modules/writefile';
 import deleteFile from 'src/server/modules/deleteFile';
 import webpackManifest from 'src/server/modules/webpack-manifest';
+import splitItems from 'src/modules/split-items';
 
 const views = path.join(process.cwd(), 'src/server/views');
+
+/**
+ * Build a partial gallery post and return the compiled html
+ * @param {Object} post A post object
+ */
+export const buildGalleryPost = (post) => {
+  const images = splitItems(post.images);
+  return pug.renderFile(`${views}/partials/gallery-post.pug`, {
+    post,
+    images,
+  });
+}
 
 export const buildGallery = (posts) => {
   const filePath = 'public/bilder.html';
 
   // Split images in each post into two columns
-  const orderedPosts = posts.map((post) => {
-    const orderedImages = post.images.reduce((images, image, index) => {
-      images[index % 2].push(image);
-      return images;
-    }, [[], []]);
-    return { ...post.toObject(), images: orderedImages };
-  });
+  const orderedPosts = posts
+    .slice(0, 2)
+    .map((post) => {
+      const orderedImages = splitItems(post.images);
+      return { ...post.toObject(), images: orderedImages };
+    });
 
   const html = pug.renderFile(`${views}/gallery.pug`, {
     orderedPosts,

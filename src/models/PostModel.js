@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import dateformat from 'dateformat';
+import mongoosePaginate from 'mongoose-paginate';
 import { ImageSchema } from 'src/models/ImageModel';
 import { slugger } from 'src/config/constants';
 import { marked, excerpt, description } from 'src/config/markdown';
@@ -61,6 +62,8 @@ export const PostSchema = new Schema({
   },
 });
 
+PostSchema.plugin(mongoosePaginate);
+
 PostSchema.virtual('isPublished').get(function isPublished() {
   return this.lastPublished !== null && this.publishedMarkdown !== '';
 });
@@ -74,15 +77,17 @@ PostSchema.virtual('liveUrl').get(function liveUrl() {
 })
 
 PostSchema.virtual('html').get(function getHtml() {
-  if (!this.isPublished) return '';
+  if (!this.isPublished || !this.publishedMarkdown) return '';
   return marked(this.publishedMarkdown, { lqip: true });
 });
 
 PostSchema.virtual('excerpt').get(function getExcerpt() {
+  if (!this.publishedMarkdown) return '';
   return excerpt(this.publishedMarkdown);
 });
 
 PostSchema.virtual('description').get(function getDescription() {
+  if (!this.publishedMarkdown) return '';
   return description(this.publishedMarkdown);
 });
 

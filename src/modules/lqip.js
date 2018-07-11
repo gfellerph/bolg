@@ -1,5 +1,6 @@
 const defaults = {
   selector: '[data-lqip-src],[data-lqip-srcset]',
+  selectorRoot: document,
   root: null,
   rootMargin: '100% 0px 100% 0px',
   treshold: 0,
@@ -111,7 +112,7 @@ const lqip = (userOptions = defaults) => {
     });
   }
 
-  const images = document.querySelectorAll(options.selector);
+  const images = options.selectorRoot.querySelectorAll(options.selector);
   observer = new IntersectionObserver(loader, {
     root: options.root,
     rootMargin: options.rootMargin,

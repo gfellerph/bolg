@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import multer from 'multer';
+import { validate } from 'express-jsonschema';
 import * as Subscribers from 'src/server/api/subscriber-api';
 import * as Users from 'src/server/api/user-api';
 import * as Tipps from 'src/server/api/tipp-api';
@@ -11,13 +12,17 @@ import * as Publisher from 'src/server/api/publish-api';
 import notify from 'src/server/api/notify-api';
 import * as Images from 'src/server/api/image-api';
 import * as Drawings from 'src/server/api/drawing-api';
+import getGallery from 'src/server/api/gallery-api';
 import fixRatio from 'src/server/migration/fix-ratio';
+import PagingSchema from 'src/schemas/PagingSchema';
 
 const router = Router();
 const uploader = multer();
 const authenticate = passport.authenticate('jwt', { session: false });
 
 router.get('/migration/fix-ratio', fixRatio);
+
+router.get('/gallery', validate({ query: PagingSchema }), getGallery);
 
 router.post('/image', authenticate, uploader.single('image'), Images.post);
 router.delete('/image/:id', authenticate, Images.remove);
