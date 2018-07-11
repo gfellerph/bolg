@@ -15,7 +15,6 @@ import * as Drawings from 'src/server/api/drawing-api';
 import getGallery from 'src/server/api/gallery-api';
 import fixRatio from 'src/server/migration/fix-ratio';
 import PagingSchema from 'src/schemas/PagingSchema';
-import defaults from 'src/server/modules/json-schema-defaults';
 
 const router = Router();
 const uploader = multer();
@@ -23,7 +22,7 @@ const authenticate = passport.authenticate('jwt', { session: false });
 
 router.get('/migration/fix-ratio', fixRatio);
 
-router.get('/gallery', defaults({ query: PagingSchema }), validate({ query: PagingSchema }), getGallery);
+router.get('/gallery', validate({ query: PagingSchema }), getGallery);
 
 router.post('/image', authenticate, uploader.single('image'), Images.post);
 router.delete('/image/:id', authenticate, Images.remove);
