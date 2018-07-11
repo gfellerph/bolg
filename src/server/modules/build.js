@@ -25,10 +25,12 @@ export const buildGallery = (posts) => {
   const filePath = 'public/bilder.html';
 
   // Split images in each post into two columns
-  const orderedPosts = posts.map((post) => {
-    const orderedImages = splitItems(post.images);
-    return { ...post.toObject(), images: orderedImages };
-  });
+  const orderedPosts = posts
+    .slice(0, 2)
+    .map((post) => {
+      const orderedImages = splitItems(post.images);
+      return { ...post.toObject(), images: orderedImages };
+    });
 
   const html = pug.renderFile(`${views}/gallery.pug`, {
     orderedPosts,
