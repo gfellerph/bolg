@@ -5,13 +5,15 @@ export default {
       type: 'integer',
       default: 1,
       minimum: 1,
-      required: true,
     },
     limit: {
       type: 'integer',
       default: 2,
       minimum: 1,
-      required: true,
     },
+  },
+  dependencies: {
+    page: { required: ['limit'] },
+    limit: { required: ['page'] },
   },
 }
