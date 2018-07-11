@@ -15,7 +15,7 @@ block navigation
   +post-navigation('galerie')
 
 block body
-  div.container
+  div.container.gallery-posts
     each post in orderedPosts
       +gallery-post(post.images, post.title)
 
