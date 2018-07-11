@@ -7,6 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
     afterInsert(lastPost) {
       lqip({
         selectorRoot: lastPost,
+        rootMargin: '0px',
         afterReplace: (lqipImage, originalImage) => {
           if (lqipImage) lqipImage.remove();
           mediumZoom(originalImage);
