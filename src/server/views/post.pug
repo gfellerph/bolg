@@ -9,7 +9,7 @@ block meta
   meta(property='og:title' content=post.title)
   meta(property='og:image' content=post.titleImage.url)
   meta(property="og:url" content= 'https://bisnär.ch' + post.url)
-  title= post.title
+  title!= post.title
 
 block styles
   !=webpack['/postCss.css']
