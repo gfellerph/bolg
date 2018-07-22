@@ -19,7 +19,7 @@ mixin gallery-column(images)
 
 mixin gallery-post(images, title)
   article.gallery-post
-    h1= title
+    h1!= title
     div.gallery
       each imageColumn in images
         +gallery-column(imageColumn)
