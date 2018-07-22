@@ -19,4 +19,4 @@ mixin post-tile(post)
             )
       div.post__overlay
         p.post__published= post.formattedPostDate
-        h2.post__title.h4= post.title
+        h2.post__title.h4!= post.title

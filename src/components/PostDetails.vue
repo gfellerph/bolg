@@ -7,7 +7,7 @@
             :src="titleImageUrl"
             alt=""
           >
-          <h1 class="h4">{{post.title}}</h1>
+          <h1 class="h4" v-html="post.title"></h1>
           <table class="meta-infos">
             <tr>
               <th>Gmacht:</th>
