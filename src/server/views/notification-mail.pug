@@ -8,7 +8,7 @@ block styles
     include ../../styles/molecules/notification-mail.scss
 
 block preheader
-  span.preheader(style="display:none;") Gönn dir e Pouse und lis d'Gschicht "#{post.title}" uf bisnär.ch
+  span.preheader(style="display:none;") Gönn dir e Pouse und lis d'Gschicht "!{post.title}" uf bisnär.ch
 
 block body
  table.content(
@@ -30,7 +30,7 @@ block body
     )
       a(href=post.liveUrl style="color: #000001;text-decoration:none;")
         img(src=post.titleImage.getThumbnail(600))
-        h1(style="color: #000001;text-decoration:none;")= post.title
+        h1(style="color: #000001;text-decoration:none;")!= post.title
 
   tr
     td
