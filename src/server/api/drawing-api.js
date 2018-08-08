@@ -35,15 +35,17 @@ export const post = async (req, res, next) => {
   }).promise();
 
   // Update the post
-  const update = Post.findOneAndUpdate({
-    _id: req.body.postid,
-  }, {
-    $push: {
-      drawings: drawing,
-    },
-  }, {
-    new: true,
-  });
+  const update = !req.body.postid
+    ? Promise.resolve()
+    : Post.findOneAndUpdate({
+      _id: req.body.postid,
+    }, {
+      $push: {
+        drawings: drawing,
+      },
+    }, {
+      new: true,
+    });
 
   // When upload complete and saved to db, send response
   const [, updatedPost] = await Promise.all([upload, update])
@@ -51,6 +53,7 @@ export const post = async (req, res, next) => {
   res.json(updatedPost);
 
   // Rebuild post after sending response
+  if (!updatedPost) return;
   buildPost(updatedPost, await nextPost(updatedPost.postDate))
     /* eslint no-console: 0 */
     .catch(err => console.log(`buildPost err: ${err}`))
