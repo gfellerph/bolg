@@ -30,6 +30,8 @@ export const post = async (req, res, next) => {
     Bucket: 'adie.bisnaer.ch',
     Key,
     Body: tinyBuffer,
+    ContentType: 'image/png',
+    CacheControl: 'public, max-age=31536000',
   }).promise();
 
   // Update the post
