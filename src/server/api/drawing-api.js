@@ -30,18 +30,22 @@ export const post = async (req, res, next) => {
     Bucket: 'adie.bisnaer.ch',
     Key,
     Body: tinyBuffer,
+    ContentType: 'image/png',
+    CacheControl: 'public, max-age=31536000',
   }).promise();
 
   // Update the post
-  const update = Post.findOneAndUpdate({
-    _id: req.body.postid,
-  }, {
-    $push: {
-      drawings: drawing,
-    },
-  }, {
-    new: true,
-  });
+  const update = !req.body.postid
+    ? Promise.resolve()
+    : Post.findOneAndUpdate({
+      _id: req.body.postid,
+    }, {
+      $push: {
+        drawings: drawing,
+      },
+    }, {
+      new: true,
+    });
 
   // When upload complete and saved to db, send response
   const [, updatedPost] = await Promise.all([upload, update])
@@ -49,6 +53,7 @@ export const post = async (req, res, next) => {
   res.json(updatedPost);
 
   // Rebuild post after sending response
+  if (!updatedPost) return;
   buildPost(updatedPost, await nextPost(updatedPost.postDate))
     /* eslint no-console: 0 */
     .catch(err => console.log(`buildPost err: ${err}`))

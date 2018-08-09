@@ -1,28 +1,37 @@
-.drawing {
-  // position: relative;
-}
+$border-image: url(https://adie.bisnaer.ch/d/HyhuAkuSX.png);
 
 .drawing__canvas {
   display: block;
-  width: 300px;
+  width: 100%;
   height: 225px;
   max-width: 100%;
   margin: 0 auto;
-  outline: 1px solid black;
-  background: white;
-  background-size: cover;
-  background-position: center;
+  background: url(/img/smileys.png) center no-repeat;
+  background-size: contain;
 
-  &:hover {
-    background-image: none !important;
+  &:hover,
+  &:not(.blank) {
+    background-image: none;
   }
 
   &.merci {
     background-image: url(/img/merci.png);
   }
+}
 
-  &.blank {
-    background-image: url(/img/smileys.png);
+.drawing__canvas-border {
+  margin: 0 auto;
+
+  @include min($xxs) {
+    max-width: 400px;
+    border: 50px solid white;
+    border-image: $border-image 50 stretch;
+  }
+
+  @include max($xxs) {
+    max-width: 300px;
+    position: relative;
+    outline: 1px solid black;
   }
 }
 
@@ -42,12 +51,12 @@
   img {
     display: block;
     max-width: 100%;
-    
+
     @include min($xs) {
       width: 100px;
       opacity: 0.65;
     }
-    
+
     @include max($xs) {
       float: left;
       width: 25%;
