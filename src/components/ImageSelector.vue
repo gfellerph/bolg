@@ -78,8 +78,10 @@
         // Find first waiting image
         const imageToUpload = this.imageQueue.find(image => image.state === imageStates.QUEUED);
 
-        // No more images to upload
+        // If no more images to upload, return
         if (!imageToUpload) return;
+
+        // Start uploading
         this.uploading = true;
         imageToUpload.state = imageStates.UPLOADING;
         imageCtrl.upload(imageToUpload, {
@@ -91,6 +93,7 @@
           .then((res) => {
             imageToUpload.url = res.data.url;
             imageToUpload.state = res.data.state;
+            imageToUpload.ratio = res.data.ratio;
             this.uploading = false;
             this.startUpload();
           })
