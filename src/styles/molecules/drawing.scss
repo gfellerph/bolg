@@ -2,31 +2,37 @@ $border-image: url(https://adie.bisnaer.ch/d/HyhuAkuSX.png);
 
 .drawing__canvas {
   display: block;
-  width: 300px;
+  width: 100%;
   height: 225px;
   max-width: 100%;
   margin: 0 auto;
-  background: white center cover no-repeat;
+  background: url(/img/smileys.png) center no-repeat;
+  background-size: contain;
 
-  &:hover {
-    background-image: none !important;
+  &:hover,
+  &:not(.blank) {
+    background-image: none;
   }
 
   &.merci {
     background-image: url(/img/merci.png);
   }
-
-  &.blank {
-    background-image: url(/img/smileys.png);
-  }
 }
 
 .drawing__canvas-border {
-  width: 300px;
   margin: 0 auto;
-  box-sizing: content-box;
-  border: white 50px solid;
-  border-image: $border-image 50 stretch;
+
+  @include min($xxs) {
+    max-width: 400px;
+    border: 50px solid white;
+    border-image: $border-image 50 stretch;
+  }
+
+  @include max($xxs) {
+    max-width: 300px;
+    position: relative;
+    outline: 1px solid black;
+  }
 }
 
 .drawing__display {
