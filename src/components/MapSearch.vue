@@ -20,15 +20,12 @@
         <span class="sr-only">Lösche</span>
       </button>
     </div>
+    <map-filter v-if="status == state.INITIAL && showTippInfo"></map-filter>
     <button
       v-if="status == state.LOCATION_SELECTED"
       class="map-search__cta"
       @click="addTipp"
     >Reisetipp zu däm Ort gä?</button>
-    <tipp-info
-      v-if="status == state.INITIAL && showTippInfo"
-      v-on:close-tipp-info="closeTippInfo"
-    ></tipp-info>
     <add-tipp
       v-if="status == state.ADD_TIPP"
       :location="location"
@@ -47,7 +44,7 @@
   import bus from 'src/config/bus';
   import AddTipp from 'src/components/AddTipp';
   import AddTippSuccess from 'src/components/AddTippSuccess';
-  import TippInfo from 'src/components/TippInfo';
+  import MapFilter from 'src/components/MapFilter';
 
   /* global google */
 
@@ -63,7 +60,7 @@
     components: {
       AddTipp,
       AddTippSuccess,
-      TippInfo,
+      MapFilter,
     },
 
     data() {
@@ -74,6 +71,7 @@
         searchBox: null,
         showTippInfo: false,
         location: null,
+        filter: 'tipps',
         marker: new google.maps.Marker({
           title: 'Reisetipp hie hinzuefüege?',
           icon: {
