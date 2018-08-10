@@ -1,13 +1,16 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
+import Vuex from 'vuex';
 import GoogleMap from 'src/components/Map';
 import Subscribe from 'src/components/Subscribe';
-import 'src/config/validation';
-import { setBookmarkFlag } from 'src/modules/bookmark';
 import lqip from 'src/modules/lqip';
+import mapStore from 'src/stores/map-store';
+import { setBookmarkFlag } from 'src/modules/bookmark';
+import 'src/config/validation';
 
 Vue.config.productionTip = false;
+Vue.use(Vuex);
 
 const mapElement = document.getElementById('map');
 const subscribeElement = document.getElementById('subscribe');
@@ -19,6 +22,12 @@ window.addEventListener('DOMContentLoaded', () => {
       el: '#map',
       template: '<google-map/>',
       components: { GoogleMap },
+      store: new Vuex.Store({
+        strict: true,
+        modules: {
+          mapStore,
+        },
+      }),
     });
   }
 
