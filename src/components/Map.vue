@@ -23,45 +23,22 @@
 </template>
 
 <script>
-  import axios from 'axios';
   import bus from 'src/config/bus';
-  import Tipp from 'src/models/Tipp';
   import AddTipp from 'src/components/AddTipp';
   import MapSearch from 'src/components/MapSearch';
   import MapTippDetail from 'src/components/MapTippDetail';
-  import { mapConfig, polylineConfig, lineMarkerConfig } from 'src/config/map';
-  import { unique } from 'src/modules/group-by';
+  import { mapConfig, inuksukConfig, polylineConfig, lineMarkerConfig } from 'src/config/map';
+  import { mapState, mapActions } from 'vuex';
+  import offsetCenter from 'src/modules/map-offset';
 
   /* global google */
-
-  function offsetCenter(latlng, offsetx, offsety, map) {
-    // https://stackoverflow.com/questions/10656743/how-to-offset-the-center-point-in-google-maps-api-v3
-    // latlng is the apparent centre-point
-    // offsetx is the distance you want that point to move to the right, in pixels
-    // offsety is the distance you want that point to move upwards, in pixels
-    // offset can be negative
-    // offsetx and offsety are both optional
-
-    const scale = map.getZoom() ** 2;
-
-    const worldCoordinateCenter = map.getProjection().fromLatLngToPoint(latlng);
-    const pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
-
-    const worldCoordinateNewCenter = new google.maps.Point(
-      worldCoordinateCenter.x - pixelOffset.x,
-      worldCoordinateCenter.y + pixelOffset.y,
-    );
-
-    const newCenter = map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
-
-    return newCenter;
-}
-
   export default {
     data() {
       return {
-        markers: [],
         polyline: null,
+        journeyMarkers: [],
+        tippMarkers: [],
+        markers: [],
         map: null,
         selectedTipp: {
           marker: null,
@@ -73,99 +50,29 @@
     mounted() {
       this.map = new google.maps.Map(document.getElementById('google-map'), mapConfig);
 
+      // Init search input
       this.$refs.mapSearch.init(this.map);
 
+      // Add tipp listener but not on mobile
       if (window.outerWidth >= 768) this.map.addListener('click', this.addTipp);
 
-      // Close tipp
+      // Close tipp listener
       this.map.addListener('click', this.closeTippDetail);
 
-      axios.get('/api/journeys')
-        .then((res) => {
-          const journey = res.data;
-          const { lat, lng } = res.data[res.data.length - 1];
-          this.map.panTo(new google.maps.LatLng(lat, lng))
-
-          const path = journey.map(location => ({ lat: location.lat, lng: location.lng }));
-          this.polyline = new google.maps.Polyline(Object.assign(
-            {},
-            polylineConfig,
-            {
-              path,
-              map: this.map,
-            },
-          ));
-
-          const groupedMarkers = unique(journey, marker => [
-            marker.description,
-            marker.lat,
-            marker.lng,
-          ]);
-
-          groupedMarkers.map(location => new google.maps.Marker(Object.assign(
-            {},
-            lineMarkerConfig,
-            {
-              position: new google.maps.LatLng(location.lat, location.lng),
-              map: this.map,
-              title: location.description,
-            },
-          )));
-        })
-
-      axios.get('/api/tipps')
-        .then((res) => {
-          const tipps = res.data;
-
-          this.markers = tipps.map((tippData) => {
-            const tipp = new Tipp(tippData);
-            const marker = new google.maps.Marker({
-              position: new google.maps.LatLng(tipp.lat, tipp.lng),
-              map: this.map,
-              title: tipp.title(),
-              tipp,
-              icon: {
-                url: '/img/inuksuk-map.svg',
-                size: new google.maps.Size(36, 34),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(18, 17),
-              },
-            });
-            marker.addListener('click', () => {
-              this.selectedTipp = {
-                tipp,
-                marker,
-              };
-              marker.setIcon({
-                url: '/img/inuksuk-inverted.svg',
-                size: new google.maps.Size(36, 34),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(18, 17),
-              });
-            });
-
-            return marker;
-          });
-        });
+      // Init filter
+      this.filterChange();
     },
 
     watch: {
+      filter() {
+        this.filterChange();
+      },
       selectedTipp(newTipp, oldTipp) {
         if (oldTipp && oldTipp.marker) {
-          oldTipp.marker.setIcon({
-            url: '/img/inuksuk-map.svg',
-            size: new google.maps.Size(36, 34),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(18, 17),
-          });
+          oldTipp.marker.setIcon(inuksukConfig('/img/inuksuk-map.svg'));
         }
         if (newTipp && newTipp.marker) {
-          newTipp.marker.setIcon({
-            url: '/img/inuksuk-inverted.svg',
-            size: new google.maps.Size(36, 34),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(18, 17),
-          });
+          newTipp.marker.setIcon(inuksukConfig('/img/inuksuk-inverted.svg'));
           let newPosition = null;
           const markerPosition = newTipp.marker.position;
           const screenWidth = window.screen.width;
@@ -180,6 +87,15 @@
       },
     },
 
+    computed: {
+      ...mapState({
+        tipps: state => state.mapStore.tipps,
+        journey: state => state.mapStore.journey,
+        journeyPoints: state => state.mapStore.journeyPoints,
+        filter: state => state.mapStore.filter,
+      }),
+    },
+
     methods: {
       addTipp(event) {
         bus.$emit('map-click', event.latLng);
@@ -190,6 +106,88 @@
           marker: null,
         };
       },
+      filterChange() {
+        switch (this.filter) {
+          case 'tipps':
+            this.LOAD_TIPPS()
+              .then(this.renderTipps);
+            break;
+          case 'journey':
+            this.LOAD_JOURNEY()
+              .then(this.renderJourney);
+            break;
+          default:
+            break;
+        }
+      },
+      renderTipps() {
+        // Clean up
+        if (this.journeyMarkers.length) {
+          this.journeyMarkers.forEach((marker) => { marker.setMap(null); });
+        }
+        if (this.polyline) this.polyline.setMap(null);
+
+        // Shortcut if already initialised
+        if (this.tippMarkers.length) {
+          this.tippMarkers.forEach((marker) => { marker.setMap(this.map); });
+          return;
+        }
+
+        this.tippMarkers = this.tipps.map((tipp) => {
+          const marker = new google.maps.Marker({
+            position: new google.maps.LatLng(tipp.lat, tipp.lng),
+            map: this.map,
+            title: tipp.title,
+            tipp,
+            icon: inuksukConfig('/img/inuksuk-map.svg'),
+          });
+
+          marker.addListener('click', () => {
+            this.selectedTipp = {
+              tipp,
+              marker,
+            };
+            marker.setIcon(inuksukConfig('/img/inuksuk-inverted.svg'));
+          });
+
+          return marker;
+        });
+      },
+      renderJourney() {
+        // Cleanup
+        if (this.tippMarkers.length) {
+          this.tippMarkers.forEach((marker) => { marker.setMap(null); });
+        }
+
+        if (this.polyline) {
+          // Shortcut if already initialised
+          this.polyline.setMap(this.map);
+        } else {
+          this.polyline = new google.maps.Polyline(Object.assign(
+            {},
+            polylineConfig,
+            {
+              path: this.journey,
+              map: this.map,
+            },
+          ));
+        }
+
+        if (this.journeyMarkers.length) {
+          this.journeyMarkers.forEach((marker) => { marker.setMap(this.map) });
+        } else {
+          this.journeyMarkers = this.journeyPoints.map(point => new google.maps.Marker(Object.assign(
+            {},
+            lineMarkerConfig,
+            {
+              position: new google.maps.LatLng(point.lat, point.lng),
+              map: this.map,
+              title: point.description,
+            },
+          )));
+        }
+      },
+      ...mapActions(['LOAD_JOURNEY', 'LOAD_TIPPS']),
     },
 
     components: {

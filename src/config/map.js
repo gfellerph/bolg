@@ -10,9 +10,12 @@ export const mapConfig = {
   draggingCursor: null,
 }
 
-export const markerConfig = {
-
-}
+export const inuksukConfig = url => ({
+  url,
+  size: new google.maps.Size(36, 34),
+  origin: new google.maps.Point(0, 0),
+  anchor: new google.maps.Point(18, 17),
+})
 
 export const polylineConfig = {
   // geodesic: true,
