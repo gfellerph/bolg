@@ -41,6 +41,12 @@ p.error { color: red; }
   }
 }
 
+.hidden-xs {
+  @include max($xs) {
+    display: none !important;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
