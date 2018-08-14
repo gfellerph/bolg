@@ -20,7 +20,8 @@
         <span class="sr-only">Lösche</span>
       </button>
     </div>
-    <map-filter v-if="status == state.INITIAL && showTippInfo"></map-filter>
+    <map-filter v-if="status == state.INITIAL"></map-filter>
+    <map-info v-if="status == state.INITIAL && mapInfo"></map-info>
     <button
       v-if="status == state.LOCATION_SELECTED"
       class="map-search__cta"
@@ -45,6 +46,8 @@
   import AddTipp from 'src/components/AddTipp';
   import AddTippSuccess from 'src/components/AddTippSuccess';
   import MapFilter from 'src/components/MapFilter';
+  import MapInfo from 'src/components/MapInfo';
+  import { mapState } from 'vuex';
 
   /* global google */
 
@@ -61,6 +64,7 @@
       AddTipp,
       AddTippSuccess,
       MapFilter,
+      MapInfo,
     },
 
     data() {
@@ -111,6 +115,12 @@
       if (window.sessionStorage) {
         this.showTippInfo = !window.sessionStorage.getItem('tippInfo');
       }
+    },
+
+    computed: {
+      ...mapState({
+        mapInfo: xstate => xstate.mapStore.info,
+      }),
     },
 
     methods: {
