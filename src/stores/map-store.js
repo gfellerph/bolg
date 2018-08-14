@@ -10,9 +10,11 @@ export default {
     journey: [],
     journeyPoints: [],
     tipps: [],
+    info: false,
   },
   mutations: {
     UPDATE_FILTER: (state, action) => { state.filter = action.filter },
+    UPDATE_INFO: (state, action) => { state.info = action.info },
     UPDATE_STATE: (state, action) => { state.state = action.state },
     UPDATE_JOURNEY: (state, action) => {
       state.journeyLoaded = true;
@@ -49,21 +51,6 @@ export default {
         journey,
         journeyPoints,
       });
-
-      /* this.polyline = new google.maps.Polyline(Object.assign({},
-        polylineConfig, {
-          path,
-          map: this.map,
-        },
-      )); */
-
-      /* groupedMarkers.map(location => new google.maps.Marker(Object.assign({},
-        lineMarkerConfig, {
-          position: new google.maps.LatLng(location.lat, location.lng),
-          map: this.map,
-          title: location.description,
-        },
-      ))); */
     },
     LOAD_TIPPS: async ({ state, commit }) => {
       if (state.tippsLoaded) return;
@@ -79,36 +66,6 @@ export default {
       });
 
       commit('UPDATE_TIPPS', { tipps });
-
-      /* this.markers = tipps.map((tippData) => {
-        const tipp = new Tipp(tippData);
-        const marker = new google.maps.Marker({
-          position: new google.maps.LatLng(tipp.lat, tipp.lng),
-          map: this.map,
-          title: tipp.title(),
-          tipp,
-          icon: {
-            url: '/img/inuksuk-map.svg',
-            size: new google.maps.Size(36, 34),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(18, 17),
-          },
-        });
-        marker.addListener('click', () => {
-          this.selectedTipp = {
-            tipp,
-            marker,
-          };
-          marker.setIcon({
-            url: '/img/inuksuk-inverted.svg',
-            size: new google.maps.Size(36, 34),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(18, 17),
-          });
-        });
-
-        return marker;
-      }); */
     },
   },
 }
