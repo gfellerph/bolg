@@ -75,3 +75,54 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+  @import 'src/styles/core/variables';
+
+  .map__filter {
+    border-top: 1px solid lightgrey;
+    padding: 0 $golden-rem / 2;
+  }
+
+  .map__filter,
+  .map__filter-panel,
+  .map__filter-panel label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .map__filter-panel label {
+    padding: $golden-rem / 8 $golden-rem / 4;
+    border-radius: 50px;
+    border: 3px solid lightgrey;
+    transition: border 0.3s, background 0.3s;
+
+    &.active,
+    &.checked {
+      border-color: dodgerblue;
+    }
+
+    &.checked {
+      background: dodgerblue;
+      color: white;
+    }
+
+    & + label {
+      margin-left: $golden-rem / 2;
+    }
+
+    img {
+      height: 24px;
+      width: 24px;
+      margin-right: $golden-rem / 4;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+  }
+</style>
