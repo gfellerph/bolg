@@ -85,14 +85,15 @@ export default {
   }
 
   .map__filter,
-  .map__filter-panel,
-  .map__filter-panel label {
+  .map__filter-panel {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
   }
 
   .map__filter-panel label {
+    display: flex;
+    align-items: center;
     padding: $golden-rem / 8 $golden-rem / 4;
     border-radius: 50px;
     border: 3px solid lightgrey;
