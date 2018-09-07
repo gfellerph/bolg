@@ -54,11 +54,16 @@ export const imageStates = {
 
 export const slugger = str => str
   .toLowerCase()
+  // Replace umlauts
   .replace(/ä/g, 'ae')
   .replace(/ö/g, 'oe')
   .replace(/ü/g, 'ue')
+  // Replace html entities
+  .replace(/&[^;]+;/g, '')
+  // Replace non letter characters
   .replace(/[^\w ]+/g, ' ')
   .trim()
+  // Replace white spaces with a dash
   .replace(/ +/g, '-');
 
 const imageExtDetector = /\.(jpe?g|png)$/i;
