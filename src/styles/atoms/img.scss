@@ -3,3 +3,7 @@ img {
   margin-right: auto;
   margin-left: auto;
 }
+
+p img + img {
+  margin-top: $golden-rem / 4;
+}
