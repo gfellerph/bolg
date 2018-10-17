@@ -1,4 +1,6 @@
 .main-post {
+  @extend .box;
+
   @include min($xs) {
     margin-top: $golden-rem * 2;
     margin-bottom: $golden-rem * 2;
@@ -9,19 +11,11 @@
     margin-bottom: $golden-rem;
   }
 
-  > *:first-child {
-    margin-top: 0;
-  }
-
-  > *:last-child {
-    margin-bottom: 0;
-  }
-
   > .lqip__wrapper,
-  > p > img {
+  > p > img[srcset] {
     @include max($xxs) {
-      margin-right: -$golden-rem;
-      margin-left: -$golden-rem;
+      margin-right: -20px;
+      margin-left: -20px;
     }
   }
 }

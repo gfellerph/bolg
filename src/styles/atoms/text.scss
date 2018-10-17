@@ -22,6 +22,14 @@ pre {
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: $title-font;
+
+  em:last-child {
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1.608;
+    font-family: Georgia, serif;
+    font-weight: normal;
+  }
 }
 
 h1,
@@ -66,21 +74,6 @@ h6,
   margin: $heading-margin;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  em:last-child {
-    display: block;
-    font-size: 0.9rem;
-    line-height: 1.608;
-    font-family: Georgia, serif;
-    font-weight: normal;
-  }
-}
-
 small,
 p.small,
 span.small {
@@ -98,7 +91,7 @@ article {
     &::first-letter {
       font-size: $golden-em * 2;
       float: left;
-      margin: 0 0.25em -5px 0;
+      margin: 0 0.25rem -5px 0;
       line-height: 1;
     }
   }
@@ -133,7 +126,8 @@ img + em,
 video + em,
 .picture-subtitle,
 figcaption,
-.lqip__wrapper + em {
+.lqip__wrapper + em,
+.video-wrapper + em {
   display: block;
   font-style: italic;
   margin: $golden-rem / 4 0;

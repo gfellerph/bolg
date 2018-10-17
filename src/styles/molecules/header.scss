@@ -31,10 +31,7 @@
       flex: 0 1 auto;
       text-decoration: none;
 
-      &.active {
-        text-decoration: underline;
-      }
-
+      &.active,
       &:hover {
         text-decoration: underline;
       }
