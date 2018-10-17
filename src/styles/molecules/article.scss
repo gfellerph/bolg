@@ -1,6 +1,4 @@
 .main-post {
-  @extend .box;
-
   @include min($xs) {
     margin-top: $golden-rem * 2;
     margin-bottom: $golden-rem * 2;
@@ -9,6 +7,10 @@
   @include max($xs) {
     margin-top: $golden-rem;
     margin-bottom: $golden-rem;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
   }
 
   > .lqip__wrapper,
