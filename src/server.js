@@ -48,7 +48,7 @@ app.use(compression());
 // Serve the static files
 app.use(favicon(path.resolve('public/favicon.ico')));
 app.use(express.static('public', expressStatic));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '1mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(queryParser());
 
