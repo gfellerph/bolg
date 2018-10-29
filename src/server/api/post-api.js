@@ -46,3 +46,10 @@ export const getPosts = (req, res, next) => Post.find({})
   .sort('-postDate')
   .then(posts => res.json(posts))
   .catch(err => next(err));
+
+export const getPostsMetaInfos = (req, res, next) => Post
+  .find({})
+  .select('postDate title _id created lastEdited lastSaved lastPublished notificationSent titleImage')
+  .sort('-postDate')
+  .then(posts => res.json(posts))
+  .catch(err => next(err));
