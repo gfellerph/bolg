@@ -1,10 +1,16 @@
 <template>
   <div class="posts">
     <div class="post-list-container">
+      <input
+        type="text"
+        v-model="search"
+        placeholder="Gschicht sueche"
+      >
+      <span class="displayed-posts">{{displayedPosts}}</span>
       <ul class="post-list">
         <li
           v-bind:key="post.id"
-          v-for="post in posts"
+          v-for="post in filteredPosts"
           @mouseenter="changeCurrentPost(post)"
         >
           <post-details :post="post" />
@@ -26,6 +32,7 @@
   export default {
     data() {
       return {
+        search: '',
         currentPost: null,
         Post,
       };
@@ -36,6 +43,16 @@
     },
 
     computed: {
+      filteredPosts() {
+        const filterString = this.search.toLowerCase();
+        return this.posts.filter((post) => {
+          const searchString = post.title.toLowerCase();
+          return searchString.includes(filterString)
+        });
+      },
+      displayedPosts() {
+        return `${this.filteredPosts.length}/${this.posts.length}`;
+      },
       editURL() { return this.currentPost ? `#edit-post/${this.currentPost.id}` : ''; },
       ...mapState({
         posts: state => state.posts.posts,
@@ -60,6 +77,14 @@
 
 <style lang="scss" scoped>
   @import 'src/styles/core/_index';
+
+  .displayed-posts {
+    font-size: 0.85em;
+    color: grey;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
 
   .post-preview-frame {
     position: absolute;
@@ -87,6 +112,7 @@
   }
 
   .post-list-container {
+    position: relative;
     flex: 1 0 50%;
     border-right: 1px solid black;
     overflow: auto;
