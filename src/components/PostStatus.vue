@@ -1,5 +1,5 @@
 <template>
-  <span :class="stateClass">{{message}}</span>
+  <span class="post-status" :class="stateClass">{{message}}</span>
 </template>
 
 
@@ -38,7 +38,7 @@
         const messages = {
           0: 'i bi am lade...',
           1: 'schribe',
-          2: 'gspicheret (nid publ.)',
+          2: `gspicheret (${this.post.lastPublished ? 'publ.' : 'nid publ.'})`,
           3: 'fähler o.O:',
           4: 'schribe (ke netz)',
           5: 'gspicheret (ke netz)',
