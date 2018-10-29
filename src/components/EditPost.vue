@@ -17,7 +17,11 @@
       </div>
       <div class="post-stats">
         <post-status :post="post"></post-status>
-        <button class="notification-button" @click="sendNotification" :disabled="post.notificationSent || !connected || notificationPending">Notify</button>
+        <button
+          class="notification-button"
+          @click="sendNotification"
+          :disabled="disableSendNotification"
+        >Notify</button>
         <button class="unpublish-button" @click="unpublishPost">Unpublish</button>
         <button class="publish-button" @click="publishPost">Publish</button>
       </div>
@@ -66,6 +70,12 @@
         connected: state => state.connection.connected,
         post: state => state.post.post,
       }),
+      disableSendNotification() {
+        return this.post.notificationSent
+          || this.post.notificationPending
+          || !this.connected
+          || !this.post.lastPublished;
+      },
     },
 
     methods: {
@@ -209,8 +219,11 @@
     display: flex;
     position: relative;
     border-top: 1px solid black;
+    align-items: center;
 
     .post-status {
+      padding-left: 1rem;
+      font-size: 0.85em;
       flex: 1 0 auto;
     }
   }
@@ -251,6 +264,7 @@
     border-left: 1px solid black;
     line-height: $golden-rem;
     margin: 0;
+    border-radius: 0;
   }
 
   .markdown-cheatsheet {
