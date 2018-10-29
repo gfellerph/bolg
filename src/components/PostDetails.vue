@@ -7,24 +7,18 @@
             :src="titleImageUrl"
             alt=""
           >
-          <h1 class="h4" v-html="post.title"></h1>
-          <table class="meta-infos">
-            <tr>
-              <th>Gmacht:</th>
-              <td>{{dateformat(post.created, 'dd.mm.yy')}}</td>
-            </tr>
-            <tr>
-              <th>Zletscht gschribe:</th>
-              <td>{{dateformat(post.lastEdited, 'dd.mm.yy')}}</td>
-            </tr>
-          </table>
+          <div class="post-text">
+            <h1 class="h4" v-html="post.title"></h1>
+            <p class="small">
+              <post-status :post="post"></post-status>
+              <span> &mdash; {{post.formattedPostDate}}</span></p>
+            <p class="post-controls">
+              <button class="small cancel" @click.prevent="deletePost(post._id)">Lösche</button>
+              <button class="small" @click.prevent="publishPost(post._id)">Publiziere</button>
+            </p>
+          </div>
       </div>
     </router-link>
-    <div class="post-controls">
-      <post-status :post="post"></post-status>
-      <button class="edit-button" @click="deletePost(post._id)">Lösche</button>
-      <button class="edit-button" @click="publishPost(post._id)">Publiziere</button>
-    </div>
   </div>
 </template>
 
@@ -43,10 +37,11 @@
       editUrl() { return `/editpost/${this.post._id}` },
       titleImageUrl() {
         if (!this.post.titleImage) {
-          return '//placehold.it/300x200?text=Keis_Titubiud';
+          return '//placehold.it/300x300?text=Keis_Titubiud';
         }
         return constructThumborUrl(this.post.titleImage.url, {
-          width: 640,
+          width: 160,
+          height: 160,
         })
       },
     },
@@ -85,7 +80,9 @@
 
   .post-infos {
     padding: $golden-rem;
-    color: white;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 
   .short-text,
@@ -96,19 +93,18 @@
   .meta-infos {
     font-family: $sans-serif;
     font-size: 0.75em;
+  }
 
-    th {
-      font-weight: normal;
+  .post-text {
+    flex-grow: 1;
+    > *:last-child {
+      margin-bottom: 0;
     }
   }
 
   .post-controls {
     display: flex;
-    border-top: 1px solid black;
-
-    .post-status {
-      flex: 1 0 auto;
-    }
+    justify-content: flex-end;
   }
 
   .edit-post-link {
@@ -117,23 +113,8 @@
   }
 
   .post-details__title-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.5);
-    z-index: -1;
-  }
-
-  .edit-button {
-    padding: $golden-rem / 4 $golden-rem / 2;
-    background: white;
-    color: black;
-    border: none;
-    border-left: 1px solid black;
-    line-height: $golden-rem;
-    margin: 0;
+    max-width: 25%;
+    margin: 0 2em 0 0;
+    border-radius: 10px;
   }
 </style>
