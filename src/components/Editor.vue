@@ -208,6 +208,7 @@
       margin-left: 0;
       min-width: 2rem;
       text-align: center;
+      border-radius: 0;
     }
 
     label {
