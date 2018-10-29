@@ -14,7 +14,7 @@ export default {
   },
   actions: {
     GETPOSTS: async ({ commit }) => {
-      const res = await axios.get('/api/posts');
+      const res = await axios.get('/api/posts/meta');
       commit('POSTS_UPDATE', res.data);
     },
     POSTS_PUBLISH: async ({ commit }, id) => {

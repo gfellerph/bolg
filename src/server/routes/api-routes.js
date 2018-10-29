@@ -48,6 +48,7 @@ router.post('/tipp', Tipps.postTipp);
 router.put('/tipp/:id', authenticate, Tipps.putTipp);
 router.delete('/tipp/:id', authenticate, Tipps.deleteTipp);
 
+router.get('/posts/meta', Posts.getPostsMetaInfos);
 router.get('/posts', Posts.getPosts);
 router.get('/post/:id', Posts.getPost);
 router.post('/post', authenticate, Posts.postPost);
