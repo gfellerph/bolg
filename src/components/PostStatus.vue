@@ -1,12 +1,9 @@
 <template>
-  <div class="post-status">
-    <span :class="stateClass">{{message}}</span>
-  </div>
+  <span :class="stateClass">{{message}}</span>
 </template>
 
 
 <script>
-  import dateformat from 'dateformat';
   import { states } from 'src/config/constants';
 
   const classes = {
@@ -35,16 +32,16 @@
       },
       message() {
         const lastPublished = this.post.lastPublished
-          ? `${dateformat(this.post.lastPublished, 'dd.mm.yy')}`
-          : 'nid publ.';
+          ? 'publiziert'
+          : 'nid publiziert';
 
         const messages = {
           0: 'i bi am lade...',
           1: 'schribe',
-          2: `sicher (${lastPublished})`,
+          2: 'gspicheret (nid publ.)',
           3: 'fähler o.O:',
           4: 'schribe (ke netz)',
-          5: 'sicher (ke netz)',
+          5: 'gspicheret (ke netz)',
           6: lastPublished,
         }
 
@@ -97,35 +94,6 @@
   @import 'src/styles/core/_index';
 
   span {
-    font-size: 0.85em;
-    color: white;
     font-family: $sans-serif;
-    line-height: $golden-rem;
-    display: block;
-    padding: $golden-rem / 4 $golden-rem / 2;
-
-    &.status-loading {
-      background: grey;
-    }
-    &.status-editing {
-      background: gold;
-    }
-    &.status-saved {
-      background: seagreen;
-    }
-    &.status-published {
-      background: royalblue;
-    }
-    &.status-error {
-      background: crimson;
-    }
-    &.status-editing-offline {
-      background: gold;
-      opacity: 0.8;
-    }
-    &.status-saved-offline {
-      background: seagreen;
-      opacity: 0.8;
-    }
   }
 </style>
