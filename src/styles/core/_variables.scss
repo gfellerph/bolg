@@ -16,7 +16,7 @@ $golden-rem: $golden * 1rem;
 $ms-base: 10px;
 $ms-range: 1.6 $xxs, 2.2 $xl;
 
-$serif: 'Noto Serif', 'Times New Roman', serif;
-$text-font: Georgia, serif;
-$title-font: $serif;
-$sans-serif: 'Roboto', sans-serif;
+$serif: Georgia, serif;
+$sans-serif: 'PT Sans', sans-serif;
+$text-font: $serif;
+$title-font: $sans-serif;

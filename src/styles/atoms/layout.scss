@@ -2,10 +2,6 @@
     box-sizing: border-box;
 }
 
-html {
-    height: 100%;
-}
-
 body {
     margin: 0;
 
@@ -16,6 +12,6 @@ body {
 
 .container {
     margin: 0 auto;
-    padding: 0 $golden-rem;
+    padding: 0 20px;
     max-width: 640px;
 }

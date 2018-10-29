@@ -32,9 +32,6 @@ export default {
 
       // Get journey data
       const { data: journeyData } = await axios.get('/api/journeys')
-        .catch((err) => {
-          console.log(err);
-        });
 
       const journey = journeyData.map(location => ({
         lat: location.lat,
@@ -56,7 +53,7 @@ export default {
       if (state.tippsLoaded) return;
 
       let { data: tipps } = await axios.get('/api/tipps')
-        .catch(err => console.log(err));
+      // .catch(err => console.log(err));
 
       // Add title
       tipps = tipps.map((tipp) => {

@@ -6,7 +6,7 @@ $border-image: url(https://adie.bisnaer.ch/d/HyhuAkuSX.png);
   height: 225px;
   max-width: 100%;
   margin: 0 auto;
-  background: url(/img/smileys.png) center no-repeat;
+  background: url(https://adie.bisnaer.ch/s/img/smileys.png) center no-repeat;
   background-size: contain;
 
   &:hover,
@@ -15,7 +15,7 @@ $border-image: url(https://adie.bisnaer.ch/d/HyhuAkuSX.png);
   }
 
   &.merci {
-    background-image: url(/img/merci.png);
+    background-image: url(https://adie.bisnaer.ch/s/img/merci.png);
   }
 }
 

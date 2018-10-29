@@ -6,14 +6,15 @@ figure {
   column-gap: $golden-rem / 4;
 
   @include max($xxs) {
-    margin-right: -$golden-rem;
-    margin-left: -$golden-rem;
+    margin-right: -20px;
+    margin-left: -20px;
   }
 
-  > * {
+  > *,
+  > .video-wrapper {
     display: block;
     width: 100%;
-    margin-bottom: $golden-rem / 4;
+    margin: 0 0 $golden-rem / 4 0;
   }
 
   &.first-hero {
@@ -38,7 +39,7 @@ figure {
     column-span: all;
 
     @include max($xxs) {
-      padding: 0 $golden-rem;
+      padding: 0 20px;
     }
   }
 }

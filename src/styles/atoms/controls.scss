@@ -33,8 +33,9 @@ button,
   line-height: inherit;
   font-family: 'Roboto', sans-serif;
 
-  border: 1px solid black;
-  padding: $golden-em / 2 $golden-em;
+  border: 3px solid dodgerblue;
+  border-radius: 50px;
+  padding: $golden-em / 3 $golden-em;
 
   &:hover {
     animation: glitch 0.35s infinite;
@@ -56,6 +57,9 @@ button,
     margin-left: $golden-em / 2;
   }
 
+  &.cancel {
+    border-color: crimson;
+  }
 }
 
 .plain,
