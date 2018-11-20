@@ -4,7 +4,7 @@ export default {
   extensions: 'html',
   setHeaders: (res, reqpath) => {
     const type = mime.lookup(reqpath);
-    const oneweek = 1000 * 60 * 60 * 24 * 7;
+    const oneweek = 60 * 60 * 24 * 7;
     const oneyear = oneweek * 52;
 
     switch (type) {
