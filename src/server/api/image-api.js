@@ -1,7 +1,7 @@
 import tinify from 'tinify';
 import Image from 'src/models/Image';
 import s3 from 'src/config/s3';
-import awsConfig from 'src/config/tinify-aws';
+// import awsConfig from 'src/config/tinify-aws';
 import app from 'src/server';
 import { cdnPrefix, imageStates } from 'src/config/constants';
 import mime from 'mime-types';
@@ -28,17 +28,25 @@ export const post = async (req, res) => {
       width: 2560,
       height: 1440,
     })
-    .store(awsConfig(`adie.bisnaer.ch/${key}`))
-    .meta()
-    .then(() => {
-      app.io.emit('server:image-processing-finished', req.body.shortid);
+    .toBuffer((err, result) => {
+      s3.putObject({
+        Bucket: 'adie.bisnaer.ch',
+        Key: key,
+        Body: result,
+        ContentType: req.file.mimetype,
+        CacheControl: 'public, max-age=31536000',
+      })
+        .promise()
+        .then(() => {
+          app.io.emit('server:image-processing-finished', req.body.shortid);
+        })
+        .catch((s3UploadError) => {
+          app.io.emit('server:image-processing-error', {
+            shortid: req.body.shortid,
+            s3UploadError,
+          });
+        });
     })
-    .catch((err) => {
-      app.io.emit('server:image-processing-error', {
-        shortid: req.body.shortid,
-        err,
-      });
-    });
 };
 
 export const getImage = (req, res) => {
