@@ -1,22 +1,14 @@
-const fs = require('fs');
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const UglifyJS = require('uglify-es');
 const backConfig = require('./back.config');
 const paths = require('./paths');
 const utils = require('./utils');
-
-const sw = UglifyJS.minify(fs.readFileSync(path.join(
-  __dirname,
-  './service-worker-prod.js',
-), 'utf-8'));
 
 const prodConfig = merge(backConfig, {
   output: {
@@ -61,8 +53,6 @@ const prodConfig = merge(backConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency',
-      testABC: 'test',
-      serviceWorkerLoader: `<script>${sw.code}</script>`,
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -78,14 +68,6 @@ const prodConfig = merge(backConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor'],
-    }),
-    // service worker caching
-    new SWPrecacheWebpackPlugin({
-      cacheId: 'bolg',
-      filename: 'service-worker.js',
-      staticFileGlobs: ['public/**/*.{js,html,css,png,PNG,svg,SVG}'],
-      minify: true,
-      stripPrefix: 'public/',
     }),
     // gzip compression
     new CompressionWebpackPlugin({
