@@ -57,3 +57,9 @@ p.error { color: red; }
   clip: rect(0,0,0,0);
   border: 0;
 }
+
+body:not(.no-intersection-observer) {
+  .compat-int-obs {
+    display: none;
+  }
+}
