@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import mediumZoom from 'src/config/medium-zoom';
 import lqip from 'src/modules/lqip';
 import galleryLoader from 'src/modules/gallery-lazy-load';
