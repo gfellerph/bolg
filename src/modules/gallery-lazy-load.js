@@ -1,59 +1,62 @@
-import axios from 'axios';
+import Loader from 'src/modules/lazy-loader';
 
-function Loader(options = {}) {
-  this.page = options.page || 0;
-  this.limit = options.limit || 1;
-  this.url = options.url || '';
+let observer;
+let galleryContainer;
 
-  this.nextPage = () => {
-    this.page += 1;
-    return axios.get(this.url, {
-      params: {
-        page: this.page,
-        limit: this.limit,
-      },
-      responseType: 'text',
-    });
-  };
+const loader = new Loader({
+  url: '/api/gallery',
+  page: 2,
+  limit: 1,
+});
+
+function lastPost() {
+  const posts = document.querySelectorAll('.gallery-post');
+  return posts[posts.length - 1];
 }
 
-function observeLastPost(observer) {
-  const posts = document.querySelectorAll('.gallery-post');
-  const lastPost = posts[posts.length - 1];
-  observer.observe(lastPost);
+function observeLastPost() {
+  if (!observer) return false;
+  observer.observe(lastPost());
   return lastPost;
 }
 
 export default (options) => {
-  let observer;
-  const galleryContainer = document.querySelector('.gallery-posts');
-  const loader = new Loader({
-    url: '/api/gallery',
-    page: 2,
-    limit: 1,
-  });
+  galleryContainer = document.querySelector('.gallery-posts');
 
-  const handler = (entries) => {
+  const next = () => {
+    loader.nextPage()
+      .then(({ data: html }) => {
+        galleryContainer.insertAdjacentHTML('beforeend', html);
+        if (observer) observeLastPost();
+        if (options.afterInsert && typeof options.afterInsert === 'function') {
+          options.afterInsert(lastPost());
+        }
+      })
+      .catch(() => {
+        // No more posts
+      });
+  }
+
+  const observerHandler = (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        observer.unobserve(entry.target);
-        loader.nextPage()
-          .then(({ data: postHtml }) => {
-            galleryContainer.insertAdjacentHTML('beforeend', postHtml);
-            const lastPost = observeLastPost(observer);
-            if (options.afterInsert && typeof options.afterInsert === 'function') {
-              options.afterInsert(lastPost);
-            }
-          }).catch(() => {
-            // No more posts
-          });
+        if (observer) observer.unobserve(entry.target);
+        next();
       }
     });
   };
 
-  observer = new IntersectionObserver(handler, {
-    threshold: 0,
-  });
-
-  observeLastPost(observer);
+  if (!('IntersectionObserver' in window)) {
+    // Alternative routine
+    document.body.classList.add('no-intersection-observer');
+    document
+      .querySelector('button.compat-int-obs')
+      .addEventListener('click', next);
+  } else {
+    // Modern browser
+    observer = new IntersectionObserver(observerHandler, {
+      threshold: 0,
+    });
+    observeLastPost();
+  }
 }
