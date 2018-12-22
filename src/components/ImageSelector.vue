@@ -64,6 +64,11 @@
       io.on('server:image-processing-error', this.processingError);
     },
 
+    destroyed() {
+      io.removeListener('server:image-processing-finished', this.addImage);
+      io.removeListener('server:image-processing-error', this.processingError);
+    },
+
     computed: {
       post() { return this.$store.state.post.post; },
     },
