@@ -1,4 +1,4 @@
-import mediumZoom from 'src/modules/medium-zoom';
+import mediumZoom from 'medium-zoom';
 
 export default function (selector = '.container img:not([data-no-zoom])') {
   const zoom = mediumZoom(selector, {

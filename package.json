@@ -51,7 +51,7 @@
     "jsonwebtoken": "^8.1.0",
     "marked": "^0.3.6",
     "mathsass": "^0.10.1",
-    "medium-zoom": "^0.4.0",
+    "medium-zoom": "^1.0.2",
     "mime-types": "^2.1.18",
     "mkdirp": "^0.5.1",
     "modularscale-sass": "2.1.1",

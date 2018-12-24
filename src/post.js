@@ -1,4 +1,4 @@
-import mediumZoom from 'src/config/medium-zoom';
+import mediumZoom from 'medium-zoom';
 import drawing from 'src/modules/drawing';
 import lqip from 'src/modules/lqip';
 import { setBookmark } from 'src/modules/bookmark';
