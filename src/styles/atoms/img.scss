@@ -7,13 +7,11 @@ img {
 p img,
 p figure,
 p video,
-p iframe,
-.lqip__wrapper {
+p iframe {
   & + img,
   & + figure,
   & + video,
-  & + iframe,
-  & + .lqip__wrapper {
+  & + iframe {
     margin-top: $golden-rem / 4;
   }
 }
