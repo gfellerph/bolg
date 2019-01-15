@@ -16,5 +16,5 @@ mixin post-navigation(active)
     a(href="/")
       img.logo(src=logoURL alt="Bis när Logo")
       span.sr-only Gschichte
-    a.right-link.hidden-xxs(class = (active === 'galerie' ? 'active' : '') href="/bilder")
-      span Bilder
+    a.right-link(class = (active === 'galerie' ? 'active' : '') href="/bilder")
+      span.hidden-xxs Bilder
