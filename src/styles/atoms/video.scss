@@ -6,6 +6,8 @@ video {
   @include max($xxs) {
     margin-right: -20px;
     margin-left: -20px;
+    max-width: none;
+    width: 100vw;
   }
 }
 
