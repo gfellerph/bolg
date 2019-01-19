@@ -5,7 +5,6 @@ import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import herokuSslRedirect from 'heroku-ssl-redirect';
 import mongoose from 'mongoose';
-import io from 'socket.io';
 import queryParser from 'express-query-int';
 import redirectRoutes from 'src/server/routes/redirect-routes';
 import apiRoutes from 'src/server/routes/api-routes';
@@ -16,13 +15,6 @@ import { rebuild } from 'src/server/modules/build';
 import { publishedPosts } from 'src/server/modules/queries';
 
 const app = express();
-
-// Attach socket io for initialization in bin/www
-app.io = io({
-  pingInterval: 15000,
-  pingTimeout: 30000,
-  transports: ['websocket'],
-});
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING)

@@ -37,7 +37,6 @@
   import Image from 'src/models/Image';
   import ImageController from 'src/controllers/image-controller';
   import { imageStates } from 'src/config/constants';
-  import io from 'src/config/socket.io-client';
   import bus from 'src/config/bus';
 
   const imageCtrl = ImageController();
@@ -61,14 +60,10 @@
       });
 
       this.$on('upload-success', this.addImage);
-      // io.on('server:image-processing-finished', this.addImage);
-      io.on('server:image-processing-error', this.processingError);
     },
 
     destroyed() {
       this.$off('upload-success', this.addImage);
-      // io.removeListener('server:image-processing-finished', this.addImage);
-      io.removeListener('server:image-processing-error', this.processingError);
     },
 
     computed: {
