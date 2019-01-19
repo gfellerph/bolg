@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import sizeOf from 'image-size';
 import shortid from 'shortid';
 import request from 'request-promise-native';
 import { getThumbUrl, getSrcset, constructThumborUrl } from 'src/config/constants';
@@ -56,17 +55,5 @@ ImageSchema.methods.getBuffer = function getBuffer() {
     /* eslint no-console: 0 */
     .catch(console.error);
 }
-
-ImageSchema.methods.getRatio = async function getRatio() {
-  if (this.ratio) return this.ratio;
-  const { width, height } = sizeOf(await this.getBuffer());
-  const ratio = height / width;
-  return ratio;
-}
-
-ImageSchema.pre('validate', async function preSave() {
-  this.ratio = await this.getRatio()
-    .catch(console.err);
-});
 
 export default mongoose.model('Image', ImageSchema);
