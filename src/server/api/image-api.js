@@ -1,53 +1,66 @@
 import tinify from 'tinify';
 import Image from 'src/models/Image';
 import s3 from 'src/config/s3';
-// import awsConfig from 'src/config/tinify-aws';
-import app from 'src/server';
 import { cdnPrefix, imageStates } from 'src/config/constants';
 import mime from 'mime-types';
-import sizeOf from 'image-size';
+import sharp from 'sharp';
+import imagemin from 'imagemin';
+import mozJpeg from 'imagemin-mozjpeg';
+import pngQuant from 'imagemin-pngquant';
+import svgo from 'imagemin-svgo';
+import gifsicle from 'imagemin-gifsicle';
 
 tinify.key = process.env.TINYPNG_API_KEY;
+
+const resize = buffer => sharp(buffer)
+  .resize({
+    width: 2560,
+    height: 1440,
+    fit: 'inside',
+  })
+  .rotate()
+  .toBuffer();
+
+const minify = buffer => imagemin.buffer(buffer, {
+  plugins: [
+    mozJpeg(),
+    pngQuant(),
+    svgo(),
+    gifsicle(),
+  ],
+});
+
+const getMetadata = buffer => sharp(buffer).metadata();
+
+const uploadToS3 = (Key, Body, ContentType) => s3.putObject({
+  Bucket: 'adie.bisnaer.ch',
+  Key,
+  Body,
+  ContentType,
+  CacheControl: 'public, max-age=31536000',
+})
+  .promise();
 
 export const post = async (req, res) => {
   const img = new Image({ shortid: req.body.shortid });
   const key = `i/${req.body.shortid}.${mime.extension(req.file.mimetype)}`;
-  const { width, height } = sizeOf(req.file.buffer);
-  img.ratio = height / width;
-  img.url = cdnPrefix(key);
-  img.state = imageStates.PROCESSING;
 
-  // Send an early response to mitigate heroku request timeout limits
-  res.send(img);
+  try {
+    const resizedBuffer = await resize(req.file.buffer);
+    const minifiedBuffer = await minify(resizedBuffer);
+    const metadata = await getMetadata(minifiedBuffer);
+    await uploadToS3(key, minifiedBuffer, req.file.mimetype);
 
-  // Tinify and resize to max 2560w or 1440h
-  tinify
-    .fromBuffer(req.file.buffer)
-    .resize({
-      method: 'fit',
-      width: 2560,
-      height: 1440,
-    })
-    .toBuffer((err, result) => {
-      s3.putObject({
-        Bucket: 'adie.bisnaer.ch',
-        Key: key,
-        Body: result,
-        ContentType: req.file.mimetype,
-        CacheControl: 'public, max-age=31536000',
-      })
-        .promise()
-        .then(() => {
-          app.io.emit('server:image-processing-finished', req.body.shortid);
-        })
-        .catch((s3UploadError) => {
-          app.io.emit('server:image-processing-error', {
-            shortid: req.body.shortid,
-            s3UploadError,
-          });
-        });
-    })
-};
+    img.ratio = metadata.height / metadata.width;
+    img.url = cdnPrefix(key);
+    img.state = imageStates.DONE;
+    img.progress = 100;
+
+    res.send(img);
+  } catch (err) {
+    res.next(err);
+  }
+}
 
 export const getImage = (req, res) => {
   res.send('TODO: implement this');
