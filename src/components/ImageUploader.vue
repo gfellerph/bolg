@@ -35,6 +35,7 @@
 
 <script>
   import ImageController from 'src/controllers/image-controller';
+  import { imageStates } from 'src/config/constants';
 
   const imageCtrl = ImageController();
 
@@ -71,7 +72,6 @@
       upload() {
         this.error = false;
         this.progress = 0;
-
         imageCtrl.upload(this.image, {
           onUploadProgress: this.onUploadProgress,
         })
@@ -79,7 +79,7 @@
             this.error = false;
             this.progress = 100;
             const imageWithLinks = Object.assign({}, this.image, res.data);
-            this.$emit('upload-success', imageWithLinks);
+            this.$emit('upload-success', imageWithLinks.shortid);
           })
           .catch((err) => {
             this.progress = 0;
@@ -88,6 +88,7 @@
       },
       onUploadProgress(event) {
         this.progress = (event.loaded / event.total) * 100;
+        if (this.progress >= 95) { this.image.state = imageStates.PROCESSING; }
       },
       removeImage() {
         this.$emit('remove-image', this.image.id);

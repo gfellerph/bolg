@@ -60,12 +60,14 @@
         this.$refs.imageSelector.scrollLeft += event.deltaY;
       });
 
-      io.on('server:image-processing-finished', this.addImage);
+      this.$on('upload-success', this.addImage);
+      // io.on('server:image-processing-finished', this.addImage);
       io.on('server:image-processing-error', this.processingError);
     },
 
     destroyed() {
-      io.removeListener('server:image-processing-finished', this.addImage);
+      this.$off('upload-success', this.addImage);
+      // io.removeListener('server:image-processing-finished', this.addImage);
       io.removeListener('server:image-processing-error', this.processingError);
     },
 
@@ -92,6 +94,7 @@
         imageCtrl.upload(imageToUpload, {
           onUploadProgress: (event) => {
             const progress = (event.loaded / event.total) * 100;
+            if (progress >= 100) { imageToUpload.state = imageStates.PROCESSING; }
             bus.$emit(`upload-progress:${imageToUpload.shortid}`, progress);
           },
         })
@@ -100,6 +103,7 @@
             imageToUpload.state = res.data.state;
             imageToUpload.ratio = res.data.ratio;
             this.uploading = false;
+            this.$emit('upload-success', imageToUpload.shortid);
             this.startUpload();
           })
           .catch(() => {
