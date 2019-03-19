@@ -4,6 +4,7 @@ body {
   @include ms-respond(font-size, 1);
   line-height: $golden;
   font-family: $text-font;
+  font-variant-numeric: lining-nums;
 }
 
 p,
@@ -113,6 +114,9 @@ hr {
 blockquote {
   font-size: 1.25em;
   font-style: italic;
+  border-left: 8px solid gainsboro;
+  padding-left: 1.608rem;
+  padding-right: 1.608rem;
 }
 
 blockquote em {

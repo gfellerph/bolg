@@ -5,11 +5,6 @@ figure {
   columns: 2;
   column-gap: $golden-rem / 4;
 
-  @include max($xxs) {
-    margin-right: -20px;
-    margin-left: -20px;
-  }
-
   > *,
   > .video-wrapper {
     display: block;
