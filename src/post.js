@@ -7,14 +7,12 @@ window.addEventListener('unload', () => {
   setBookmark();
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-  // Zoom every image but lqips
-  mediumZoom();
-  drawing();
-  lqip({
-    afterReplace: (placeholder, original) => {
-      // Add zoom to original lqips
-      mediumZoom(original);
-    },
-  })
+// Zoom every image but lqips
+mediumZoom();
+drawing();
+lqip({
+  afterReplace: (placeholder, original) => {
+    // Add zoom to original lqips
+    mediumZoom(original);
+  },
 });

@@ -14,7 +14,9 @@
   }
 
   > .lqip__wrapper,
-  > p > img[srcset] {
+  > p > img[srcset],
+  > figure,
+  > .picture-grid {
     @include max($xxs) {
       margin-right: -20px;
       margin-left: -20px;

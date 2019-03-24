@@ -8,17 +8,16 @@ const afterReplace = (lqipImage, originalImage) => {
   mediumZoom(originalImage);
 };
 
-window.addEventListener('DOMContentLoaded', () => {
-  galleryLoader({
-    afterInsert(lastPost) {
-      lqip({
-        selectorRoot: lastPost,
-        rootMargin: '0px',
-        afterReplace,
-      })
-    },
-  });
-  lqip({
-    afterReplace,
-  });
+galleryLoader({
+  afterInsert(lastPost) {
+    lqip({
+      selectorRoot: lastPost,
+      rootMargin: '0px',
+      afterReplace,
+    })
+  },
+});
+
+lqip({
+  afterReplace,
 });

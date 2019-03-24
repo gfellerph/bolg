@@ -12,10 +12,10 @@ import 'src/config/validation';
 Vue.config.productionTip = false;
 Vue.use(Vuex);
 
-const mapElement = document.getElementById('map');
-const subscribeElement = document.getElementById('subscribe');
-
 window.addEventListener('DOMContentLoaded', () => {
+  const mapElement = document.getElementById('map');
+  const subscribeElement = document.getElementById('subscribe');
+
   /* eslint-disable no-new */
   if (mapElement) {
     new Vue({
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
       components: { Subscribe },
     });
   }
-
-  setBookmarkFlag();
-  lqip();
 });
+
+setBookmarkFlag();
+lqip();
