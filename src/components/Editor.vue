@@ -11,6 +11,16 @@
           :value="post.postDate"
           @change="setPostDate"
         />
+        <select
+          :value="post.country && post.country._id ? post.country._id : post.country"
+          @change="setPostCountry"
+        >
+          <option
+            v-for="country in countries"
+            :key="country._id"
+            :value="country._id"
+          >{{country.name}}</option>
+        </select>
       </div>
       <div class="right-controls">
         <button class="help bold small" @click="toggleClippy">?</button>
@@ -57,12 +67,14 @@
     computed: {
       ...mapState({
         post: state => state.post.post,
+        countries: state => state.post.countries,
       }),
     },
 
     mounted() {
       this.selectionStart = this.$refs.md ? this.$refs.md.selectionStart : 0;
       bus.$on('insert-image', this.insertImage);
+      this.$store.dispatch('COUNTRIES_GET');
     },
 
     methods: {
@@ -174,6 +186,10 @@
       },
       setPostDate(event) {
         this.$store.commit('POST_SET_DATE', event.target.value);
+        this.$store.dispatch('POST_PUT');
+      },
+      setPostCountry(event) {
+        this.$store.commit('POST_SET_COUNTRY', event.target.value);
         this.$store.dispatch('POST_PUT');
       },
     },

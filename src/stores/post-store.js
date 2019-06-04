@@ -5,6 +5,7 @@ import Post from 'src/models/Post';
 export default {
   state: {
     post: new Post(),
+    countries: [],
   },
   mutations: {
     POST_SET_TITLE_IMAGE: (state, action) => { state.post.titleImage = action.image },
@@ -17,8 +18,15 @@ export default {
       state.post.images = state.post.images.filter(image => image.shortid !== imageId);
     },
     POST_DESTROY: (state) => { state.post = null; },
+    POST_SET_COUNTRY: (state, countryId) => { state.post.country = countryId; },
+    COUNTRIES_EDIT: (state, countries) => { state.countries = countries; },
   },
   actions: {
+    COUNTRIES_GET: async ({ commit }) => {
+      const res = await axios.get('/api/countries');
+      commit('COUNTRIES_EDIT', res.data);
+      return res;
+    },
     POST_GET: async ({ commit }, id) => {
       const res = await axios.get(`/api/post/${id}`)
       commit('POST_EDIT', res.data);
