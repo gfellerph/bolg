@@ -53,6 +53,10 @@ export const PostSchema = new Schema({
   },
   images: [ImageSchema],
   drawings: [ImageSchema],
+  country: {
+    type: Schema.Types.ObjectId,
+    ref: 'Country',
+  },
 }, {
   toObject: {
     virtuals: true,

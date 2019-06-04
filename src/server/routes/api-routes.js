@@ -9,6 +9,7 @@ import * as Posts from 'src/server/api/post-api';
 import * as Journeys from 'src/server/api/journey-api';
 import * as Builds from 'src/server/api/build-api';
 import * as Publisher from 'src/server/api/publish-api';
+import * as Country from 'src/server/api/country-api';
 import notify from 'src/server/api/notify-api';
 import * as Images from 'src/server/api/image-api';
 import * as Drawings from 'src/server/api/drawing-api';
@@ -75,5 +76,11 @@ router.get('/journey/:id', Journeys.get);
 router.post('/journey', authenticate, Journeys.post);
 router.put('/journey/:id', authenticate, Journeys.put);
 router.delete('/journey/:id', authenticate, Journeys.remove);
+
+router.get('/countries', Country.list);
+router.get('/country/:id', Country.get);
+router.post('/country', authenticate, Country.post);
+router.put('/country/:id', authenticate, Country.put);
+router.delete('/country/:id', authenticate, Country.remove);
 
 export default router;

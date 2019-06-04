@@ -13,6 +13,7 @@ import Subscribers from 'src/components/Subscribers';
 import CreateDrawing from 'src/components/CreateDrawing';
 import JourneyEditor from 'src/components/JourneyEditor';
 import Login from 'src/components/Login';
+import Countries from 'src/components/Countries';
 
 Vue.use(Router);
 
@@ -99,6 +100,14 @@ const router = new Router({
       path: '/journey',
       name: 'Journey',
       component: JourneyEditor,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/countries',
+      name: 'Coutries',
+      component: Countries,
       meta: {
         requiresAuth: true,
       },

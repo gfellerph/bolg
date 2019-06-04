@@ -21,7 +21,7 @@
           <router-link to="/subscribers">Subscribers</router-link>
           <router-link to="/createdrawing">Zeichne</router-link>
           <router-link to="/journey">Reiseroute</router-link>
-          <!-- <router-link to="/createstory">Create story</router-link>-->
+          <router-link to="/countries">Länder</router-link>
         </div>
       </nav>
     </header>
