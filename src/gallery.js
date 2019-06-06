@@ -34,3 +34,10 @@ const scrollRight = () => {
 }
 leftArrow.addEventListener('click', scrollLeft);
 rightArrow.addEventListener('click', scrollRight);
+
+// Country selector
+const countrySelector = document.querySelector('.country-selector');
+const switchCountry = (event) => {
+  window.location.href = event.target.value;
+}
+countrySelector.addEventListener('change', switchCountry);

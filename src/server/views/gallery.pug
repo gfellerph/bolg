@@ -18,13 +18,12 @@ block body
   section.container
     - const postCountry = post.country ? post.country.name : 'Irgendwo'
     nav.gallery__country-navigation
-      each country, index in [...countries]
-        - if (index > 0)
-          span  · 
-        a(
-          href= country[1].posts[0].galleryUrl
-          class= (country[1].name === postCountry ? 'active' : '')
-        )= country[1].name || 'Irgendwo'
+      select.country-selector
+        each country in [...countries]
+          option(
+            value= country[1].posts[0].galleryUrl
+            selected= (country[1].name === postCountry)
+          )= country[1].name || 'Irgendwo'
 
   div.gallery__navigation-wrapper
     button.nav__arrow-left
@@ -44,29 +43,27 @@ block body
     button.nav__arrow-right
       img(src="https://adie.bisnaer.ch/s/img/pfiu_linggs.png" alt="Pfiu nach rächts")
 
-  header.container
-    h1.text-align-center!= post.title
-
-  article.gallery__images(
-    data-masonry='{ "itemSelector": ".gallery__image" }'
-  )
-    each image in post.images
-      div.gallery__image
-        div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
-          img(
-            alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
-            src=image.blurryThumb
-            data-lqip-src=image.url
-            data-lqip-srcset=image.srcset
-            sizes="(min-width: 768px) 320px, 50vw"
-          )
-          noscript
+  div.gallery__images-wrapper
+    article.gallery__images(
+      data-masonry='{ "itemSelector": ".gallery__image" }'
+    )
+      each image in post.images
+        div.gallery__image
+          div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
             img(
               alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
-              src=image.url
-              srcset=image.srcset
+              src=image.blurryThumb
+              data-lqip-src=image.url
+              data-lqip-srcset=image.srcset
               sizes="(min-width: 768px) 320px, 50vw"
             )
+            noscript
+              img(
+                alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
+                src=image.url
+                srcset=image.srcset
+                sizes="(min-width: 768px) 320px, 50vw"
+              )
 
   - if (lastPost)
     section.container

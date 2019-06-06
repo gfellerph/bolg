@@ -1,9 +1,5 @@
-body {
-  overflow-x: hidden;
-}
-
-.gallery {
-  margin: 0 $golden-rem / -8;
+.gallery__images-wrapper {
+  overflow: hidden;
 }
 
 .gallery__images {
@@ -30,27 +26,35 @@ body {
 }
 
 .gallery__country-navigation {
-  a {
-    font-family: $sans-serif;
-    font-size: 1.2em;
-    color: black;
-    text-decoration: none;
-
-    &.active {
-      color: DARKMAGENTA;
-      text-decoration: underline;
-    }
-  }
-
-  span {
-    margin: 0 0.402rem;
+  select {
+    margin: 1rem auto;
+    display: block;
   }
 }
 
 .gallery__post-navigation {
   display: flex;
   overflow: auto;
-  padding: 0 $golden-rem / 2;
+
+  a {
+    &:first-child {
+      margin-left: $golden-rem / 2;
+      
+      @include max($xs) {
+        margin-left: $golden-rem / 3;
+      }
+    }
+
+  }
+  &:after {
+    content: '';
+    flex: 1 0 auto;
+    width: $golden-rem / 2;
+    
+    @include max($xs) {
+      width: $golden-rem / 3;
+    }
+  }
 }
 
 .gallery__navigation-wrapper {
@@ -62,15 +66,17 @@ body {
   position: absolute;
   border-color: lightgrey;
   background: white;
-  padding: 0.5em;
+  padding: $golden-rem / 3 0;
   top: 50%;
   transform: translateY(-50%);
   opacity: 0;
+  visibility: hidden;
   will-change: opacity;
   transition: opacity 200ms, visibility 0s 200ms;
 
   img {
-    width: 40px;
+    display: block;
+    width: 36px;
   }
 }
 
@@ -115,6 +121,11 @@ body {
   border-radius: 15px;
   border: 2px solid rgb(235, 235, 235);
 
+  @include max($xs) {
+    padding: $golden-rem / 3;
+    margin: $golden-rem / 2 $golden-rem / 6;
+  }
+
   &.active {
     border-color: cyan;
     box-shadow: 0 0 2px 2px cyan;
@@ -124,10 +135,16 @@ body {
     flex: 0;
     margin: 0;
     border-radius: 10px;
-    margin-right: 1em;
+    margin-right: $golden-rem / 2;
     width: 80px;
     height: 80px;
     background: rgb(235, 235, 235);
+
+    @include max($xs) {
+      width: 60px;
+      height: 60px;
+      margin-right: $golden-rem / 3;
+    }
   }
 
   span {
