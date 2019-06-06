@@ -20,7 +20,7 @@ const app = express();
 const connectionString = process.env.ENVIRONMENT === 'LOCAL'
   ? process.env.MONGODB_LOCAL
   : process.env.MONGODB_PRODUCTION;
-mongoose.connect(connectionString)
+mongoose.connect(connectionString, { useNewUrlParser: true })
   /* eslint no-console: 0 */
   .then(() => console.log('Connected to mongodb server'))
   .then(publishedPosts)
