@@ -3,11 +3,11 @@
   "short_name": "bis när",
   "start_url": "/",
   "display": "browser",
-  "background_color": "seagreen",
+  "background_color": "magenta",
   "description": "Reiseblog vor Steffi und am Phippu",
   "dir": "ltr",
   "lang": "de-CH",
-  "theme_color": "seagreen",
+  "theme_color": "magenta",
   "icons": [
     {
       "src": "/img/inuksuk.svg",

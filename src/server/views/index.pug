@@ -4,11 +4,13 @@ include mixins/navigation
 
 block meta
   title bis när
+  meta(name="Description", content="Reiseblog vor Steffi und am Phippu")
   link(rel='preload' href='/img/inuksuk-map.svg' as='image')
   link(rel='preload' href='/img/inuksuk-inverted.svg' as='image')
   meta(property="og:url" content="https://bisnär.ch")
   meta(property="og:title" content="bis när")
   meta(property="og:image" content=logoURL)
+  link(rel="canonical" href="https://bisnär.ch")
 
 block styles
   !=webpack['/indexCss.css']
