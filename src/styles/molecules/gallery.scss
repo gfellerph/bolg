@@ -169,11 +169,10 @@ hr {
 }
 
 .gallery__last-post {
-  margin-top: 2em;
-  margin-bottom: 1em;
   max-height: calc(100px + 5vw);
   overflow: hidden;
   position: relative;
+  margin-bottom: 1em;
 
   &:after {
     display: block;
