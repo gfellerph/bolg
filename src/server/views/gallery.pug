@@ -8,7 +8,7 @@ block meta
   meta(property="og:url" content=post.galleryLiveUrl)
   meta(property="og:title" content=`Bilder - ${post.title}`)
   meta(property="og:image" content=post.titleImage.getThumbnail(1200))
-  link(rel="canonical" href= 'https://bisnär.ch' + post.GalleryUrl)
+  link(rel="canonical" href= 'https://bisnär.ch' + post.galleryUrl)
 
 block styles
   !=webpack['/galleryCss.css']
