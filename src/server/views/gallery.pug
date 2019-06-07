@@ -66,27 +66,31 @@ block body
               )
 
   - if (lastPost)
-    section.container
-      hr
-      div.post
-        a.post__link(href=lastPost.galleryUrl + '#i' + lastPost.id)
-          div.progressive-image.lqip__wrapper(style=`padding-bottom: ${lastPost.titleImage.ratio * 100}%`)
-            img.post__title-image(
-              alt="Titelbild"
-              src=lastPost.titleImage.blurryThumb
-              data-lqip-src=lastPost.titleImage.url
-              data-lqip-srcset=lastPost.titleImage.srcset
-              sizes="(max-width: 640px) 100vw, 600px"
-            )
-            noscript
-              img.post__title-image(
-                alt="Titelbild"
-                src=lastPost.titleImage.blurryThumb
-                srcset=lastPost.titleImage.srcset
-                sizes="(max-width: 640px) 100vw, 600px"
+    hr
+    div.gallery__images-wrapper
+      article.gallery__images.gallery__last-post(
+        data-masonry='{ "itemSelector": ".gallery__image" }'
+      )
+        a.gallery__last-post-overlay.h2(
+          href= lastPost.galleryUrl + '#i' + lastPost.id
+        )!= lastPost.title
+        each image in lastPost.images.slice(0, 8)
+          div.gallery__image
+            div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
+              img(
+                alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
+                src=image.blurryThumb
+                data-lqip-src=image.url
+                data-lqip-srcset=image.srcset
+                sizes="(min-width: 768px) 320px, 50vw"
               )
-          div.post__overlay
-            h2.post__title.h3!= lastPost.title
+              noscript
+                img(
+                  alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
+                  src=image.url
+                  srcset=image.srcset
+                  sizes="(min-width: 768px) 320px, 50vw"
+                )
 
 block scripts
   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
