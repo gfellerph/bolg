@@ -20,13 +20,14 @@ block body
   section.container
     - const postCountry = post.country ? post.country.name : 'Irgendwo'
     nav.gallery__country-navigation
-      label.sr-only(for="country-selector") Wähle ein Land
-      select.country-selector#country-selector
-        each country in [...countries]
-          option(
-            value= country[1].posts[0].galleryUrl
-            selected= (country[1].name === postCountry)
-          )= country[1].name || 'Irgendwo'
+      label(for="country-selector")
+        span.sr-only Wähle ein Land
+        select.country-selector#country-selector
+          each country in [...countries]
+            option(
+              value= country[1].posts[0].galleryUrl
+              selected= (country[1].name === postCountry)
+            )= country[1].name || 'Irgendwo'
 
   div.gallery__navigation-wrapper
     button.nav__arrow-left
