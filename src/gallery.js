@@ -38,10 +38,24 @@ const initGallery = () => {
   const leftArrow = document.querySelector('.nav__arrow-left');
   const rightArrow = document.querySelector('.nav__arrow-right');
   const scrollLeft = () => {
-    nav.scrollLeft -= 60;
+    if (nav.scrollTo) {
+      nav.scrollTo({
+        left: nav.scrollLeft - 250,
+        behavior: 'smooth',
+      });
+    } else {
+      nav.scrollLeft -= 200;
+    }
   }
   const scrollRight = () => {
-    nav.scrollLeft += 60;
+    if (nav.scrollTo) {
+      nav.scrollTo({
+        left: nav.scrollLeft + 250,
+        behavior: 'smooth',
+      });
+    } else {
+      nav.scrollLeft += 200;
+    }
   }
   leftArrow.addEventListener('click', scrollLeft);
   rightArrow.addEventListener('click', scrollRight);
