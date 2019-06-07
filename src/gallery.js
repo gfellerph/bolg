@@ -11,33 +11,46 @@ lqip({
   afterReplace,
 });
 
-// Navigation arrows
-const nav = document.querySelector('.gallery__post-navigation');
-const onscroll = (event) => {
-  const el = event.target;
-  el.parentElement.classList.toggle('show-left-arrow', el.scrollLeft > 0);
-  el.parentElement.classList.toggle('show-right-arrow', el.offsetWidth + Math.ceil(el.scrollLeft) < el.scrollWidth);
-}
-nav.addEventListener('scroll', onscroll, { passive: true });
-// Initial call
-window.addEventListener('load', () => {
-  onscroll({ target: nav });
-});
+const initGallery = () => {
+  // Navigation arrows
+  const nav = document.querySelector('.gallery__post-navigation');
+  const onscroll = (event) => {
+    const el = event.target;
+    if (el.scrollLeft > 0) {
+      el.parentElement.classList.add('show-left-arrow');
+    } else {
+      el.parentElement.classList.remove('show-left-arrow');
+    }
 
-const leftArrow = document.querySelector('.nav__arrow-left');
-const rightArrow = document.querySelector('.nav__arrow-right');
-const scrollLeft = () => {
-  nav.scrollLeft -= 60;
-}
-const scrollRight = () => {
-  nav.scrollLeft += 60;
-}
-leftArrow.addEventListener('click', scrollLeft);
-rightArrow.addEventListener('click', scrollRight);
+    if (el.offsetWidth + Math.ceil(el.scrollLeft) < el.scrollWidth) {
+      el.parentElement.classList.add('show-right-arrow');
+    } else {
+      el.parentElement.classList.remove('show-right-arrow');
+    }
+  }
 
-// Country selector
-const countrySelector = document.querySelector('.country-selector');
-const switchCountry = (event) => {
-  window.location.href = event.target.value;
+  nav.addEventListener('scroll', onscroll, { passive: true });
+  // Initial call
+  window.addEventListener('load', () => {
+    onscroll({ target: nav });
+  });
+
+  const leftArrow = document.querySelector('.nav__arrow-left');
+  const rightArrow = document.querySelector('.nav__arrow-right');
+  const scrollLeft = () => {
+    nav.scrollLeft -= 60;
+  }
+  const scrollRight = () => {
+    nav.scrollLeft += 60;
+  }
+  leftArrow.addEventListener('click', scrollLeft);
+  rightArrow.addEventListener('click', scrollRight);
+
+  // Country selector
+  const countrySelector = document.querySelector('.country-selector');
+  const switchCountry = (event) => {
+    window.location.href = event.target.value;
+  }
+  countrySelector.addEventListener('change', switchCountry);
 }
-countrySelector.addEventListener('change', switchCountry);
+initGallery();
