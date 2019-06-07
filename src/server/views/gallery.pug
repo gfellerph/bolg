@@ -4,9 +4,11 @@ include mixins/navigation
 
 block meta
   title Bilder - #{post.title}
+  meta(name="Description" content!="Bilder zur Geschichte " + post.title)
   meta(property="og:url" content=post.galleryLiveUrl)
   meta(property="og:title" content=`Bilder - ${post.title}`)
   meta(property="og:image" content=post.titleImage.getThumbnail(1200))
+  link(rel="canonical" href= 'https://bisnär.ch' + post.GalleryUrl)
 
 block styles
   !=webpack['/galleryCss.css']
@@ -18,7 +20,8 @@ block body
   section.container
     - const postCountry = post.country ? post.country.name : 'Irgendwo'
     nav.gallery__country-navigation
-      select.country-selector
+      label.sr-only(for="country-selector") Wähle ein Land
+      select.country-selector#country-selector
         each country in [...countries]
           option(
             value= country[1].posts[0].galleryUrl
@@ -38,6 +41,7 @@ block body
         )
           img(
             src= tile.titleImage.getThumborUrl({ width: 80, height: 80 })
+            alt="Thumbnail Titubiud"
           )
           span!= tile.title
     button.nav__arrow-right
