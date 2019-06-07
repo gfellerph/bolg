@@ -5,6 +5,7 @@ export const publishedPosts = () => Post.find({
   lastPublished: { $ne: null },
   publishedMarkdown: { $ne: '' },
 })
+  .populate('country')
   .sort('-postDate');
 
 export const post = id => Post.findOne({

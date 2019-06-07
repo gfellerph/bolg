@@ -3,10 +3,10 @@ include mixins/gallery-post
 include mixins/navigation
 
 block meta
-  title Bilder - bis när
-  meta(property="og:url" content="https://bisnär.ch/bilder")
-  meta(property="og:title" content="bis när")
-  meta(property="og:image" content=logoURL)
+  title Bilder - #{post.title}
+  meta(property="og:url" content=post.galleryLiveUrl)
+  meta(property="og:title" content=`Bilder - ${post.title}`)
+  meta(property="og:image" content=post.titleImage.getThumbnail(1200))
 
 block styles
   !=webpack['/galleryCss.css']
@@ -15,14 +15,83 @@ block navigation
   +post-navigation('galerie')
 
 block body
-  div.container.gallery-posts
-    each post in orderedPosts
-      +gallery-post(post.images, post.title)
+  section.container
+    - const postCountry = post.country ? post.country.name : 'Irgendwo'
+    nav.gallery__country-navigation
+      select.country-selector
+        each country in [...countries]
+          option(
+            value= country[1].posts[0].galleryUrl
+            selected= (country[1].name === postCountry)
+          )= country[1].name || 'Irgendwo'
 
-      -if (!post.images || post.images.length == 0)
-        p.italic.text-align-center Da si ja no gar keiner Bilder...
-  p.text-align-center
-    button.compat-int-obs Meh Biuder!
+  div.gallery__navigation-wrapper
+    button.nav__arrow-left
+      img(src="https://adie.bisnaer.ch/s/img/pfiu_linggs.png" alt="Pfiu nach linggs")
+    nav.gallery__post-navigation
+      - const country = countries.get(postCountry)
+      each tile in country.posts
+        a.post__tile(
+          href= (tile.galleryUrl + '#i' + tile.id)
+          class= (post.title === tile.title ? 'active' : '')
+          id= ('i' + tile.id)
+        )
+          img(
+            src= tile.titleImage.getThumborUrl({ width: 80, height: 80 })
+          )
+          span!= tile.title
+    button.nav__arrow-right
+      img(src="https://adie.bisnaer.ch/s/img/pfiu_linggs.png" alt="Pfiu nach rächts")
+
+  div.gallery__images-wrapper
+    article.gallery__images(
+      data-masonry='{ "itemSelector": ".gallery__image" }'
+    )
+      each image in post.images
+        div.gallery__image
+          div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
+            img(
+              alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
+              src=image.blurryThumb
+              data-lqip-src=image.url
+              data-lqip-srcset=image.srcset
+              sizes="(min-width: 768px) 320px, 50vw"
+            )
+            noscript
+              img(
+                alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
+                src=image.url
+                srcset=image.srcset
+                sizes="(min-width: 768px) 320px, 50vw"
+              )
+
+  - if (lastPost)
+    hr
+    div.gallery__images-wrapper
+      article.gallery__images.gallery__last-post(
+        data-masonry='{ "itemSelector": ".gallery__image" }'
+      )
+        a.gallery__last-post-overlay.h2(
+          href= lastPost.galleryUrl + '#i' + lastPost.id
+        )!= lastPost.title
+        each image in lastPost.images.slice(0, 8)
+          div.gallery__image
+            div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
+              img(
+                alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
+                src=image.blurryThumb
+                data-lqip-src=image.url
+                data-lqip-srcset=image.srcset
+                sizes="(min-width: 768px) 320px, 50vw"
+              )
+              noscript
+                img(
+                  alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
+                  src=image.url
+                  srcset=image.srcset
+                  sizes="(min-width: 768px) 320px, 50vw"
+                )
 
 block scripts
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
   script(defer src=webpack['/gallery.js'])

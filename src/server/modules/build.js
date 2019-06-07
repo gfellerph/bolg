@@ -5,7 +5,6 @@ import { slugger, logoURL } from 'src/config/constants';
 import writefile from 'src/server/modules/writefile';
 import deleteFile from 'src/server/modules/deleteFile';
 import webpackManifest from 'src/server/modules/webpack-manifest';
-import splitItems from 'src/modules/split-items';
 
 const views = path.join(process.cwd(), 'src/server/views');
 
@@ -13,32 +12,38 @@ const views = path.join(process.cwd(), 'src/server/views');
  * Build a partial gallery post and return the compiled html
  * @param {Object} post A post object
  */
-export const buildGalleryPost = (post) => {
-  const images = splitItems(post.images);
-  return pug.renderFile(`${views}/partials/gallery-post.pug`, {
+export const buildGalleryPost = (post, lastPost, countries) => {
+  const file = pug.renderFile(`${views}/gallery.pug`, {
     post,
-    images,
-  });
-}
-
-export const buildGallery = (posts) => {
-  const filePath = 'public/bilder.html';
-
-  // Split images in each post into two columns
-  const orderedPosts = posts
-    .slice(0, 2)
-    .map((post) => {
-      const orderedImages = splitItems(post.images);
-      return { ...post.toObject(), images: orderedImages };
-    });
-
-  const html = pug.renderFile(`${views}/gallery.pug`, {
-    orderedPosts,
+    lastPost,
+    countries,
     logoURL: logoURL(),
     webpack: webpackManifest(),
   });
 
-  return writefile(filePath, html);
+  return file;
+}
+
+export const buildGallery = (posts) => {
+  const countries = posts.reduce((map, post) => {
+    if (!post.isPublished) { return map; }
+    const cn = post.country ? post.country.name : 'Irgendwo';
+    if (!map.get(cn)) {
+      map.set(cn, Object.assign({}, post.toObject().country, { posts: [] }));
+    }
+    map.get(cn).posts.push(post);
+    return map;
+  }, new Map());
+
+  const buildPromises = posts.map((post, index) => {
+    const html = buildGalleryPost(post, posts[index + 1], countries);
+    if (index === 0) {
+      writefile('public/bilder/index.html', html);
+    }
+    return writefile(`public/bilder/${slugger(post.title)}.html`, html);
+  });
+
+  return Promise.all(buildPromises);
 }
 
 /**

@@ -78,7 +78,15 @@ PostSchema.virtual('url').get(function getUrl() {
 
 PostSchema.virtual('liveUrl').get(function liveUrl() {
   return `https://bisnär.ch${this.url}`;
-})
+});
+
+PostSchema.virtual('galleryUrl').get(function galleryUrl() {
+  return `/bilder/${slugger(this.title)}`;
+});
+
+PostSchema.virtual('galleryLiveUrl').get(function galleryLiveUrl() {
+  return `https://bisnär.ch${this.galleryUrl}`;
+});
 
 PostSchema.virtual('html').get(function getHtml() {
   if (!this.isPublished || !this.publishedMarkdown) return '';
