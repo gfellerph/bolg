@@ -9,6 +9,7 @@
 
     img {
       position: absolute;
+      background: white;
     }
 
     @include max($xs) {
@@ -41,6 +42,7 @@
   select {
     margin: 1rem auto;
     display: block;
+    font-size: 1.1em;
   }
 }
 
@@ -129,6 +131,7 @@
   margin: $golden-rem / 2 $golden-rem / 4;
   
   font-family: $sans-serif;
+  font-weight: bold;
   text-decoration: none;
   color: black;
   border-radius: 15px;
@@ -139,7 +142,9 @@
     margin: $golden-rem / 2 $golden-rem / 6;
   }
 
-  &.active {
+  &.active,
+  &:focus {
+    outline: none;
     border-color: cyan;
     box-shadow: 0 0 2px 2px cyan;
   }
@@ -206,4 +211,5 @@ hr {
   color: black;
   text-decoration: none;
   margin: 0;
+  font-weight: bold;
 }
