@@ -55,6 +55,7 @@ router.get('/post/:id', Posts.getPost);
 router.post('/post', authenticate, Posts.postPost);
 router.put('/post/:id', authenticate, Posts.putPost);
 router.delete('/post/:id', authenticate, Posts.deletePost);
+router.get('/post/:id/drawings', Posts.getPostDrawings);
 
 router.post('/drawing', uploader.single('drawing'), Drawings.post);
 router.delete('/post/:postid/drawing/:drawingshortid', authenticate, Drawings.remove);
