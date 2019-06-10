@@ -45,18 +45,14 @@ export const post = async (req, res, next) => {
       },
     }, {
       new: true,
-    });
+    })
+      .select('_id')
+      .lean();
 
   // When upload complete and saved to db, send response
-  const [, updatedPost] = await Promise.all([upload, update])
+  await Promise.all([upload, update])
     .catch(err => next(err));
-  res.json(updatedPost);
-
-  // Rebuild post after sending response
-  if (!updatedPost) return;
-  buildPost(updatedPost, await nextPost(updatedPost.postDate))
-    /* eslint no-console: 0 */
-    .catch(err => console.log(`buildPost err: ${err}`))
+  res.send('OK');
 }
 
 export const remove = async (req, res, next) => {
