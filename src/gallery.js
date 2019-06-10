@@ -3,12 +3,16 @@ import mediumZoom from 'medium-zoom';
 import lqip from 'src/modules/lqip';
 
 const afterReplace = (lqipImage, originalImage) => {
-  if (lqipImage) lqipImage.remove();
   mediumZoom(originalImage);
 };
 
 lqip({
   afterReplace,
+});
+
+// eslint-disable-next-line no-unused-vars, no-undef
+const msnry = new Masonry('.gallery__images', {
+  itemSelector: '.gallery__image',
 });
 
 const initGallery = () => {

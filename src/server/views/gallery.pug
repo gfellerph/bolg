@@ -49,12 +49,10 @@ block body
       img(src="https://adie.bisnaer.ch/s/img/pfiu_linggs.png" alt="Pfiu nach rächts")
 
   div.gallery__images-wrapper
-    article.gallery__images(
-      data-masonry='{ "itemSelector": ".gallery__image" }'
-    )
+    article.gallery__images
       each image in post.images
         div.gallery__image
-          div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
+          div.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
             img(
               alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
               src=image.blurryThumb
@@ -81,7 +79,7 @@ block body
         )!= lastPost.title
         each image in lastPost.images.slice(0, 8)
           div.gallery__image
-            div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
+            div.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
               img(
                 alt=`Bilder ${post.country ? post.country.titleText : 'vo irgendwo'}`
                 src=image.blurryThumb

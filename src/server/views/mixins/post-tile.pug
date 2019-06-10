@@ -2,7 +2,7 @@ mixin post-tile(post)
   li.post(data-id=post.id)
     a.post__link(href=post.url)
       - if (post.titleImage)
-        div.progressive-image.lqip__wrapper(style=`padding-bottom: ${post.titleImage.ratio * 100}%`)
+        div.lqip__wrapper
           img.post__title-image(
             alt="Titelbild"
             src=post.titleImage.blurryThumb
