@@ -7,29 +7,6 @@ const defaults = {
   afterReplace: null,
 }
 
-const styles = `
-.lqip__wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
-.lqip__original {
-  opacity: 0;
-  will-change: opacity;
-}
-.lqip__loading {
-  transition: opacity 0.7s;
-}
-.lqip__loaded {
-  opacity: 1;
-}
-`;
-
-const style = document.createElement('style');
-style.type = 'text/css';
-style.innerHTML = styles;
-document.head.appendChild(style);
-
 let observer;
 
 const onload = (event) => {

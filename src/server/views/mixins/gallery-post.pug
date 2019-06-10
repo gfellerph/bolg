@@ -1,7 +1,7 @@
 mixin gallery-column(images)
   div.gallery__column
     each image in images
-      div.progressive-image.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
+      div.lqip__wrapper(style=`padding-bottom: ${image.ratio * 100}%`)
         img.gallery__image(
           alt='Bilder usem Blog'
           src=image.blurryThumb

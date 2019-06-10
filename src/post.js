@@ -12,7 +12,6 @@ mediumZoom();
 drawing();
 lqip({
   afterReplace: (placeholder, original) => {
-    if (placeholder) { placeholder.remove(); }
     // Add zoom to original lqips
     mediumZoom(original);
   },

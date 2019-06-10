@@ -1,0 +1,25 @@
+.lqip__wrapper {
+  position: relative;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+
+.lqip__original {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  opacity: 0;
+  will-change: opacity;
+}
+.lqip__loading {
+  transition: opacity 0.7s;
+}
+.lqip__loaded {
+  opacity: 1;
+}
