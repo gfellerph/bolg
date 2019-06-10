@@ -45,12 +45,14 @@ export const post = async (req, res, next) => {
       },
     }, {
       new: true,
-    });
+    })
+      .select('_id')
+      .lean();
 
   // When upload complete and saved to db, send response
-  const [, updatedPost] = await Promise.all([upload, update])
+  await Promise.all([upload, update])
     .catch(err => next(err));
-  res.json(updatedPost);
+  res.send('OK');
 }
 
 export const remove = async (req, res, next) => {
