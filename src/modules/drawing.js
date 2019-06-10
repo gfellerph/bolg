@@ -128,7 +128,9 @@ export default function initCanvas() {
     formData.append('drawing', dataUrlToBlob(imageData));
     return axios.post('/api/drawing', formData)
       .then(() => {
-        canvas.classList.remove('merci');
+        setTimeout(() => {
+          canvas.classList.remove('merci');
+        }, 1000);
         sendButton.removeAttribute('disabled');
       })
       .catch((error) => {
