@@ -2,12 +2,6 @@ mixin drawing(drawings)
   div#zeichne.drawing
     hr.blog-divider
     div.drawing__display
-      each drawing in drawings
-        img(
-          src= drawing.url
-          data-no-zoom
-          alt='Zeichnig'
-        )
     p.italic.text-align-center Zeichne öppis!
     div.drawing__canvas-border
       canvas#drawing.drawing__canvas.blank
