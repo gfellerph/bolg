@@ -51,12 +51,6 @@ export const post = async (req, res, next) => {
   const [, updatedPost] = await Promise.all([upload, update])
     .catch(err => next(err));
   res.json(updatedPost);
-
-  // Rebuild post after sending response
-  if (!updatedPost) return;
-  buildPost(updatedPost, await nextPost(updatedPost.postDate))
-    /* eslint no-console: 0 */
-    .catch(err => console.log(`buildPost err: ${err}`))
 }
 
 export const remove = async (req, res, next) => {
