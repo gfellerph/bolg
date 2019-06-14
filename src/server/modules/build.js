@@ -5,6 +5,7 @@ import { slugger, logoURL } from 'src/config/constants';
 import writefile from 'src/server/modules/writefile';
 import deleteFile from 'src/server/modules/deleteFile';
 import webpackManifest from 'src/server/modules/webpack-manifest';
+import dateformat from 'dateformat';
 
 const views = path.join(process.cwd(), 'src/server/views');
 
@@ -120,10 +121,20 @@ export const buildNotificationMail = (post, subscriber) => {
   return html;
 }
 
+export const buildSitemap = (posts) => {
+  const filePath = 'public/sitemap.xml';
+  const html = pug.renderFile(`${views}/sitemap.pug`, {
+    posts,
+    dateformat,
+  });
+  return writefile(filePath, html);
+}
+
 export const cleanAll = () => Promise.all([
   () => new Promise(resolve => rimraf('public/gschichte', resolve)),
   deleteFile('public/index.html'),
   deleteFile('public/bilder.html'),
+  deleteFile('public/sitemap.xml'),
 ]);
 
 export const rebuild = posts => cleanAll()
@@ -131,4 +142,5 @@ export const rebuild = posts => cleanAll()
     buildGallery(posts),
     buildIndex(posts),
     buildPosts(posts),
+    buildSitemap(posts),
   ]));
