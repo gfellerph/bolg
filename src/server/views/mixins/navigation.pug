@@ -16,6 +16,5 @@ mixin post-navigation(post)
     a(href="/")
       img.logo(src=logoURL alt="Bis när Logo")
       span.sr-only Gschichte
-    a.right-link(href= post.galleryUrl + "#i" + post.id)
+    a.right-link(href= post.galleryUrl + "#i" + post.id, aria-label="Bilder")
       span.hidden-xxs Bilder
-      span.visible-xxs.sr-only Bilder
