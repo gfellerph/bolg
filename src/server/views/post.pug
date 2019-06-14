@@ -5,7 +5,7 @@ include mixins/drawing
 include mixins/next-post
 
 block meta
-  title!= post.title + " - bis när Gschichte"
+  title!= post.title
   meta(name="Description" content!="Gschicht über " + post.title)
   meta(property='id' content=post._id)
   meta(property='og:title' content=post.title)

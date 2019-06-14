@@ -3,7 +3,7 @@ include mixins/gallery-post
 include mixins/navigation
 
 block meta
-  title #{post.title} - bis när Bilder
+  title Bilder - #{post.title}
   meta(name="Description" content!="Bilder zur Geschichte " + post.title)
   meta(property="og:url" content=post.galleryLiveUrl)
   meta(property="og:title" content=`Bilder - ${post.title}`)
