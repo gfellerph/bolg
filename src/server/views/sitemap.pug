@@ -4,12 +4,12 @@ urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
   //- Index
   url
     loc https://bisnär.ch
-    lastmod= Date.now()
+    lastmod= dateformat(Date.now(), 'isoDateTime')
   
   //- Bilder
   url
     loc https://bisnär.ch/bilder
-    lastmod= Date.now()
+    lastmod= dateformat(Date.now(), 'isoDateTime')
 
   
   each post in posts
@@ -17,10 +17,10 @@ urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
     //- Gschicht
     url
       loc= post.liveUrl
-      lastmod= post.lastPublished
+      lastmod= dateformat(post.lastPublished, 'isoDateTime')
 
     //- Biuder
     url
       loc= post.galleryLiveUrl
-      lastmod= post.lastPublished
+      lastmod= dateformat(post.lastPublished, 'isoDateTime')
     

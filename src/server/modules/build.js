@@ -5,6 +5,7 @@ import { slugger, logoURL } from 'src/config/constants';
 import writefile from 'src/server/modules/writefile';
 import deleteFile from 'src/server/modules/deleteFile';
 import webpackManifest from 'src/server/modules/webpack-manifest';
+import dateformat from 'dateformat';
 
 const views = path.join(process.cwd(), 'src/server/views');
 
@@ -124,6 +125,7 @@ export const buildSitemap = (posts) => {
   const filePath = 'public/sitemap.xml';
   const html = pug.renderFile(`${views}/sitemap.pug`, {
     posts,
+    dateformat,
   });
   return writefile(filePath, html);
 }
