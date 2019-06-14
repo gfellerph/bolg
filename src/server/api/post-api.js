@@ -53,3 +53,10 @@ export const getPostsMetaInfos = (req, res, next) => Post
   .sort('-postDate')
   .then(posts => res.json(posts))
   .catch(err => next(err));
+
+export const getPostDrawings = (req, res, next) => Post
+  .findOne({ _id: req.params.id })
+  .select('drawings.url')
+  .lean()
+  .then(post => res.json(post.drawings.map(drawing => drawing.url)))
+  .catch(err => next(err));

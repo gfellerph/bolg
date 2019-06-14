@@ -8,14 +8,14 @@ mixin navigation(active)
     a(class = (active === 'galerie' ? 'active' : '') href='/bilder')
       span Bilder
 
-mixin post-navigation(active)
+mixin post-navigation(post)
   nav
-    a.left-link(class = (active === 'index' ? 'active' : '') href="/")
+    a.left-link(href="/")
       span.hidden-xxs Reis
       img.visible-xxs(src="https://adie.bisnaer.ch/s/img/pfiu_linggs.png" alt="Reis")
     a(href="/")
       img.logo(src=logoURL alt="Bis när Logo")
       span.sr-only Gschichte
-    a.right-link(class = (active === 'galerie' ? 'active' : '') href="/bilder")
+    a.right-link(href= post.galleryUrl + "#i" + post.id)
       span.hidden-xxs Bilder
       span.visible-xxs.sr-only Bilder

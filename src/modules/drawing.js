@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dataUrlToBlob from 'src/modules/dataUrlToBlob';
+import getPostId from 'src/modules/getPostId';
 
 export default function initCanvas() {
   const canvas = document.querySelector('#drawing');
@@ -127,7 +128,9 @@ export default function initCanvas() {
     formData.append('drawing', dataUrlToBlob(imageData));
     return axios.post('/api/drawing', formData)
       .then(() => {
-        canvas.classList.remove('merci');
+        setTimeout(() => {
+          canvas.classList.remove('merci');
+        }, 1000);
         sendButton.removeAttribute('disabled');
       })
       .catch((error) => {
@@ -138,3 +141,18 @@ export default function initCanvas() {
       });
   });
 }
+
+const getDrawings = async () => {
+  const id = getPostId();
+  const res = await axios.get(`/api/post/${id}/drawings`);
+  const drawingContainer = document.querySelector('.drawing__display');
+  res.data.forEach((url) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = 'Zeichnig';
+    img.setAttribute('data-no-zoom', true);
+    drawingContainer.append(img);
+  });
+}
+
+getDrawings();
