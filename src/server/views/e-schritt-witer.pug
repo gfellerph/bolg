@@ -1,0 +1,149 @@
+extends _layout
+include mixins/navigation
+
+block meta
+  title E Schritt witer
+  meta(name="Description" content="Reiseroute für d'Wanderig zrugg is Ämmitau")
+  link(rel="canonical" href="https://bisnär.ch/e-schritt-witer")
+
+block styles
+  !=webpack['/indexCss.css']
+  style.
+    table {
+      border-spacing: 0;
+      border-collapse: separate;
+    }
+    th {
+      text-align: left;
+      font-family: 'PT Sans', sans-serif;
+    }
+    td {
+      border-top: 1px solid lightgrey;
+    }
+    th,
+    td {
+      padding: 0.201rem 0.402rem;
+      border-left: 1px solid lightgrey;
+    }
+    th:first-child,
+    td:first-child {
+      border-left: none;
+    }
+    th:nth-last-child(-n+2),
+    td:nth-last-child(-n+2) {
+      text-align: right;
+    }
+
+block navigation
+  +navigation
+
+block body
+  div.container
+    h1 E Schritt witer
+    p Voilà, e Routeplan. Aui si härzlech derzue iiglade, e Etappe oder zwe mit üs z'louffe, oder üs ungerwägs cho z'bsueche oder üs im verbifahre riifi Tomate, Zibele, Chnobli, Sauz, Pfäffer und Spaghetti zuezschiesse.
+
+    table
+      tr
+        th Datum
+        th Route
+        th Distanz
+        th Höhemeter
+
+      tr
+        td So&nbsp;18.08.19
+        td Gondo - Simplon Dorf (Via Stockalper)
+        td 9km
+        td 760m
+
+      tr
+        td Mo&nbsp;19.08.19
+        td Simplon Dorf - Simplon Pass (Via Stockalper)
+        td 9km
+        td 620m
+
+      tr
+        td Di&nbsp;20.08.19
+        td Simplon Pass - Brig (Via Stockalper)
+        td 12km
+        td 260m
+
+      tr
+        td Mi&nbsp;21.08.19
+        td Brig - Ausserberg (Sonnenweg)
+        td 17km
+        td 950m
+
+      tr
+        td Do&nbsp;22.08.19
+        td Ausserberg - Gampel (Sonnenweg)
+        td 12km
+        td 300m
+
+      tr
+        td Fr&nbsp;23.08.19 - <br> Sa 24.08.19
+        td Gampel - Leukerbad (Sonnenweg)
+        td 23km
+        td 1750m
+
+      tr
+        td So&nbsp;25.08.19
+        td Ruhetag im Leukerbad
+        td
+        td
+      
+      tr
+        td Mo&nbsp;26.08.19
+        td Leukerbad - Daubensee (Gemmipass)
+        td 7km
+        td 1000m
+
+      tr
+        td Di&nbsp;27.08.19
+        td Daubensee - Kandersteg
+        td 14km
+        td 260m
+       
+      tr
+        td Mi&nbsp;28.08.19
+        td Kandersteg - Spiez
+        td 26km
+        td 44m
+
+      tr
+        td Do&nbsp;29.08.19
+        td Spiez - Schwäbis
+        td 11km
+        td 14m
+
+      tr
+        td Fr&nbsp;30.08.19
+        td Schwäbis - Rubigen (Böötle, <a href="#bootle">meh Infos</a>)
+        td
+        td
+      
+      tr
+        td Sa&nbsp;31.08.19
+        td Rubigen - Grüenematt
+        td 22km
+        td 260m
+
+    h2 Infos
+    p D'Etappene si gnädig planet. Me sött ja geng so louffe, aus hätt me keis Zieu - het Ätti selig aube gwüsst z'säge. D'Etappe am Sunnti im Leukerbad würd sich zum Bisbpiu sehr guet für ne gmüetleche Tag zäme aabiete.
+
+    <div class="lqip__wrapper">
+      <img alt="Nussschale ufem Meer" src="https://adie.bisnaer.ch/i/H1Bf8z9zH.jpeg" srcset="https://adie.bisnaer.ch/1920x/i/H1Bf8z9zH.jpeg 1920w,https://adie.bisnaer.ch/1600x/i/H1Bf8z9zH.jpeg 1600w,https://adie.bisnaer.ch/1366x/i/H1Bf8z9zH.jpeg 1366w,https://adie.bisnaer.ch/1080x/i/H1Bf8z9zH.jpeg 1080w,https://adie.bisnaer.ch/640x/i/H1Bf8z9zH.jpeg 640w,https://adie.bisnaer.ch/320x/i/H1Bf8z9zH.jpeg 320w" sizes="(max-width: 640px) 100vw, 640px">
+    </div>
+    em Photo by Jonathan Forage on Unsplash
+
+    p Wär gärn e Etappe wett mitlouffe, cha sich unger <a href="mailto:bisnaer@gmail.com" target="_blank">bisnaer@gmail.com</a> oder bir Steffi mäude, de chöimer uf enang warte. Faus üser Plän nid würdi ufgah (was quasi nie passiert), chönnt me de mitenang luege.
+
+    p Mir louffe bi jeder Witterig wius dank dr Klimaerwärmig eh nie meh schiffet, Routeänderige si vorbehaute, bschisse wird nid.
+
+    h2#bootle Zum Böötle
+    p Geng nume louffe wär ja längwilig. Drum, und wiu d'Aare i die richtigi Richtig fliesst, heimer dänkt mir nä ds Böötli uf Rubige. Dä Event findet nur bi schönem Wätter statt.
+
+    <div class="lqip__wrapper">
+      <img alt="Nussschale ufem Meer" src="https://adie.bisnaer.ch/i/rJMseGcGB.jpeg" srcset="https://adie.bisnaer.ch/1920x/i/rJMseGcGB.jpeg 1920w,https://adie.bisnaer.ch/1600x/i/rJMseGcGB.jpeg 1600w,https://adie.bisnaer.ch/1366x/i/rJMseGcGB.jpeg 1366w,https://adie.bisnaer.ch/1080x/i/rJMseGcGB.jpeg 1080w,https://adie.bisnaer.ch/640x/i/rJMseGcGB.jpeg 640w,https://adie.bisnaer.ch/320x/i/rJMseGcGB.jpeg 320w" sizes="(max-width: 640px) 100vw, 640px">
+    </div>
+
+    p.italic PS: Mir sueche no öpper wo üs es Böötli oder e Platz i eim würd organisiere. Mir würdenis entsprächend revanchiere!

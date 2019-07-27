@@ -15,6 +15,8 @@ block meta
 block styles
   !=webpack['/indexCss.css']
   !=webpack['/map.css']
+  style.
+    
 
 block navigation
   +navigation('index')
@@ -23,15 +25,12 @@ block body
   div#map.map
   div.container
     .schritt-fuer-schritt
-      h3 Schritt für Schritt
-      p Um üs langsam wider a d'Schwiz z'gwahne, wei mir vor Gränze us hei louffe. Das duuret äue öppe chli weniger aus e Wuche. Es si aui fründlech derzue ufgforderet, mit üs mit z'louffe, ungerwägs es Kafi cho z'trinke oder am Aabe as Lagerfüür es Bierli cho z'nä.
-      dl
-        dt Start:
-        dd 23.08.2019 ar Südgränze (± e Tag oder zwe)
-        br
-        dt Aakunft: 
-        dd 31.08.2019 deheim
-      p.italic PS: Gneueri Infos und e Routeplan fouge ungfähr Ändi Juli.
+      h2.h3 E Schritt witer
+      p Mir hei e Plan. Es geit e chli lenger aus mir üs vorgsteut hei, derfür wärdemer gnue Zit ha, d'Schwiz no chli z'gniesse bevor mir üs ändlech wider mit dr Bürokratie dörfe umeschlah, wo mir so vermisst hei.
+      p
+        span.bold Nöis Startdatum: 18.08.2019 in Gondo
+      p.text-align-center
+        a.button(href="/e-schritt-witer") Zum Routeplan
 
     h1#gschichte Gschichte
     ul.posts
