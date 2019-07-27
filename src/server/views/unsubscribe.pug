@@ -1,12 +1,15 @@
 extends _layout
-
 include mixins/navigation
 
 block meta
   title Sniff - Abgmäudet
 
+block styles
+  !=webpack['/indexCss.css']
+
+
 block navigation
-  +post-navigation
+  +navigation
 
 block body
   .container

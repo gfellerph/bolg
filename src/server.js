@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 import queryParser from 'express-query-int';
 import redirectRoutes from 'src/server/routes/redirect-routes';
 import apiRoutes from 'src/server/routes/api-routes';
+import renderedRoutes from 'src/server/routes/rendered-routes';
 import errorRoutes from 'src/server/routes/error-routes';
 import passport from 'src/config/passport';
 import expressStatic from 'src/config/express-static';
@@ -31,8 +32,8 @@ mongoose.connect(connectionString)
 app.use(passport.initialize());
 
 // View engine settings
-app.set('views', './server/views');
 app.set('view engine', 'pug');
+app.set('views', `${process.cwd()}/server/views`);
 
 // Redirect to https
 app.use(herokuSslRedirect());
@@ -50,6 +51,7 @@ app.use(queryParser());
 // Routes
 app.use(redirectRoutes);
 app.use('/api', apiRoutes);
+app.use(renderedRoutes);
 app.use(errorRoutes);
 
 /* eslint no-unused-vars: 0 */
@@ -58,7 +60,7 @@ app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') !== 'production' ? err : { message: err.message };
-  res.status(err.status || 500);
+  res.status = err.status || 500;
   let details = '';
 
   if (err.name === 'JsonSchemaValidation') {
