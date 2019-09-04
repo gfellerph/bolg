@@ -6,6 +6,5 @@ const router = new Router();
 const webpack = webpackManifest();
 
 router.get('/unsubscribe', (req, res) => res.render('unsubscribe', { webpack, logoURL: logoURL() }));
-router.get('/e-schritt-witer', (req, res) => res.render('e-schritt-witer', { webpack, logoURL: logoURL() }));
 
 export default router;

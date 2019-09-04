@@ -24,13 +24,6 @@ block navigation
 block body
   div#map.map
   div.container
-    .schritt-fuer-schritt
-      h2.h3 E Schritt witer
-      p Mir hei e Plan. Es geit e chli lenger aus mir üs vorgsteut hei, derfür wärdemer gnue Zit ha, d'Schwiz no chli z'gniesse bevor mir üs ändlech wider mit dr Bürokratie dörfe umeschlah, wo mir so vermisst hei.
-      p
-        span.bold Nöis Startdatum: 18.08.2019 in Gondo
-      p.text-align-center
-        a.button(href="/e-schritt-witer") Zum Routeplan
 
     h1#gschichte Gschichte
     ul.posts
@@ -43,5 +36,5 @@ block footer
   div#subscribe
 
 block scripts
-  script(defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&libraries=places')
-  script(defer src=webpack['/map.js'])
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&libraries=places')
+  script(src=webpack['/map.js'])
