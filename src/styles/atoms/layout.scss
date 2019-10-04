@@ -14,4 +14,8 @@ body {
     margin: 0 auto;
     padding: 0 20px;
     max-width: 640px;
+
+    @include min($l) {
+        max-width: 760px;
+    }
 }

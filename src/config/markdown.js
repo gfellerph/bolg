@@ -35,7 +35,7 @@ export const marked = (str, options = {
     const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
     const lqipSrcsetAttr = srcset ? ` data-lqip-srcset="${srcset}"` : '';
     const lqipSrcAttr = lqipSrc ? ` data-lqip-src="${lqipSrc}"` : '';
-    const sizesAttr = srcset ? ' sizes="(max-width: 640px) 100vw, 640px"' : '';
+    const sizesAttr = srcset ? ' sizes="(max-width: 640px) 100vw, (min-width: 1920px) 760px, 640px"' : '';
     const noZoomAttr = noZoom ? ' data-no-zoom' : '';
     if (useLqip) {
       return `

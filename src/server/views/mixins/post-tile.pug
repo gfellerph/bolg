@@ -8,14 +8,14 @@ mixin post-tile(post)
             src=post.titleImage.blurryThumb
             data-lqip-src=post.titleImage.url
             data-lqip-srcset=post.titleImage.srcset
-            sizes="(max-width: 640px) 100vw, 600px"
+            sizes="(max-width: 640px) 100vw, (min-width: 1920px) 720px, 600px"
           )
           noscript
             img.post__title-image(
               alt="Titelbild"
               src=post.titleImage.blurryThumb
               srcset=post.titleImage.srcset
-              sizes="(max-width: 640px) 100vw, 600px"
+              sizes="(max-width: 640px) 100vw, (min-width: 1920px) 720px, 600px"
             )
       div.post__overlay
         h2.post__title.h3!= post.title
