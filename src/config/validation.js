@@ -1,18 +1,14 @@
-import Vue from 'vue';
-import VeeValidate from 'vee-validate';
+import { ValidationProvider, extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
 
-Vue.use(VeeValidate);
+extend('required', {
+  ...required,
+  message: 'Die Aagab bruchemer.',
+});
 
-const dictionary = {
-  'de-CH': {
-    messages: {
-      required: () => 'Die Aagab bruchemer.',
-      email: () => 'Bisch sicher dass dis Email stimmt?',
-    },
-  },
-};
+extend('email', {
+  ...email,
+  message: 'Bisch sicher dass dis Email stimmt?',
+});
 
-VeeValidate.Validator.updateDictionary(dictionary);
-VeeValidate.Validator.setLocale('de-CH');
-
-export default Vue;
+export default ValidationProvider;

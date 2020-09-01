@@ -16,39 +16,40 @@
         <h2 class="h4 text-align-center">Emails...</h2>
         <p>jedes mau wes e nöii Gschicht het.<br>Was gits schöners?</p>
       </div>
-      <p>
-        <label for="name">Wie heissisch du?</label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          placeholder="Name"
-          ref="name"
-          v-validate="'required'"
-          v-model="subscriber.name"
-        >
-      </p>
-      <p class="error" v-bind:key="error.id" v-for="error in errors.collect('name')">{{error}}</p>
-      <p>
-        <label for="mail">Und wie isch dis Email?</label>
-        <input
-          id="mail"
-          name="mail"
-          type="email"
-          placeholder="Email"
-          ref="email"
-          v-model="subscriber.email"
-          v-validate="'required|email'"
-        >
-      </p>
-      <p
-        class="error"
-        v-bind:key="error.id" v-for="error in errors.collect('mail')"
-      >{{error}}</p>
-      <p class="error" v-if="error">{{error}}</p>
+      <ValidationProvider rules="required" v-slot="{ errors }">
+        <p>
+          <label for="name">Wie heissisch du?</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Name"
+            ref="name"
+            v-model="subscriber.name"
+          >
+        </p>
+        <p class="error" v-bind:key="error.id" v-for="error in errors">{{error}}</p>
+      </ValidationProvider>
+      <ValidationProvider rules="required|email" v-slot="{ errors }">
+        <p>
+          <label for="mail">Und wie isch dis Email?</label>
+          <input
+            id="mail"
+            name="mail"
+            type="email"
+            placeholder="Email"
+            ref="email"
+            v-model="subscriber.email"
+          >
+        </p>
+        <p
+          class="error"
+          v-bind:key="error.id" v-for="error in errors"
+        >{{error}}</p>
+      </ValidationProvider>
       <p class="floating-form__controls">
         <button @click="cancel">Abbräche</button>
-        <button :disabled="loading || errors.any()" @click="addSubscriber">Schicke</button>
+        <button :disabled="loading" @click="addSubscriber">Schicke</button>
       </p>
     </div>
   </div>
@@ -57,8 +58,10 @@
 <script>
   import axios from 'axios';
   import User from 'src/models/User';
+  import ValidationProvider from 'src/config/validation';
 
   export default {
+    components: { ValidationProvider },
     data() {
       return {
         subscriber: new User(),
@@ -105,7 +108,7 @@
         this.subscriber = new User();
       },
       openForm() {
-        this.errors.clear();
+        // this.errors.clear();
         this.formClosed = false;
         this.$nextTick(() => this.$refs.name.focus());
       },

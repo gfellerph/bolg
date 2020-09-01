@@ -30,21 +30,6 @@
         <span>Route</span>
       </label>
     </div>
-    <div class="map__filter-panel">
-      <label
-        for="tipp-info"
-        :class="{ checked: info }"
-      >
-        <input
-          id="tipp-info"
-          type="checkbox"
-          name="tipp-info"
-          v-model="info"
-        >
-        <span v-if="!info">Hä?</span>
-        <span v-else>Aha!</span>
-      </label>
-    </div>
   </div>
 </template>
 
