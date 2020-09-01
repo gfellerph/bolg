@@ -145,7 +145,7 @@
     "write-file-webpack-plugin": "^4.2.0"
   },
   "engines": {
-    "node": "^12.10.0",
+    "node": "^14.2.0",
     "npm": "^6.11.0"
   },
   "browserslist": [
