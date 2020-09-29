@@ -1,10 +1,18 @@
 {
   "extends": "airbnb",
   "rules": {
-    "no-multiple-empty-lines": ["error", { "max": 1 }],
-    "no-param-reassign": ["error", {
-      "props": false
-    }],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
     "linebreak-style": 0,
     "semi": 0,
     "no-extra-semi": 2,
@@ -20,10 +28,12 @@
         ]
       }
     ],
-    "import/extensions": ["off", "always",
+    "import/extensions": [
+      "off",
+      "always",
       {
-      "js": "never",
-      "vue": "never"
+        "js": "never",
+        "vue": "never"
       }
     ]
   },
@@ -33,8 +43,17 @@
     "es6": true
   },
   "settings": {
-    "import/resolver": { "webpack": { "config": "config/base.config.js" }},
-    "import/extensions": [".js"]
+    "import/resolver": {
+      "webpack": {
+        "config": "config/base.config.js"
+      }
+    },
+    "import/extensions": [
+      ".js"
+    ]
   },
-  "plugins": ["import", "vue"]
+  "plugins": [
+    "import",
+    "vue"
+  ]
 }
