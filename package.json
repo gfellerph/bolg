@@ -30,7 +30,7 @@
   "dependencies": {
     "autoprefixer": "^7.1.6",
     "aws-sdk": "^2.170.0",
-    "axios": "0.18.x",
+    "axios": "0.21.x",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.18.2",
