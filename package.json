@@ -51,7 +51,7 @@
     "imagemin-svgo": "^7.0.0",
     "json-schema-defaults": "^0.4.0",
     "jsonwebtoken": "^8.1.0",
-    "marked": "^0.3.6",
+    "marked": "^4.0.10",
     "mathsass": "^0.10.1",
     "medium-zoom": "^1.0.2",
     "mime-types": "^2.1.18",
