@@ -39,7 +39,7 @@
     "debounce": "^1.1.0",
     "debug": "^3.1.0",
     "es6-promise": "^4.1.1",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "express-jsonschema": "^1.1.6",
     "express-query-int": "^3.0.0",
     "heroku-ssl-redirect": "^0.0.4",
