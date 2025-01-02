@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>bolg</title>
-    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:700" rel="stylesheet">
-    <link rel="shortcut icon" href="/favicon.ico?v=2">
-    <% for (var chunk of webpack.chunks) {
-            for (var file of chunk.files) {
-              if (file.match(/\.(js|css)$/)) { %>
-      <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>">
-      <% }}} %>
+    <link
+      href="https://fonts.googleapis.com/css?family=Droid+Serif:700"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="/favicon.ico?v=2" />
+    <% for (var chunk of webpack.chunks) { for (var file of chunk.files) { if
+    (file.match(/\.(js|css)$/)) { %>
+    <link
+      rel="<%= chunk.initial?'preload':'prefetch' %>"
+      href="<%= htmlWebpackPlugin.files.publicPath + file %>"
+      as="<%= file.match(/\.css$/)?'style':'script' %>"
+    />
+    <% }}} %>
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBADvjevyMmDkHb_xjjh3FOltkO2Oa8iAQ&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOE1lNCz8PaDRlOfYukIyuba20nWPWgQ4&libraries=places"></script>
   </body>
 </html>
