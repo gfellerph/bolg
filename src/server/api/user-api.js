@@ -1,21 +1,23 @@
 import User from 'src/models/UserModel';
 import jwt from 'jsonwebtoken';
 
-export const list = (req, res, next) => User.find({})
-  .then(data => res.json(data))
-  .catch(err => next(err));
+export const list = (req, res, next) =>
+  User.find({})
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
 
 export const getUser = (req, res) => {
   res.json(req.user);
-}
+};
 
 export const registerUser = (req, res, next) => {
   const { email, password, displayName } = req.body;
   const user = new User({ email, password, displayName });
-  user.save()
-    .then(newUser => res.json(newUser))
-    .catch(err => next(err));
-}
+  user
+    .save()
+    .then((newUser) => res.json(newUser))
+    .catch((err) => next(err));
+};
 
 export const authenticateUser = (req, res, next) => {
   User.findOne({
@@ -45,10 +47,11 @@ export const authenticateUser = (req, res, next) => {
       res.status = 401;
       next(err);
     });
-}
+};
 
-export const remove = (req, res, next) => User.remove({
-  _id: req.params.id,
-})
-  .then(data => res.json(data))
-  .catch(err => next(err));
+export const remove = (req, res, next) =>
+  User.remove({
+    _id: req.params.id,
+  })
+    .then((data) => res.json(data))
+    .catch((err) => next(err));

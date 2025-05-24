@@ -1,5 +1,5 @@
 {
-  "name": "bisnaer",
+  "name": "bolg",
   "env": {
     "AWS_ACCESS_KEY_ID": {
       "required": true
@@ -46,9 +46,7 @@
       "quantity": 1
     }
   },
-  "addons": [
-    "sendgrid"
-  ],
+  "addons": ["sendgrid"],
   "buildpacks": [
     {
       "url": "heroku/nodejs"

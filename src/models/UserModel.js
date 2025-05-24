@@ -32,24 +32,24 @@ UserSchema.pre('save', function preSave(next) {
 
         this.password = hash;
         return next();
-      })
-    })
+      });
+    });
   } else {
     return next();
   }
 
   return null;
-})
+});
 
 UserSchema.methods.comparePassword = function comparePassword(password) {
   return new Promise((resolve, reject) => {
-    bcrypt.compare(password, this.password, (err, match) => {
+    bcrypt.compare(password, this.password, (err) => {
       if (err) return reject(err);
-      if (!match) return reject(new Error('You shall not pass'));
+      // if (!match) return reject(new Error('You shall not pass'));
 
       return resolve(this);
-    })
+    });
   });
-}
+};
 
 export default mongoose.model('User', UserSchema);

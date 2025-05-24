@@ -78,3 +78,4 @@ export const description = (str) => {
     .join(' ')
   return markdownParser(`${md}...`, markdownOptions);
 }
+
