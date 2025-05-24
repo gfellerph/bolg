@@ -14,6 +14,7 @@
       }
     ],
     "linebreak-style": 0,
+    "arrow-parens": 0,
     "semi": 0,
     "no-extra-semi": 2,
     "no-plusplus": 0,
@@ -22,10 +23,7 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "build/**/*.js",
-          "config/**/*.js"
-        ]
+        "devDependencies": ["build/**/*.js", "config/**/*.js"]
       }
     ],
     "import/extensions": [
@@ -48,12 +46,7 @@
         "config": "config/base.config.js"
       }
     },
-    "import/extensions": [
-      ".js"
-    ]
+    "import/extensions": [".js"]
   },
-  "plugins": [
-    "import",
-    "vue"
-  ]
+  "plugins": ["import", "vue"]
 }
